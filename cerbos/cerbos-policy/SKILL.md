@@ -35,29 +35,72 @@ If Docker is not installed, inform the user and provide installation guidance:
 3. **Modify policies** based on requests, ensuring tests pass
 4. **Explain policies** in plain language
 
-## Quick Start
+## Workflow Phases
 
-Describe your authorization requirements:
-- What resources need protection?
-- Who should access them (roles/principals)?
-- What actions are allowed?
-- What conditions apply?
+Follow these phases in order. Do not skip ahead.
+
+### Phase 1 — Spec Intake
+
+Before writing any files, converge on a compact spec by asking clarifying questions:
+
+- Plain business language ("Who can delete a project?"), never schema jargon
+- Offer concrete options per question where possible — avoid open-ended prompts
+- Keep asking until resources, principals, actions, and conditions are unambiguous
+- Ask as many rounds and as many questions as the requirements genuinely need — do not rush to generation
+
+Produce a short spec artifact (resources, principals/roles, rules as `role → action on resource [condition]`) and confirm with the user before generating.
+
+### Phase 2 — Write
+
+Batch-write all files in a single pass, in this order:
+
+1. `_schemas/` (principal + resources)
+2. `derived_roles/` and `common_vars.yaml`
+3. `resource_policies/` / `role_policies/`
+4. `testdata/` fixtures
+5. `*_test.yaml`
+
+Do not validate between files.
+
+### Phase 3 — Validate
+
+```bash
+docker run --rm -v "$(pwd):/policies" ghcr.io/cerbos/cerbos:latest compile /policies
+```
+
+Exit code 0 = done. Otherwise capture the error list and move to Phase 4.
+
+### Phase 4 — Fix
+
+Apply one targeted fix per iteration, in this priority order:
+
+1. YAML / CEL syntax errors
+2. Schema validation errors (`additionalProperties: false`)
+3. Compile errors (missing imports, unresolved references)
+4. Test failures
+
+Rules:
+- Fix shared files (`derived_roles/`, `common_vars.yaml`) before resource policies
+- Never delete a test to make validation pass
+- Give up and report if the same error persists after **3** different fix attempts
+- When a condition fails in a non-obvious way, use the REPL (see [references/TESTING.md](references/TESTING.md)) rather than patching blindly
+
+### Phase 5 — Finalize
+
+Confirm exit code 0, then report what was created and any assumptions made during spec intake.
 
 ## Output
 
 Complete policy bundle:
-- `_schemas/` - Attribute schemas
-- `derived_roles/` - Shared role definitions
-- `resource_policies/` - Policies with tests
-- `role_policies/` - Role Policies (if using role-centric ABAC)
+- `_schemas/` — Attribute schemas
+- `derived_roles/` — Shared role definitions and exported variables
+- `resource_policies/` — Policies with tests and fixtures
+- `role_policies/` — Role policies (if using role-centric ABAC)
 
-## Reference
+## References
 
-- [references/REFERENCE.md](references/REFERENCE.md) — Policy syntax, CEL patterns, test structure, workflow
-
-## Validation
-
-All policies are validated using the Cerbos Docker container:
-```bash
-docker run --rm -v $(pwd):/policies ghcr.io/cerbos/cerbos:latest compile /policies
-```
+- [references/REFERENCE.md](references/REFERENCE.md) — Index, quick reference, directory layout, workflow, checklists
+- [references/POLICIES.md](references/POLICIES.md) — Policy types and design patterns
+- [references/CEL.md](references/CEL.md) — CEL patterns, condition nesting, pitfalls, error priority and fix table
+- [references/TEST-SUITES.md](references/TEST-SUITES.md) — `*_test.yaml` schema and fixture files
+- [references/TESTING.md](references/TESTING.md) — `cerbosctl repl` usage and debugging recipes
