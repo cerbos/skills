@@ -2,9 +2,20 @@
 
 Every Cerbos policy is YAML with an `apiVersion: api.cerbos.dev/v1` header and exactly one top-level policy object.
 
+## Required YAML Language-Server Header
+
+Every policy file MUST begin with the Cerbos policy schema comment so LSP-aware editors provide validation and autocomplete:
+
+```yaml
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+```
+
+This applies to ALL policy files: resource policies, derived roles, exported variables, role policies, and principal policies. Test suites and fixtures use different schemas — see [TEST-SUITES.md](TEST-SUITES.md).
+
 ## Resource Policy (most common)
 
 ```yaml
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
 apiVersion: api.cerbos.dev/v1
 resourcePolicy:
   version: "default"
@@ -33,6 +44,7 @@ Always include the `schemas` field:
 ## Derived Roles
 
 ```yaml
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
 apiVersion: api.cerbos.dev/v1
 derivedRoles:
   name: "document_roles"
@@ -49,6 +61,7 @@ Derived roles are referenced by resource policies via `importDerivedRoles`.
 ## Exported Variables
 
 ```yaml
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
 apiVersion: api.cerbos.dev/v1
 exportVariables:
   name: "common_vars"
@@ -63,6 +76,7 @@ Only `import` exported variables in files that actually use `V.*` — unused imp
 Role policies define permissions from the perspective of an IdP role. Unlike resource/principal policies, they use an allowlist model — any resource-action pair not explicitly listed is denied.
 
 ```yaml
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
 apiVersion: api.cerbos.dev/v1
 rolePolicy:
   role: "acme_admin"

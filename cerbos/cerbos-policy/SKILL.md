@@ -60,6 +60,8 @@ Batch-write all files in a single pass, in this order:
 4. `testdata/` fixtures
 5. `*_test.yaml`
 
+Every YAML file MUST begin with a `# yaml-language-server: $schema=...` header so LSP-aware editors validate the file. Policies use the `Policy.schema.json` URL, test suites use `TestSuite.schema.json`, and fixtures use the matching `TestFixture/*.schema.json`. See [POLICIES.md](references/POLICIES.md) and [TEST-SUITES.md](references/TEST-SUITES.md) for the exact URLs.
+
 Do not validate between files.
 
 ### Phase 3 — Validate

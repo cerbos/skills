@@ -6,7 +6,14 @@ Declarative test files that `cerbos compile` runs as part of validation. For int
 
 Test files MUST end in `_test.yaml`. The schema is strict — only documented fields are allowed (`additionalProperties: false`).
 
+Every test file MUST begin with the test suite language-server header:
+
 ```yaml
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+```
+
+```yaml
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
 name: "DocumentPolicyTest"
 description: "Tests for document resource policy"  # optional
 
@@ -108,10 +115,15 @@ NEVER add fields like `condition`, `effect`, `roles`, `rule`, `match`, or any cu
 
 ## Standalone Fixture File Format
 
-Standalone fixture files MUST have a top-level key:
+Standalone fixture files MUST have a top-level key AND the matching language-server header:
+
+- Principal fixtures: `$schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json`
+- Resource fixtures: `$schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json`
+- AuxData fixtures: `$schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/AuxData.schema.json`
 
 ```yaml
 # testdata/principals.yaml
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
 principals:
   owner_user:
     id: "user1"
@@ -123,6 +135,7 @@ principals:
 
 ```yaml
 # testdata/resources.yaml
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
 resources:
   owned_doc:
     kind: "document"

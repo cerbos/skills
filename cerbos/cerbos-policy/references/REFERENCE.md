@@ -92,6 +92,7 @@ Policy Generation Progress:
 
 ### Key Principles
 
+- **LSP headers on every YAML file**: Every policy, test suite, and fixture file starts with a `# yaml-language-server: $schema=...` comment. See [POLICIES.md](POLICIES.md) and [TEST-SUITES.md](TEST-SUITES.md) for the exact URLs.
 - **Spec first**: Converge on a compact spec with the user before writing files (SKILL.md Phase 1)
 - **Batch file creation**: Write all files in one pass before validating
 - **Schema-first**: Create schemas before policies that reference them
