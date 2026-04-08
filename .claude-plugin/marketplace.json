@@ -1,0 +1,16 @@
+{
+  "name": "cerbos-skills",
+  "owner": {
+    "name": "Cerbos"
+  },
+  "metadata": {
+    "description": "Agent skills for authorization policy authoring with Cerbos"
+  },
+  "plugins": [
+    {
+      "name": "cerbos-skills",
+      "source": "./plugins/cerbos-skills",
+      "description": "Skills for authorization policy authoring with Cerbos"
+    }
+  ]
+}
