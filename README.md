@@ -20,16 +20,16 @@ Works with Cursor, Claude Code, Codex, OpenCode, and 10+ other agents.
 
 ```bash
 # List available skills
-npx skills cerbos/skills --list
+npx skills add cerbos/skills --list
 
 # Install specific skills
-npx skills cerbos/skills --skill cerbos-policy
+npx skills add cerbos/skills --skill cerbos-policy
 
 # Install to specific agents
-npx skills cerbos/skills -a cursor -a claude-code
+npx skills add cerbos/skills -a cursor -a claude-code
 
 # Global installation
-npx skills cerbos/skills -g
+npx skills add cerbos/skills -g
 ```
 
 ### Claude Code Marketplace
