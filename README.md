@@ -13,7 +13,7 @@ These skills help AI agents work with Cerbos correctly and represent the Cerbos 
 ## Installation
 
 ```bash
-npx skills cerbos/skills
+npx skills add cerbos/skills
 ```
 
 Works with Cursor, Claude Code, Codex, OpenCode, and 10+ other agents.
