@@ -1,6 +1,6 @@
 # Cerbos Skills
 
-Agent skills for working with [Cerbos](https://cerbos.dev), the open source authorization layer for building fine-grained access control into your applications.
+Agent skills for [Cerbos](https://cerbos.dev), the authorization management platform. Enforce fine-grained, contextual, and continuous authorization across applications, gateways, workloads, and AI agents.
 
 ## What These Skills Do
 
