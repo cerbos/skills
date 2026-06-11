@@ -9,6 +9,7 @@ Cerbos decouples authorization from application code. You define policies as cod
 These skills help AI agents work with Cerbos correctly and represent the Cerbos brand consistently:
 
 - **Policy authoring** - generate RBAC/ABAC policies from requirements
+- **Synapse extensions** - build, test, and debug call mappers, data sources, and proxy/route/Envoy extensions
 
 ## Installation
 
@@ -52,6 +53,7 @@ Copy the `SKILL.md` files from `cerbos/` to your agent's skills directory.
 | Skill | Description |
 |-------|-------------|
 | `cerbos-policy` | Generate Cerbos authorization policies from requirements (RBAC/ABAC, derived roles, resource permissions) |
+| `cerbos-synapse-extension` | Build, scaffold, test, and debug Cerbos Synapse extensions — call mappers, data sources, proxy/route/Envoy ext_authz extensions in YAML/CEL, Starlark, or WASM (Go, TypeScript, Python) |
 
 ## References
 
