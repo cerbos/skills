@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires Docker for policy validation
 metadata:
   author: cerbos
-  version: "1.0"
+  version: "1.1"
 allowed-tools: Read Write Edit Bash Glob Grep Task WebFetch
 ---
 
@@ -41,14 +41,32 @@ Follow these phases in order. Do not skip ahead.
 
 ### Phase 1 — Spec Intake
 
-Before writing any files, converge on a compact spec by asking clarifying questions:
+Before writing any files, converge on a compact spec by asking clarifying questions in plain business language ("Who can delete a project?"), never schema jargon. Offer concrete options per question where possible — avoid open-ended prompts. Ask as many rounds and as many questions as the requirements genuinely need — do not rush to generation.
 
-- Plain business language ("Who can delete a project?"), never schema jargon
-- Offer concrete options per question where possible — avoid open-ended prompts
-- Keep asking until resources, principals, actions, and conditions are unambiguous
-- Ask as many rounds and as many questions as the requirements genuinely need — do not rush to generation
+Capture every rule against the **Structured Intent** checklist. Each rule must answer all six questions before it is generatable:
 
-Produce a short spec artifact (resources, principals/roles, rules as `role → action on resource [condition]`) and confirm with the user before generating.
+| Intent | Question | Cerbos construct |
+|---|---|---|
+| **Subject** | Who is acting? | `principal` roles / derived roles |
+| **Action** | What are they doing? | rule `actions` |
+| **Resource** | On what object? | resource `kind` |
+| **Condition** | Under what context? | CEL `condition` (omit for pure RBAC) |
+| **Decision** | Allow or Deny? | rule `effect` (`EFFECT_ALLOW` / `EFFECT_DENY`) |
+| **Purpose** | Why is this needed? | rule `name` + comment above the rule |
+
+**Completeness gate** — if any of the six is missing for a rule, ask before generating. Never silently infer **Decision** or **Purpose**:
+
+- **Decision** is security-critical. Cerbos is deny-by-default and deny rules take precedence over allow rules, so a missed deny is a hole. Always confirm whether a rule grants or revokes — do not assume allow.
+- **Purpose** is the audit trail. Every rule needs a one-line rationale that survives into the generated YAML, so policies stay self-documenting and reviewable.
+
+Produce a short spec artifact — one row per rule capturing all six elements:
+
+```
+Subject (role) → Action on Resource [Condition] | Effect | Purpose
+e.g. manager → approve on expense [R.attr.amount < 1000] | ALLOW | Managers sign off small expenses without finance
+```
+
+List resources, principals/roles, and shared derived roles/variables alongside. Confirm the spec with the user before generating.
 
 ### Phase 2 — Write
 
@@ -61,6 +79,8 @@ Batch-write all files in a single pass, in this order:
 5. `*_test.yaml`
 
 Every YAML file MUST begin with a `# yaml-language-server: $schema=...` header so LSP-aware editors validate the file. Policies use the `Policy.schema.json` URL, test suites use `TestSuite.schema.json`, and fixtures use the matching `TestFixture/*.schema.json`. See [POLICIES.md](references/POLICIES.md) and [TEST-SUITES.md](references/TEST-SUITES.md) for the exact URLs.
+
+Carry the **Purpose** captured in Phase 1 into every rule: set a descriptive rule `name` and record the rationale as a comment above the rule. Rules must not ship without their "why" — the audit trail is part of the deliverable, not optional.
 
 Do not validate between files.
 

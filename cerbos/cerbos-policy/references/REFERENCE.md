@@ -57,6 +57,7 @@ You run as a skill with direct file system access and validate policies via the 
 ```
 Policy Generation Progress:
 - [ ] Converge on a compact spec with the user (SKILL.md Phase 1)
+- [ ] Every rule answers all six Structured Intent elements: Subject, Action, Resource, Condition, Decision, Purpose
 - [ ] Plan structure (domains, shared roles/variables)
 - [ ] Generate _schemas/principal.json
 - [ ] Generate _schemas/resources/*.json
@@ -94,6 +95,8 @@ Policy Generation Progress:
 
 - **LSP headers on every YAML file**: Every policy, test suite, and fixture file starts with a `# yaml-language-server: $schema=...` comment. See [POLICIES.md](POLICIES.md) and [TEST-SUITES.md](TEST-SUITES.md) for the exact URLs.
 - **Spec first**: Converge on a compact spec with the user before writing files (SKILL.md Phase 1)
+- **Structured Intent**: Each rule must capture all six elements — Subject, Action, Resource, Condition, Decision, Purpose. Never silently infer Decision (allow vs deny) or Purpose (rationale); ask if missing
+- **Document the why**: Carry each rule's Purpose into the YAML as a descriptive rule `name` plus a comment above the rule, so policies stay self-documenting and auditable
 - **Batch file creation**: Write all files in one pass before validating
 - **Schema-first**: Create schemas before policies that reference them
 - **Test coverage**: Every policy needs tests for both ALLOW and DENY cases (see [TEST-SUITES.md](TEST-SUITES.md))
@@ -135,3 +138,5 @@ When generating policies, ALWAYS produce ALL of these:
 
 - [ ] Every policy has corresponding tests
 - [ ] Tests cover both ALLOW and DENY scenarios
+- [ ] Every rule has an explicit, confirmed effect (allow vs deny) — no inferred decisions
+- [ ] Every rule carries its Purpose as a rule `name` + comment rationale
