@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: invoice
+  version: default
+  rules:
+    # Billing agents may view any invoice. The resource policy is what actually
+    # grants the permission; the role policy can only narrow it.
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["billing_agent"]
+      name: billing-agent-can-view
+
+    # Billing agents may refund only small invoices.
+    - actions: ["refund"]
+      effect: EFFECT_ALLOW
+      roles: ["billing_agent"]
+      condition:
+        match:
+          expr: request.resource.attr.amount < 500
+      name: billing-agent-refunds-small

@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: expense tests
+description: Basic checks for the expense policy.
+principals:
+  manager:
+    id: mgr-1
+    roles: ["manager"]
+  finance:
+    id: fin-1
+    roles: ["finance"]
+  employee:
+    id: emp-1
+    roles: ["employee"]
+resources:
+  small:
+    id: exp-1
+    kind: expense
+    attr: { amount: 500, status: "draft", submitterId: "emp-1" }
+tests:
+  - name: manager approves a small expense
+    input: { principals: [manager], resources: [small], actions: [approve] }
+    expected:
+      - { principal: manager, resource: small, actions: { approve: EFFECT_ALLOW } }
+  - name: finance approves
+    input: { principals: [finance], resources: [small], actions: [approve] }
+    expected:
+      - { principal: finance, resource: small, actions: { approve: EFFECT_ALLOW } }
+  - name: employee creates an expense
+    input: { principals: [employee], resources: [small], actions: [create] }
+    expected:
+      - { principal: employee, resource: small, actions: { create: EFFECT_ALLOW } }

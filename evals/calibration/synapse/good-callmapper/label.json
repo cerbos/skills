@@ -1,0 +1,11 @@
+{
+  "label": "pass",
+  "note": "Declarative CEL call mapper for a static JWT->Cerbos mapping (simplest kind), references loaded, correct construct, no run command so license question is N/A, tests not requested.",
+  "expected": {
+    "ask-license-first": true,
+    "simplest-kind": true,
+    "loaded-references": true,
+    "correct-entrypoints": true,
+    "tests-when-asked": true
+  }
+}

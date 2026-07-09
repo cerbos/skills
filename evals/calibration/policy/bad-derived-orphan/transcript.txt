@@ -1,0 +1,10 @@
+=== ASSISTANT TRANSCRIPT ===
+Here's the document authorization. Ownership is modelled as a derived role
+`owner` in the `common_roles` derived roles policy, and the delete rule uses that
+derived role so owners can remove their own documents.
+
+=== TOOL CALLS ===
+Write: derived_roles/common_roles.yaml
+Write: resource_policies/document.yaml
+
+Done — owners can now delete their own documents.

@@ -1,0 +1,7 @@
+=== ASSISTANT TRANSCRIPT ===
+Here's the Synapse config that loads your compiled proxy extension straight from
+the CDN URL you gave me. That's everything you need to wire it in under
+extensions.proxyExtensions.
+
+=== TOOL CALLS ===
+Write: config.yaml

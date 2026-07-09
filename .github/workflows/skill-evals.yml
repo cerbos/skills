@@ -1,0 +1,132 @@
+name: Skill evals
+
+# Runs on PRs that touch a skill or the eval harness. Only the suite(s) for the
+# skill(s) actually changed are run — plus both suites when a shared eval
+# component changes. Manual dispatch can force a specific suite or all.
+on:
+  pull_request:
+    paths:
+      - 'cerbos/**'
+      - 'evals/**'
+  workflow_dispatch:
+    inputs:
+      run:
+        description: Which suites to run
+        type: choice
+        default: all
+        options: [all, policy, synapse]
+      filter:
+        description: Optional regex — only run cases whose description matches (surgical runs)
+        type: string
+        required: false
+
+concurrency:
+  group: skill-evals-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: evals
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      EVAL_ACTOR_MODEL: ${{ vars.EVAL_ACTOR_MODEL || 'claude-sonnet-5' }}
+      EVAL_JUDGE_MODEL: ${{ vars.EVAL_JUDGE_MODEL || 'claude-haiku-4-5-20251001' }}
+      PROMPTFOO_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Decide which suites to run from the changed paths (or the manual input).
+      # Policy/synapse skill dirs and their own eval files select that suite;
+      # shared harness files (judge, providers, calibration, deps) select BOTH.
+      - name: Select suites
+        id: select
+        working-directory: .
+        run: |
+          FORCE='${{ github.event.inputs.run }}'
+          policy=false; synapse=false
+          if [ "$FORCE" = "all" ]; then policy=true; synapse=true
+          elif [ "$FORCE" = "policy" ]; then policy=true
+          elif [ "$FORCE" = "synapse" ]; then synapse=true
+          else
+            CHANGED=$(git diff --name-only '${{ github.event.pull_request.base.sha }}' '${{ github.event.pull_request.head.sha }}')
+            echo "Changed files:"; echo "$CHANGED"
+            # Shared harness → both suites (the judge/providers/deps affect both).
+            if echo "$CHANGED" | grep -qE '^evals/(providers/|assertions/judge\.js|assertions/skill-fired\.js|promptfoo\.calibration\.yaml|package(-lock)?\.json|scripts/)'; then
+              policy=true; synapse=true
+            fi
+            # Policy skill or policy-specific eval files.
+            if echo "$CHANGED" | grep -qE '^cerbos/cerbos-policy/|^evals/tests/policy\.yaml|^evals/promptfoo\.policy\.yaml|^evals/criteria/cerbos-policy\.json|^evals/assertions/(policy-|cerbos-compile)|^evals/calibration/policy/'; then
+              policy=true
+            fi
+            # Synapse skill or synapse-specific eval files.
+            if echo "$CHANGED" | grep -qE '^cerbos/cerbos-synapse-extension/|^evals/tests/synapse\.yaml|^evals/promptfoo\.synapse\.yaml|^evals/criteria/cerbos-synapse-extension\.json|^evals/assertions/synapse-|^evals/calibration/synapse/'; then
+              synapse=true
+            fi
+          fi
+          if [ "$policy" = true ] || [ "$synapse" = true ]; then any=true; else any=false; fi
+          echo "policy=$policy" >> "$GITHUB_OUTPUT"
+          echo "synapse=$synapse" >> "$GITHUB_OUTPUT"
+          echo "any=$any" >> "$GITHUB_OUTPUT"
+          echo "Selected → policy=$policy synapse=$synapse (any=$any)"
+
+      - uses: actions/setup-node@v4
+        if: steps.select.outputs.any == 'true'
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        if: steps.select.outputs.any == 'true'
+        run: npm ci || npm install
+
+      - name: Pre-pull Cerbos image
+        if: steps.select.outputs.any == 'true'
+        run: docker pull ghcr.io/cerbos/cerbos:latest
+
+      # Calibration gate — verify the judge still agrees with the human labels
+      # before believing any real scores. Cheap (no agents). Hard-fails the job.
+      - name: Calibration gate
+        if: steps.select.outputs.any == 'true'
+        run: npx promptfoo eval -c promptfoo.calibration.yaml --no-cache --output cal.json
+
+      - name: Policy eval
+        id: policy
+        if: steps.select.outputs.policy == 'true'
+        continue-on-error: true
+        env:
+          FILTER: ${{ github.event.inputs.filter }}
+        run: npx promptfoo eval -c promptfoo.policy.yaml --no-cache --output policy.json --output policy.junit.xml ${FILTER:+--filter-pattern "$FILTER"}
+
+      - name: Synapse eval
+        id: synapse
+        if: steps.select.outputs.synapse == 'true'
+        continue-on-error: true
+        env:
+          FILTER: ${{ github.event.inputs.filter }}
+        run: npx promptfoo eval -c promptfoo.synapse.yaml --no-cache --output synapse.json --output synapse.junit.xml ${FILTER:+--filter-pattern "$FILTER"}
+
+      - name: Write job summary
+        if: always() && steps.select.outputs.any == 'true'
+        run: node scripts/summary.js "Policy" policy.json "Synapse" synapse.json || true
+
+      - name: Upload results
+        if: always() && steps.select.outputs.any == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: |
+            evals/*.json
+            evals/*.junit.xml
+          if-no-files-found: ignore
+
+      # Fail the check if a suite that ran reported failures (calibration already hard-gated).
+      - name: Fail on regression
+        if: always() && (steps.policy.outcome == 'failure' || steps.synapse.outcome == 'failure')
+        run: |
+          echo "One or more eval suites reported failures — see the job summary."
+          exit 1

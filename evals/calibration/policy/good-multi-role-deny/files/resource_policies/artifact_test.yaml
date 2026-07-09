@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: artifact tests
+description: Proves the contractor download restriction holds across multiple roles.
+principals:
+  employee_only:
+    id: emp-1
+    roles: ["employee"]
+  contractor_and_employee:
+    id: dual-1
+    roles: ["contractor", "employee"]
+resources:
+  build_artifact:
+    id: art-1
+    kind: artifact
+    attr: {}
+tests:
+  - name: plain employee can download
+    input: { principals: [employee_only], resources: [build_artifact], actions: [download] }
+    expected:
+      - { principal: employee_only, resource: build_artifact, actions: { download: EFFECT_ALLOW } }
+  - name: contractor who is also an employee cannot download
+    input: { principals: [contractor_and_employee], resources: [build_artifact], actions: [download] }
+    expected:
+      - { principal: contractor_and_employee, resource: build_artifact, actions: { download: EFFECT_DENY } }

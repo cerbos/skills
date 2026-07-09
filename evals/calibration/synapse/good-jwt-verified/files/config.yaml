@@ -1,0 +1,28 @@
+# Declarative call mapper (route extension). CEL only, no code, no build step.
+# Identity is taken from headers the gateway forwards; the raw JWT is passed
+# through as auxData below AND verified against the 'gateway' keyset before its
+# claims are trusted by policies. Served under /ext/.
+extensions:
+  routeExtensions:
+    jwtGateway:
+      mapping:
+        request:
+          principal:
+            id: 'request.header["X-User-Id"]'
+            roles:
+              - 'request.header["X-User-Roles"]'
+          resource:
+            kind: 'request.body.json.kind'
+            id: 'request.body.json.id'
+          action: 'request.method.lowerAscii()'
+          auxData:
+            jwt:
+              # Extract the raw bearer token AND verify it against the keyset
+              # registered under the id 'gateway' — claims are only trusted once
+              # the signature is checked.
+              token: 'request.header["Authorization"].replace("Bearer ", "", 1)'
+              keySetID: '"gateway"'
+        response:
+          status: 'check.allow ? 200 : 403'
+      routes:
+        '/api/{kind}/{id}': []

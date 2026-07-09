@@ -1,0 +1,7 @@
+{
+  "label": "pass",
+  "note": "Schemas emitted under _schemas/ AND wired into the resource policy via a schemas: block whose principalSchema/resourceSchema refs point at the emitted files (cerbos:///principal.json, cerbos:///resources/ticket.json). Enforcement can actually fire — schemas are not decorative.",
+  "expected": {
+    "schema-enforcement-wired": true
+  }
+}

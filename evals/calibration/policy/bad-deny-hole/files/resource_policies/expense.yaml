@@ -1,0 +1,26 @@
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: expense
+  version: default
+  rules:
+    - actions: ["create"]
+      effect: EFFECT_ALLOW
+      roles: ["employee"]
+
+    - actions: ["approve"]
+      effect: EFFECT_ALLOW
+      roles: ["manager"]
+      condition:
+        match:
+          expr: request.resource.attr.amount < 1000
+
+    - actions: ["approve"]
+      effect: EFFECT_ALLOW
+      roles: ["finance"]
+
+    - actions: ["delete"]
+      effect: EFFECT_ALLOW
+      roles: ["employee", "finance"]
+      condition:
+        match:
+          expr: request.resource.attr.status == "draft"

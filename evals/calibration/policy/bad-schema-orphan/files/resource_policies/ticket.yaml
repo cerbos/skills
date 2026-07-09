@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: ticket
+  version: default
+  rules:
+    # Agents only ever touch tickets belonging to their own team.
+    - actions: ["view", "comment"]
+      effect: EFFECT_ALLOW
+      roles: ["agent"]
+      condition:
+        match:
+          expr: request.resource.attr.teamId == request.principal.attr.teamId
+      name: agents-work-own-team-tickets
+    # Team leads may additionally close tickets in their own team.
+    - actions: ["close"]
+      effect: EFFECT_ALLOW
+      roles: ["team_lead"]
+      condition:
+        match:
+          expr: request.resource.attr.teamId == request.principal.attr.teamId
+      name: leads-close-own-team-tickets

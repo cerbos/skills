@@ -1,0 +1,12 @@
+=== ASSISTANT TRANSCRIPT ===
+This is a static HTTP -> Cerbos mapping, so it's a declarative call mapper — a
+route extension configured with CEL only.
+
+The principal id and roles are read from the identity headers the gateway sets.
+I configured auxData.jwt with a token expression that pulls the bearer token out
+of the Authorization header and passes it through as auxData so policies can use
+its claims. The response section maps the Cerbos decision to an HTTP status and
+the routes map binds it under /ext/.
+
+=== TOOL CALLS ===
+Write: config.yaml

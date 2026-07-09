@@ -1,0 +1,5 @@
+# Proxy extension loaded from a remote CDN URL, but NOT pinned by checksum.
+extensions:
+  proxyExtensions:
+    idp:
+      extensionURL: "https://cdn.example.com/synapse/idp.wasm"

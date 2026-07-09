@@ -1,0 +1,7 @@
+{
+  "label": "fail",
+  "note": "The call mapper uses auxData.jwt to extract the bearer token and passes it through so policies can use its claims, but configures NO keySetID — so the JWT is accepted without being verified against any keyset. A forged token would be trusted. Only the jwt-keyset-verification criterion is scored here.",
+  "expected": {
+    "jwt-keyset-verification": false
+  }
+}

@@ -1,0 +1,14 @@
+node_modules/
+results/
+.workspaces/
+*.log
+.env
+
+# promptfoo run outputs (regenerated each run)
+*.junit.xml
+cal.json
+calibration.json
+policy.json
+synapse.json
+trigger.json
+reverify*.json

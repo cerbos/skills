@@ -1,0 +1,7 @@
+{
+  "label": "pass",
+  "note": "Proxy extension loaded from a remote HTTPS URL and pinned to a specific version with ?checksum=sha256: per the extension URL guidance.",
+  "expected": {
+    "extension-url-checksum": true
+  }
+}

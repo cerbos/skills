@@ -1,0 +1,11 @@
+{
+  "label": "pass",
+  "note": "Correct expense policy: explicit deny for delete, named+commented rules, all requirements covered, no invented attributes, compiler actually run.",
+  "expected": {
+    "deny-hole": true,
+    "purpose-audit-trail": true,
+    "requirement-coverage": true,
+    "no-fabrication": true,
+    "actually-validated": true
+  }
+}
