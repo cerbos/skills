@@ -15,7 +15,7 @@
  * Scope: judges all criteria for the skill unless `context.vars.criteria`
  * lists a subset of ids (some cases don't exercise every failure mode).
  *
- * Config: judge model via env EVAL_JUDGE_MODEL (default claude-haiku-4-5).
+ * Config: judge model via env EVAL_JUDGE_MODEL (default claude-haiku-4-5-20251001).
  * Auth: ANTHROPIC_API_KEY.
  */
 const fs = require('node:fs');

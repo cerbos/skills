@@ -9,9 +9,10 @@
   },
   "scripts": {
     "calibrate": "promptfoo eval -c promptfoo.calibration.yaml",
+    "eval:trigger": "promptfoo eval -c promptfoo.trigger.yaml",
     "eval:policy": "promptfoo eval -c promptfoo.policy.yaml",
     "eval:synapse": "promptfoo eval -c promptfoo.synapse.yaml",
-    "eval": "npm run calibrate && npm run eval:policy && npm run eval:synapse",
+    "eval": "npm run calibrate && npm run eval:trigger && npm run eval:policy && npm run eval:synapse",
     "target": "bash scripts/eval.sh",
     "view": "promptfoo view"
   },

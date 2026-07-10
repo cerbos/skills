@@ -61,7 +61,11 @@ function collectFailures(comp, out) {
 const args = process.argv.slice(2);
 let md = '## Cerbos skills — eval results\n\n';
 for (let i = 0; i < args.length; i += 2) {
-  md += summarize(args[i], args[i + 1]);
+  const file = args[i + 1];
+  // A suite may be skipped (e.g. only the policy skill changed), so its result
+  // file won't exist. Skip it silently rather than emitting a noisy warning.
+  if (!fs.existsSync(file)) continue;
+  md += summarize(args[i], file);
 }
 
 const out = process.env.GITHUB_STEP_SUMMARY;

@@ -94,6 +94,14 @@ jobs:
         if: steps.select.outputs.any == 'true'
         run: npx promptfoo eval -c promptfoo.calibration.yaml --no-cache --output cal.json
 
+      # Trigger suite — does the right skill fire (and stay silent when it
+      # shouldn't)? Both skills are seeded, so run it whenever any suite runs.
+      - name: Trigger eval
+        id: trigger
+        if: steps.select.outputs.any == 'true'
+        continue-on-error: true
+        run: npx promptfoo eval -c promptfoo.trigger.yaml --no-cache --output trigger.json --output trigger.junit.xml
+
       - name: Policy eval
         id: policy
         if: steps.select.outputs.policy == 'true'
@@ -112,7 +120,7 @@ jobs:
 
       - name: Write job summary
         if: always() && steps.select.outputs.any == 'true'
-        run: node scripts/summary.js "Policy" policy.json "Synapse" synapse.json || true
+        run: node scripts/summary.js "Trigger" trigger.json "Policy" policy.json "Synapse" synapse.json || true
 
       - name: Upload results
         if: always() && steps.select.outputs.any == 'true'
@@ -126,7 +134,7 @@ jobs:
 
       # Fail the check if a suite that ran reported failures (calibration already hard-gated).
       - name: Fail on regression
-        if: always() && (steps.policy.outcome == 'failure' || steps.synapse.outcome == 'failure')
+        if: always() && (steps.trigger.outcome == 'failure' || steps.policy.outcome == 'failure' || steps.synapse.outcome == 'failure')
         run: |
           echo "One or more eval suites reported failures — see the job summary."
           exit 1
