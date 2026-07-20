@@ -4,13 +4,13 @@
     "name": "Cerbos"
   },
   "metadata": {
-    "description": "Agent skills for authorization policy authoring with Cerbos"
+    "description": "Agent skills for adopting and operating Cerbos authorization"
   },
   "plugins": [
     {
       "name": "cerbos-skills",
       "source": "./plugins/cerbos-skills",
-      "description": "Skills for authorization policy authoring with Cerbos"
+      "description": "Skills for adopting and operating Cerbos - authorization model analysis, policy authoring, policy migration, SDK integration, and Synapse extensions"
     }
   ]
 }

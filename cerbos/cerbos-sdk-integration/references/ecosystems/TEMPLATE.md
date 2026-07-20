@@ -1,0 +1,53 @@
+# Ecosystem recipe template
+
+Every ecosystem recipe in this directory follows this exact structure. To add support for a
+new language or framework, copy this template to `<language>.md` and fill in every section.
+Recipes carry **stable patterns**; they must never pin SDK versions or duplicate API
+reference detail — instead they link the live sources the agent fetches at integration time.
+
+## Required header
+
+```markdown
+# <Language> integration recipe
+
+**SDK packages**: <package names with registry links>
+**Live sources — fetch these before writing any integration code:**
+- SDK repo README: <https://github.com/cerbos/cerbos-sdk-...> (raw README URL)
+- SDK API docs: <generated docs site if one exists>
+- Query-plan adapters: <adapter repo/docs URLs>
+- Docs index: https://docs.cerbos.dev/llms.txt
+```
+
+## Required sections
+
+1. **Client setup** — installing the SDK, constructing the client (gRPC vs HTTP transport,
+   when to choose each), connection/TLS config from environment variables, client lifecycle
+   (singleton per process, never per request).
+2. **Principal construction** — building the Cerbos principal from the app's existing auth
+   context (JWT claims, session, auth middleware). One canonical helper, used everywhere.
+3. **Framework integration points** — for each covered framework: where checks belong
+   (middleware/guard vs service layer per the placement rules in
+   [ARCHITECTURE.md](../ARCHITECTURE.md)), with idiomatic code for that framework.
+4. **Single-resource checks** — `CheckResources` / `isAllowed` at the point where the
+   resource is already loaded, including batching multiple actions in one call.
+5. **List filtering** — `PlanResources` for list/search endpoints, wiring the query-plan
+   adapter for the ecosystem's ORMs, and handling the three plan outcomes
+   (`ALWAYS_ALLOWED` / `ALWAYS_DENIED` / `CONDITIONAL`).
+6. **Shadow-mode wrapper** — this ecosystem's implementation of the shadow-check pattern
+   defined in [ARCHITECTURE.md](../ARCHITECTURE.md): legacy decision stays authoritative,
+   Cerbos runs in parallel, mismatches logged with structured context, per-callsite
+   cutover flag.
+7. **Testing** — exercising checks against a real local PDP (container-based tests),
+   pointing the client at the test PDP, asserting on decisions.
+8. **Local dev PDP** — minimal `docker compose` (or equivalent) service running
+   `ghcr.io/cerbos/cerbos:latest` with a mounted `policies/` directory.
+
+## Rules for recipe authors
+
+- Code samples must be complete enough to adapt, not pseudo-code — but the agent applying
+  the recipe MUST first fetch the live sources in the header and prefer them if anything
+  here has drifted.
+- Public URLs only. Never reference local file paths or private repositories.
+- Follow the target application's existing conventions (naming, error handling, DI style)
+  over the style shown in samples.
+- Every sample that makes a decision must fail closed: errors and timeouts deny.
