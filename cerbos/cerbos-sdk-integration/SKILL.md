@@ -56,7 +56,8 @@ Non-negotiables, in every language and mode:
 ## Phase 2 — Sources and recipe
 
 Load the ecosystem recipe from `references/ecosystems/<language>.md` if present
-(currently: `typescript.md`, `go.md`, `python.md`, `java.md`). For other languages, follow
+(currently: `typescript.md`, `go.md`, `python.md`, `java.md`, `ruby.md`). For other
+languages, follow
 [references/ecosystems/TEMPLATE.md](references/ecosystems/TEMPLATE.md)'s structure,
 grounding every section in the live SDK repo (`github.com/cerbos/cerbos-sdk-<language>`)
 and the docs index. Either way, fetch the recipe's listed live sources **before** writing
@@ -176,3 +177,4 @@ Then the production path:
 - [references/ecosystems/go.md](references/ecosystems/go.md) — Go: net/http, chi, gin, gRPC, hand-rolled query-plan predicates
 - [references/ecosystems/python.md](references/ecosystems/python.md) — Python: FastAPI, Flask, Django/DRF, cerbos-sqlalchemy adapter
 - [references/ecosystems/java.md](references/ecosystems/java.md) — Java: Spring Boot, Quarkus/Micronaut notes, hand-rolled query-plan predicates
+- [references/ecosystems/ruby.md](references/ecosystems/ruby.md) — Ruby: Rails controllers, Pundit/CanCanCan as the migration seam, Scientist for shadow, hand-rolled plan → ActiveRecord scopes
