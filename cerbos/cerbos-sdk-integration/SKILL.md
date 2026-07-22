@@ -100,16 +100,40 @@ green after each.
   action, same expected outcome through the API). Reuse the Phase 3 dev PDP for these
   tests where one exists — do not introduce testcontainers if the app already stands up a
   PDP via docker-compose.
-- **Migration mode**: give the user the parity workflow — run shadow in a realistic
-  environment, aggregate `cerbos_shadow_mismatch` logs, triage each mismatch (policy bug
-  vs legacy bug vs missing attribute), fix, repeat until quiet; then flip endpoints to
-  enforce individually. Legacy check removal is a separate cleanup once enforce has
-  soaked — never in the same change as the flip.
+- **Migration mode**: the parity soak (run shadow → aggregate `cerbos_shadow_mismatch` →
+  triage → flip to enforce per endpoint → remove legacy after soak) happens on real
+  traffic after the run. Do not try to complete it inside the session; formalize it as the
+  written rollout plan that Phase 6 requires. Only flip endpoints to enforce during the run
+  if the user explicitly asks.
 
 ## Phase 6 — Production and handoff
 
-Close with a report (what was wired, in which mode, per-endpoint status) plus the
-production path:
+**A migration run normally ends with endpoints in shadow, not enforce — and that is a
+handoff, not a finish line.** Shadow mode produces no security value until the user drives
+it to enforce; the parity soak needs real traffic and human triage decisions you cannot
+make inside the run. So whenever the integration lands with any endpoint still in shadow,
+the run's terminal deliverable is an explicit, self-contained **rollout plan the user can
+execute without you** — do not stop at "shadow mode enabled". Write it into the handoff
+report, and if a PR exists, into the PR description as a checklist. It must contain:
+
+1. **Deploy with shadow on** — how to run the app with `AUTHZ_MODE=shadow` (the default)
+   in a realistic environment carrying representative traffic.
+2. **Where the signal is** — the `cerbos_shadow_mismatch` log event, the exact fields, and
+   a concrete way to aggregate it (log query / count by `endpoint`). Decision logs via Hub
+   are the durable successor once available.
+3. **Triage loop** — for each mismatch decide: policy bug (fix policy, re-run
+   `cerbos-policy-migration` tests), legacy bug (record the intentional divergence in the
+   model's Review log — do not replicate it), or missing/mis-sourced attribute (fix the
+   principal/resource builder). Repeat until mismatches for an endpoint hold at zero over a
+   representative window.
+4. **Flip one endpoint** — set `AUTHZ_MODE_<CALLSITE>=enforce` for that endpoint only; the
+   code does not change. List the per-endpoint flag names so the user can flip each.
+5. **Soak, then clean up legacy** — remove the legacy check for an endpoint only after
+   enforce has soaked, in a separate change from the flip.
+6. **A per-endpoint status table** — every wired endpoint, its callsite flag name, and its
+   current state (shadow / enforce / legacy-removed) — so the rollout state is tracked.
+
+Then the production path:
 
 - **PDP deployment** — sidecar, service, or embedded, per the current deployment docs
   (via llms.txt) and the trade-offs in [references/ARCHITECTURE.md](references/ARCHITECTURE.md).
