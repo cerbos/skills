@@ -46,6 +46,12 @@ Non-negotiables, in every language and mode:
    gateway/mesh enforcement is Cerbos Synapse territory; if that's the fit, say so and
    defer to the `cerbos-synapse-extension` skill rather than bolting SDK calls into a
    proxy.
+5. **Trim the scope with the user.** Present the enforcement plan as a resource+action
+   list and ask what to wire now, later, or not at all. The default failure mode is
+   migrating everything the plan contains — but not every action is worth shadowing
+   (internal tooling, endpoints slated for removal, trivially public reads), and in a
+   large app the first tranche should be a slice the team can watch, not the whole
+   surface. Record the trimmed list; it is the work queue for Phase 4.
 
 ## Phase 2 — Sources and recipe
 
@@ -73,7 +79,11 @@ In dependency order, following the recipe's idioms:
 
 1. **Client** — one client per process, configured from environment, created at startup.
 2. **Principal builder** — one canonical helper turning the app's auth context into a
-   Cerbos principal (id, roles, attributes per the model's §A6). All checks use it.
+   Cerbos principal (id, roles, attributes per the model's §A6). All checks use it. It is
+   shared by every policy, so before wiring any endpoint, show the user the principal
+   shape — id source, roles, each attribute and where it comes from — and get it
+   confirmed; reviewing it once up front is far cheaper than correcting it across every
+   callsite later.
 3. **Checks** — implement the enforcement plan endpoint by endpoint:
    - `CheckResources` where the resource is loaded; batch actions (and resources) into
      single calls.
@@ -81,6 +91,11 @@ In dependency order, following the recipe's idioms:
      plan outcomes.
    - Placement per the model's attribute provenance — middleware only when every needed
      attribute is request-time (see [references/ARCHITECTURE.md](references/ARCHITECTURE.md)).
+   - **Resource completeness**: build the resource from the loaded domain object carrying
+     every attribute the policy's conditions read (§B3 / the kind's `_schemas/` entry).
+     Sending an id-only resource when conditions read attributes is the most common wiring
+     bug — the check silently evaluates against missing data. Cross-check each callsite's
+     resource against the schema before calling it wired.
 4. **One authorization helper, enforcement by flag** — every callsite calls the recipe's
    real check helper (the actual `CheckResources`/`PlanResources` call); a per-callsite
    mode flag decides whether a Cerbos deny blocks (`enforce`) or is only logged while
@@ -90,8 +105,15 @@ In dependency order, following the recipe's idioms:
    callsite is identical in every mode and cutover is a config change. Migration mode
    starts in `shadow`; direct/greenfield mode pins the flag to `enforce`.
 
-Work in small increments — one endpoint or route group at a time, keeping the app's tests
-green after each.
+**The unit of wiring work is one resource+action, and each work item is self-contained.**
+Before touching code, break the trimmed enforcement plan into per-action items, each
+carrying everything execution needs with no re-analysis: kind, action, callsite(s), the
+legacy check's location, required principal/resource attributes (§A6/§B3), and the
+expected parity behavior. This granularity — per action, not per controller — is what
+makes each change independently implementable and reviewable, whether executed in this
+session, fanned out to subagents, or handed to another team as tickets (offer that export
+when multiple teams own the callsites). Work through items keeping the app's tests green
+after each.
 
 ## Phase 5 — Verify and cut over
 
@@ -119,8 +141,10 @@ report, and if a PR exists, into the PR description as a checklist. It must cont
 1. **Deploy with shadow on** — how to run the app with `AUTHZ_MODE=shadow` (the default)
    in a realistic environment carrying representative traffic.
 2. **Where the signal is** — the `cerbos_shadow_mismatch` log event, the exact fields, and
-   a concrete way to aggregate it (log query / count by `endpoint`). Decision logs via Hub
-   are the durable successor once available.
+   a concrete way to aggregate it (log query / count by `endpoint`); if the shadow counter
+   metric was wired (see [references/ARCHITECTURE.md](references/ARCHITECTURE.md) §4), the
+   dashboard query grouping it by callsite and status, including the `error` status.
+   Decision logs via Hub are the durable successor once available.
 3. **Triage loop** — for each mismatch decide: policy bug (fix policy, re-run
    `cerbos-policy-migration` tests), legacy bug (record the intentional divergence in the
    model's Review log — do not replicate it), or missing/mis-sourced attribute (fix the

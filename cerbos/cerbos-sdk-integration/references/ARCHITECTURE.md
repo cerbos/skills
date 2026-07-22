@@ -78,6 +78,20 @@ principal/resource/action. The mode flag then decides what to do with the two an
   longer consulted (leave it in place until cleanup).
 - **Mode selection is per callsite** (env/config keyed by endpoint or callsite name, with
   a global default) so endpoints cut over one at a time.
+- **Metric as well as log.** If the app has a metrics stack (StatsD/Datadog, Prometheus,
+  OTel), emit one counter per shadow decision — e.g. `authz_shadow_result` tagged with
+  `callsite` and `status` ∈ `match|mismatch|error` — so the rollout dashboard is just that
+  counter grouped by callsite: a healthy migration is a flat 100% match rate, and a policy
+  bug is a visible mismatch spike to click into. `error` is its own status, never folded
+  into mismatch or dropped: in production it is the signal that validates request shape
+  (missing attributes, bad payloads, PDP connectivity) that pre-prod testing won't catch.
+  Where several teams own callsites, tag the owning team so each watches its own cutover.
+
+**Reuse an existing experiment framework.** If the codebase already has a Scientist-style
+library (github/scientist, laboratory, or similar), implement this contract on top of it
+rather than beside it: legacy is the control, the Cerbos check is the candidate, and the
+publish hook emits the mismatch log and counter. The team already trusts that machinery —
+a parallel homegrown shadow mechanism is a harder sell and a second thing to debug.
 
 Name the helper for what it is — a Cerbos authorization check with an enforcement flag
 (e.g. `authorize`, `checkAccess`) — **not** `shadowCheck`/`shadowCheckResource`. Shadow is

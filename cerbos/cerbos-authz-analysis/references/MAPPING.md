@@ -51,6 +51,10 @@ both options in the review session rather than deciding silently.
 
 - Kind per domain noun (A4), lower_snake or kebab per the team's naming taste —
   consistent across the document.
+- The kind for an entry point is the noun the handler **acts on**, never the controller/
+  module/route name — domain-named controllers routinely operate on other resources (an
+  account-admin route editing surveys checks the `survey` kind). If one handler mutates
+  two nouns, that is two check calls against two kinds, not a merged kind.
 - Don't invent granularity the code doesn't have: if the code only ever distinguishes
   read vs write, two actions beat seven CRUD verbs. Conversely, if the code guards
   `approve` differently from `update`, they are distinct actions.

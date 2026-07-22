@@ -32,6 +32,13 @@ What authorization looks like in code, roughly ordered from explicit to buried:
   FastAPI `Depends(get_current_admin)`. Distinguish *authentication only* from
   *authorization* — `requireAuth` alone classifies the endpoint as `role-gate` only if it
   also checks a role; otherwise the endpoint's authorization is whatever lies deeper.
+- **Inherited and layered guards**: the effective guard set for a handler is resolved
+  per-action *after* inheritance and opt-outs, not read off the handler's own file. Walk
+  base classes and mixins (Rails `ApplicationController` + concerns, Django CBV mixins,
+  NestJS/Spring class-level and global guards, router-group middleware) — and equally
+  their opt-outs (`skip_before_action`, guard overrides, routes mounted outside a
+  middleware group). A handler that *looks* unguarded may inherit a guard; a handler
+  inside a guarded base may skip it. Record the resolved chain as the evidence.
 - **Authorization libraries**: CASL (`ability.can`), Pundit/CanCanCan (`authorize`,
   policy classes), casbin (`enforcer.Enforce`), Spring Security expressions, existing
   OPA/other PDP calls, Django/DRF permission classes, homegrown `permissions.ts`-style
@@ -60,6 +67,14 @@ Useful sweep starters (adapt to the codebase's vocabulary): grep for `403`, `For
   authorization-shaped on that path belongs to the entry point's rules. Shared helpers
   (`canEditProject(user, project)`) are rules in their own right — record once in A5,
   reference from every entry point that uses them.
+- **The resource is what the handler acts on, not what it is named after.** Identify each
+  entry point's resource by the object it loads and mutates, never by controller/module/
+  route naming — controllers are often named by domain, not resource (an
+  `AccountAdminController` action that edits surveys is a *survey* operation, not an
+  account one). Name-matching produces both false positives (domain-named controllers
+  touching other resources) and false negatives (handlers operating on a resource without
+  mentioning it in any check). This matters twice: when grouping entry points, and later
+  when Part B assigns resource kinds.
 - Quote conditions **verbatim** — the exact expression, not a paraphrase — then translate
   to plain English beside it. The verbatim quote is what makes review and later parity
   checking possible.
