@@ -146,22 +146,23 @@ query = query.where(Document.deleted_at.is_(None))  # AND with existing app filt
 
 No adapter exists for the Django ORM: branch on `plan.filter.kind` yourself — `KIND_ALWAYS_DENIED` → `queryset.none()`, `KIND_ALWAYS_ALLOWED` → no extra filter, `KIND_CONDITIONAL` → translate the condition AST into `Q` objects, keeping the attribute-to-field mapper next to the model.
 
-## 6. Shadow-mode wrapper
+## 6. The authorization helper (real check + enforcement flag)
 
-Contract and rollout sequencing are defined in [ARCHITECTURE.md](../ARCHITECTURE.md): in `shadow` mode the legacy decision stays authoritative and the Cerbos check must never block or fail the response; mismatches emit one structured log line; in `enforce` mode Cerbos decides and errors deny. Mode is per callsite via env (`AUTHZ_MODE_<CALLSITE>` overriding `AUTHZ_MODE`, default `shadow`).
+One helper, used at every callsite, that **always runs the real Cerbos check**; a per-callsite mode flag decides whether a Cerbos deny blocks (`enforce`) or is only logged while the legacy decision stands (`shadow`). There is no separate shadow helper — shadow is a value of the flag, so the callsite is identical in every mode and cutover is a config change. Full contract and rollout sequencing in [ARCHITECTURE.md](../ARCHITECTURE.md) §4: in `shadow` the Cerbos check must never block or fail the response and mismatches emit one structured log line; in `enforce` Cerbos decides and errors deny. Mode is per callsite via env (`AUTHZ_MODE_<CALLSITE>` overriding `AUTHZ_MODE`, default `shadow`). Greenfield integrations pin the mode to `enforce` and pass `legacy_decision=None`.
 
 ```python
 def authz_mode(callsite: str) -> str:
     key = "AUTHZ_MODE_" + re.sub(r"[^A-Z0-9]+", "_", callsite.upper())
     return os.environ.get(key) or os.environ.get("AUTHZ_MODE", "shadow")
 
-async def shadow_check(endpoint, request_id, principal, resource, action, legacy_decision) -> bool:
+# Always issues the real Cerbos check; the mode flag decides what to do with the result.
+async def authorize(endpoint, request_id, principal, resource, action, legacy_decision=None) -> bool:
     if authz_mode(endpoint) == "enforce":
         try:
             return await cerbos.is_allowed(action, principal, resource)
         except Exception:
             return False  # fail closed
-    legacy = bool(legacy_decision())
+    legacy = bool(legacy_decision()) if legacy_decision else True
 
     async def compare():  # fire-and-forget: never blocks the response
         try:

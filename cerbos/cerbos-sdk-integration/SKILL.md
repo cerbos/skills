@@ -81,10 +81,14 @@ In dependency order, following the recipe's idioms:
      plan outcomes.
    - Placement per the model's attribute provenance — middleware only when every needed
      attribute is request-time (see [references/ARCHITECTURE.md](references/ARCHITECTURE.md)).
-4. **Shadow wrapper** (migration mode) — wrap each migrated callsite in the recipe's
-   shadow-check helper, implementing the shadow contract in
-   [references/ARCHITECTURE.md](references/ARCHITECTURE.md). Direct mode enforces
-   immediately.
+4. **One authorization helper, enforcement by flag** — every callsite calls the recipe's
+   real check helper (the actual `CheckResources`/`PlanResources` call); a per-callsite
+   mode flag decides whether a Cerbos deny blocks (`enforce`) or is only logged while
+   legacy stands (`shadow`), per the contract in
+   [references/ARCHITECTURE.md](references/ARCHITECTURE.md) §4. Never write a separate
+   shadow-only code path or a `shadowCheck` wrapper — shadow is a flag value, so the
+   callsite is identical in every mode and cutover is a config change. Migration mode
+   starts in `shadow`; direct/greenfield mode pins the flag to `enforce`.
 
 Work in small increments — one endpoint or route group at a time, keeping the app's tests
 green after each.

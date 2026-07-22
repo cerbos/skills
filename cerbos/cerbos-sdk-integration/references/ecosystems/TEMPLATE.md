@@ -33,10 +33,12 @@ reference detail — instead they link the live sources the agent fetches at int
 5. **List filtering** — `PlanResources` for list/search endpoints, wiring the query-plan
    adapter for the ecosystem's ORMs, and handling the three plan outcomes
    (`ALWAYS_ALLOWED` / `ALWAYS_DENIED` / `CONDITIONAL`).
-6. **Shadow-mode wrapper** — this ecosystem's implementation of the shadow-check pattern
-   defined in [ARCHITECTURE.md](../ARCHITECTURE.md): legacy decision stays authoritative,
-   Cerbos runs in parallel, mismatches logged with structured context, per-callsite
-   cutover flag.
+6. **The authorization helper** — one helper that always runs the real Cerbos check, with
+   a per-callsite mode flag deciding whether a Cerbos deny blocks (`enforce`) or is only
+   logged while legacy stands (`shadow`), per [ARCHITECTURE.md](../ARCHITECTURE.md) §4. Not
+   a separate shadow path: in shadow the legacy decision stays authoritative, Cerbos runs
+   in parallel, mismatches are logged with structured context; cutover is a config change.
+   Name it for the check, not for shadow (`authorize`/`checkAccess`, never `shadowCheck`).
 7. **Testing** — exercising checks against a real local PDP, asserting on decisions.
    Lead with reusing an existing docker-compose PDP stack if the app has one; present
    container-based tests (testcontainers or equivalent) as the fallback when it does not.

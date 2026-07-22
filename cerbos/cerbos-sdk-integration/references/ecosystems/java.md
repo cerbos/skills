@@ -137,15 +137,21 @@ For Elasticsearch, the public https://github.com/cerbos/query-plan-adapters repo
 `elasticsearch-java`, translating a `PlanResourcesResult` into an Elasticsearch Query DSL
 map — **copy-in code, not a published artifact**: copy its two source files per its README.
 
-## 6. Shadow-mode wrapper
+## 6. The authorization helper (real check + enforcement flag)
 
-Implements the shadow contract in [ARCHITECTURE.md](../ARCHITECTURE.md) §4: legacy stays
-authoritative in shadow mode while Cerbos runs on a short-timeout parallel call that never
-affects the response; mismatches log one structured line (no attribute payloads); enforce
-mode returns the Cerbos decision, failing closed; mode is per-callsite config.
+One helper, used at every callsite, that **always runs the real Cerbos check**; a
+per-callsite mode flag decides whether a Cerbos deny blocks (`enforce`) or is only logged
+while the legacy boolean stands (`shadow`). There is no separate shadow helper — shadow is
+a value of the flag, so the callsite is identical in every mode and cutover is a config
+change. Full contract in [ARCHITECTURE.md](../ARCHITECTURE.md) §4: in shadow the Cerbos
+check runs on a short-timeout parallel call that never affects the response and mismatches
+log one structured line (no attribute payloads); in enforce the Cerbos decision is returned,
+failing closed. Greenfield integrations pin the mode to `enforce` and pass no legacy
+boolean.
 
 ```java
-public boolean check(String endpoint, Principal p, Resource r, String action,
+// Always issues the real Cerbos check; the mode flag decides what to do with the result.
+public boolean authorize(String endpoint, Principal p, Resource r, String action,
                      String principalId, String kind, String id, String requestId,
                      boolean legacy) {
     if (modes.isEnforce(endpoint)) { // per-callsite: authz.mode.<endpoint>=shadow|enforce

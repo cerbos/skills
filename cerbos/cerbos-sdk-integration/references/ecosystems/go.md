@@ -277,12 +277,16 @@ strip the prefix and map to a column through an explicit **allowlist**
 (`map[string]string{"ownerId": "owner_id", ...}`). Reject unknown fields and unknown
 operators with an error — that fails closed and surfaces policy/schema drift immediately.
 
-## 6. Shadow-mode wrapper
+## 6. The authorization helper (real check + enforcement flag)
 
-Implements the shadow-check pattern from [ARCHITECTURE.md](../ARCHITECTURE.md): the legacy
-boolean stays authoritative in shadow mode, Cerbos runs concurrently and can never block or
-fail the response, mismatches are logged as structured JSON, and each callsite selects its
-mode via config so endpoints cut over individually.
+One helper, used at every callsite, that **always runs the real Cerbos check**. A
+per-callsite mode flag decides whether a Cerbos deny blocks (`enforce`) or is only logged
+while the legacy boolean stands (`shadow`) — the contract in
+[ARCHITECTURE.md](../ARCHITECTURE.md) §4. There is no separate shadow helper; shadow is a
+value of the flag, so the callsite is identical in every mode and cutover is a config
+change. In shadow, Cerbos runs concurrently and can never block or fail the response;
+mismatches are logged as structured JSON. Greenfield integrations pin the mode to `enforce`
+and pass no legacy boolean.
 
 ```go
 package authz
@@ -314,7 +318,7 @@ func ModeFor(callsite string) Mode {
 	return ModeShadow
 }
 
-type ShadowChecker struct {
+type Authorizer struct {
 	Client  *cerbos.GRPCClient
 	Logger  *slog.Logger
 	Timeout time.Duration // short, e.g. 200*time.Millisecond
@@ -331,14 +335,15 @@ type CheckInput struct {
 	RequestID    string
 }
 
-// ShadowCheck returns the authoritative decision for this callsite.
+// Authorize always issues the real Cerbos check and returns the authoritative decision for
+// this callsite; the mode flag decides what to do with the result.
 //
 // Shadow mode: returns the legacy decision immediately. The Cerbos check runs in a
 // goroutine on a context detached from request cancellation, bounded by Timeout; it never
 // delays or fails the response. A differing (or errored) Cerbos result logs one line.
 //
 // Enforce mode: returns the Cerbos decision; errors and timeouts deny (fail closed).
-func (s *ShadowChecker) ShadowCheck(ctx context.Context, mode Mode, in CheckInput, legacy bool) bool {
+func (s *Authorizer) Authorize(ctx context.Context, mode Mode, in CheckInput, legacy bool) bool {
 	if mode == ModeEnforce {
 		cctx, cancel := context.WithTimeout(ctx, s.Timeout)
 		defer cancel()
@@ -380,11 +385,12 @@ func (s *ShadowChecker) ShadowCheck(ctx context.Context, mode Mode, in CheckInpu
 }
 ```
 
-Callsite usage — the legacy check stays exactly where it was:
+Callsite usage — identical in shadow and enforce; only the flag changes. The legacy check
+stays exactly where it was:
 
 ```go
 legacy := s.legacyACL.CanView(user, order) // existing authorization logic, untouched
-allowed := s.shadow.ShadowCheck(r.Context(), authz.ModeFor("orders.get"), authz.CheckInput{
+allowed := s.authz.Authorize(r.Context(), authz.ModeFor("orders.get"), authz.CheckInput{
 	Endpoint: "orders.get", Principal: principal, Resource: resource, Action: "view",
 	PrincipalID: user.ID, ResourceKind: "order", ResourceID: order.ID,
 	RequestID: requestIDFrom(r.Context()),

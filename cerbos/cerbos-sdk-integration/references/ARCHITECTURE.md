@@ -53,26 +53,36 @@ an inner check is safe under an outer one; the reverse is not.
   local PDP). In enforce mode a timeout is a deny; surface it distinctly in logs so
   availability problems don't masquerade as authorization denials.
 
-## 4. Shadow mode
+## 4. Enforcement mode (the real check always runs; a flag decides whether it blocks)
 
-The migration safety net: both systems answer, only the legacy answer counts, and
-disagreements are data.
+There is **one** authorization construct, not two. At every migrated callsite you
+implement the real Cerbos check — the actual `CheckResources`/`PlanResources` call for
+that principal/resource/action. You never write a separate "shadow" code path that stands
+in for it. Whether that real Cerbos decision is *enforced* is a per-callsite **mode flag**;
+shadow, observe, and enforce are values of that flag, not different implementations. This
+is what makes cutover a config change, not a code change, and keeps the callsite identical
+in every mode.
 
-**Contract** (each ecosystem recipe implements this exactly):
+**Contract** (each ecosystem recipe implements this exactly). The helper always issues the
+real Cerbos check and takes the legacy decision (or a thunk producing it) for the same
+principal/resource/action. The mode flag then decides what to do with the two answers:
 
-- The wrapper takes the legacy decision (or a thunk producing it) and the Cerbos check
-  inputs for the same principal/resource/action.
-- **Shadow mode**: return the legacy decision. Run the Cerbos check in parallel or
-  fire-and-forget; a Cerbos error or timeout must never affect the response — log it as
-  a shadow error, not a mismatch.
-- **Mismatch log**: one structured line per disagreement —
+- **`shadow` mode**: the Cerbos check still runs; return the **legacy** decision. A Cerbos
+  error or timeout must never affect the response — log it as a shadow error, not a
+  mismatch. Disagreements are data, not denials.
+- **Mismatch log** (shadow only): one structured line per disagreement —
   `{event: "cerbos_shadow_mismatch", endpoint, principalId, resourceKind, resourceId,
   action, legacy, cerbos, requestId}` — no attribute payloads (they may carry PII);
   the request id is enough to replay.
-- **Enforce mode**: return the Cerbos decision, fail closed. The legacy code path is no
+- **`enforce` mode**: return the Cerbos decision, fail closed. The legacy code path is no
   longer consulted (leave it in place until cleanup).
 - **Mode selection is per callsite** (env/config keyed by endpoint or callsite name, with
   a global default) so endpoints cut over one at a time.
+
+Name the helper for what it is — a Cerbos authorization check with an enforcement flag
+(e.g. `authorize`, `checkAccess`) — **not** `shadowCheck`/`shadowCheckResource`. Shadow is
+a rollout state, not the name of the check. Greenfield/direct integrations use the same
+helper permanently pinned to `enforce` and pass no legacy thunk.
 
 **Rollout sequence** per endpoint: shadow → observe until mismatches are quiet over a
 representative traffic window → triage every mismatch (each is a policy bug, a legacy

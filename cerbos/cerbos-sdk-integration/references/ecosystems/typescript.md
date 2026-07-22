@@ -295,12 +295,17 @@ return DocumentModel.find(
 
 Adapters throw on operators they cannot translate — treat that as deny (empty list) plus an error log, not as "no filter".
 
-## 6. Shadow-mode wrapper
+## 6. The authorization helper (real check + enforcement flag)
 
-The ecosystem implementation of the shadow-check pattern in [ARCHITECTURE.md](../ARCHITECTURE.md). Contract: in `shadow` mode the legacy boolean stays authoritative and Cerbos runs in parallel without ever blocking or failing the response; mismatches emit exactly one structured JSON log line; in `enforce` mode the Cerbos decision is returned and errors deny (fail closed). Mode is chosen per callsite so endpoints cut over one at a time.
+One helper, used at every callsite, that **always runs the real Cerbos check**. A
+per-callsite mode flag decides whether a Cerbos deny actually blocks (`enforce`) or is only
+recorded while the legacy decision stands (`shadow`) — see the contract in
+[ARCHITECTURE.md](../ARCHITECTURE.md) §4. There is no separate "shadow" helper; shadow is a
+value of the flag. Greenfield integrations pin the mode to `enforce` and pass no
+`legacyDecision`.
 
 ```typescript
-// src/lib/shadow-check.ts
+// src/lib/authorize.ts
 import type { CheckResourceRequest } from "@cerbos/core";
 import { cerbos } from "./cerbos";
 
@@ -313,15 +318,16 @@ export function authzMode(callsite: string): AuthzMode {
   return value === "enforce" ? "enforce" : "shadow";
 }
 
-export interface ShadowCheckInput {
+export interface AuthorizeInput {
   endpoint: string; // callsite name, e.g. "document.view"
   requestId: string;
   request: CheckResourceRequest & { actions: [string, ...string[]] };
-  legacyDecision: () => boolean | Promise<boolean>; // existing authorization logic
+  legacyDecision?: () => boolean | Promise<boolean>; // omit for greenfield/direct enforce
   mode?: AuthzMode; // defaults to authzMode(endpoint)
 }
 
-export async function shadowCheck(input: ShadowCheckInput): Promise<boolean> {
+// Always issues the real Cerbos check. The mode flag decides what to do with the result.
+export async function authorize(input: AuthorizeInput): Promise<boolean> {
   const { endpoint, requestId, request, legacyDecision } = input;
   const mode = input.mode ?? authzMode(endpoint);
   const action = request.actions[0];
@@ -336,10 +342,10 @@ export async function shadowCheck(input: ShadowCheckInput): Promise<boolean> {
     }
   }
 
-  // Shadow mode: legacy is authoritative; Cerbos runs in parallel and must never
-  // block or fail the response.
+  // Shadow mode: the Cerbos check still runs, but legacy is authoritative and a Cerbos
+  // error or timeout must never block or fail the response.
   const [legacy, cerbosOutcome] = await Promise.all([
-    Promise.resolve(legacyDecision()),
+    Promise.resolve(legacyDecision ? legacyDecision() : true),
     cerbos
       .checkResource(request)
       .then((decision) => ({ ok: true as const, allowed: decision.isAllowed(action) === true }))
@@ -366,10 +372,10 @@ export async function shadowCheck(input: ShadowCheckInput): Promise<boolean> {
 }
 ```
 
-Callsite usage — the only change to existing code is wrapping the legacy check:
+Callsite usage — identical in shadow and enforce; only the flag changes:
 
 ```typescript
-const allowed = await shadowCheck({
+const allowed = await authorize({
   endpoint: "document.view",
   requestId: req.id,
   request: {
@@ -377,12 +383,12 @@ const allowed = await shadowCheck({
     resource: { kind: "document", id: document.id, attr: { ownerId: document.ownerId } },
     actions: ["view"],
   },
-  legacyDecision: () => legacyCanViewDocument(req.user, document),
+  legacyDecision: () => legacyCanViewDocument(req.user, document), // omit for greenfield
 });
 if (!allowed) return res.status(403).json({ error: "forbidden" });
 ```
 
-Cutover per endpoint: watch `cerbos_shadow_mismatch` for `document.view` reach zero over a representative window, set `AUTHZ_MODE_DOCUMENT_VIEW=enforce`, then delete `legacyCanViewDocument` once every callsite is enforced. Route the log line through your structured logger if `console.log` is not your sink, keeping the field names exactly as above.
+Cutover per endpoint: watch `cerbos_shadow_mismatch` for `document.view` reach zero over a representative window, set `AUTHZ_MODE_DOCUMENT_VIEW=enforce`, then delete `legacyCanViewDocument` once every callsite is enforced. The callsite code does not change at cutover. Route the log line through your structured logger if `console.log` is not your sink, keeping the field names exactly as above.
 
 ## 7. Testing
 
