@@ -124,7 +124,9 @@ Engine.PlanResourcesFilter.Expression.Operand cond = plan.getCondition().orElseT
 return repository.findAll(toSpecification(cond));          // CONDITIONAL: translate the AST
 ```
 
-There is no published Java query-plan adapter artifact — hand-walk the plan AST into your
+Before hand-rolling, check https://github.com/cerbos/query-plan-adapters and the docs
+index for a published Java adapter (Spring Data JPA support is an active area) — adapter
+coverage evolves faster than this recipe. If none fits, hand-walk the plan AST into your
 query layer (a JPA `Specification`/Criteria predicate, jOOQ `Condition`, or SQL `WHERE` +
 bind params). The walk is mechanical: recurse on `Operand` — an `Expression` node has an
 operator (`and`/`or`/`not` recurse over operands; `eq`, `ne`, `lt`, `le`, `gt`, `ge`,
@@ -213,6 +215,21 @@ class OrderAuthorizationTest {
 Pure policy logic belongs in Cerbos's own YAML tests (`cerbos compile`); Java tests cover
 the integration seams — principal mapping, resource attributes, plan translation, and
 fail-closed paths — injecting the test client through the same bean the app uses.
+
+Three rules that keep these tests honest:
+
+- **Pin the policy source.** When policies live outside the app repo (a separate ops/policy
+  repo), mount them from a pinned ref (git submodule, versioned artifact, or a CI checkout
+  at a recorded SHA) — a floating clone makes test results irreproducible and green runs
+  meaningless.
+- **Seed fixtures from the policy test suite's `testdata/`.** The principals and resources
+  the policy YAML tests use are the canonical scenario fixtures; build your JPA test
+  entities from the same values instead of inventing a parallel set that silently drifts
+  from what the policies were verified against.
+- **Match the production database engine for plan-driven queries.** When a test exercises
+  `PlanResources` translation (Specifications/Criteria/SQL), run the real engine via
+  Testcontainers (e.g. PostgreSQL), not H2 — the generated predicates are exactly where
+  dialect differences bite. H2 is fine for tests that never execute plan-compiled SQL.
 
 ## 8. Local dev PDP
 

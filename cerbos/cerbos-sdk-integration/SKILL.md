@@ -67,7 +67,11 @@ integration code.
 
 Stand up a development PDP with the recipe's docker compose pattern: the
 `ghcr.io/cerbos/cerbos:latest` container with the policy directory mounted, gRPC on 3593
-and HTTP on 3592. **Probe it before wiring any check whose result is consumed** — in
+and HTTP on 3592. Locate the policy source first — it is not always a directory in the app
+repo: policies often live in a separate ops/policy repo or a Cerbos Hub store. Mount from
+a **pinned** ref (submodule, versioned artifact, recorded SHA — or the Hub playground for
+iteration), and record which policy version the local PDP and tests run against, so
+results are reproducible. **Probe it before wiring any check whose result is consumed** — in
 shadow mode before you rely on a single mismatch line, in enforce mode before any code
 path can deny: confirm the health endpoint responds and run one sample `CheckResources`
 against a real policy, asserting the expected decision. Writing the client, principal

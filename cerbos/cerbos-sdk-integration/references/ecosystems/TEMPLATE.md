@@ -42,6 +42,11 @@ reference detail — instead they link the live sources the agent fetches at int
 7. **Testing** — exercising checks against a real local PDP, asserting on decisions.
    Lead with reusing an existing docker-compose PDP stack if the app has one; present
    container-based tests (testcontainers or equivalent) as the fallback when it does not.
+   Include the portable rules: pin the policy source when policies live outside the app
+   repo (submodule/artifact/recorded SHA, never a floating clone); seed app-test fixtures
+   from the policy test suite's `testdata/` rather than a parallel set that drifts; and
+   run plan-driven query tests against the production database engine, not an in-memory
+   stand-in — dialect differences bite exactly in plan-compiled predicates.
 8. **Local dev PDP** — minimal `docker compose` (or equivalent) service running
    `ghcr.io/cerbos/cerbos:latest` with a mounted `policies/` directory.
 
