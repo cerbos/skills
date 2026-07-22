@@ -184,7 +184,7 @@ In sync frameworks (Flask, Django) run `compare` on a `ThreadPoolExecutor` with 
 
 ## 7. Testing
 
-The SDK ships testcontainers support: `pip install cerbos[testcontainers]`, `from cerbos.sdk.container import CerbosContainer` (defaults to `ghcr.io/cerbos/cerbos:latest`, exposes 3592/3593). Test decisions against real policies, not mocks.
+If the app already runs a PDP via docker-compose for local dev, reuse it in tests (point the client at it) rather than adding a new dependency. Otherwise the SDK ships testcontainers support: `pip install cerbos[testcontainers]`, `from cerbos.sdk.container import CerbosContainer` (defaults to `ghcr.io/cerbos/cerbos:latest`, exposes 3592/3593). Either way, test decisions against real policies, not mocks.
 
 ```python
 from cerbos.sdk.container import CerbosContainer

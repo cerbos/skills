@@ -386,7 +386,7 @@ Cutover per endpoint: watch `cerbos_shadow_mismatch` for `document.view` reach z
 
 ## 7. Testing
 
-Integration-test decisions against a real PDP loaded with the real policies — not mocks. With [testcontainers](https://www.npmjs.com/package/testcontainers):
+Integration-test decisions against a real PDP loaded with the real policies — not mocks. If the app already runs a PDP via docker-compose for local dev (Phase 3), reuse that stack in tests — point `CERBOS_ADDRESS` at it — rather than adding a new dependency. Only reach for [testcontainers](https://www.npmjs.com/package/testcontainers) when there is no existing compose/PDP stack to reuse:
 
 ```typescript
 // test/cerbos.setup.ts

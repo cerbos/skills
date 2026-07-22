@@ -45,8 +45,30 @@ Record the total. This number is the completeness contract: the final document s
 "no authorization present".
 
 For large codebases, fan out parallel subagents (Task tool) — one per module or route
-group — each returning inventory rows in the exact table format of
-[references/MODEL-TEMPLATE.md](references/MODEL-TEMPLATE.md) §A3.
+group. Delegate the **full per-group extraction** (Phase 2 inventory *and* the Phase 3
+rules, provenance, and scenarios for that group), each subagent returning rows in the
+exact table format of [references/MODEL-TEMPLATE.md](references/MODEL-TEMPLATE.md) §A3,
+§A5, §A6, §A7 — not inventory alone. To make the fan-out cheap and consistent:
+
+- **Partition with no overlap.** Assign each entry point to exactly one group. If you
+  analyze a shared helper (a common `requireX` guard, an ownership-checking service layer)
+  yourself first, give every subagent that helper's behavior as pre-established context
+  and tell them to reference its rules by name rather than re-analyze it — this prevents
+  duplicated work and divergent findings.
+- **Pass a shared context header** to each subagent: the stack, the auth primitives and
+  their signatures, the identity/role model, and the framework's entry-point convention
+  (e.g. "each exported `loader` is a GET entry point"). State it once so no subagent
+  re-derives it.
+
+Fan-out is a **barrier, not fire-and-forget.** Dispatch all group subagents in a single
+batch and run them synchronously — wait for every one to return before continuing. Do not
+launch them in the background and move on; the parent's next step (Phase 3 completeness
+check, then Phase 4) needs all of their rows, so backgrounding them only produces an idle
+stall. You may do parent-side work that has no dependency on the results while they run
+(fetching Cerbos docs for Phase 4, cataloguing DB tables for §A4), but the collect-and-
+reconcile barrier comes before Phase 4. When they return, reconcile the row counts against
+the Phase 2 entry-point total — every entry point must appear in exactly one group's
+output — and only then proceed.
 
 ### Phase 3 — Rule extraction
 

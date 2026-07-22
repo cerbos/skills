@@ -401,11 +401,12 @@ the legacy check only after enforce has been stable.
 
 ## 7. Testing
 
-The SDK ships a Docker-based PDP launcher in
-`github.com/cerbos/cerbos-sdk-go/testutil` — the idiomatic choice for Go tests
-(testcontainers-go with a `GenericContainer` running `ghcr.io/cerbos/cerbos` and mounting
-the policy dir works equally well). Point it at a test policies directory and run real
-checks:
+If the app already runs a PDP via docker-compose for local dev, reuse it in tests (point
+the client at it) rather than adding a launcher. Otherwise the SDK ships a Docker-based
+PDP launcher in `github.com/cerbos/cerbos-sdk-go/testutil` — the idiomatic choice for Go
+tests (testcontainers-go with a `GenericContainer` running `ghcr.io/cerbos/cerbos` and
+mounting the policy dir works equally well). Point it at a test policies directory and run
+real checks:
 
 ```go
 import (

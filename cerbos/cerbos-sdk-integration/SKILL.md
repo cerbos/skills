@@ -19,9 +19,13 @@ Non-negotiables, in every language and mode:
 
 - **Fail closed.** In enforce mode, any error or timeout from the PDP is a deny. Never
   ship a catch-and-allow.
-- **Fetch the latest sources before writing code.** SDKs evolve; this skill's bundled
-  recipes are stable patterns, not API references. Start from
-  `https://docs.cerbos.dev/llms.txt` and the SDK repo listed in the recipe header.
+- **Fetch the latest sources before writing code — even when the bundled recipe looks
+  complete.** SDKs evolve; the recipe is a stable pattern, not a version reference, and a
+  complete-looking recipe is exactly when this fetch gets skipped and is most likely to be
+  stale. At minimum, before writing any integration code, fetch: the SDK repo README (to
+  confirm the current install target and package names), the README of each query-plan
+  adapter you will use, and `https://docs.cerbos.dev/llms.txt` (skip only if already
+  fetched this session). Note the SDK version you coded against in the integration report.
 - **Match the codebase.** Follow the application's existing conventions — DI style, error
   handling, config, logging — over the style shown in any sample.
 
@@ -56,8 +60,12 @@ integration code.
 
 Stand up a development PDP with the recipe's docker compose pattern: the
 `ghcr.io/cerbos/cerbos:latest` container with the policy directory mounted, gRPC on 3593
-and HTTP on 3592. Verify before touching app code: health endpoint responds and one
-sample `CheckResources` call against a real policy returns the expected decision.
+and HTTP on 3592. **Probe it before wiring any check whose result is consumed** — in
+shadow mode before you rely on a single mismatch line, in enforce mode before any code
+path can deny: confirm the health endpoint responds and run one sample `CheckResources`
+against a real policy, asserting the expected decision. Writing the client, principal
+builder, and shadow-helper scaffolding first is fine, but do not declare an endpoint wired
+until the PDP has answered a real check.
 
 ## Phase 4 — Wire the application
 
@@ -85,7 +93,9 @@ green after each.
 
 - Run the application's test suite; exercise the integrated endpoints against the local
   PDP (the model's §A7 scenarios double as end-to-end probes: same principal + resource +
-  action, same expected outcome through the API).
+  action, same expected outcome through the API). Reuse the Phase 3 dev PDP for these
+  tests where one exists — do not introduce testcontainers if the app already stands up a
+  PDP via docker-compose.
 - **Migration mode**: give the user the parity workflow — run shadow in a realistic
   environment, aggregate `cerbos_shadow_mismatch` logs, triage each mismatch (policy bug
   vs legacy bug vs missing attribute), fix, repeat until quiet; then flip endpoints to

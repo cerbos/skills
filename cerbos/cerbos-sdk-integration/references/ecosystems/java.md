@@ -178,9 +178,11 @@ so mismatch lines are queryable. Cut over per endpoint once its mismatch rate is
 
 ## 7. Testing
 
-The SDK artifact itself ships Testcontainers support: `dev.cerbos.sdk.CerbosContainer`
-extends `GenericContainer`, runs `ghcr.io/cerbos/cerbos` (constructors take a version tag
-or `DockerImageName`) and exposes `getTarget()` / `getGrpcPort()` / `getHttpPort()`. Add
+If the app already runs a PDP via docker-compose for local dev, reuse it in tests (point
+the client at it) rather than adding a new dependency. Otherwise the SDK artifact itself
+ships Testcontainers support: `dev.cerbos.sdk.CerbosContainer` extends `GenericContainer`,
+runs `ghcr.io/cerbos/cerbos` (constructors take a version tag or `DockerImageName`) and
+exposes `getTarget()` / `getGrpcPort()` / `getHttpPort()`. Add
 `org.testcontainers:junit-jupiter` and run real checks against your actual policies:
 
 ```java

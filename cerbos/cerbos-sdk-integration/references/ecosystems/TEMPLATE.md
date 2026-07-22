@@ -37,8 +37,9 @@ reference detail — instead they link the live sources the agent fetches at int
    defined in [ARCHITECTURE.md](../ARCHITECTURE.md): legacy decision stays authoritative,
    Cerbos runs in parallel, mismatches logged with structured context, per-callsite
    cutover flag.
-7. **Testing** — exercising checks against a real local PDP (container-based tests),
-   pointing the client at the test PDP, asserting on decisions.
+7. **Testing** — exercising checks against a real local PDP, asserting on decisions.
+   Lead with reusing an existing docker-compose PDP stack if the app has one; present
+   container-based tests (testcontainers or equivalent) as the fallback when it does not.
 8. **Local dev PDP** — minimal `docker compose` (or equivalent) service running
    `ghcr.io/cerbos/cerbos:latest` with a mounted `policies/` directory.
 

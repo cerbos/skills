@@ -56,7 +56,9 @@ Subject (role) → Action on Resource [Condition] | Effect | Purpose
   explicitly excluded. Report the reconciliation ("14 of 14 observed rules covered").
 
 Present the spec to the user for a final skim — it should contain no surprises, since the
-model was already reviewed — then proceed.
+model was already reviewed. This is a courtesy display, not an approval gate (approval
+already happened in the review phase); proceed without waiting unless the reconciliation
+surfaced a new gap or exclusion that needs the user's confirmation.
 
 ## Phase 3 — Generate via cerbos-policy
 
@@ -85,8 +87,9 @@ On compile + tests green:
    directory, commit if applicable).
 3. **Where the policies live** — recommend the Cerbos Hub path: create a policy store and
    connect this policy directory (playground for iteration, CI validation, managed
-   distribution to PDPs). Fetch `https://docs.cerbos.dev/llms.txt` and follow the current
-   Cerbos Hub getting-started page for exact steps. The OSS-only path is fully supported:
+   distribution to PDPs). Unless you already fetched `https://docs.cerbos.dev/llms.txt`
+   this session, fetch it and follow the current Cerbos Hub getting-started page for exact
+   steps rather than reciting them from memory. The OSS-only path is fully supported:
    keep policies in the repo, validate in CI with `cerbos compile` (GitHub Action:
    `cerbos/cerbos-compile-action`), serve to PDPs via git/disk storage — the same
    llms.txt indexes the storage and deployment pages.
