@@ -76,6 +76,8 @@ extensions:
 
 Production: replace `pdp.inProcess` with `pdp.external` to gateway an existing Cerbos PDP fleet, or use the `hub` storage driver to source policies from Cerbos Hub.
 
+`extensionURL` is a local path for development, but also loads over HTTP(S), Git, S3 and GCS. Getter URLs need a runtime prefix — the artefact suffix that normally selects the runtime isn't visible to the loader: `wasm+s3::https://s3.amazonaws.com/bucket/ext.wasm`, `starlark+gcs::https://www.googleapis.com/storage/v1/bucket/ext.star`, `wasm+git::ssh://git@github.com/org/repo//ext.wasm?ref=v1.0.0`. S3 uses the AWS credential chain and GCS uses Application Default Credentials, but only through those getters — a plain HTTPS URL to the same object is fetched unauthenticated. Azure Blob has no getter. Append `?checksum=sha256:<hex>` to pin any URL, local paths included.
+
 ## `docker-compose.yaml`
 
 ```yaml
@@ -103,7 +105,7 @@ services:
 > docker pull CERBOS_DISTRIBUTION_REPO/synapse/synapse:latest
 > ```
 >
-> Pin a specific version (e.g. `:0.7.0`) for stable deployments.
+> Pin a specific version (e.g. `:0.9.3`) for stable deployments.
 
 ## Running by hand
 
@@ -128,7 +130,13 @@ docker run --rm --name synapse -p 3594:3594 \
 
 ## Driving the extension manually
 
-Once Synapse is up on `:3594`:
+Wait for readiness first — `/_cerbos/ready` returns `503` until the PDP is up (`/_cerbos/health` is an alias of it; `/_cerbos/live` reports only that the process is running, `/_cerbos/metrics` is Prometheus). All four answer `GET`; `HEAD` returns `405`.
+
+```sh
+curl -sf http://localhost:3594/_cerbos/ready && echo ready
+```
+
+Then drive the extension:
 
 ```sh
 # Proxy extension — calls go through the standard Cerbos API
@@ -262,7 +270,13 @@ trap cleanup EXIT
 
 start_synapse() {
   docker compose up -d
-  sleep 5
+  for _ in $(seq 30); do
+    curl -sf http://localhost:3594/_cerbos/ready >/dev/null && return 0
+    sleep 1
+  done
+  echo "Synapse did not become ready" >&2
+  docker compose logs synapse >&2
+  return 1
 }
 
 run_tests() {
@@ -318,5 +332,5 @@ docker compose exec synapse synapse starlark repl
 - **Extension not invoked**: routing only fires on the configured kind. Proxy extensions only see `CheckResources` / `PlanResources` / AuthZEN traffic — never `/ext/...` calls. Route extensions only fire on paths listed under `routes:`.
 - **WASM module imports unresolved**: check `docker compose logs synapse | grep -i 'unreachable\|extension\|wasm'`. TypeScript/Python WASM: all `.d.ts`-declared exports must have implementations — declaring `cerbosInit` without implementing it crashes the module on load.
 - **Decision is wrong, extension isn't logging**: enable `--log.level=debug` (on in examples above), grep for the extension name. The `decision` audit line shows the *enriched* request the PDP evaluated — confirm the attributes the extension added are present there.
-- **Tests are flaky on startup** (curl/Hurl harness only): the harness's `sleep 5` is conservative; `hurl --retry 3 --retry-interval 2000` is more reliable. Adjust either for slow image pulls. `synapse test` waits for readiness itself — no such problem.
+- **Tests are flaky on startup** (curl/Hurl harness only): poll `GET /_cerbos/ready` instead of sleeping (see `start_synapse` above); `hurl --retry 3 --retry-interval 2000` covers the rest. `synapse test` waits for readiness itself — no such problem.
 - **`synapse test` passes but the extension never ran**: suite has no `synapse_config` (default config loads no extensions) or the config doesn't register the extension. Add `synapse_config = testing.load_synapse_config(...)` pointing at a config that loads it; use `--verbose` to confirm the extension fires.

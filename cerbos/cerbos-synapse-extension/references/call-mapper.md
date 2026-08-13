@@ -48,6 +48,8 @@ extensions:
           body: 'json.encode({"allowed": check.allow})'
 ```
 
+Routes are served under `/ext/` (`/ext/api/check` above). Path patterns are global and match in the order written — first match wins — so declare specific patterns before overlapping wildcards; the same pattern under two extensions is a startup error.
+
 ## Envoy External Authorization
 
 ```yaml
