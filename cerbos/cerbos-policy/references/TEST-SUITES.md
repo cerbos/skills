@@ -106,7 +106,7 @@ Each test case in `tests` (ONLY these):
 - `principals`, `resources`, `principalGroups`, `resourceGroups`: arrays (alternative to singular)
 - `outputs`: array (optional, for output assertions)
 
-NEVER add fields like `condition`, `effect`, `roles`, `rule`, `match`, or any custom properties. Any extra field causes validation failure.
+Every list above is exhaustive: the schema sets `additionalProperties: false`, so any field outside them fails validation. Assertions describe the expected *effect* of a request — the policy's own vocabulary (conditions, roles, rules) has no place in a test file.
 
 ## `options` Block
 
@@ -221,19 +221,8 @@ resources:
 - Every policy needs tests for BOTH ALLOW and DENY cases
 - If a rule has a condition, cover both the condition-true and condition-false branches
 - If a derived role depends on `P.attr.context.*`, populate that field in the principal fixture — otherwise the derived role silently never applies and tests flip to DENY
-- Every DENY rule with a condition needs a test proving it actually fires. A DENY whose condition errors at runtime silently no-ops and the action gets allowed — run the strict pass (below) to catch it
+- Every DENY rule with a condition needs a test proving it actually fires. A DENY whose condition errors at runtime silently no-ops and the action gets allowed — the strict pass catches it ([CEL.md](CEL.md#strict-evaluation-v055))
 - Pin `options.now` for any time-dependent rule rather than relying on the wall clock
-- Never delete a test to make validation pass; fix the policy or the fixture instead
-
-## Strict Evaluation Pass
-
-After the tests pass normally, run them again with strict evaluation:
-
-```bash
-docker run --rm -v "$(pwd):/policies" ghcr.io/cerbos/cerbos:latest compile --strict-evaluation /policies
-```
-
-A test that passes normally but fails here has a condition erroring at runtime — a missing attribute or a type mismatch — which silently evaluated to false. That is a real bug: fix the expression or add the missing fixture attribute. Do not skip the pass to make it go away.
 
 ## Common Test Failures
 
