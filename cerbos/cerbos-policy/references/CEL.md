@@ -27,7 +27,7 @@ The rule of thumb: let the schema decide. Required attribute → compare directl
 
 ## Function Catalogue
 
-Cerbos ships far more than the CEL standard library. Do not rewrite a working expression because a function looks unfamiliar — check here first, and confirm in the REPL ([TESTING.md](TESTING.md)) before assuming a function does not exist. Entries marked **0.55+** require Cerbos v0.55.0 or later.
+Cerbos ships far more than the CEL standard library, so an unfamiliar function name is usually a real one. Check this table and confirm in the REPL ([TESTING.md](TESTING.md)) before concluding a function does not exist. Entries marked **0.55+** require Cerbos v0.55.0 or later.
 
 | Group | Functions |
 |---|---|
@@ -75,7 +75,7 @@ Strict evaluation makes such errors terminal — the affected action is denied i
 
 The denial propagates: an errored rule condition denies the actions that rule covers; an errored variable denies every action whose condition references it; an errored derived-role condition denies actions referencing that derived role or `runtime.effectiveDerivedRoles`.
 
-**Always run the strict pass during validation.** A failure under `--strict-evaluation` that passes without it means a condition is erroring at runtime — a latent bug regardless of which mode production runs in. Fix the expression or the fixture; do not paper over it by dropping the strict pass.
+A failure under `--strict-evaluation` that passes without it means a condition is erroring at runtime — a latent bug regardless of which mode production runs in. Fix the expression or the fixture.
 
 Runtime CEL errors are logged by the PDP (`engine.celErrorLogLevel`, default `warn`) and recorded in audit entries, so these bugs are discoverable in a running deployment too.
 
@@ -227,15 +227,9 @@ The most dangerous silent failure. A `EFFECT_DENY` condition that touches a miss
 | `request.auxData.jwts.NAME.sub` | `request.auxData.jwts.NAME.claims.sub` (`claims` is mandatory) |
 | Inline double-quoted CEL without block scalar | `expr: >` block scalar |
 
-## Error Priority and Fix Table
+## Error Fix Table
 
-Fix in this order. Do not skip ahead — a lower-priority error often disappears once a higher one is fixed.
-
-1. YAML parse errors
-2. CEL syntax errors
-3. Schema validation errors (`additionalProperties: false`)
-4. Compile errors (unresolved imports, missing derived roles, unknown variables)
-5. Test failures
+Look the symptom up here; SKILL.md Phase 4 carries the order to work through them in.
 
 | Error | Common cause | Fix |
 |---|---|---|
@@ -251,5 +245,3 @@ Fix in this order. Do not skip ahead — a lower-priority error often disappears
 | `import` of unknown derived role | File not loaded or name mismatch | Check `name:` in the derived_roles file |
 
 Since v0.54, YAML and policy errors carry a line and column number — read the position before searching the file by hand.
-
-When a condition fails in a non-obvious way, reproduce it in `cerbosctl repl` — see [TESTING.md](TESTING.md) — before patching.

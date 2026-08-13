@@ -5,7 +5,7 @@ Two layers of testing:
 1. **`cerbosctl repl`** — interactive CEL evaluation. Use this when debugging a single condition, exploring attribute shapes, or figuring out why a rule isn't matching.
 2. **`*_test.yaml` suites** — declarative regression tests compiled and run by `cerbos compile`. Every REPL finding should be codified here.
 
-Rule of thumb: reach for the REPL the moment a condition behaves unexpectedly. Do not patch blindly.
+Rule of thumb: reach for the REPL the moment a condition behaves unexpectedly, and let what it shows drive the edit.
 
 ## Running the REPL
 
@@ -119,7 +119,7 @@ Useful flags:
 
 | Flag | Purpose |
 |---|---|
-| `--strict-evaluation` | Run tests with runtime CEL errors treated as terminal denials. Always run this as a second pass |
+| `--strict-evaluation` | Run tests with runtime CEL errors treated as terminal denials ([CEL.md](CEL.md#strict-evaluation-v055)) |
 | `--verbose` | Full detail on test failure |
 | `--test-filter='suite=X;test=Y;principal=Z;resource=W;action=A'` | Narrow to specific tests while iterating on one failure |
 | `--skip-tests` | Compile only, no tests |
@@ -132,5 +132,5 @@ When chasing a single failure, combine `--test-filter` with `--verbose` rather t
 1. Read the failure line: it names the test case, principal, resource, and action.
 2. Reproduce the exact principal/resource in the REPL.
 3. Evaluate the condition that should have matched.
-4. Fix the policy OR the fixture — whichever is wrong. Never delete a test to make validation pass.
-5. Re-run `compile`. Do not batch multiple fixes before re-validating.
+4. Fix the policy OR the fixture — whichever is wrong.
+5. Re-run `compile` after that single fix.
