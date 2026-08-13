@@ -18,9 +18,11 @@ Cerbos uses YAML policies with CEL conditions. Key objects in CEL:
 - `P` (Principal): `P.id`, `P.roles`, `P.attr.*`
 - `R` (Resource): `R.id`, `R.kind`, `R.attr.*`
 - `V` (exported variables): `V.is_owner`, etc.
-- `request.auxData.*`: auxiliary data such as JWT claims
+- `request.auxData.jwt.CLAIM` — single JWT; `request.auxData.jwts.NAME.claims.CLAIM` — named JWTs (v0.55+)
 
 Every policy starts with `apiVersion: api.cerbos.dev/v1` and has exactly one top-level policy object. See [POLICIES.md](POLICIES.md) for the full shape.
+
+Cerbos ships a large CEL standard library beyond `has`/`size`/`matches` — set, regex, IP/CIDR, math, hierarchy, path and JSON functions. Check the [function catalogue](CEL.md#function-catalogue) before assuming a function is unavailable.
 
 ## Output Directory Structure
 
@@ -68,6 +70,7 @@ Policy Generation Progress:
 - [ ] Generate testdata/resources.yaml (per domain)
 - [ ] Generate *_test.yaml files
 - [ ] Validate with Docker (exit code 0)
+- [ ] Re-validate with --strict-evaluation (exit code 0)
 - [ ] Fix errors and re-validate until passing
 ```
 
@@ -82,6 +85,7 @@ Policy Generation Progress:
 3. **Validate changes**
    ```bash
    docker run --rm -v "$(pwd):/policies" ghcr.io/cerbos/cerbos:latest compile /policies
+   docker run --rm -v "$(pwd):/policies" ghcr.io/cerbos/cerbos:latest compile --strict-evaluation /policies
    ```
 
 ### When ANSWERING questions
@@ -101,6 +105,7 @@ Policy Generation Progress:
 - **Schema-first**: Create schemas before policies that reference them
 - **Test coverage**: Every policy needs tests for both ALLOW and DENY cases (see [TEST-SUITES.md](TEST-SUITES.md))
 - **Validate once**: Run validation after all files are written, not after each file
+- **Always run the strict pass**: `compile --strict-evaluation` catches conditions that error at runtime and silently evaluate false — the failure mode that makes a DENY rule no-op and allow the action ([CEL.md](CEL.md#strict-evaluation-v055))
 - **One targeted fix per iteration**: Re-validate after each fix; never batch fixes
 - **Fix in priority order**: YAML → CEL syntax → schema → compile → test failures (see [CEL.md](CEL.md#error-priority-and-fix-table))
 - **Three-strike rule**: If the same error persists after 3 different fix attempts, stop and report
@@ -130,6 +135,7 @@ When generating policies, ALWAYS produce ALL of these:
 ### Validation
 
 - [ ] Run Docker validation (exit code 0)
+- [ ] Run Docker validation with `--strict-evaluation` (exit code 0)
 - [ ] All policies syntactically correct
 - [ ] All tests pass
 - [ ] Schema references resolve
@@ -138,5 +144,7 @@ When generating policies, ALWAYS produce ALL of these:
 
 - [ ] Every policy has corresponding tests
 - [ ] Tests cover both ALLOW and DENY scenarios
+- [ ] Every conditional DENY rule has a test proving the deny actually fires
+- [ ] Time-dependent rules pin the clock via `options.now`
 - [ ] Every rule has an explicit, confirmed effect (allow vs deny) — no inferred decisions
 - [ ] Every rule carries its Purpose as a rule `name` + comment rationale

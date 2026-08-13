@@ -5,7 +5,8 @@ license: Apache-2.0
 compatibility: Requires Docker for policy validation
 metadata:
   author: cerbos
-  version: "1.1"
+  version: "1.2"
+  targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Write Edit Bash Glob Grep Task WebFetch
 ---
 
@@ -86,11 +87,21 @@ Do not validate between files.
 
 ### Phase 3 — Validate
 
+Run two passes. The first compiles the policies and runs the tests:
+
 ```bash
 docker run --rm -v "$(pwd):/policies" ghcr.io/cerbos/cerbos:latest compile /policies
 ```
 
-Exit code 0 = done. Otherwise capture the error list and move to Phase 4.
+The second re-runs the tests with strict evaluation, which turns runtime CEL errors into denials instead of silently treating them as false:
+
+```bash
+docker run --rm -v "$(pwd):/policies" ghcr.io/cerbos/cerbos:latest compile --strict-evaluation /policies
+```
+
+Both must exit 0. A test that passes the first pass but fails the second has a condition erroring at runtime — most dangerously on a DENY rule, where the error makes the deny silently no-op and the action gets allowed. Treat it as a real defect and fix it in Phase 4; never drop the strict pass to go green.
+
+Otherwise capture the error list and move to Phase 4.
 
 ### Phase 4 — Fix
 
@@ -109,7 +120,7 @@ Rules:
 
 ### Phase 5 — Finalize
 
-Confirm exit code 0, then report what was created and any assumptions made during spec intake.
+Confirm both validation passes exit 0, then report what was created and any assumptions made during spec intake.
 
 ## Output
 

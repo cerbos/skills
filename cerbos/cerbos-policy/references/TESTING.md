@@ -78,11 +78,16 @@ If a derived role depends on `P.attr.context.*`, the test principal fixture MUST
 -> R.attr.expires_at > now
 ```
 
-Codify the expected behaviour in a `*_test.yaml` with an explicit fixture timestamp — never rely on wall clock in tests.
+Codify the expected behaviour in a `*_test.yaml` by pinning the clock with `options.now` — never rely on wall clock in tests:
+
+```yaml
+options:
+  now: "2026-01-15T10:00:00Z"
+```
 
 ### `R.attr` reference errors
 
-`R.attr.owner` on a resource fixture without an `attr.owner` field is a runtime error, not `false`. Confirm the fixture before blaming the expression.
+`R.attr.owner` on a resource fixture without an `attr.owner` field is a runtime error. Under default evaluation that error is swallowed and the condition is treated as false, so the rule quietly does not match — on a DENY rule that means the action gets allowed. Confirm the fixture before blaming the expression, and use `--strict-evaluation` to surface these instead of guessing.
 
 ### `match.all` vs `match.all.of`
 
@@ -109,6 +114,18 @@ docker run --rm -v "$(pwd):/policies" \
 `compile` runs both static validation and every `*_test.yaml` in the tree. Exit code 0 means policies compile and all tests pass.
 
 If no `*_test.yaml` files exist, "0 tests executed" is expected — not an error. Only diagnose it if you expected tests to run.
+
+Useful flags:
+
+| Flag | Purpose |
+|---|---|
+| `--strict-evaluation` | Run tests with runtime CEL errors treated as terminal denials. Always run this as a second pass |
+| `--verbose` | Full detail on test failure |
+| `--test-filter='suite=X;test=Y;principal=Z;resource=W;action=A'` | Narrow to specific tests while iterating on one failure |
+| `--skip-tests` | Compile only, no tests |
+| `-o json` / `--test-output=json` | Machine-readable results (pair with `--color=never`) |
+
+When chasing a single failure, combine `--test-filter` with `--verbose` rather than re-running the whole suite.
 
 ## When a Test Fails
 
