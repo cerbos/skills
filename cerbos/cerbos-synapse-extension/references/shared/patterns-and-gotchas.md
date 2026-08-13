@@ -10,7 +10,9 @@ Patterns recurring across runtimes. Per-implementation references show exact cod
 
 **Principal enrichment (proxy).** Read request → extract `principal.id` → cache lookup → on miss, data source → merge into `principal.attr` → return modified request.
 
-**Proxy pipeline ordering.** Chain: requests in descending `priority`, responses in reverse. `required: true` → failure terminates chain; else skipped. **PDP calls from extension code (`cerbos.check_resources()` etc.) bypass the proxy pipeline** — prevents re-entry loops; enrichment for those calls must happen in the extension itself (or shared data source).
+**Proxy pipeline ordering.** Onion order — same for Check, Plan and AuthZEN: requests run in descending `priority`, responses back in reverse, so the highest priority sees the request first and the response last. Equal priorities tie-break on FQN (`proxy.<name>.<hash>`, descending) — **give each extension a distinct `priority` when order matters**. `required: true` → failure terminates chain; else skipped. **PDP calls from extension code (`cerbos.check_resources()` etc.) bypass the proxy pipeline** — prevents re-entry loops; enrichment for those calls must happen in the extension itself (or shared data source).
+
+**Route matching order.** Path patterns are global across every route extension and match in the order written in `config.yaml` — **first match wins** — so declare specific patterns before overlapping wildcards (`"/docs/latest"` before `"/docs/{id}"`). That order holds within one extension's `routes:` map; across extensions an identical pattern is a startup error, while overlapping-but-different patterns have no reliable precedence. Keep patterns that can overlap inside a single extension.
 
 **OAuth upstreams (Starlark).** Use `oauth.client_credentials_client(...)`, not hand-rolled `http.post` to token endpoint. Pass `persist_key` to reuse the client across requests — else re-auth per invocation. See `starlark-environment.md`.
 
