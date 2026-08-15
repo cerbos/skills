@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+# Trigger evals: does the RIGHT skill fire for a prompt, and stay silent when it
+# shouldn't? Cheap, high-signal, catches SKILL.md `description:` regressions.
+# Both skills are seeded in every workspace; maxTurns is capped low because we
+# only need to observe whether the Skill tool fires, not full execution.
+description: Cerbos skills — trigger/description eval
+
+prompts:
+  - '{{request}}'
+
+providers:
+  - id: file://providers/skill-runner.js
+    label: trigger
+    config:
+      skill: cerbos-policy
+      maxTurns: 2
+
+defaultTest:
+  assert:
+    - type: javascript
+      value: file://assertions/skill-fired.js
+
+tests:
+  # --- cerbos-policy SHOULD fire ---
+  - vars: { skill: cerbos-policy, expectSkill: true, request: 'Write an RBAC authorization policy for a blog where authors can edit their own posts.' }
+  - vars: { skill: cerbos-policy, expectSkill: true, request: 'I need Cerbos access control rules for a resource called invoice.' }
+  - vars: { skill: cerbos-policy, expectSkill: true, request: 'Set up ABAC permissions so only managers in the same region can approve requests.' }
+
+  # --- cerbos-policy should NOT fire ---
+  - vars: { skill: cerbos-policy, expectSkill: false, request: 'Write an iptables firewall rule to block port 22 from outside the LAN.' }
+  - vars: { skill: cerbos-policy, expectSkill: false, request: 'Create a Kubernetes RoleBinding YAML granting the dev service account read on pods.' }
+
+  # --- cerbos-synapse-extension SHOULD fire ---
+  - vars: { skill: cerbos-synapse-extension, expectSkill: true, request: 'Add a call mapper to Cerbos Synapse that reads the principal from a JWT.' }
+  - vars: { skill: cerbos-synapse-extension, expectSkill: true, request: 'Enrich the principal in Synapse by looking up their department from an API.' }
+
+  # --- cerbos-synapse-extension should NOT fire ---
+  - vars: { skill: cerbos-synapse-extension, expectSkill: false, request: 'Set up an nginx reverse proxy in front of my Node app.' }

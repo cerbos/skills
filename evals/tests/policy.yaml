@@ -1,0 +1,335 @@
+# Real user-style prompts for the cerbos-policy skill.
+# Shared asserts (compile / static / judge / skill-fired) come from
+# defaultTest in promptfoo.policy.yaml.
+
+- description: expense-approval-abac
+  vars:
+    request: >
+      Build Cerbos policies for expense management. Employees can submit expenses.
+      Managers can approve expenses under $1000. Finance can approve any amount.
+      Only the submitter or finance can delete an expense, and only while it is
+      still in draft status. Nobody else can delete expenses.
+
+- description: document-derived-roles
+  vars:
+    request: >
+      I need access control for a document system. Documents have an owner.
+      Roles: viewer (read only), editor (read and write), admin (everything).
+      Owners can always delete their own documents regardless of their role.
+      Use derived roles where it makes sense.
+
+- description: multitenant-isolation
+  vars:
+    request: >
+      SaaS app. Every user and every resource belongs to a tenant. A user may
+      only act on resources in their own tenant, even admins. Within a tenant,
+      admins can manage everything and members can only read.
+
+- description: modify-add-deny
+  vars:
+    request: >
+      Here is an existing article policy. Add a rule so that suspended users
+      (principal attribute status == "suspended") can never perform any action
+      on articles, even if their role would normally allow it. Keep the existing
+      rules and tests working.
+    seedFiles:
+      resource_policies/article.yaml: |
+        # yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+        apiVersion: api.cerbos.dev/v1
+        resourcePolicy:
+          resource: article
+          version: default
+          rules:
+            # Viewers and editors may read articles.
+            - actions: ["view"]
+              effect: EFFECT_ALLOW
+              roles: ["viewer", "editor"]
+              name: viewers-and-editors-can-view
+            # Editors may modify articles.
+            - actions: ["edit"]
+              effect: EFFECT_ALLOW
+              roles: ["editor"]
+              name: editors-can-edit
+
+- description: healthcare-breakglass
+  vars:
+    request: >
+      Medical records system. Doctors can read records of their own patients
+      only (record attribute patientDoctorId must equal the doctor's id). In an
+      emergency (context attribute emergency == true) any doctor can read any
+      record, but this must be an explicit allow and we need it to be auditable.
+      Nurses can never delete records.
+
+# --- added by swarm ---
+- description: conditional-deny-fails-open
+  vars:
+    request: >-
+      Build a Cerbos resource policy for a customer support tool that reads customer records
+      (resource kind "record", one action: "read"). Support agents (role "support") may read a
+      record ONLY when it is confirmed not under a legal hold. Records carry a boolean resource
+      attribute `legalHold`, but our data is messy: on many records the attribute is simply missing.
+      Treat a missing `legalHold` as "unknown" and DENY support access in that case — we must fail
+      safe and never expose a record we cannot confirm is clear. This is a compliance hard-stop with
+      no exceptions. Compliance officers (role "compliance") may read any record regardless of the
+      flag. Please ship tests, and make sure they cover the case where `legalHold` is absent
+      entirely.
+    criteria:
+      - conditional-deny-fails-open
+- description: multi-role-artifact-download
+  vars:
+    request: >-
+      We have an internal artifact registry. Our IdP assigns people more than one role at a time, so
+      the same person can hold several roles at once. Roles: employee can view and download
+      artifacts; contractor can only view artifacts; admin can do anything. Hard rule for
+      compliance: a contractor must NEVER be able to download an artifact, even when that same
+      person is also an employee. Make sure the contractor download restriction cannot be bypassed
+      by someone who holds both the contractor and employee roles. Include tests that prove it.
+- description: multi-role-fix-role-scoped-deny
+  vars:
+    request: >-
+      In our finance app a user can hold several roles at once. Accountants can view and edit
+      invoices; auditors can only view them. Separation of duties requires that an auditor can NEVER
+      edit an invoice. We've discovered a bug: when someone is both an auditor and an accountant
+      they can still edit invoices. Fix the attached policy so the auditor edit restriction holds no
+      matter what other roles the person also has, while keeping the existing behaviour for
+      single-role users. Add a test covering the dual-role case.
+    criteria:
+      - multi-role-deny-override
+    seedFiles:
+      resource_policies/invoice.yaml: >
+        # yaml-language-server:
+        $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+
+        apiVersion: api.cerbos.dev/v1
+
+        resourcePolicy:
+          resource: invoice
+          version: default
+          rules:
+            # Accountants maintain invoices.
+            - actions: ["view", "edit"]
+              effect: EFFECT_ALLOW
+              roles: ["accountant"]
+              name: accountants-manage-invoices
+
+            # Auditors may only read invoices.
+            - actions: ["view"]
+              effect: EFFECT_ALLOW
+              roles: ["auditor"]
+              name: auditors-read-only
+
+            # Auditors are blocked from editing invoices.
+            - actions: ["edit"]
+              effect: EFFECT_DENY
+              roles: ["auditor"]
+              name: auditors-cannot-edit
+- description: project-invite-limit-tests
+  vars:
+    request: >-
+      Build a Cerbos policy for a "project" resource. Members can view projects. Only the project
+      owner can archive a project (role attribute is fine). On the free plan a workspace admin can
+      invite collaborators only while the project has fewer than 5 collaborators (resource attribute
+      collaboratorCount); at 5 or more, invites must be blocked. Write the policy AND a thorough
+      test suite that PROVES the restrictions actually hold — include the cases that must be denied
+      and a test that sits exactly on the collaborator-limit boundary. Run the compiler so the tests
+      execute.
+    criteria:
+      - test-negative-coverage
+      - actually-validated
+- description: strengthen-happy-path-tests
+  vars:
+    request: >-
+      Here is an existing document policy and its test suite. The tests only check the happy paths.
+      Add tests that prove the restrictions hold: that a viewer cannot delete, and that the upload
+      size limit is enforced right at its boundary (just under vs exactly at the limit). Keep the
+      existing policy and its passing tests intact, and run the compiler.
+    criteria:
+      - test-negative-coverage
+    seedFiles:
+      resource_policies/document.yaml: >
+        # yaml-language-server:
+        $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+
+        apiVersion: api.cerbos.dev/v1
+
+        resourcePolicy:
+          resource: document
+          version: default
+          rules:
+            # Any assigned role may view a document.
+            - actions: ["view"]
+              effect: EFFECT_ALLOW
+              roles: ["viewer", "editor", "owner"]
+              name: all-roles-can-view
+
+            # Editors and owners may edit.
+            - actions: ["edit"]
+              effect: EFFECT_ALLOW
+              roles: ["editor", "owner"]
+              name: editors-can-edit
+
+            # Uploads are allowed only up to a 100 MB size limit.
+            - actions: ["upload"]
+              effect: EFFECT_ALLOW
+              roles: ["editor", "owner"]
+              condition:
+                match:
+                  expr: request.resource.attr.sizeMb <= 100
+              name: upload-within-size-limit
+
+            # Only the owner may delete a document.
+            - actions: ["delete"]
+              effect: EFFECT_ALLOW
+              roles: ["owner"]
+              name: only-owner-deletes
+      resource_policies/document_test.yaml: >
+        # yaml-language-server:
+        $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+
+        name: document tests
+
+        description: Happy-path checks for the document policy.
+
+        principals:
+          editor:
+            id: ed-1
+            roles: ["editor"]
+          owner:
+            id: ow-1
+            roles: ["owner"]
+        resources:
+          small_doc:
+            id: doc-1
+            kind: document
+            attr: { sizeMb: 10 }
+        tests:
+          - name: editor can view
+            input: { principals: [editor], resources: [small_doc], actions: [view] }
+            expected:
+              - { principal: editor, resource: small_doc, actions: { view: EFFECT_ALLOW } }
+          - name: editor can upload a small file
+            input: { principals: [editor], resources: [small_doc], actions: [upload] }
+            expected:
+              - { principal: editor, resource: small_doc, actions: { upload: EFFECT_ALLOW } }
+- description: least-privilege-blog-cms
+  vars:
+    request: >-
+      Build Cerbos policies for a blog CMS. Roles are: author, editor, reader. Authors can create
+      and edit blog posts. Editors can publish posts. Readers can only view published posts. Keep
+      permissions tight — each role should get exactly the actions it needs and nothing more. Do not
+      add any catch-all rules that grant everyone access.
+    criteria:
+      - least-privilege-wildcards
+- description: least-privilege-jwt-audience
+  vars:
+    request: >-
+      We have a multi-audience data API where it is not practical to enumerate the roles that can
+      access each data set — access is determined entirely by the `aud` claim in the caller's JWT,
+      not by role. Write a Cerbos resource policy for the `data_set` resource that allows any
+      principal to access it as long as their JWT audience contains "reports.internal". Roles should
+      be disregarded for this check.
+    criteria:
+      - least-privilege-wildcards
+- description: derived-roles-owner-import
+  vars:
+    request: >-
+      Build Cerbos policies for a document management system. Static roles: reader (read only) and
+      writer (read and write). On top of that, whoever OWNS a document (document attribute ownerId
+      equals the principal's id) may delete it regardless of their static role. Model ownership as a
+      derived role and make sure it actually takes effect in the document resource policy.
+    criteria:
+      - derived-roles-imported
+- description: modify-import-derived-role
+  vars:
+    request: >-
+      Here is my existing derived roles policy and my document resource policy. Add a rule so that
+      an owner can delete their own document using the existing 'owner' derived role. Keep the
+      current rules working and make sure the new rule actually takes effect.
+    criteria:
+      - derived-roles-imported
+    seedFiles:
+      derived_roles/common_roles.yaml: >
+        # yaml-language-server:
+        $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+
+        apiVersion: api.cerbos.dev/v1
+
+        derivedRoles:
+          name: common_roles
+          definitions:
+            # Owner: the principal who owns this document, regardless of static role.
+            - name: owner
+              parentRoles: ["*"]
+              condition:
+                match:
+                  expr: request.resource.attr.ownerId == request.principal.id
+      resource_policies/document.yaml: >
+        # yaml-language-server:
+        $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+
+        apiVersion: api.cerbos.dev/v1
+
+        resourcePolicy:
+          resource: document
+          version: default
+          rules:
+            # Readers and writers may view documents.
+            - actions: ["view"]
+              effect: EFFECT_ALLOW
+              roles: ["reader", "writer"]
+              name: readers-and-writers-view
+            # Writers may edit documents.
+            - actions: ["edit"]
+              effect: EFFECT_ALLOW
+              roles: ["writer"]
+              name: writers-edit
+- description: role-policy-grant-temptation
+  vars:
+    request: >-
+      We manage authorization by IdP role synced from Okta. For the "billing_agent" role, define
+      what it can do on the invoice resource: it can view any invoice and can issue a refund on
+      invoices under $500. I'd like these permissions authored from the role's point of view rather
+      than per-resource, since that's how our identity team thinks about it. Make sure the
+      billing_agent role actually ends up with these permissions.
+    criteria:
+      - role-policy-cannot-grant
+- description: role-policy-narrow-legit
+  vars:
+    request: >-
+      Here is our existing invoice resource policy. Our Okta billing_agent role currently gets view,
+      refund and void on invoices. We want to restrict the billing_agent role so it can only view
+      and refund invoices, never void them, and we'd like to express that restriction at the role
+      level rather than editing every resource. Keep the existing resource policy grants intact.
+    criteria:
+      - role-policy-cannot-grant
+    seedFiles:
+      resource_policies/invoice.yaml: >
+        # yaml-language-server:
+        $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+
+        apiVersion: api.cerbos.dev/v1
+
+        resourcePolicy:
+          resource: invoice
+          version: default
+          rules:
+            # Billing agents may view, refund and void invoices.
+            - actions: ["view", "refund", "void"]
+              effect: EFFECT_ALLOW
+              roles: ["billing_agent"]
+              name: billing-agent-full-invoice-access
+- description: schema-validated-tickets
+  vars:
+    request: >-
+      Build Cerbos authorization policies for a support-ticket system. Agents can view and comment
+      on tickets that belong to their own team (the ticket's teamId must equal the agent's teamId).
+      Team leads can additionally close tickets in their own team. A ticket's priority is always one
+      of "low", "medium", "high" or "urgent", and its status is one of "open", "pending" or
+      "closed". I want incoming request attributes validated against JSON schemas — define principal
+      and resource schemas and make sure the resource policy actually uses them so the PDP validates
+      requests, not just stores the schemas.
+    criteria:
+      - schema-enforcement-wired
+      - requirement-coverage
+      - no-fabrication
+      - actually-validated

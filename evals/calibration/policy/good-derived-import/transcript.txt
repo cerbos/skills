@@ -1,0 +1,17 @@
+=== ASSISTANT TRANSCRIPT ===
+I'll use the cerbos-policy skill to build this.
+
+Ownership is context-dependent (it depends on the document's ownerId matching the
+caller), so I model it as a derived role named `owner` in a derived roles policy
+called `common_roles`. A derived roles policy has no effect on its own: the
+document resource policy must import it via `importDerivedRoles: [common_roles]`,
+and the delete rule must reference the `owner` derived role in its `derivedRoles`
+list. I wired all three together, then compiled.
+
+=== TOOL CALLS ===
+Read: .claude/skills/cerbos-policy/SKILL.md
+Write: derived_roles/common_roles.yaml
+Write: resource_policies/document.yaml
+Bash: docker run --rm -v $(pwd):/policies ghcr.io/cerbos/cerbos:latest compile /policies
+
+Compilation succeeded (exit code 0).

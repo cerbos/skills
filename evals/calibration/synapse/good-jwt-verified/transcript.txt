@@ -1,0 +1,20 @@
+=== ASSISTANT TRANSCRIPT ===
+This is a static HTTP -> Cerbos mapping driven by the caller's JWT, so per the
+decision flow it's a declarative call mapper — a route extension configured with
+CEL only, no code and no build step. Loading the call mapper reference before
+writing.
+
+Mapping CEL expressions only have access to the `request` variable, so the
+principal id and roles are read from the identity headers the gateway forwards.
+The raw JWT is passed through as auxData so policies can use its claims — and I
+configured auxData.jwt with both a token expression (to extract the bearer token)
+AND a keySetID so Cerbos verifies the token against the registered 'gateway'
+keyset. Extracting the token without a keySetID would trust it unverified, so the
+keySetID is required here. The response section maps the Cerbos decision to an
+HTTP status and the routes map binds it under /ext/.
+
+=== TOOL CALLS ===
+Read: .claude/skills/cerbos-synapse-extension/SKILL.md
+Read: .claude/skills/cerbos-synapse-extension/references/call-mapper.md
+Read: .claude/skills/cerbos-synapse-extension/references/shared/call-mapper-cel-reference.md
+Write: config.yaml

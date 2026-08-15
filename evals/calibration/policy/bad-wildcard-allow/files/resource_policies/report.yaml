@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: report
+  version: default
+  rules:
+    # Give access to reports.
+    - actions: ["*"]
+      effect: EFFECT_ALLOW
+      roles: ["*"]
+      name: allow-report-access

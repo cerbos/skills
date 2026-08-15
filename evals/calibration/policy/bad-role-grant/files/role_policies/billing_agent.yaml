@@ -1,0 +1,9 @@
+apiVersion: api.cerbos.dev/v1
+rolePolicy:
+  role: billing_agent
+  version: default
+  rules:
+    - resource: invoice
+      allowActions:
+        - view
+        - refund

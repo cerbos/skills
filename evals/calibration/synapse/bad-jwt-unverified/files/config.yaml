@@ -1,0 +1,25 @@
+# Declarative call mapper (route extension). The caller's JWT is passed through
+# as auxData so policies can use its claims.
+extensions:
+  routeExtensions:
+    jwtGateway:
+      mapping:
+        request:
+          principal:
+            id: 'request.header["X-User-Id"]'
+            roles:
+              - 'request.header["X-User-Roles"]'
+          resource:
+            kind: 'request.body.json.kind'
+            id: 'request.body.json.id'
+          action: 'request.method.lowerAscii()'
+          auxData:
+            jwt:
+              # SECURITY HOLE: the token is extracted but no keySetID is set, so
+              # Cerbos never verifies it against a keyset — a forged token would
+              # be trusted.
+              token: 'request.header["Authorization"].replace("Bearer ", "", 1)'
+        response:
+          status: 'check.allow ? 200 : 403'
+      routes:
+        '/api/{kind}/{id}': []

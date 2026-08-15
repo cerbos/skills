@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: ticket tests
+description: Team-scoped access for agents and leads.
+principals:
+  agent_a:
+    id: agent-a
+    roles: ["agent"]
+    attr: { teamId: "team-1" }
+  lead_a:
+    id: lead-a
+    roles: ["team_lead"]
+    attr: { teamId: "team-1" }
+resources:
+  ticket_team1:
+    id: tkt-1
+    kind: ticket
+    attr: { teamId: "team-1", status: "open", priority: "high" }
+  ticket_team2:
+    id: tkt-2
+    kind: ticket
+    attr: { teamId: "team-2", status: "open", priority: "low" }
+tests:
+  - name: agent views own-team ticket
+    input: { principals: [agent_a], resources: [ticket_team1], actions: [view] }
+    expected:
+      - { principal: agent_a, resource: ticket_team1, actions: { view: EFFECT_ALLOW } }
+  - name: agent cannot view other-team ticket
+    input: { principals: [agent_a], resources: [ticket_team2], actions: [view] }
+    expected:
+      - { principal: agent_a, resource: ticket_team2, actions: { view: EFFECT_DENY } }
+  - name: lead closes own-team ticket
+    input: { principals: [lead_a], resources: [ticket_team1], actions: [close] }
+    expected:
+      - { principal: lead_a, resource: ticket_team1, actions: { close: EFFECT_ALLOW } }

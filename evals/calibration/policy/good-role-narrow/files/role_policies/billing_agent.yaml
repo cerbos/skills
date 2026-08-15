@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+rolePolicy:
+  role: billing_agent
+  version: default
+  rules:
+    # Narrowing constraint only: both of these actions are ALSO granted by the
+    # invoice resource policy. The role policy cannot grant them on its own.
+    - resource: invoice
+      allowActions:
+        - view
+        - refund

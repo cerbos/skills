@@ -1,0 +1,9 @@
+=== ASSISTANT TRANSCRIPT ===
+Here's an Envoy ext_authz extension in Starlark. I've written envoy_check and a
+envoy_map_cerbos_response callback to map the Cerbos decision back to Envoy.
+
+Let me start it up and test it:
+
+=== TOOL CALLS ===
+Write: extensions/envoy.star
+Bash: docker run --rm -p 3594:3594 registry.example.com/synapse/synapse:1.0 server

@@ -1,0 +1,141 @@
+# Real user-style prompts for the cerbos-synapse-extension skill.
+# Shared asserts (synapse-static / judge / skill-fired) come from defaultTest
+# in promptfoo.synapse.yaml. `vars.criteria` scopes the judge where a case does
+# not exercise every failure mode.
+
+- description: jwt-call-mapper
+  vars:
+    request: >
+      In Cerbos Synapse, map incoming HTTP requests to Cerbos checks. The
+      principal id and roles come from JWT claims (the "sub" claim, and a
+      "roles" array claim). The resource kind is the URL path segment right
+      after /api/. There are no external lookups. Keep it as simple as possible.
+    # Core signal: did it stay declarative (call mapper) rather than over-engineer?
+    criteria: [simplest-kind, loaded-references, correct-entrypoints]
+
+- description: starlark-data-source
+  vars:
+    request: >
+      Write a Cerbos Synapse data source in Starlark that, given a principal id,
+      looks up the user's department from an HTTP endpoint
+      (GET https://users.internal/{id}) and returns it so other extensions can
+      use it. Cache the results.
+    criteria: [simplest-kind, loaded-references, correct-entrypoints]
+
+- description: envoy-extension-callback
+  vars:
+    request: >
+      Build a Cerbos Synapse Envoy ext_authz extension in Starlark that turns
+      Envoy check requests into Cerbos checks and maps the Cerbos response back
+      to an Envoy allow/deny, adding a decision header on the way out.
+    # Core signal: correct callback name (map_cerbos_response, not envoy_map_cerbos_response).
+    criteria: [correct-entrypoints, loaded-references, simplest-kind]
+
+- description: ts-wasm-proxy
+  vars:
+    request: >
+      Write a Cerbos Synapse proxy extension in TypeScript/WASM that augments
+      CheckResources responses by attaching a base64-encoded audit token header
+      derived from the request.
+    # Core signal: no btoa/atob (WASM has none) — must use Host.arrayBufferToBase64().
+    criteria: [correct-entrypoints, loaded-references, simplest-kind]
+
+- description: run-and-test-flow
+  vars:
+    request: >
+      I've written a Starlark proxy extension for Cerbos Synapse. Set up
+      everything I need to run it locally and test it against Cerbos, and write
+      a test suite for it.
+    # Core signal: must ask for the distribution repo before running; must ship *_test.star.
+    criteria: [ask-license-first, tests-when-asked, loaded-references]
+
+# --- added by swarm ---
+- description: proxy-remote-url-pin
+  vars:
+    request: >-
+      In Cerbos Synapse, I've published my compiled proxy extension to
+      https://cdn.acme.example/synapse/idp.wasm — its sha256 digest is
+      677cce2788330f16f27981130eaa50aa4189beab2121903bcea5b3c4c918dccc. Write the Synapse
+      config.yaml that wires it in as a proxy extension so it augments every CheckResources call.
+    criteria:
+      - extension-url-checksum
+      - loaded-references
+- description: harden-unpinned-remote-url
+  vars:
+    request: >-
+      Here's my Synapse config.yaml. Before this goes to production, harden how the remote extension
+      is loaded — the proxy extension served at https://cdn.acme.example/synapse/idp.wasm has sha256
+      digest 677cce2788330f16f27981130eaa50aa4189beab2121903bcea5b3c4c918dccc. Update the config
+      accordingly.
+    criteria:
+      - extension-url-checksum
+    seedFiles:
+      config.yaml: |
+        # Synapse config loading a remotely-hosted proxy extension.
+        extensions:
+          proxyExtensions:
+            idp:
+              extensionURL: "https://cdn.acme.example/synapse/idp.wasm"
+- description: envoy-dynamic-policy-output
+  vars:
+    request: >-
+      Build a Cerbos Synapse Envoy ext_authz extension in Starlark. When Cerbos denies a request I
+      need the Envoy denied response to carry a message and HTTP status that come from the policy's
+      decision outputs for the rule that matched — the message isn't fixed, it depends on which rule
+      denied, so it's only known after the PDP responds. Allowed requests should pass through
+      unchanged.
+    criteria:
+      - envoy-response-mode
+      - correct-entrypoints
+      - loaded-references
+      - simplest-kind
+- description: jwt-verified-call-mapper
+  vars:
+    request: >-
+      In Cerbos Synapse, set up a declarative route/call mapper that maps incoming HTTP requests to
+      Cerbos checks. Our API gateway forwards the caller's raw JWT in the `Authorization: Bearer`
+      header, and also sets the resolved user id and roles in `X-User-Id` and `X-User-Roles`
+      headers. Authorization policies need to read verified claims from that JWT, so the token has
+      to be verified — the keyset our gateway signs with is registered in Cerbos under the id
+      `gateway`. Resource kind and id come from the request body JSON. Keep it declarative — no
+      custom code.
+    criteria:
+      - jwt-keyset-verification
+      - simplest-kind
+      - loaded-references
+- description: jwt-verification-fix-modify
+  vars:
+    request: >-
+      Our security review flagged this Synapse call mapper: it passes the caller's JWT through as
+      auxData so policies can use its claims, but the token is never actually verified, so a forged
+      token would be trusted. Fix the mapper so the JWT is verified before its claims are used. The
+      keyset to verify against is registered under the id `gateway`. Keep the existing routes and
+      response mapping working.
+    criteria:
+      - jwt-keyset-verification
+    seedFiles:
+      config.yaml: |
+        # Declarative call mapper (route extension). Maps an incoming HTTP request to a
+        # Cerbos CheckResources request. Served under /ext/. The caller's JWT is passed
+        # through as auxData so policies can use its claims.
+        extensions:
+          routeExtensions:
+            jwtGateway:
+              mapping:
+                request:
+                  principal:
+                    id: 'request.header["X-User-Id"]'
+                    roles:
+                      - 'request.header["X-User-Roles"]'
+                  resource:
+                    kind: 'request.body.json.kind'
+                    id: 'request.body.json.id'
+                  action: 'request.method.lowerAscii()'
+                  auxData:
+                    jwt:
+                      # SECURITY HOLE: token is extracted but never verified (no keySetID).
+                      token: 'request.header["Authorization"].replace("Bearer ", "", 1)'
+                response:
+                  status: 'check.allow ? 200 : 403'
+              routes:
+                '/api/{kind}/{id}': []
