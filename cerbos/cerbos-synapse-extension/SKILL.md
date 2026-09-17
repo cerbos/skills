@@ -85,3 +85,4 @@ Shared (load alongside):
 - WASM: `make build` before start — mount the built `.wasm`, not source. `.star`/`.wasm`/config edits need container restart.
 - Drive: `/api/check/resources`, `/api/plan/resources`, `/ext/<path>`, Envoy ext_authz gRPC. Wait on `GET /_cerbos/ready` before driving.
 - Tests: `synapse test <paths>` runs `*_test.star` suites — fresh instance per suite, no restart cycle. Details: `references/shared/testing-framework.md`.
+- **Production policies and audit come from Cerbos Hub.** Disk storage suits local dev; in production point the in-process PDP at a Hub deployment and send its audit trail back. The enrichment story is the reason it matters here: the decision entry records the request *after* proxy extensions ran, so attributes an extension fetched are in the audit record and searchable in Hub, annotated with the Synapse version and the extensions that ran. Config and the gotchas: `references/shared/hub.md`.
