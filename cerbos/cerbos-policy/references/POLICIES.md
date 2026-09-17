@@ -25,8 +25,6 @@ resourcePolicy:
       ref: "cerbos:///principal.json"
     resourceSchema:
       ref: "cerbos:///resources/document.json"
-  importDerivedRoles:
-    - document_roles
   rules:
     - actions: ["view"]
       effect: EFFECT_ALLOW
@@ -69,7 +67,18 @@ exportVariables:
     is_owner: R.attr.owner == P.id
 ```
 
-Only `import` exported variables in files that actually use `V.*` — unused imports cause compile noise. See also the extraction rule in [CEL.md](CEL.md#exported-variables-extraction-rule).
+### Variable dependency design
+
+Keep a single-use condition inline. Use `variables.local` for expressions reused within one policy. Export a condition only when it is actually reused across policies, and group exports by a focused business concern and compatible attribute requirements rather than collecting every helper in `common_vars.yaml`.
+
+`variables.import` names an exported **set**, not an individual variable; seeing any `V.*` reference does not justify every import. For each policy:
+
+1. Start from its conditions and outputs, including those of derived roles it uses. Resolve variable references (`V.*` or `variables.*`) to local or exported definitions in the appropriate policy context.
+2. Follow references inside those definitions transitively. Retain each required definition and import; remove imports with no reachable consumer and unused local definitions.
+3. Inspect the complete contents of every retained exported set. If a policy needs one helper from a broad set, split the set by concern and update affected consumers. Keep shared definitions needed by other policies.
+4. Check that the resource and principal attributes needed by those expressions exist in the consuming policy's input contract. Import relationship-specific helpers only for resources to which the confirmed relationship rule applies.
+
+Imported sets are not free abstractions: concise source files do not guarantee a small compiled bundle. Keep dependencies minimal even if compilation succeeds. See the [Cerbos variable documentation](https://docs.cerbos.dev/cerbos/latest/policies/variables.html) for import and local-variable syntax.
 
 ## Role Policy (IdP role-centric ABAC)
 
