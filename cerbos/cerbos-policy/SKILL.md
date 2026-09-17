@@ -55,12 +55,16 @@ e.g. manager → approve on expense [R.attr.amount < 1000] | ALLOW | Managers si
 
 List resources, principals/roles, and shared derived roles/variables alongside. Confirm the spec with the user before generating.
 
+For schema-driven code generation, distinguish database structure from authorization requirements. A table, foreign key, or folder name does not establish who may access it. Keep unresolved business rules as questions in the spec; generate only confirmed rules. Keep a generated baseline independent of business-layer helpers unless a confirmed rule requires that dependency. For relationship-based authorization, establish the access rule, applicable resources, and required input attributes before implementing it.
+
 ### Phase 2 — Write
+
+Before writing variables or imports, read [Variable dependency design](references/POLICIES.md#variable-dependency-design). Generate each policy's dependencies from its actual expressions, including transitive variable references; a shared template must not attach every available variable set to every resource.
 
 Batch-write all files in a single pass, in this order:
 
 1. `_schemas/` (principal + resources)
-2. `derived_roles/` and `common_vars.yaml`
+2. Derived roles and focused exported-variable sets, only where required by the spec
 3. `resource_policies/` / `role_policies/`
 4. `testdata/` fixtures
 5. `*_test.yaml`
@@ -74,7 +78,7 @@ _schemas/                    # Attribute schemas (at root)
     <resource>.json
 derived_roles/
   common_roles.yaml          # Shared derived roles
-  common_vars.yaml           # Shared exported variables
+  <concern>_vars.yaml         # Optional, focused exported-variable sets
 principal_policies/
   <name>.yaml
 resource_policies/
@@ -98,6 +102,8 @@ Write every file before validating anything.
 
 ### Phase 3 — Validate
 
+First audit dependencies using [Variable dependency design](references/POLICIES.md#variable-dependency-design). Every retained import must supply a variable or derived role reachable from the policy's conditions or outputs, with its attribute requirements satisfied by that policy's inputs. Preserve transitive dependencies and dependencies used by other policies when pruning shared definitions.
+
 Run two passes. The first compiles the policies and runs the tests:
 
 ```bash
@@ -113,6 +119,8 @@ docker run --rm -v "$(pwd):/policies" ghcr.io/cerbos/cerbos:latest compile --str
 Both must exit 0. A test that passes the first pass but fails the second has a condition erroring at runtime — most dangerously on a DENY rule, where the error makes the deny silently no-op and the action gets allowed. Treat it as a real defect and fix it in Phase 4; keep the strict pass in place while doing so.
 
 Otherwise capture the error list and move to Phase 4.
+
+For bulk-generated policies targeting Hub, passing these checks does not establish that the compiled bundle fits the deployment's limits. When a Hub build is in scope, validate the full generated set through the target build path and inspect bundle size and build/upload errors against that deployment's configured limits. Source YAML or ZIP size is not a substitute. If that build cannot be checked, report Hub bundle validation as unverified. Investigate unnecessary imports and oversized shared sets before proposing a limit increase; preserve required authorization checks.
 
 ### Phase 4 — Fix
 
