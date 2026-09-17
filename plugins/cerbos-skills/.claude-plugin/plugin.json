@@ -1,5 +1,5 @@
 {
   "name": "cerbos-skills",
-  "version": "1.1.0",
-  "description": "Skills for authorization policy authoring with Cerbos"
+  "version": "2.0.0",
+  "description": "Author, test, distribute and enforce Cerbos authorization policies across applications, gateways and AI agents"
 }

@@ -1,0 +1,229 @@
+#!/usr/bin/env python3
+"""Validate every skill in cerbos/ before it ships.
+
+Only URLs in prose are checked: a URL inside a fenced block or an inline code
+span illustrates a shape rather than pointing somewhere a reader should open.
+
+Checks, per skill:
+  - SKILL.md exists and opens with a YAML frontmatter block
+  - frontmatter has name + description, and name matches the directory
+  - description length stays inside the budget (it is always-loaded context)
+  - every relative markdown link resolves to a file that exists
+  - every referenced file under references/ is reachable from some markdown
+
+With --links, also resolves every external https:// URL. Off by default so the
+check stays usable offline; CI turns it on.
+
+Usage:
+  scripts/validate-skills [--links] [skill-name ...]
+"""
+
+from __future__ import annotations
+
+import re
+import sys
+import argparse
+import concurrent.futures
+import urllib.request
+import urllib.error
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+SKILLS_DIR = ROOT / "cerbos"
+
+# A description is loaded on every turn, so it pays rent forever. Cloudflare's
+# router sits near 250; past ~600 a description is doing the body's job.
+DESCRIPTION_MAX = 600
+
+LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+URL_RE = re.compile(r"https?://[^\s<>\"'\)\]`]+")
+# `references/wasm-{go,python}.md` -> head, "go,python", tail
+BRACE_RE = re.compile(r"([\w./-]*)\{([^{}]+)\}([\w./-]*)")
+FENCE_RE = re.compile(r"^```.*?^```", re.S | re.M)
+INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
+
+# URLs inside code blocks illustrate a shape; only prose URLs are meant to be
+# followed. These hosts are placeholders wherever they appear.
+PLACEHOLDER_HOSTS = ("localhost", "127.0.0.1", "0.0.0.0", "example.com",
+                     "example.org", "example.net", "my-bucket", "your-org")
+
+
+def navigable(url: str) -> bool:
+    """True when a reader is expected to be able to open this URL."""
+    if any(h in url for h in PLACEHOLDER_HOSTS):
+        return False
+    # unsubstituted placeholders: ..., <ID>, YOUR_KEY, {var}, $VAR
+    return not any(t in url for t in ("...", "<", "YOUR_", "{", "$"))
+
+
+class Findings:
+    def __init__(self) -> None:
+        self.errors: list[str] = []
+        self.warnings: list[str] = []
+
+    def error(self, skill: str, msg: str) -> None:
+        self.errors.append(f"{skill}: {msg}")
+
+    def warn(self, skill: str, msg: str) -> None:
+        self.warnings.append(f"{skill}: {msg}")
+
+
+def parse_frontmatter(text: str) -> dict[str, str] | None:
+    """Minimal frontmatter reader: top-level `key: value` pairs only.
+
+    Deliberately not a YAML parser. It reads what skill frontmatter actually
+    contains and ignores nested blocks such as `metadata:`.
+    """
+    if not text.startswith("---"):
+        return None
+    end = text.find("\n---", 3)
+    if end == -1:
+        return None
+    block = text[3:end]
+
+    out: dict[str, str] = {}
+    key: str | None = None
+    for line in block.splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        if line.startswith((" ", "\t")):  # nested under the last key
+            continue
+        m = re.match(r"^([A-Za-z0-9_-]+):\s*(.*)$", line)
+        if m:
+            key = m.group(1)
+            out[key] = m.group(2).strip()
+        elif key and out.get(key) in (">-", ">", "|", "|-", ""):
+            out[key] = (out[key] + " " + line.strip()).strip()
+    return out
+
+
+def check_skill(path: Path, f: Findings) -> list[str]:
+    name = path.name
+    skill_md = path / "SKILL.md"
+
+    if not skill_md.is_file():
+        f.error(name, "no SKILL.md")
+        return []
+
+    text = skill_md.read_text(encoding="utf-8")
+    fm = parse_frontmatter(text)
+    if fm is None:
+        f.error(name, "SKILL.md has no YAML frontmatter block")
+        return []
+
+    declared = fm.get("name", "")
+    if not declared:
+        f.error(name, "frontmatter has no `name`")
+    elif declared != name:
+        f.error(name, f"frontmatter name `{declared}` does not match directory `{name}`")
+
+    desc = fm.get("description", "")
+    if not desc:
+        f.error(name, "frontmatter has no `description` — the skill can never be model-invoked")
+    elif len(desc) > DESCRIPTION_MAX:
+        f.warn(name, f"description is {len(desc)} chars (budget {DESCRIPTION_MAX}); trim it, it loads every turn")
+
+    # Relative links must resolve; collect external URLs for the optional pass.
+    urls: list[str] = []
+    corpus: list[str] = []
+    for md in sorted(path.rglob("*.md")):
+        body = md.read_text(encoding="utf-8")
+        corpus.append(body)
+        prose = INLINE_CODE_RE.sub("", FENCE_RE.sub("", body))
+        urls.extend(u for u in URL_RE.findall(prose) if navigable(u))
+        for target in LINK_RE.findall(body):
+            target = target.split("#", 1)[0].strip()
+            if not target or target.startswith(("http://", "https://", "mailto:")):
+                continue
+            resolved = (md.parent / target).resolve()
+            if not resolved.exists():
+                rel = md.relative_to(path)
+                f.error(name, f"{rel} links to missing file `{target}`")
+
+    # A reference file no markdown mentions is dead weight the agent never reaches.
+    # Mentions count whether written as a markdown link or a bare/backticked path.
+    # Skills also name a set of files with one brace pattern
+    # (`references/wasm-data-source-{go,javascript,python}.md`), so expand those
+    # before deciding a file is unmentioned.
+    refs = path / "references"
+    if refs.is_dir():
+        all_text = "\n".join(corpus)
+        mentioned = set(BRACE_RE.sub("", all_text).split())
+        for m in BRACE_RE.finditer(all_text):
+            head, alts, tail = m.group(1), m.group(2), m.group(3)
+            mentioned.update(f"{head}{alt}{tail}" for alt in alts.split(","))
+
+        for ref in sorted(refs.rglob("*.md")):
+            rel = ref.relative_to(path).as_posix()
+            if rel in all_text or ref.name in all_text:
+                continue
+            if any(rel in token or ref.name in token for token in mentioned):
+                continue
+            f.warn(name, f"{rel} is not mentioned by any markdown file")
+
+    return urls
+
+
+def check_urls(urls: set[str], f: Findings) -> None:
+    def fetch(url: str) -> tuple[str, int | str]:
+        req = urllib.request.Request(
+            url, method="HEAD", headers={"User-Agent": "cerbos-skills-validate"}
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=20) as r:
+                return url, r.status
+        except urllib.error.HTTPError as e:
+            if e.code in (403, 405):  # HEAD refused; the page itself is fine
+                return url, 200
+            return url, e.code
+        except Exception as e:  # noqa: BLE001 - report whatever went wrong
+            return url, type(e).__name__
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+        for url, status in pool.map(fetch, sorted(urls)):
+            if status != 200:
+                f.error("links", f"{url} → {status}")
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("skills", nargs="*", help="skill names to check (default: all)")
+    ap.add_argument("--links", action="store_true", help="also resolve external URLs")
+    args = ap.parse_args()
+
+    if not SKILLS_DIR.is_dir():
+        print(f"no skills directory at {SKILLS_DIR}", file=sys.stderr)
+        return 1
+
+    paths = sorted(p for p in SKILLS_DIR.iterdir() if p.is_dir() and not p.name.startswith("."))
+    if args.skills:
+        wanted = set(args.skills)
+        paths = [p for p in paths if p.name in wanted]
+        missing = wanted - {p.name for p in paths}
+        for m in sorted(missing):
+            print(f"no such skill: {m}", file=sys.stderr)
+        if missing:
+            return 1
+
+    f = Findings()
+    urls: set[str] = set()
+    for p in paths:
+        urls.update(check_skill(p, f))
+
+    if args.links:
+        check_urls(urls, f)
+
+    for w in f.warnings:
+        print(f"warn  {w}")
+    for e in f.errors:
+        print(f"ERROR {e}")
+
+    checked = ", ".join(p.name for p in paths)
+    print(f"\n{len(paths)} skills checked: {checked}")
+    print(f"{len(f.errors)} errors, {len(f.warnings)} warnings"
+          + (f", {len(urls)} URLs resolved" if args.links else ""))
+    return 1 if f.errors else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

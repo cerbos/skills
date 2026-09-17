@@ -1,0 +1,34 @@
+name: Validate skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate skill structure, frontmatter and links
+        run: scripts/validate-skills --links
+
+      - name: Validate plugin manifests
+        run: |
+          for f in .claude-plugin/marketplace.json \
+                   .codex-plugin/plugin.json \
+                   .cursor-plugin/plugin.json \
+                   .agents/plugins/marketplace.json \
+                   plugins/cerbos-skills/.claude-plugin/plugin.json; do
+            python3 -m json.tool "$f" > /dev/null && echo "ok $f"
+          done
+
+      - name: Check helper scripts parse
+        run: |
+          find cerbos -type f -perm -u+x -print0 \
+            | xargs -0 -r -I{} sh -c 'head -1 "{}" | grep -q bash && bash -n "{}" && echo "ok {}" || true'

@@ -1,0 +1,45 @@
+{
+  "name": "cerbos",
+  "version": "2.0.0",
+  "description": "Author, test, distribute and enforce Cerbos authorization policies across applications, gateways and AI agents.",
+  "author": {
+    "name": "Cerbos",
+    "url": "https://www.cerbos.dev"
+  },
+  "homepage": "https://docs.cerbos.dev",
+  "repository": "https://github.com/cerbos/skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "cerbos",
+    "authorization",
+    "access-control",
+    "rbac",
+    "abac",
+    "permissions",
+    "policy",
+    "authz",
+    "multi-tenancy",
+    "audit"
+  ],
+  "skills": "./cerbos/",
+  "interface": {
+    "displayName": "Cerbos",
+    "shortDescription": "Authorization policy and enforcement",
+    "longDescription": "Decouple authorization from application code with Cerbos. Write RBAC and ABAC policies with tests, distribute them through Cerbos Hub, enforce them from application code with the PEP SDKs or in the browser with an embedded WebAssembly PDP, enrich decisions with Cerbos Synapse, and collect decision audit logs for compliance.",
+    "developerName": "Cerbos",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://www.cerbos.dev",
+    "privacyPolicyURL": "https://www.cerbos.dev/privacy-policy",
+    "termsOfServiceURL": "https://www.cerbos.dev/terms-of-service",
+    "defaultPrompt": [
+      "Add fine-grained permissions to this application with Cerbos",
+      "Move the permission checks scattered through this codebase into Cerbos policies",
+      "Set up Cerbos Hub to build, test and distribute these policies"
+    ],
+    "brandColor": "#eb6c36"
+  }
+}

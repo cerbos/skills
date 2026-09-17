@@ -1,0 +1,19 @@
+{
+  "name": "cerbos",
+  "interface": {
+    "displayName": "Cerbos"
+  },
+  "plugins": [
+    {
+      "name": "cerbos-skills",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/cerbos/skills.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 ---
 name: cerbos-synapse-extension
 description: Builds, scaffolds, tests, debugs, and troubleshoots Cerbos Synapse extensions — call mappers, data sources, proxy extensions, route extensions, Envoy ext_authz extensions — in declarative YAML/CEL, Starlark, or WASM (Go, TypeScript/extism-js, Python/extism-py). Covers principal enrichment, attribute lookup, AuthZEN, protocol adapters, custom /ext/ endpoints, system://sqldb and system://aperture, synapse test suites (*_test.star), the Starlark REPL, config.yaml extension wiring, and docker-compose local dev. Use when the user mentions Synapse extensions, "add custom logic to Synapse", enriching principals/resources, mapping HTTP or Envoy traffic to Cerbos checks, writing or running Synapse extension tests, or an extension not loading/firing.
+license: Apache-2.0
 metadata:
   author: cerbos
   version: "1.1"
