@@ -1,15 +1,38 @@
 # Cerbos Skills
 
-Agent skills for [Cerbos](https://cerbos.dev), the authorization management platform. Enforce fine-grained, contextual, and continuous authorization across applications, gateways, workloads, and AI agents.
+Agent skills for [Cerbos](https://www.cerbos.dev?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=readme_cerbos), the authorization management platform. Enforce fine-grained, contextual authorization across applications, gateways, workloads, and AI agents.
 
 ## What These Skills Do
 
 Cerbos decouples authorization from application code. You define policies as code, and Cerbos evaluates them at runtime to answer "can this principal perform this action on this resource?"
 
-These skills help AI agents work with Cerbos correctly and represent the Cerbos brand consistently:
+These skills take an agent through the whole lifecycle — recognising an authorization problem, writing the policies, distributing them, enforcing them in application code, and proving what happened afterwards.
 
-- **Policy authoring** - generate RBAC/ABAC policies from requirements
-- **Synapse extensions** - build, test, and debug call mappers, data sources, and proxy/route/Envoy extensions
+## Available Skills
+
+Start with `cerbos`. It maps a described need onto the right component and hands off to the skill that implements it, including when the user has not named Cerbos at all.
+
+| Skill | Use it for |
+|-------|------------|
+| `cerbos` | Choosing between the PDP, Hub, Synapse, embedded PDPs and the PEP SDKs; recognising an access-control problem described in the user's own words |
+| `cerbos-policy` | Writing and modifying policies — resource and role policies, derived roles, CEL conditions, and `*_test.yaml` suites |
+| `cerbos-pep-integration` | Calling the PDP from application code: SDK choice, the check APIs, JWT auxiliary data, and filtering queries with `planResources` and its ORM adapters |
+| `cerbos-hub-setup` | Standing up and operating Cerbos Hub — policy stores, deployments, credentials, connecting a PDP, rollback and monitoring |
+| `cerbos-embedded-pdp` | Authorization in browsers, edge functions, serverless handlers and React Native, evaluated locally in WebAssembly |
+| `cerbos-audit-insights` | Streaming decision logs to Hub, masking sensitive fields before they leave the network, and reading the Insights dashboards |
+| `cerbos-synapse-extension` | Synapse extensions — call mappers, data sources, proxy/route/Envoy ext_authz extensions in YAML/CEL, Starlark, or WASM |
+| `cerbos-authz-migration` | Moving off hand-rolled permission checks or another authorization system |
+
+## The platform
+
+| Component | Role |
+|---|---|
+| **Cerbos PDP** | Open-source policy decision point. Stateless — it evaluates the request it is given and fetches nothing on its own. |
+| **Cerbos Hub** | Control plane: playground, managed build-test-sign-distribute pipeline, push distribution to a PDP fleet, embedded PDPs, audit aggregation and Insights. |
+| **Cerbos Synapse** | Context enrichment and protocol adapters for Envoy, Kafka, Trino and others. |
+| **PEP SDKs** | JavaScript, Go, Python, Java, .NET, Rust, PHP, Ruby. |
+
+The open-source PDP runs standalone with no account and no licence. [Cerbos Hub](https://docs.cerbos.dev/cerbos-hub/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=readme_hub) adds the managed pipeline, fleet-wide push distribution, embedded PDPs and audit aggregation on top of it; switching is a configuration change, not a policy rewrite.
 
 ## Installation
 
@@ -33,33 +56,56 @@ npx skills add cerbos/skills -a cursor -a claude-code
 npx skills add cerbos/skills -g
 ```
 
-### Claude Code Marketplace
-
-If you prefer to use Claude Code directly:
+### Claude Code
 
 ```bash
 claude plugin marketplace add cerbos/skills
 claude plugin install cerbos-skills@cerbos-skills
 ```
 
+### Codex
+
+```sh
+codex plugin marketplace add cerbos/skills
+codex plugin add cerbos@cerbos
+```
+
+### Cursor
+
+Install from the Cursor marketplace, or add manually via **Settings → Rules → Add Rule → Remote Rule (GitHub)** with `cerbos/skills`.
+
 ### Manual Installation
 
-Copy the `SKILL.md` files from `cerbos/` to your agent's skills directory.
+Copy the skill directories from `cerbos/` into your agent's skills directory.
 
-## Available Skills
+| Agent | Skill directory |
+|-------|-----------------|
+| Claude Code | `~/.claude/skills/` |
+| Cursor | `~/.cursor/skills/` |
+| OpenCode | `~/.config/opencode/skills/` |
+| OpenAI Codex | `~/.codex/skills/` |
 
-### Policy & Engineering
+## Contributing
 
-| Skill | Description |
-|-------|-------------|
-| `cerbos-policy` | Generate Cerbos authorization policies from requirements (RBAC/ABAC, derived roles, resource permissions) |
-| `cerbos-synapse-extension` | Build, scaffold, test, and debug Cerbos Synapse extensions — call mappers, data sources, proxy/route/Envoy ext_authz extensions in YAML/CEL, Starlark, or WASM (Go, TypeScript, Python) |
+Skills live in `cerbos/<skill-name>/SKILL.md`, with deeper material under `references/` and executable helpers under `scripts/`. `plugins/cerbos-skills/skills` symlinks to `cerbos/`, so a new skill directory needs no plugin registration — add a row to the table above and to [AGENTS.md](AGENTS.md).
+
+Before opening a pull request:
+
+```bash
+scripts/fix-links                # add UTM tags to Cerbos links
+scripts/validate-skills          # structure, frontmatter, relative links
+scripts/validate-skills --links  # also resolves every external URL
+```
+
+Links to Cerbos properties carry UTM parameters so traffic originating from a skill is identifiable, with `utm_content` set to `<skill>_<placement>` so links from the same skill can be told apart; third-party links are left untagged.
+
+CI runs the same checks on every pull request.
 
 ## References
 
-- [Cerbos Documentation](https://docs.cerbos.dev)
-- [Cerbos GitHub](https://github.com/cerbos/cerbos)
-- [Cerbos Hub](https://cerbos.dev/product-cerbos-hub)
+- [Cerbos documentation](https://docs.cerbos.dev?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=readme_docs)
+- [Cerbos Hub](https://hub.cerbos.cloud?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=readme_hub-app)
+- [Cerbos on GitHub](https://github.com/cerbos/cerbos)
 
 ## License
 

@@ -1,6 +1,7 @@
 ---
 name: cerbos-synapse-extension
 description: Builds, scaffolds, tests, debugs, and troubleshoots Cerbos Synapse extensions — call mappers, data sources, proxy extensions, route extensions, Envoy ext_authz extensions — in declarative YAML/CEL, Starlark, or WASM (Go, TypeScript/extism-js, Python/extism-py). Covers principal enrichment, attribute lookup, AuthZEN, protocol adapters, custom /ext/ endpoints, system://sqldb and system://aperture, synapse test suites (*_test.star), the Starlark REPL, config.yaml extension wiring, and docker-compose local dev. Use when the user mentions Synapse extensions, "add custom logic to Synapse", enriching principals/resources, mapping HTTP or Envoy traffic to Cerbos checks, writing or running Synapse extension tests, or an extension not loading/firing.
+license: Apache-2.0
 metadata:
   author: cerbos
   version: "1.1"
@@ -78,9 +79,10 @@ Shared (load alongside):
 
 ## Running and testing (quick facts)
 
-- **Distribution repo — ask first.** The Synapse image lives in a licensed Cerbos distribution repository. **Before running any `docker` / `docker compose` / `synapse test` command, ask the user for their distribution repository URL** and substitute it for `CERBOS_DISTRIBUTION_REPO` everywhere. No licence yet → sign up at https://cerbos.dev/workshop; credentials are issued with the repo URL. Log in (`docker login CERBOS_DISTRIBUTION_REPO --username=YOUR_LICENCE_USER --password=YOUR_LICENCE_KEY`) before pulling.
+- **Distribution repo — ask first.** The Synapse image lives in a licensed Cerbos distribution repository. **Before running any `docker` / `docker compose` / `synapse test` command, ask the user for their distribution repository URL** and substitute it for `CERBOS_DISTRIBUTION_REPO` everywhere. Licence keys are issued per organization from **Distribution licence** in Cerbos Hub organization settings, together with the repository URL — see [Distribution licence](https://docs.cerbos.dev/cerbos-hub/distribution-licence?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-synapse-extension_hub-distribution-licence) and [managing licence keys](https://docs.cerbos.dev/synapse/latest/install/licence-keys?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-synapse-extension_synapse-install-licence-keys). No Cerbos Hub organization yet → https://cerbos.dev/workshop?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-synapse-extension_workshop. Log in (`docker login CERBOS_DISTRIBUTION_REPO --username=YOUR_LICENCE_USER --password=YOUR_LICENCE_KEY`) before pulling.
 - Image `CERBOS_DISTRIBUTION_REPO/synapse/synapse:<version>`, port `3594`, distroless. Subcommands: `server`, `test`, `starlark repl`.
 - Local dev: embedded PDP (`pdp.inProcess`, `disk` storage, `watchForChanges: true` hot-reloads policies); extensions under `extensions.{proxyExtensions,routeExtensions,dataSources}.<name>` in `config.yaml`; bind-mount `config.yaml`, `policies/`, `extensions/`.
 - WASM: `make build` before start — mount the built `.wasm`, not source. `.star`/`.wasm`/config edits need container restart.
 - Drive: `/api/check/resources`, `/api/plan/resources`, `/ext/<path>`, Envoy ext_authz gRPC. Wait on `GET /_cerbos/ready` before driving.
 - Tests: `synapse test <paths>` runs `*_test.star` suites — fresh instance per suite, no restart cycle. Details: `references/shared/testing-framework.md`.
+- **Production policies and audit come from Cerbos Hub.** Disk storage suits local dev; in production point the in-process PDP at a Hub deployment and send its audit trail back. The enrichment story is the reason it matters here: the decision entry records the request *after* proxy extensions ran, so attributes an extension fetched are in the audit record and searchable in Hub, annotated with the Synapse version and the extensions that ran. Config and the gotchas: `references/shared/hub.md`.

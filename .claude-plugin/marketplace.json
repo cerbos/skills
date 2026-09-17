@@ -1,16 +1,17 @@
 {
   "name": "cerbos-skills",
   "owner": {
-    "name": "Cerbos"
+    "name": "Cerbos",
+    "url": "https://www.cerbos.dev?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=plugin-claude_cerbos"
   },
   "metadata": {
-    "description": "Agent skills for authorization policy authoring with Cerbos"
+    "description": "Agent skills for Cerbos: authorization policy authoring, distribution through Cerbos Hub, and enforcement in application code"
   },
   "plugins": [
     {
       "name": "cerbos-skills",
       "source": "./plugins/cerbos-skills",
-      "description": "Skills for authorization policy authoring with Cerbos"
+      "description": "Author, test, distribute and enforce Cerbos authorization policies across applications, gateways and AI agents"
     }
   ]
 }

@@ -1,0 +1,194 @@
+#!/usr/bin/env python3
+"""Tag outbound Cerbos links in skill markdown.
+
+Every Cerbos-owned URL carries UTM parameters identifying both the skill it
+came from and where in that skill it points, matching the convention already
+used in the Cerbos docs. `utm_content` is `<skill>_<placement>` so several
+links from one skill stay distinguishable in reporting.
+
+Links point at the ordinary page URL. Serving a Markdown rendering to an
+agent is the documentation infrastructure's job through content negotiation,
+not something a link should hard-code, so a `.md` suffix is stripped.
+
+Third-party URLs are left alone: those sites never report our UTM back, so
+tagging them is noise. URLs inside fenced blocks and inline code are left
+alone too — they illustrate a shape rather than pointing somewhere to click.
+
+Usage:
+  scripts/fix-links [--check] [skill-name ...]
+
+  --check  report what would change and exit non-zero, changing nothing
+"""
+
+from __future__ import annotations
+
+import re
+import sys
+import argparse
+from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
+
+ROOT = Path(__file__).resolve().parent.parent
+SKILLS_DIR = ROOT / "cerbos"
+
+# Repo-level surfaces are tagged too, so a click from a plugin listing or the
+# README is attributable. They have no skill name, so the first half of
+# utm_content names the surface instead.
+SURFACES = {
+    "README.md": "readme",
+    "AGENTS.md": "agents-md",
+    ".codex-plugin/plugin.json": "plugin-codex",
+    ".cursor-plugin/plugin.json": "plugin-cursor",
+    ".claude-plugin/marketplace.json": "plugin-claude",
+    ".agents/plugins/marketplace.json": "plugin-agents",
+    "plugins/cerbos-skills/.claude-plugin/plugin.json": "plugin-claude",
+}
+
+# Legal URLs a marketplace surfaces for compliance stay clean.
+UNTAGGED_PATHS = {"/privacy-policy", "/terms-of-service"}
+
+UTM_CAMPAIGN = "brand_cerbos"
+UTM_SOURCE = "agent_skills"
+UTM_MEDIUM = "referral"
+
+# Cerbos properties. Only these are tagged.
+CERBOS_HOSTS = {"docs.cerbos.dev", "www.cerbos.dev", "cerbos.dev", "hub.cerbos.cloud"}
+
+# First path segment -> a readable component name for the placement slug.
+COMPONENT = {"cerbos-hub": "hub", "cerbos": "pdp", "synapse": "synapse"}
+VERSION_RE = re.compile(r"^(latest|v?\d+(\.\d+)*)$")
+
+FENCE_RE = re.compile(r"^```.*?^```", re.S | re.M)
+INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
+URL_RE = re.compile(r"https://[^\s<>\"'\)\]`]+")
+
+
+def placement(parts) -> str:
+    """A short, readable slug naming where a link points.
+
+    Lowercase, hyphen-separated; version segments and a trailing `index` drop
+    out, and the `cerbos-` prefix is folded away so `cerbos-hub/getting-started`
+    reads as `hub-getting-started`.
+    """
+    segments = [seg for seg in parts.path.split("/") if seg]
+    if segments:
+        segments[0] = COMPONENT.get(segments[0], segments[0].removeprefix("cerbos-"))
+    segments = [seg for seg in segments if not VERSION_RE.match(seg)]
+    if segments and segments[-1] == "index":
+        segments.pop()
+
+    if not segments:
+        # No path of its own: name the property instead.
+        host = parts.netloc.removeprefix("www.")
+        # `hub-app` rather than `hub`, so it does not collide with the Hub
+        # documentation section, which also reduces to `hub`.
+        segments = ["hub-app"] if host == "hub.cerbos.cloud" else [host.split(".")[0]]
+
+    slug = "-".join(segments).replace("_", "-").replace(".", "-").lower()
+    return re.sub(r"-+", "-", slug).strip("-")
+
+
+def normalise(url: str, skill: str) -> str:
+    parts = urlsplit(url)
+    if parts.netloc not in CERBOS_HOSTS or parts.path in UNTAGGED_PATHS:
+        return url
+
+    path = parts.path
+    if path.endswith(".md"):
+        path = path[: -len(".md")]
+
+    query = dict(parse_qsl(parts.query, keep_blank_values=True))
+    query.setdefault("utm_campaign", UTM_CAMPAIGN)
+    query["utm_source"] = UTM_SOURCE
+    query["utm_medium"] = UTM_MEDIUM
+    query["utm_content"] = f"{skill}_{placement(parts)}"
+
+    return urlunsplit((parts.scheme, parts.netloc, path, urlencode(query), parts.fragment))
+
+
+def rewrite(text: str, skill: str, prose_only: bool = True) -> tuple[str, list[tuple[str, str]]]:
+    """Rewrite URLs. In markdown, code spans are left untouched."""
+    protected: list[str] = []
+
+    def stash(m: re.Match[str]) -> str:
+        protected.append(m.group(0))
+        return f"\x00{len(protected) - 1}\x00"
+
+    staged = INLINE_CODE_RE.sub(stash, FENCE_RE.sub(stash, text)) if prose_only else text
+
+    changes: list[tuple[str, str]] = []
+
+    def sub(m: re.Match[str]) -> str:
+        original = m.group(0)
+        # Trailing punctuation belongs to the sentence, not the URL.
+        trailing = ""
+        while original and original[-1] in ".,;:":
+            trailing = original[-1] + trailing
+            original = original[:-1]
+        fixed = normalise(original, skill)
+        if fixed != original:
+            changes.append((original, fixed))
+        return fixed + trailing
+
+    staged = URL_RE.sub(sub, staged)
+    restored = re.sub(r"\x00(\d+)\x00", lambda m: protected[int(m.group(1))], staged)
+    return restored, changes
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("skills", nargs="*", help="skill names (default: all)")
+    ap.add_argument("--check", action="store_true", help="report only; change nothing")
+    args = ap.parse_args()
+
+    paths = sorted(p for p in SKILLS_DIR.iterdir() if p.is_dir() and not p.name.startswith("."))
+    if args.skills:
+        wanted = set(args.skills)
+        paths = [p for p in paths if p.name in wanted]
+
+    total = 0
+    touched = 0
+
+    if not args.skills:  # repo-level surfaces, only on a full run
+        for rel, surface in SURFACES.items():
+            f = ROOT / rel
+            if not f.is_file():
+                continue
+            text = f.read_text(encoding="utf-8")
+            # JSON has no prose or code spans; markdown does.
+            fixed, changes = rewrite(text, surface, prose_only=not rel.endswith(".json"))
+            if not changes:
+                continue
+            total += len(changes)
+            touched += 1
+            print(f"\n{rel}")
+            for before, after in changes:
+                print(f"  - {before}")
+                print(f"  + {after}")
+            if not args.check:
+                f.write_text(fixed, encoding="utf-8")
+
+    for skill_dir in paths:
+        skill = skill_dir.name
+        for md in sorted(skill_dir.rglob("*.md")):
+            text = md.read_text(encoding="utf-8")
+            fixed, changes = rewrite(text, skill)
+            if not changes:
+                continue
+            total += len(changes)
+            touched += 1
+            rel = md.relative_to(ROOT)
+            print(f"\n{rel}")
+            for before, after in changes:
+                print(f"  - {before}")
+                print(f"  + {after}")
+            if not args.check:
+                md.write_text(fixed, encoding="utf-8")
+
+    verb = "would change" if args.check else "changed"
+    print(f"\n{total} links {verb} across {touched} files")
+    return 1 if (args.check and total) else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+# Report the local tooling and Cerbos Hub environment available for a Hub setup.
+# Secrets are reported as SET or unset. No value is ever printed.
+set -euo pipefail
+
+usage() {
+  cat <<'EOT'
+Usage: check-prereqs
+
+Reports which Cerbos Hub tooling is installed and which CERBOS_HUB_* variables
+are set in this shell. Secret values are never printed.
+
+Exit codes: 0 all tooling present, 1 cerbosctl or a PDP runtime is missing.
+EOT
+}
+
+case "${1:-}" in
+  -h | --help) usage && exit 0 ;;
+  "") ;;
+  *) usage >&2 && exit 1 ;;
+esac
+
+missing=0
+missing_cerbosctl=0
+missing_runtime=0
+
+report_tool() {
+  local cmd="$1" purpose="$2"
+  if command -v "$cmd" >/dev/null 2>&1; then
+    printf '  found    %-10s %s\n' "$cmd" "($(command -v "$cmd"))"
+  else
+    printf '  MISSING  %-10s needed to %s\n' "$cmd" "$purpose"
+    return 1
+  fi
+}
+
+echo "Tools"
+if ! report_tool cerbosctl "upload policies to a policy store"; then
+  missing_cerbosctl=1
+  missing=1
+fi
+
+runtime_found=0
+if command -v docker >/dev/null 2>&1; then
+  printf '  found    %-10s %s\n' "docker" "($(command -v docker))"
+  runtime_found=1
+fi
+if command -v cerbos >/dev/null 2>&1; then
+  printf '  found    %-10s %s\n' "cerbos" "($(command -v cerbos))"
+  runtime_found=1
+fi
+if [[ "$runtime_found" -eq 0 ]]; then
+  printf '  MISSING  %-10s needed to run a PDP\n' "docker|cerbos"
+  missing_runtime=1
+  missing=1
+fi
+
+if command -v jq >/dev/null 2>&1; then
+  printf '  found    %-10s %s\n' "jq" "(optional: formats store-status output)"
+fi
+
+echo
+echo "Cerbos Hub environment"
+for var in CERBOS_HUB_STORE_ID CERBOS_HUB_DEPLOYMENT_ID CERBOS_HUB_CLIENT_ID CERBOS_HUB_PDP_ID; do
+  if [[ -n "${!var:-}" ]]; then
+    printf '  SET      %s = %s\n' "$var" "${!var}"
+  else
+    printf '  unset    %s\n' "$var"
+  fi
+done
+if [[ -n "${CERBOS_HUB_CLIENT_SECRET:-}" ]]; then
+  printf '  SET      %s (value withheld)\n' "CERBOS_HUB_CLIENT_SECRET"
+else
+  printf '  unset    %s\n' "CERBOS_HUB_CLIENT_SECRET"
+fi
+
+echo
+if [[ "$missing" -ne 0 ]]; then
+  echo "Install what is missing:"
+  if [[ "$missing_cerbosctl" -eq 1 ]]; then
+    cat <<'EOT'
+  cerbosctl   brew tap cerbos/tap && brew install cerbos
+              npm install -g cerbosctl   (or run it as: npx cerbosctl)
+              https://docs.cerbos.dev/cerbos-hub/policy-stores-cli-binary
+EOT
+  fi
+  if [[ "$missing_runtime" -eq 1 ]]; then
+    cat <<'EOT'
+  PDP runtime https://www.docker.com/products/docker-desktop/
+              https://docs.cerbos.dev/cerbos/latest/installation/binary
+EOT
+  fi
+  exit 1
+fi
+
+echo "All required tooling present."

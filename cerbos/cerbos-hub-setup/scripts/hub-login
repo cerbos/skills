@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Authenticate cerbosctl against Cerbos Hub, preferring the device-code flow.
+# The device flow asks the user to approve in a browser, so no secret is typed
+# into a command line. Credentials are saved to the OS keyring by cerbosctl.
+set -euo pipefail
+
+usage() {
+  cat <<'EOT'
+Usage: hub-login [--client-credentials]
+
+Default: runs `cerbosctl hub auth` in device-code mode. cerbosctl prints a
+verification URL for the user to open and approve; the resulting token is saved
+to the OS keyring, and later `cerbosctl hub store` commands need only
+CERBOS_HUB_STORE_ID.
+
+--client-credentials  Log in with CERBOS_HUB_CLIENT_ID and
+                      CERBOS_HUB_CLIENT_SECRET taken from the environment.
+                      Values are passed through, never printed.
+EOT
+}
+
+mode="device"
+case "${1:-}" in
+  -h | --help) usage && exit 0 ;;
+  --client-credentials) mode="client" ;;
+  "") ;;
+  *) usage >&2 && exit 1 ;;
+esac
+
+if ! command -v cerbosctl >/dev/null 2>&1; then
+  echo "cerbosctl not found on PATH. Run scripts/check-prereqs for install options." >&2
+  exit 1
+fi
+
+if [[ "$mode" == "client" ]]; then
+  for var in CERBOS_HUB_CLIENT_ID CERBOS_HUB_CLIENT_SECRET; do
+    if [[ -z "${!var:-}" ]]; then
+      echo "$var is not set. Export it in your shell, then re-run." >&2
+      exit 1
+    fi
+  done
+  echo "Logging in with client credentials from the environment."
+  exec cerbosctl hub auth
+fi
+
+# cerbosctl falls back to the device flow only when neither credential variable
+# is populated, so unset them for this invocation alone.
+echo "Starting the device-code flow. Open the URL cerbosctl prints and approve the device."
+exec env -u CERBOS_HUB_CLIENT_ID -u CERBOS_HUB_CLIENT_SECRET cerbosctl hub auth
