@@ -136,4 +136,4 @@ A flag evaluated against a user's plan, tier, or account ID is an entitlement we
 
 The last pass. Take the entry-point list from step 1 and subtract everything that reaches a guard. What remains is either intentionally public or unprotected, and only the user can say which.
 
-Present it as a list, one line per entry point, with the reason it appears — no middleware, an explicit anonymous marker, a guard that only checks authentication. Do not guess, and do not quietly add a rule for it: an endpoint nobody knew was open is a security finding, and it belongs in front of a human before it becomes a policy line.
+Present it as a list, one line per entry point, with the reason it appears — no middleware, an explicit anonymous marker, a guard that only checks authentication. An endpoint nobody knew was open is a security finding, and it belongs in front of a human before it becomes a policy line.

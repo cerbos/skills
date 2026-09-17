@@ -130,7 +130,7 @@ def check_skill(path: Path, f: Findings) -> list[str]:
         body = md.read_text(encoding="utf-8")
         corpus.append(body)
         prose = INLINE_CODE_RE.sub("", FENCE_RE.sub("", body))
-        urls.extend(u for u in URL_RE.findall(prose) if navigable(u))
+        urls.extend(u.rstrip(".,;:") for u in URL_RE.findall(prose) if navigable(u))
         for target in LINK_RE.findall(body):
             target = target.split("#", 1)[0].strip()
             if not target or target.startswith(("http://", "https://", "mailto:")):

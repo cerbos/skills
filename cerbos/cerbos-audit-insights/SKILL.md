@@ -18,13 +18,13 @@ A Cerbos PDP records every API call it serves and every decision it makes. Where
 | `kafka` | A Kafka topic (JSON or protobuf) | Your consumers | Only what you build |
 | `hub` | Local buffer on the PDP, streamed to Cerbos Hub | Hub console — audit log search, Insights, exports | Yes |
 
-Aggregation across instances, fleet-wide search and the Insights dashboards are **Cerbos Hub** capabilities. A standalone PDP writes a complete audit trail through the other three backends; what it has no answer for is collecting and querying that trail across every instance. Full backend reference: [audit configuration](https://docs.cerbos.dev/cerbos/latest/configuration/audit).
+Aggregation across instances, fleet-wide search and the Insights dashboards are **Cerbos Hub** capabilities. A standalone PDP writes a complete audit trail through the other three backends; what it has no answer for is collecting and querying that trail across every instance. Full backend reference: [audit configuration](https://docs.cerbos.dev/cerbos/latest/configuration/audit.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights).
 
 ## Enabling collection
 
 Three things: a credential, the backend, and somewhere to buffer.
 
-**1. Credential.** In the Hub console, open the deployment → **Settings** → **Client credentials** → **Generate a client credential**, and generate a **Read & write** credential. The secret is shown once. Audit upload writes, so a read-only credential cannot ship logs, and a policy store credential is a different credential entirely. One read & write deployment credential covers both bundle download and audit upload.
+**1. Credential.** In the Hub console, open the deployment's **Client credentials** tab and generate a **Read & write** credential. The secret is shown once. Audit upload writes, so a read-only credential cannot ship logs, and a policy store credential is a different credential entirely. One read & write deployment credential covers both bundle download and audit upload.
 
 **2. Configuration.**
 
@@ -57,7 +57,7 @@ Policies do not have to come from Hub for this to work. The `hub` audit backend 
 - the PDP appears under the deployment's **Decision points** tab, so it is reaching Hub at all
 - the volume is persistent — a PDP that crashes between syncs loses whatever an `emptyDir` was holding
 
-More causes: [troubleshooting](https://docs.cerbos.dev/cerbos-hub/troubleshooting).
+More causes: [troubleshooting](https://docs.cerbos.dev/cerbos-hub/troubleshooting.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights).
 
 ## What a request records
 
@@ -98,35 +98,14 @@ Audit log search and the drill-through from a ranking, explaining a single allow
 
 ## Who can see it
 
-Audit logs, Insights and Usage are visible to workspace **Owner** and **Analyst** roles only. Developer and Viewer do not see those tabs at all. Exporting is **Owner** only. Organization roles are inherited by every workspace except `Member`, which has to be granted workspace roles explicitly. Insights appears only once collection is enabled and decisions have started arriving. Full matrix: [user management](https://docs.cerbos.dev/cerbos-hub/user-management).
+Audit logs, Insights and Usage are visible to workspace **Owner** and **Analyst** roles only. Developer and Viewer do not see those tabs at all. Exporting is **Owner** only. Organization roles are inherited by every workspace except `Member`, which has to be granted workspace roles explicitly. Insights appears only once collection is enabled and decisions have started arriving. Full matrix: [user management](https://docs.cerbos.dev/cerbos-hub/user-management.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights).
 
 ## Cerbos Synapse in front of the PDP
 
-Synapse enriches a request before the PDP evaluates it, so the decision entry records what was actually evaluated rather than what the client sent. An attribute a proxy extension fetched from an internal directory appears in the entry's inputs alongside the client's own.
-
-Synapse also annotates each request's `requestContext`, and those annotations ride through to every entry Hub ingests:
-
-| Annotation | Value |
-|---|---|
-| `cerbos.dev/synapse/version` | The running Synapse version. Always added. |
-| `cerbos.dev/synapse/extensions` | The proxy extensions that processed the request, in the order they ran. Added when any are configured. |
-| your own keys | String, number or boolean values from the top-level `audit.instanceAnnotations` block — environment, region, cluster. |
-
-With the embedded PDP, the audit block nests under `pdp.inProcess`:
-
-```yaml
-pdp:
-  inProcess:
-    audit:
-      enabled: true
-      backend: hub
-      hub:
-        storagePath: /var/lib/synapse/audit
-```
-
-Fronting an existing PDP fleet instead (`pdp.external`), Hub credentials and the audit block live on the upstream PDP; the top-level `audit.instanceAnnotations` still applies, because Synapse adds them before forwarding.
+Behind Synapse the decision entry records the *enriched* request — what the PDP evaluated, not what the client sent.
+Synapse adds `cerbos.dev/synapse/*` annotations plus any configured instance annotations, and for the in-process PDP the audit block nests under `pdp.inProcess`: [references/MASKING.md](references/MASKING.md#what-synapse-adds).
 
 ## References
 
-- [references/MASKING.md](references/MASKING.md) — removing sensitive fields at the PDP: sections, path syntax, examples, metadata keys, verification
+- [references/MASKING.md](references/MASKING.md) — removing sensitive fields at the PDP: sections, path syntax, examples, metadata keys, verification, what Synapse adds to an entry
 - [references/READING.md](references/READING.md) — audit log search, single-decision investigation, Insights, usage, exports, retention and compliance answers

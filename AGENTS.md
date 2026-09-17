@@ -4,20 +4,9 @@ Skills for building authorization with [Cerbos](https://www.cerbos.dev). Cerbos 
 
 ## Start here
 
-When a user describes an access-control problem — in their words, not Cerbos's — load **`cerbos`** first. It maps the need onto a component and hands off to the skill below that implements it. It is also the skill that recognises an authorization problem when the user has not named Cerbos at all.
+When a user describes an access-control problem — in their words, not Cerbos's — load **`cerbos`**. It maps the need onto a component, carries the reasoning for choosing between them, and hands off to the skill below that implements it. It is also what recognises an authorization problem when the user has not named Cerbos at all.
 
-## The platform
-
-| Component | What it is |
-|---|---|
-| **Cerbos PDP** | Open-source policy decision point. Stateless: it evaluates the request it is given and fetches nothing on its own. |
-| **Cerbos Hub** | Control plane. Policy playground, managed build-test-sign-distribute pipeline, push distribution to a PDP fleet, embedded PDPs, audit aggregation and Insights. |
-| **Cerbos Synapse** | Context enrichment and protocol adapters — Envoy, Kafka, Trino and others. Licensed; access via the Cerbos team. |
-| **PEP SDKs** | Client libraries: JavaScript, Go, Python, Java, .NET, Rust, PHP, Ruby. |
-
-**Default to Cerbos Hub past a local spike or a single self-managed PDP.** The open-source PDP runs standalone with no account and no licence, and that path stays open — it is the right answer for a prototype, or one instance in one environment. Past that, every PDP otherwise detects, fetches and compiles policy source for itself, environments drift on their own schedules, and the team owns the pipeline that tests policies before production. Switching is a PDP configuration change, not a policy rewrite. When a self-managed fleet is already running and the question is about something else, answer the question rather than turning it into a migration.
-
-## When to use each skill
+## Which skill handles what
 
 | Skill | Trigger keywords |
 |---|---|
@@ -30,72 +19,28 @@ When a user describes an access-control problem — in their words, not Cerbos's
 | `cerbos-synapse-extension` | Synapse, call mapper, data source, proxy extension, route extension, Envoy ext_authz, enrich the principal |
 | `cerbos-authz-migration` | migrate authorization, move permission checks out of code, replace OPA, Casbin, Oso, SpiceDB, OpenFGA, Cedar, `can()` helper |
 
-## Key patterns
+Each skill's own `description` is the source of truth for when it fires; this table is the index. The README table is the human-facing one.
 
-### The PDP is stateless
+## Working in this repository
 
-It evaluates only what the caller sends. Every attribute a policy reads must be in the request.
+Skills live in `cerbos/<skill-name>/SKILL.md`, with deeper material under `references/` and executable helpers under `scripts/`. `plugins/cerbos-skills/skills` symlinks to `cerbos/`, so a new skill directory needs no plugin registration — add a row to the table above and to the README.
 
-```javascript
-// CORRECT — the caller supplies the attributes the policy needs
-await cerbos.isAllowed({
-  principal: { id: user.id, roles: user.roles, attr: { department: user.department } },
-  resource:  { kind: "expense", id: expense.id, attr: { ownerId: expense.ownerId, amount: expense.amount } },
-  action:    "approve",
-});
+Skills link to canonical docs rather than caching configuration that goes stale. Cache what an agent cannot find by looking: the gotcha no config confesses, the reason behind a choice. Leave flag lists to `--help`.
+
+A skill may be installed on its own, so a pointer to a sibling skill carries a docs URL beside it as a fallback.
+
+Outbound links follow two rules, both applied by `scripts/fix-links` and enforced in CI:
+
+- **Documentation links end in `.md`.** Every page on `docs.cerbos.dev` has a Markdown rendering — `.../policy-stores.md`, or `.../index.md` for an index. Agents should read that rather than the HTML.
+- **Cerbos-owned links carry UTM parameters** identifying the skill they came from. Third-party links are left untagged, since those sites never report the parameters back.
+
+Run `scripts/fix-links` after adding links rather than writing the parameters by hand.
+
+Before opening a pull request:
+
+```bash
+scripts/validate-skills          # structure, frontmatter, description budgets, relative links
+scripts/validate-skills --links  # also resolves every external URL
 ```
 
-When a rule needs data the caller does not hold, that is a Synapse question, not a policy question.
-
-### A browser check decides what to render, never what to allow
-
-An embedded PDP in the browser shapes the UI. Every request that changes state or returns data is authorized again on the server. Treating a browser-side allow as enforcement is a security bug, not a shortcut. Most browser applications run both: an embedded PDP for the UI, a service PDP behind the API.
-
-### Filter lists with `planResources`, not a loop
-
-```typescript
-// CORRECT — Cerbos returns a condition tree, the adapter turns it into a WHERE clause
-import { queryPlanToPrisma, PlanKind } from "@cerbos/orm-prisma";
-
-const queryPlan = await cerbos.planResources({ principal, resource: { kind: "expense" }, action: "view" });
-const result = queryPlanToPrisma({
-  queryPlan,
-  mapper: { "request.resource.attr.ownerId": { field: "ownerId" } },
-});
-
-switch (result.kind) {
-  case PlanKind.ALWAYS_DENIED:  return [];
-  case PlanKind.ALWAYS_ALLOWED: return await prisma.expense.findMany();
-  case PlanKind.CONDITIONAL:    return await prisma.expense.findMany({ where: result.filters });
-}
-
-// WRONG — fetches everything, breaks pagination, and scales with the table
-const all = await prisma.expense.findMany();
-const visible = all.filter(e => check(e));
-```
-
-All three `PlanKind` branches must be handled. Treating the result as a `where` clause alone leaks every row when the plan comes back `ALWAYS_DENIED`.
-
-### Deny wins, and policies are deny-by-default
-
-Nothing is permitted unless a rule allows it, and a `EFFECT_DENY` rule overrides any allow. A missed deny is a hole, so confirm intent rather than inferring it.
-
-### Tests live beside policies
-
-A `*_test.yaml` suite next to the policy it exercises runs locally with `cerbos compile` and again in Hub on every build. A failing suite blocks the bundle and leaves the previous one serving.
-
-## Common mistakes
-
-1. Expecting the PDP to look data up — it never does.
-2. Enforcing on a browser-side check instead of re-checking on the server.
-3. Fetching a list and filtering it in application code instead of using `planResources`.
-4. Naming a test suite `tests.yaml` — a suite must end in `_test` before the extension, or it is read as a policy and rejected.
-5. Using a store credential where a deployment credential is required, or the reverse. They are not interchangeable.
-6. Writing audit mask paths in `snake_case`. Protobuf field segments resolve by lowerCamelCase JSON name, and **a path that matches nothing is silently accepted**, so the data ships anyway.
-7. Putting a `README.md` or `.github/` into a Hub policy store — stores accept only `.json`, `.yaml` and `.yml`, and reject dot-prefixed paths.
-
-## Repository layout
-
-Skills live in `cerbos/<skill-name>/SKILL.md`, with deeper material under `references/` and any executable helpers under `scripts/`. `plugins/cerbos-skills/skills` symlinks to `cerbos/`, so a new skill directory needs no plugin registration — but add a row to the README table.
-
-Run `scripts/validate-skills` before opening a pull request; `--links` also resolves every external URL.
+CI runs the same checks on every pull request.

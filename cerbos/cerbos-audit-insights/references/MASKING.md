@@ -125,4 +125,30 @@ An entry larger than roughly 4 MiB has `principal.attr` and `resource.attr` (plu
 
 There is no mask section for `callId`, `timestamp`, `method`, `statusCode`, `policySource`, the `auditTrail` of effective policies, or `requestContext.annotations`. Annotations in particular are recorded exactly as the caller sent them, so treat that field as public within the workspace.
 
-Canonical reference: [Cerbos Hub audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection) and the [audit configuration block](https://docs.cerbos.dev/cerbos/latest/configuration/audit).
+## What Synapse adds
+
+Synapse enriches a request before the PDP evaluates it, so the decision entry records what was actually evaluated rather than what the client sent. An attribute a proxy extension fetched from an internal directory appears in the entry's inputs alongside the client's own.
+
+Synapse also annotates each request's `requestContext`, and those annotations ride through to every entry Hub ingests:
+
+| Annotation | Value |
+|---|---|
+| `cerbos.dev/synapse/version` | The running Synapse version. Always added. |
+| `cerbos.dev/synapse/extensions` | The proxy extensions that processed the request, in the order they ran. Added when any are configured. |
+| your own keys | String, number or boolean values from the top-level `audit.instanceAnnotations` block — environment, region, cluster. |
+
+With the embedded PDP, the audit block nests under `pdp.inProcess`:
+
+```yaml
+pdp:
+  inProcess:
+    audit:
+      enabled: true
+      backend: hub
+      hub:
+        storagePath: /var/lib/synapse/audit
+```
+
+Fronting an existing PDP fleet instead (`pdp.external`), Hub credentials and the audit block live on the upstream PDP; the top-level `audit.instanceAnnotations` still applies, because Synapse adds them before forwarding.
+
+Canonical reference: [Cerbos Hub audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights) and the [audit configuration block](https://docs.cerbos.dev/cerbos/latest/configuration/audit.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights).

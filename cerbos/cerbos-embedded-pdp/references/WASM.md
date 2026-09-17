@@ -1,6 +1,6 @@
 # Loading the WASM module
 
-`wasm` is the second required option on `new Embedded({ policies, wasm })`, and the only part of the setup that changes with the build tool. The published recipes are in [Loading the WebAssembly module](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules#_loading_the_webassembly_module).
+`wasm` is the second required option on `new Embedded({ policies, wasm })`, and the only part of the setup that changes with the build tool. The published recipes are in [Loading the WebAssembly module](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp#_loading_the_webassembly_module).
 
 The client accepts several shapes, which is why each bundler's idiomatic import works:
 

@@ -24,8 +24,6 @@ $client = CerbosClientBuilder::newInstance("localhost:3593")
 
 `withPlaintext()` takes an explicit boolean here. TLS is on by default. Certificate setters take PEM **contents**, not paths: `withCaCertificate(string)`, `withTlsCertificate(string)`, `withTlsKey(string)`. Also `withMetadata(array $headers)` and `withPlayground(string $playgroundInstanceId)` — plaintext plus playground throws.
 
-Build the client once per process; in a framework, register it as a singleton.
-
 ## Checking
 
 ```php

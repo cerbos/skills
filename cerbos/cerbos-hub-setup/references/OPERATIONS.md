@@ -46,8 +46,6 @@ Two tables. **Upcoming versions** holds builds newer than the live version that 
 
 ## Freeze and rollback
 
-Both need `Owner` or `Developer` in the workspace.
-
 **Freeze** (deployment **Settings** tab → *Freeze deployment*) holds the live version in place. Changes to the contributing stores still build, but the results queue under Upcoming versions instead of reaching PDPs, and the deployment is labelled *Frozen*. *Unfreeze deployment* builds and deploys the latest policies, replacing whatever was live.
 
 **Roll back** is the action on any deployed version older than the live one; **Promote** appears on versions newer than the live one, which is what you see once a rollback has pinned the deployment backwards. Either one deploys that version immediately **and freezes the deployment**, so the version you picked survives the next policy change landing in a contributing store. Unfreezing releases the pin and deploys the latest.
@@ -79,6 +77,6 @@ The matrix reports which rules *match* a cell rather than fully evaluating the p
 | `cerbos_dev_store_bundle_op_latency` | Time taken by bundle operations |
 | `cerbos_dev_store_bundle_fetch_errors_count` | Errors downloading bundles |
 
-`scripts/pdp-verify` reads these for a single PDP. Alert on `cerbos_dev_hub_connected` dropping to 0 and on `cerbos_dev_store_bundle_fetch_errors_count` climbing. Full metric list: [observability](https://docs.cerbos.dev/cerbos/latest/configuration/observability).
+`scripts/pdp-verify` reads these for a single PDP. Alert on `cerbos_dev_hub_connected` dropping to 0 and on `cerbos_dev_store_bundle_fetch_errors_count` climbing. Full metric list: [observability](https://docs.cerbos.dev/cerbos/latest/configuration/observability.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-hub-setup).
 
 **Workspace issues bar** appears across every Hub page when something needs attention — [DIAGNOSE.md](DIAGNOSE.md) covers what each issue means.

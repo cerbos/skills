@@ -32,8 +32,6 @@ Two things to get right:
 
 Unix domain sockets work on Linux only — a `grpc-java` limitation.
 
-Build the client once and share it; it holds a channel.
-
 ## Checking
 
 ```java

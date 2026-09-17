@@ -14,6 +14,9 @@ jobs:
       - name: Validate skill structure, frontmatter and links
         run: scripts/validate-skills --links
 
+      - name: Check outbound Cerbos links carry .md and UTM tags
+        run: scripts/fix-links --check
+
       - name: Validate plugin manifests
         run: |
           for f in .claude-plugin/marketplace.json \

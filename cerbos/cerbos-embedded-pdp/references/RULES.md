@@ -1,6 +1,6 @@
 # ePDP rules
 
-The Hub-side half of an embedded PDP. A rule decides which policies go into a bundle, who may download it, and from where. Full reference: [ePDP rules](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules).
+The Hub-side half of an embedded PDP. A rule decides which policies go into a bundle, who may download it, and from where. Full reference: [ePDP rules](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp).
 
 A deployment can carry several rules, so shape one per client rather than one per deployment:
 
@@ -27,14 +27,14 @@ Two reasons to filter, and the second is the one that gets skipped:
 |---|---|
 | **Resources and actions** | Per-entry: resources only (all actions on those kinds), actions only (that action across all kinds), or both (the intersection). Across entries the bundle is the **union** — a rule with entries `document:{view,edit}` and `folder:{view}` includes rules matching either. |
 | **Roles** | `Specific` keeps only rules referencing the named roles. An editor-and-viewer UI need not ship the `admin` rules. |
-| **Versions** | `Specific` keeps only the named [policy versions](https://docs.cerbos.dev/cerbos/latest/policies/resource_policies), which is how a legacy client stays on `v1` while the current one gets `v2`. |
+| **Versions** | `Specific` keeps only the named [policy versions](https://docs.cerbos.dev/cerbos/latest/policies/resource_policies.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp), which is how a legacy client stays on `v1` while the current one gets `v2`. |
 | **Scopes** | `All`, `Specific`, or `Require specific scope at fetch time`. See below. |
 
 Leaving a filter empty or set to `All` includes everything of that kind.
 
 ### Scopes
 
-[Scoped policies](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies) carry multi-tenancy and hierarchical overrides, and a scope request always pulls its ancestors: asking for `acme.eu.prod` returns policies for `acme.eu.prod`, `acme.eu`, `acme`, and the root scope, so inherited rules stay evaluable.
+[Scoped policies](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp) carry multi-tenancy and hierarchical overrides, and a scope request always pulls its ancestors: asking for `acme.eu.prod` returns policies for `acme.eu.prod`, `acme.eu`, `acme`, and the root scope, so inherited rules stay evaluable.
 
 **Specific** (static) pins the scopes in the rule definition. Reach for it when the set is small, known ahead of time, stable, and the same for every client on the rule.
 
@@ -59,7 +59,7 @@ Scopes are fixed for the life of a client, so switching tenant means constructin
 
 ## Who may download
 
-Start from what a leaked bundle would reveal: the resource kinds and actions that exist, the conditions under which access is granted, the roles and what each grants, and which principal and resource attributes steer decisions. For a documented API with plain RBAC that may be public knowledge already; for proprietary rules it is a map of the system. The [threat model section](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules#_threat_model) frames the call.
+Start from what a leaked bundle would reveal: the resource kinds and actions that exist, the conditions under which access is granted, the roles and what each grants, and which principal and resource attributes steer decisions. For a documented API with plain RBAC that may be public knowledge already; for proprietary rules it is a map of the system. The [threat model section](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp#_threat_model) frames the call.
 
 ### Authentication
 

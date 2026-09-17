@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+"""Normalise outbound Cerbos links in skill markdown.
+
+Two rules, applied to Cerbos-owned URLs only:
+
+  1. Documentation pages get a `.md` suffix. docs.cerbos.dev serves a
+     Markdown rendering of every page, which is what an agent should read
+     rather than the HTML. A path ending in `/` becomes `index.md`. The
+     marketing site has Markdown for only some pages, so it keeps its HTML
+     URLs and is tagged but not suffixed.
+  2. Every Cerbos-owned URL carries UTM parameters identifying the skill it
+     came from, matching the convention already used in the Cerbos docs.
+
+Third-party URLs are left alone: those sites never report our UTM back, so
+tagging them is noise. URLs inside fenced blocks and inline code are left
+alone too — they illustrate a shape rather than pointing somewhere to click.
+
+Usage:
+  scripts/fix-links [--check] [skill-name ...]
+
+  --check  report what would change and exit non-zero, changing nothing
+"""
+
+from __future__ import annotations
+
+import re
+import sys
+import argparse
+from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
+
+ROOT = Path(__file__).resolve().parent.parent
+SKILLS_DIR = ROOT / "cerbos"
+
+UTM_CAMPAIGN = "brand_cerbos"
+UTM_SOURCE = "agent_skills"
+UTM_MEDIUM = "skill"
+
+# Cerbos properties. Only these are tagged.
+CERBOS_HOSTS = {"docs.cerbos.dev", "www.cerbos.dev", "cerbos.dev", "hub.cerbos.cloud"}
+# The documentation site serves a Markdown rendering of every page. The
+# marketing site does so only for some, so it is left as HTML.
+MARKDOWN_HOSTS = {"docs.cerbos.dev"}
+
+FENCE_RE = re.compile(r"^```.*?^```", re.S | re.M)
+INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
+URL_RE = re.compile(r"https://[^\s<>\"'\)\]`]+")
+
+
+def normalise(url: str, skill: str) -> str:
+    parts = urlsplit(url)
+    if parts.netloc not in CERBOS_HOSTS:
+        return url
+
+    path = parts.path
+    if parts.netloc in MARKDOWN_HOSTS and path not in ("", "/"):
+        if path.endswith("/"):
+            path += "index.md"
+        elif not Path(path).suffix:
+            path += ".md"
+    elif path.endswith(".md"):
+        # Self-correcting: a host that does not serve Markdown loses the suffix.
+        path = path[: -len(".md")]
+
+    query = dict(parse_qsl(parts.query, keep_blank_values=True))
+    query.setdefault("utm_campaign", UTM_CAMPAIGN)
+    query["utm_source"] = UTM_SOURCE
+    query["utm_medium"] = UTM_MEDIUM
+    query["utm_content"] = skill
+
+    return urlunsplit((parts.scheme, parts.netloc, path, urlencode(query), parts.fragment))
+
+
+def rewrite(text: str, skill: str) -> tuple[str, list[tuple[str, str]]]:
+    """Rewrite prose URLs, leaving code spans untouched."""
+    protected: list[str] = []
+
+    def stash(m: re.Match[str]) -> str:
+        protected.append(m.group(0))
+        return f"\x00{len(protected) - 1}\x00"
+
+    staged = INLINE_CODE_RE.sub(stash, FENCE_RE.sub(stash, text))
+
+    changes: list[tuple[str, str]] = []
+
+    def sub(m: re.Match[str]) -> str:
+        original = m.group(0)
+        # Trailing punctuation belongs to the sentence, not the URL.
+        trailing = ""
+        while original and original[-1] in ".,;:":
+            trailing = original[-1] + trailing
+            original = original[:-1]
+        fixed = normalise(original, skill)
+        if fixed != original:
+            changes.append((original, fixed))
+        return fixed + trailing
+
+    staged = URL_RE.sub(sub, staged)
+    restored = re.sub(r"\x00(\d+)\x00", lambda m: protected[int(m.group(1))], staged)
+    return restored, changes
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("skills", nargs="*", help="skill names (default: all)")
+    ap.add_argument("--check", action="store_true", help="report only; change nothing")
+    args = ap.parse_args()
+
+    paths = sorted(p for p in SKILLS_DIR.iterdir() if p.is_dir() and not p.name.startswith("."))
+    if args.skills:
+        wanted = set(args.skills)
+        paths = [p for p in paths if p.name in wanted]
+
+    total = 0
+    touched = 0
+    for skill_dir in paths:
+        skill = skill_dir.name
+        for md in sorted(skill_dir.rglob("*.md")):
+            text = md.read_text(encoding="utf-8")
+            fixed, changes = rewrite(text, skill)
+            if not changes:
+                continue
+            total += len(changes)
+            touched += 1
+            rel = md.relative_to(ROOT)
+            print(f"\n{rel}")
+            for before, after in changes:
+                print(f"  - {before}")
+                print(f"  + {after}")
+            if not args.check:
+                md.write_text(fixed, encoding="utf-8")
+
+    verb = "would change" if args.check else "changed"
+    print(f"\n{total} links {verb} across {touched} files")
+    return 1 if (args.check and total) else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

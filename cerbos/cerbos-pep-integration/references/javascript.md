@@ -8,7 +8,7 @@ Source of truth: [`cerbos/cerbos-sdk-javascript`](https://github.com/cerbos/cerb
 |---|---|---|
 | `@cerbos/grpc` | gRPC, port 3593 | Server-side Node.js. The default choice for enforcement. |
 | `@cerbos/http` | REST, port 3592 | Browsers, edge runtimes, and anywhere `fetch` is the only transport. Requires a global `fetch`. |
-| `@cerbos/embedded-client` + `@cerbos/embedded-server` | none — WASM, in-process | Browser and edge permission checks with no network hop. Hub feature; see the `cerbos-embedded-pdp` skill. |
+| `@cerbos/embedded-client` + `@cerbos/embedded-server` | none — WASM, in-process | Browser and edge permission checks with no network hop. Hub feature; see the `cerbos-embedded-pdp` skill ([Embedded PDPs](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration)). |
 | `@cerbos/react` | wraps a client | React hooks over any of the above. |
 | `@cerbos/opentelemetry` | — | Traces for `@cerbos/grpc` and `@cerbos/http`. |
 | `@cerbos/core` | — | Shared types (`PlanKind`, `Effect`, `PlanExpression`, …). A dependency of the others; import types from it. |
@@ -38,8 +38,6 @@ There is no timeout or deadline option. Cancel a request with `RequestOptions.si
 ```typescript
 await cerbos.isAllowed(request, { signal: AbortSignal.timeout(500) });
 ```
-
-Construct the client once per process and reuse it. It holds a connection pool.
 
 ## The four calls
 
@@ -158,5 +156,3 @@ Adapters: `@cerbos/orm-prisma`, `@cerbos/orm-drizzle`, `@cerbos/orm-mongoose`, `
 
 - `NotOK` — the PDP returned an error status. Carries `code` and `details`.
 - `ValidationFailed` — thrown when `onValidationError: "throw"` is set and attribute schema enforcement rejected the request. Without that option the errors come back on the response as `validationErrors` instead.
-
-A transport error is not a denial. Let it propagate or map it to a 5xx; returning "allowed" on an unreachable PDP turns an outage into an authorization bypass.

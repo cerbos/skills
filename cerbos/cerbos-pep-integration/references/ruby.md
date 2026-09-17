@@ -27,8 +27,6 @@ Cerbos::Client.new(target, tls:, grpc_channel_args: {}, grpc_metadata: {},
 
 `on_validation_error:` takes `:return` (default — read the errors off the response), `:raise`, or a callable.
 
-Build the client once, in an initializer, and reuse it.
-
 **Forking servers** (Puma in cluster mode, Unicorn, Passenger) need care: the underlying `grpc` gem requires version 1.57.0+, `GRPC_ENABLE_FORK_SUPPORT=1`, and `GRPC.prefork` / `GRPC.postfork_parent` / `GRPC.postfork_child` hooks around the fork. Support is Linux-only and experimental. The simpler alternative is to create the client lazily after fork, in each worker.
 
 ## Checking
