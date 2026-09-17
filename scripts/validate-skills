@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import re
 import sys
+import time
 import argparse
 import concurrent.futures
 import urllib.request
@@ -166,18 +167,27 @@ def check_skill(path: Path, f: Findings) -> list[str]:
 
 def check_urls(urls: set[str], f: Findings) -> None:
     def fetch(url: str) -> tuple[str, int | str]:
-        req = urllib.request.Request(
-            url, method="HEAD", headers={"User-Agent": "cerbos-skills-validate"}
-        )
-        try:
-            with urllib.request.urlopen(req, timeout=20) as r:
-                return url, r.status
-        except urllib.error.HTTPError as e:
-            if e.code in (403, 405):  # HEAD refused; the page itself is fine
-                return url, 200
-            return url, e.code
-        except Exception as e:  # noqa: BLE001 - report whatever went wrong
-            return url, type(e).__name__
+        # A transient connection failure is not a broken link. Retry those with
+        # backoff, so one flaky DNS or TLS blip in CI does not fail the build
+        # and teach everyone to ignore this check. A definite HTTP status is
+        # taken at face value and never retried.
+        last: str = "unknown"
+        for attempt in range(3):
+            req = urllib.request.Request(
+                url, method="HEAD", headers={"User-Agent": "cerbos-skills-validate"}
+            )
+            try:
+                with urllib.request.urlopen(req, timeout=30) as r:
+                    return url, r.status
+            except urllib.error.HTTPError as e:
+                if e.code in (403, 405):  # HEAD refused; the page itself is fine
+                    return url, 200
+                return url, e.code
+            except Exception as e:  # noqa: BLE001 - transient; retry
+                last = type(e).__name__
+                if attempt < 2:
+                    time.sleep(2 * (attempt + 1))
+        return url, last
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
         for url, status in pool.map(fetch, sorted(urls)):
