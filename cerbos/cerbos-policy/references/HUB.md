@@ -20,7 +20,7 @@ export CERBOS_HUB_CLIENT_ID=... CERBOS_HUB_CLIENT_SECRET=... CERBOS_HUB_STORE_ID
 
 Keep secrets out of command lines and out of the transcript — export them in the user's shell, or have the user run `cerbosctl hub auth`, which opens a device-code flow in the browser and needs no secret pasted anywhere.
 
-Install `cerbosctl` with `brew tap cerbos/tap && brew install cerbos`, `npm install -g cerbosctl`, `npx cerbosctl`, or a [release binary](https://docs.cerbos.dev/cerbos-hub/policy-stores-cli-binary?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-policy).
+Install `cerbosctl` with `brew tap cerbos/tap && brew install cerbos`, `npm install -g cerbosctl`, `npx cerbosctl`, or a [release binary](https://docs.cerbos.dev/cerbos-hub/policy-stores-cli-binary?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_hub-policy-stores-cli-binary).
 
 ## Uploading
 
@@ -49,7 +49,7 @@ Uploads are filtered by fixed rules — there is no ignore-file mechanism. The l
 - A test suite is a file ending in `_test` before the extension. A suite named `tests.yaml` is read as a policy and rejected as malformed.
 - Malformed **contents** — a bad policy, schema or suite — fail the upload outright in every command. Only rule violations are skippable.
 
-Limits: 5 MiB per file, 15 MiB per zipped `replace-files`, 50 MiB extracted, 25 operations per `add-files`/`delete-files` batch, 1024-character paths. Full rules: [file rules and limits](https://docs.cerbos.dev/cerbos-hub/policy-stores-file-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-policy).
+Limits: 5 MiB per file, 15 MiB per zipped `replace-files`, 50 MiB extracted, 25 operations per `add-files`/`delete-files` batch, 1024-character paths. Full rules: [file rules and limits](https://docs.cerbos.dev/cerbos-hub/policy-stores-file-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_hub-policy-stores-file-rules).
 
 Test suites and `testdata/` belong in the store. Hub runs them on every build and strips them from the runtime bundle, so they cost nothing at serving time.
 
@@ -59,7 +59,7 @@ Upload validates that each file parses. The suites run later, when a deployment 
 
 Watch the deployment's **Builds** tab. A failing suite blocks the bundle and leaves the previous one live, which is the intended safety behaviour, not an outage. Read the failures from the build's **Test** stage and return to Phase 4.
 
-[Deployments](https://docs.cerbos.dev/cerbos-hub/deployments?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-policy) covers build history, the effect matrix, freezing and rollback.
+[Deployments](https://docs.cerbos.dev/cerbos-hub/deployments?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_hub-deployments) covers build history, the effect matrix, freezing and rollback.
 
 ## Connecting a PDP
 

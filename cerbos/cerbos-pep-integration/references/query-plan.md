@@ -48,7 +48,7 @@ Keep the mapper next to the model it maps, and revisit it whenever a policy cond
 
 ## Reference adapters
 
-Documented, published, and covered in the [Cerbos docs](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration):
+Documented, published, and covered in the [Cerbos docs](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-pep-integration_pdp-recipes-query-plan-adapters):
 
 | Package | Language | Target | Entry point | Result |
 |---|---|---|---|---|

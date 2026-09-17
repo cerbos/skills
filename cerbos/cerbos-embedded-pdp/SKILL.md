@@ -13,7 +13,7 @@ metadata:
 
 An embedded PDP (ePDP) evaluates Cerbos policies in-process inside a WebAssembly module, with no network call per check. `@cerbos/embedded-client` downloads a policy bundle from Cerbos Hub and holds it in memory; `@cerbos/embedded-server` supplies the WASM engine that evaluates it. The engine carries no policies and changes only when that package is upgraded.
 
-The ePDP is a **Cerbos Hub** capability. Bundles are built and served by Hub, from an **ePDP rule** on a [deployment](https://docs.cerbos.dev/cerbos-hub/deployments?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp), so the policies have to reach a Hub policy store first ([Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp)). Where there is no Hub account, every check is a network call to a [service PDP](https://docs.cerbos.dev/cerbos-hub/decision-points?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp).
+The ePDP is a **Cerbos Hub** capability. Bundles are built and served by Hub, from an **ePDP rule** on a [deployment](https://docs.cerbos.dev/cerbos-hub/deployments?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_hub-deployments), so the policies have to reach a Hub policy store first ([Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_hub-getting-started)). Where there is no Hub account, every check is a network call to a [service PDP](https://docs.cerbos.dev/cerbos-hub/decision-points?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_hub-decision-points).
 
 ## Where the check runs decides what answers it
 
@@ -62,7 +62,7 @@ The download starts on construction and the first check waits for it, so constru
 
 `principal` carries `id`, `roles`, and `attr`; `resource` carries `kind`, `id`, and `attr`. A denial comes back as a result, not a thrown error — the client throws for bundle and initialization failures ([references/CLIENT.md](references/CLIENT.md)).
 
-Rendering a list uses `planResources` once and filters against the returned condition, rather than `isAllowed` per row: [filtering resources](https://docs.cerbos.dev/cerbos/latest/recipes/filtering-resources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp).
+Rendering a list uses `planResources` once and filters against the returned condition, rather than `isAllowed` per row: [filtering resources](https://docs.cerbos.dev/cerbos/latest/recipes/filtering-resources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_pdp-recipes-filtering-resources).
 
 React components get the client through `CerbosProvider` and the `useIsAllowed` / `useCheckResource` / `useCheckResources` hooks from `@cerbos/react`, which re-render when a bundle update activates → [references/CLIENT.md](references/CLIENT.md).
 
@@ -74,4 +74,4 @@ React components get the client through `CerbosProvider` and the `useIsAllowed` 
 | [references/CLIENT.md](references/CLIENT.md) | Wiring the client: options and defaults, credentials, dynamic scopes, bundle updates, error handling, React, limits |
 | [references/WASM.md](references/WASM.md) | Vite, Webpack, Rspack, Next.js/Turbopack, Node.js, Cloudflare Workers, URL, precompiled |
 
-Canonical documentation: [Embedded PDPs](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp) and the [`@cerbos/embedded-client` API reference](https://cerbos.github.io/cerbos-sdk-javascript/modules/_cerbos_embedded-client.html).
+Canonical documentation: [Embedded PDPs](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_hub-deployments-epdp-rules) and the [`@cerbos/embedded-client` API reference](https://cerbos.github.io/cerbos-sdk-javascript/modules/_cerbos_embedded-client.html).

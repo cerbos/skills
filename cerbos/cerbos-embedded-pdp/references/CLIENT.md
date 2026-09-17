@@ -86,13 +86,13 @@ Set on the `Embedded` constructor beside `policies` and `wasm`, and fixed for th
 
 | Option | Default | Effect |
 |---|---|---|
-| `defaultPolicyVersion` | `"default"` | [Policy version](https://docs.cerbos.dev/cerbos/latest/configuration/engine?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp) for requests that name none; a request can override it. |
+| `defaultPolicyVersion` | `"default"` | [Policy version](https://docs.cerbos.dev/cerbos/latest/configuration/engine?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_pdp-configuration-engine) for requests that name none; a request can override it. |
 | `defaultScope` | `""` | Scope for requests that name none; a request can override it. |
 | `globals` | `{}` | Values exposed to policy conditions — feature flags, region, environment. |
 | `lenientScopeSearch` | `false` | On, a missing exact scope falls back through its ancestors. Off, the exact scope must exist. |
-| `schemaEnforcement` | `NONE` | `NONE` skips input schema validation, `WARN` reports errors in the response, `REJECT` denies on a validation failure. See [schema enforcement](https://docs.cerbos.dev/cerbos/latest/configuration/schema?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp). |
+| `schemaEnforcement` | `NONE` | `NONE` skips input schema validation, `WARN` reports errors in the response, `REJECT` denies on a validation failure. See [schema enforcement](https://docs.cerbos.dev/cerbos/latest/configuration/schema?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_pdp-configuration-schema). |
 | `onDecision` | no-op | Receives a decision log entry per check — request, response, metadata. The local substitute for Hub audit logging. |
-| `decodeJWTPayload` | throws | Verifies and decodes JWTs passed as [auxiliary data](https://docs.cerbos.dev/cerbos/latest/configuration/auxdata?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp). Policies that read JWT claims need it supplied, typically via `jose`. |
+| `decodeJWTPayload` | throws | Verifies and decodes JWTs passed as [auxiliary data](https://docs.cerbos.dev/cerbos/latest/configuration/auxdata?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_pdp-configuration-auxdata). Policies that read JWT claims need it supplied, typically via `jose`. |
 
 ## Errors
 
@@ -151,7 +151,7 @@ function DeleteButton() {
 - **The Admin API.** No administrative endpoints exist in the embedded runtime.
 - **Runtime reconfiguration.** `globals`, `schemaEnforcement` and the rest are settled at construction.
 
-Platform support covers browsers, Node.js, edge runtimes and React Native. Native iOS and Android SDKs are planned; Go, Python and the other server-side languages use a [service PDP](https://docs.cerbos.dev/cerbos-hub/decision-points?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-embedded-pdp).
+Platform support covers browsers, Node.js, edge runtimes and React Native. Native iOS and Android SDKs are planned; Go, Python and the other server-side languages use a [service PDP](https://docs.cerbos.dev/cerbos-hub/decision-points?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_hub-decision-points).
 
 One `Embedded` client is safe under concurrent checks. Several clients built on one `PolicyLoader` share the bundle, and an activation reaches all of them.
 

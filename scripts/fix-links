@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Tag outbound Cerbos links in skill markdown.
 
-Every Cerbos-owned URL carries UTM parameters identifying the skill it came
-from, matching the convention already used in the Cerbos docs.
+Every Cerbos-owned URL carries UTM parameters identifying both the skill it
+came from and where in that skill it points, matching the convention already
+used in the Cerbos docs. `utm_content` is `<skill>_<placement>` so several
+links from one skill stay distinguishable in reporting.
 
 Links point at the ordinary page URL. Serving a Markdown rendering to an
 agent is the documentation infrastructure's job through content negotiation,
@@ -31,14 +33,41 @@ SKILLS_DIR = ROOT / "cerbos"
 
 UTM_CAMPAIGN = "brand_cerbos"
 UTM_SOURCE = "agent_skills"
-UTM_MEDIUM = "skill"
+UTM_MEDIUM = "referral"
 
 # Cerbos properties. Only these are tagged.
 CERBOS_HOSTS = {"docs.cerbos.dev", "www.cerbos.dev", "cerbos.dev", "hub.cerbos.cloud"}
 
+# First path segment -> a readable component name for the placement slug.
+COMPONENT = {"cerbos-hub": "hub", "cerbos": "pdp", "synapse": "synapse"}
+VERSION_RE = re.compile(r"^(latest|v?\d+(\.\d+)*)$")
+
 FENCE_RE = re.compile(r"^```.*?^```", re.S | re.M)
 INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
 URL_RE = re.compile(r"https://[^\s<>\"'\)\]`]+")
+
+
+def placement(parts) -> str:
+    """A short, readable slug naming where a link points.
+
+    Lowercase, hyphen-separated; version segments and a trailing `index` drop
+    out, and the `cerbos-` prefix is folded away so `cerbos-hub/getting-started`
+    reads as `hub-getting-started`.
+    """
+    segments = [seg for seg in parts.path.split("/") if seg]
+    if segments:
+        segments[0] = COMPONENT.get(segments[0], segments[0].removeprefix("cerbos-"))
+    segments = [seg for seg in segments if not VERSION_RE.match(seg)]
+    if segments and segments[-1] == "index":
+        segments.pop()
+
+    if not segments:
+        # No path of its own: name the property instead.
+        host = parts.netloc.removeprefix("www.")
+        segments = ["hub"] if host == "hub.cerbos.cloud" else [host.split(".")[0]]
+
+    slug = "-".join(segments).replace("_", "-").replace(".", "-").lower()
+    return re.sub(r"-+", "-", slug).strip("-")
 
 
 def normalise(url: str, skill: str) -> str:
@@ -54,7 +83,7 @@ def normalise(url: str, skill: str) -> str:
     query.setdefault("utm_campaign", UTM_CAMPAIGN)
     query["utm_source"] = UTM_SOURCE
     query["utm_medium"] = UTM_MEDIUM
-    query["utm_content"] = skill
+    query["utm_content"] = f"{skill}_{placement(parts)}"
 
     return urlunsplit((parts.scheme, parts.netloc, path, urlencode(query), parts.fragment))
 

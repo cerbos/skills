@@ -2,7 +2,7 @@
 
 Phase 3, for authorization written directly in application code. Each pattern below gives the shape you found, the construct that carries it, and the thing that usually goes wrong.
 
-Policy syntax and CEL belong to `cerbos-policy` ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)); the snippets here are only enough to show the shape of the target.
+Policy syntax and CEL belong to `cerbos-policy` ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies)); the snippets here are only enough to show the shape of the target.
 
 ## The inline role check
 
@@ -20,7 +20,7 @@ The simplest case: a rule with `roles`.
 
 Two things to check before writing it down.
 
-**Singular or plural.** `user.role` (one string) and `user.roles` (a list) migrate identically — Cerbos always takes a list — but they behave differently under [conflict resolution](https://docs.cerbos.dev/cerbos/latest/policies/evaluation?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration). If a principal holds several roles and any one of them produces an allow for the action, the result is allow. Code written as `if (user.role === 'viewer') return readOnlyView()` assumed exactly one role and will grant more than it used to once a user carries both `viewer` and `editor`. Flag every rule whose source read a singular role field.
+**Singular or plural.** `user.role` (one string) and `user.roles` (a list) migrate identically — Cerbos always takes a list — but they behave differently under [conflict resolution](https://docs.cerbos.dev/cerbos/latest/policies/evaluation?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-evaluation). If a principal holds several roles and any one of them produces an allow for the action, the result is allow. Code written as `if (user.role === 'viewer') return readOnlyView()` assumed exactly one role and will grant more than it used to once a user carries both `viewer` and `editor`. Flag every rule whose source read a singular role field.
 
 **Negative or positive.** `!== 'admin'` throwing is a deny written as the absence of an allow. Cerbos is deny-by-default, so the positive rule above reproduces it — unless the code path also *grants* something to non-admins further down, in which case you have two rules and the order they appeared in matters for the Purpose column, not for the policy.
 
@@ -31,7 +31,7 @@ if doc.owner_id != current_user.id:
     raise PermissionDenied
 ```
 
-A [derived role](https://docs.cerbos.dev/cerbos/latest/policies/derived_roles?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration), not a condition repeated on every rule.
+A [derived role](https://docs.cerbos.dev/cerbos/latest/policies/derived_roles?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-derived-roles), not a condition repeated on every rule.
 
 ```yaml
 definitions:
@@ -59,7 +59,7 @@ Two constructs fit, and they answer different questions.
 | Use | When |
 |---|---|
 | A condition or derived role over a tenant attribute | Every tenant obeys the same rules; only the data is partitioned. This is the common case |
-| [Scoped policies](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) | Tenants genuinely have *different rules* — one requires a second approver, another disables sharing |
+| [Scoped policies](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-scoped-policies) | Tenants genuinely have *different rules* — one requires a second approver, another disables sharing |
 
 Reach for scopes only when the second is true. Scopes are a policy hierarchy with real constraints: a request carrying scope `a.b.c` needs policies at `a.b.c`, `a.b`, `a` and the base to exist unless lenient scope search is enabled, `scopePermissions` must agree within a scope, and derived roles and variables are not inherited down the chain — each policy imports them again. A per-tenant condition costs none of that.
 
@@ -108,13 +108,13 @@ Record the move in the inventory. Relocating a check from middleware to handler 
 Document.objects.filter(team_id__in=user.team_ids)
 ```
 
-Not a `CheckResources` call. Use [`PlanResources`](https://docs.cerbos.dev/cerbos/latest/recipes/filtering-resources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration): it returns `ALWAYS_ALLOWED`, `ALWAYS_DENIED`, or a `CONDITIONAL` filter as an AST that a [query plan adapter](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) turns into a native query.
+Not a `CheckResources` call. Use [`PlanResources`](https://docs.cerbos.dev/cerbos/latest/recipes/filtering-resources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-recipes-filtering-resources): it returns `ALWAYS_ALLOWED`, `ALWAYS_DENIED`, or a `CONDITIONAL` filter as an AST that a [query plan adapter](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-recipes-query-plan-adapters) turns into a native query.
 
 The rule must be written once and serve both paths — the same resource policy produces the per-instance decision for `CheckResources` and the residual filter for `PlanResources`. Conditions over resource attributes appear in the filter; conditions over principal attributes only are resolved before the plan is returned and do not.
 
 **The real constraint.** A condition can only reach the filter if the attribute it names is a column, or something the adapter can map to one. A scope that joins across tables — *documents in projects whose owner is in my department* — has no attribute to condition on. Either denormalise the fact onto the row, or leave that part of the filter in the query and let Cerbos narrow the rest. Put it on the gap register either way, since it is the scope case that most often stalls a migration.
 
-`cerbos-pep-integration` ([query plan adapters](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)) owns the adapter wiring.
+`cerbos-pep-integration` ([query plan adapters](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-recipes-query-plan-adapters)) owns the adapter wiring.
 
 ## The database permission table
 
@@ -178,6 +178,6 @@ Hand-rolled guards often say *why*:
 throw new Forbidden('Approval limit exceeded for your role')
 ```
 
-Cerbos returns `EFFECT_ALLOW` or `EFFECT_DENY` and nothing else. To keep the message, attach an [output](https://docs.cerbos.dev/cerbos/latest/policies/outputs?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) to the rule and have the PEP render it. The output does not change the effect, and outputs on every rule cost evaluation time — use them where the user-facing message matters, not as a debugging habit.
+Cerbos returns `EFFECT_ALLOW` or `EFFECT_DENY` and nothing else. To keep the message, attach an [output](https://docs.cerbos.dev/cerbos/latest/policies/outputs?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-outputs) to the rule and have the PEP render it. The output does not change the effect, and outputs on every rule cost evaluation time — use them where the user-facing message matters, not as a debugging habit.
 
 The `404`-instead-of-`403` pattern (hiding existence from unauthorised users) is a PEP behaviour, not a policy one. Record it in Purpose so the PEP keeps doing it after the flip.

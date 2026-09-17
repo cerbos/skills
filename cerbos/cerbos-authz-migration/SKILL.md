@@ -11,7 +11,7 @@ metadata:
 
 Find the rules that already exist, extract them into a spec, map them onto the Cerbos model, and cut over behind a shadow period.
 
-This skill produces a **spec and a cutover plan**, not policy YAML. Generation, tests and validation belong to `cerbos-policy` ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)), and Phase 2 produces exactly the spec its intake consumes.
+This skill produces a **spec and a cutover plan**, not policy YAML. Generation, tests and validation belong to `cerbos-policy` ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies)), and Phase 2 produces exactly the spec its intake consumes.
 
 ## What the move buys
 
@@ -37,7 +37,7 @@ Three answers before any searching.
 | **Cerbos Hub policy store + deployment** (default) | Phases 4-6 | During shadow mode you edit rules daily; Hub compiles, runs the suites, pushes to every PDP in seconds, and freeze/rollback is the migration's undo |
 | **Git repository** | One PDP, one environment, an existing pipeline | Commit and let the pipeline distribute; you own testing and rollback |
 
-Setup is `cerbos-hub-setup` ([Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)). Record the answers and carry on — moving between destinations later is PDP configuration, not a policy rewrite.
+Setup is `cerbos-hub-setup` ([Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_hub-getting-started)). Record the answers and carry on — moving between destinations later is PDP configuration, not a policy rewrite.
 
 ### Phase 1 — Discover
 
@@ -98,20 +98,20 @@ Decide which Cerbos construct carries each row, and record what does not fit.
 | What the source expresses | Cerbos construct |
 |---|---|
 | A static role from the IdP | `roles` on a rule |
-| A role that only holds in context — owner, team member, same region | [derived role](https://docs.cerbos.dev/cerbos/latest/policies/derived_roles?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) with a `condition` |
-| A per-user exception or override | [principal policy](https://docs.cerbos.dev/cerbos/latest/policies/principal_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) (evaluated first; an explicit effect there is final for that action) |
-| An exhaustive cap — "this role may do only these things" | [role policy](https://docs.cerbos.dev/cerbos/latest/policies/role_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) `allowActions`, which narrows but cannot grant |
-| A tenant, region or department variant of a rule set | [scoped policies](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration), plus `scopePermissions` to choose override-parent or require-parental-consent |
-| A predicate over request data | CEL [`condition`](https://docs.cerbos.dev/cerbos/latest/policies/conditions?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) |
-| The same predicate in many rules | [exported variable](https://docs.cerbos.dev/cerbos/latest/policies/variables?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration); a shared literal is an exported constant |
-| An org chart or containment path | dotted scope strings plus the [hierarchy CEL functions](https://docs.cerbos.dev/cerbos/latest/recipes/hierarchies-and-multi-tenancy?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) |
-| A list endpoint or ORM scope | [`PlanResources`](https://docs.cerbos.dev/cerbos/latest/recipes/filtering-resources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) and a query plan adapter |
+| A role that only holds in context — owner, team member, same region | [derived role](https://docs.cerbos.dev/cerbos/latest/policies/derived_roles?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-derived-roles) with a `condition` |
+| A per-user exception or override | [principal policy](https://docs.cerbos.dev/cerbos/latest/policies/principal_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-principal-policies) (evaluated first; an explicit effect there is final for that action) |
+| An exhaustive cap — "this role may do only these things" | [role policy](https://docs.cerbos.dev/cerbos/latest/policies/role_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-role-policies) `allowActions`, which narrows but cannot grant |
+| A tenant, region or department variant of a rule set | [scoped policies](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-scoped-policies), plus `scopePermissions` to choose override-parent or require-parental-consent |
+| A predicate over request data | CEL [`condition`](https://docs.cerbos.dev/cerbos/latest/policies/conditions?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-conditions) |
+| The same predicate in many rules | [exported variable](https://docs.cerbos.dev/cerbos/latest/policies/variables?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-variables); a shared literal is an exported constant |
+| An org chart or containment path | dotted scope strings plus the [hierarchy CEL functions](https://docs.cerbos.dev/cerbos/latest/recipes/hierarchies-and-multi-tenancy?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-recipes-hierarchies-and-multi-tenancy) |
+| A list endpoint or ORM scope | [`PlanResources`](https://docs.cerbos.dev/cerbos/latest/recipes/filtering-resources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-recipes-filtering-resources) and a query plan adapter |
 | Per-tenant custom roles defined by users at runtime | Static policies, dynamic context: pass the assignments as principal attributes |
 | "Who is this user, what are their attributes" | Request attributes, supplied by the PEP. Not policy |
 
 Per-source mapping tables: [references/MAPPING-CODE.md](references/MAPPING-CODE.md) for hand-rolled code, [references/MAPPING-SYSTEMS.md](references/MAPPING-SYSTEMS.md) for OPA/Rego, Casbin, Oso, SpiceDB/OpenFGA, Keycloak and Cedar.
 
-**The one constraint that reshapes rules.** The PDP is stateless and holds none of your data. Every fact a condition needs arrives in the request. A rule that today runs a query — *is this user in the group, does the parent folder grant access, how many seats has this account used* — becomes a rule over an attribute somebody has to supply. Three ways: the PEP resolves it before calling (`cerbos-pep-integration`; [API](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)), a Synapse data source fetches it inside the authorization path (`cerbos-synapse-extension`; [Synapse data sources](https://docs.cerbos.dev/synapse/latest/extensions/data-sources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)), or the existing service keeps answering that one question and Cerbos consumes the answer.
+**The one constraint that reshapes rules.** The PDP is stateless and holds none of your data. Every fact a condition needs arrives in the request. A rule that today runs a query — *is this user in the group, does the parent folder grant access, how many seats has this account used* — becomes a rule over an attribute somebody has to supply. Three ways: the PEP resolves it before calling (`cerbos-pep-integration`; [API](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-api)), a Synapse data source fetches it inside the authorization path (`cerbos-synapse-extension`; [Synapse data sources](https://docs.cerbos.dev/synapse/latest/extensions/data-sources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_synapse-extensions-data-sources)), or the existing service keeps answering that one question and Cerbos consumes the answer.
 
 **Gap register.** One row per thing that does not survive the move, each ending in a decision the user makes.
 
@@ -119,7 +119,7 @@ Per-source mapping tables: [references/MAPPING-CODE.md](references/MAPPING-CODE.
 |---|---|---|
 | Ordered / first-match rule evaluation | Casbin priority models, firewall-style rule lists | Cerbos has fixed conflict resolution — deny wins for a role, allow wins across roles. Restate the intent; there is no ordering knob |
 | Graph reachability over stored relationships | SpiceDB, OpenFGA, Oso relations, Cedar `in` chains | Resolve to an attribute, fetch via Synapse, or keep the relationship service. See MAPPING-SYSTEMS.md — this one is real and not papered over |
-| Effects beyond allow and deny | Keycloak consensus strategies, Rego `warn` sets, audit-only modes | The API returns `EFFECT_ALLOW` or `EFFECT_DENY`. An [output](https://docs.cerbos.dev/cerbos/latest/policies/outputs?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) can carry a message alongside the decision but does not change it |
+| Effects beyond allow and deny | Keycloak consensus strategies, Rego `warn` sets, audit-only modes | The API returns `EFFECT_ALLOW` or `EFFECT_DENY`. An [output](https://docs.cerbos.dev/cerbos/latest/policies/outputs?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-outputs) can carry a message alongside the decision but does not change it |
 | Rules that compute data rather than decide | Rego rules producing documents, transforms, aggregations | A condition must evaluate to boolean. This logic stays in the application |
 | Conditions needing a join or an aggregate | ORM scopes spanning tables, seat counts, quota checks | Expressible over resource attributes → `PlanResources`. Otherwise it stays in the query |
 | Stateful conditions | Rate limits, counters, "third attempt today" | `now()` exists; state does not. Keep these outside Cerbos |

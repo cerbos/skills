@@ -27,7 +27,7 @@ Two consequences:
 | Context | Use |
 |---|---|
 | **Server-side enforcement** — API handlers, server actions, background jobs, gateways | A service PDP over gRPC or HTTP. This is the gate; it is the only place a decision binds. |
-| **Browser UI** — show, hide, enable, disable | An embedded PDP evaluating a Hub-built policy bundle in-process, with no network hop → **`cerbos-embedded-pdp`** skill ([Embedded PDPs](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration)). |
+| **Browser UI** — show, hide, enable, disable | An embedded PDP evaluating a Hub-built policy bundle in-process, with no network hop → **`cerbos-embedded-pdp`** skill ([Embedded PDPs](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-pep-integration_hub-deployments-epdp-rules)). |
 
 A browser application usually needs both, and they are not alternatives. The ePDP decides what to render; the server-side check decides what actually happens. A UI-only check is a suggestion, because the request can be replayed by hand.
 
@@ -90,7 +90,7 @@ Single and named-token forms, keyset rules, and the claim paths: [references/api
 
 The PEP code does not change with where the PDP gets its policies. Disk, a git repository, or a Cerbos Hub bundle — same endpoint, same SDK, same request, same response. Policy distribution is an operational choice, not an integration one.
 
-What it does change is what you operate. Past a single instance on one machine, the recommended production shape is a **Hub-connected PDP**: Hub compiles and tests policies once per change, signs a bundle, pushes it to every connected PDP within seconds, and reports which bundle each one is running. → **`cerbos-hub-setup`** skill ([Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration)).
+What it does change is what you operate. Past a single instance on one machine, the recommended production shape is a **Hub-connected PDP**: Hub compiles and tests policies once per change, signs a bundle, pushes it to every connected PDP within seconds, and reports which bundle each one is running. → **`cerbos-hub-setup`** skill ([Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-pep-integration_hub-getting-started)).
 
 A local PDP over a policy directory is enough to develop against:
 
@@ -103,7 +103,7 @@ docker run --rm -p 3592:3592 -p 3593:3593 \
 - Ports: **3593 gRPC**, **3592 HTTP**. Prefer gRPC from a server; several SDKs offer nothing else.
 - Enable TLS whenever the hop leaves the machine. The PDP trusts everything the PEP sends, so the link has to be tamper-proof. Most SDKs default to TLS and want an explicit opt-out for local plaintext; the Ruby and JavaScript gRPC clients make you state it either way, and the Python client and the Laravel package default to *no* TLS — check the language reference before shipping.
 - Build the client once per process and share it. It holds a channel or a connection pool.
-- [Deployment model](https://docs.cerbos.dev/cerbos/latest/deployment/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration) — service, sidecar or DaemonSet — changes latency and blast radius, not your code. A [sidecar](https://docs.cerbos.dev/cerbos/latest/deployment/k8s-sidecar?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration) reached over a Unix domain socket is the lowest-latency option, and most SDKs accept a `unix:` target directly.
+- [Deployment model](https://docs.cerbos.dev/cerbos/latest/deployment/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-pep-integration_pdp-deployment) — service, sidecar or DaemonSet — changes latency and blast radius, not your code. A [sidecar](https://docs.cerbos.dev/cerbos/latest/deployment/k8s-sidecar?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-pep-integration_pdp-deployment-k8s-sidecar) reached over a Unix domain socket is the lowest-latency option, and most SDKs accept a `unix:` target directly.
 
 ## References
 
@@ -113,4 +113,4 @@ docker run --rm -p 3592:3592 -p 3593:3593 \
 | [references/query-plan.md](references/query-plan.md) | Filtering any list or query. Adapters, mappers, operator coverage per store, and how to write your own. |
 | `references/<language>.md` | Install, connect, the four calls, and the query-plan adapter for one language. See the table above. |
 
-Writing or changing the policies themselves is the **`cerbos-policy`** skill ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration)). Getting them to a PDP is **`cerbos-hub-setup`**. Browser-side evaluation is **`cerbos-embedded-pdp`**.
+Writing or changing the policies themselves is the **`cerbos-policy`** skill ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-pep-integration_pdp-policies)). Getting them to a PDP is **`cerbos-hub-setup`**. Browser-side evaluation is **`cerbos-embedded-pdp`**.

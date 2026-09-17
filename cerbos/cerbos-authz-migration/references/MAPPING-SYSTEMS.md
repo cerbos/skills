@@ -10,24 +10,24 @@ Three constraints apply no matter which system you are leaving, and they account
 
 **No data.** The Cerbos PDP is stateless and holds none of your entities. Every system below can, in some form, resolve a fact about the world during evaluation — a bundled data document, a grouping table, a tuple store, an entity store. In Cerbos that fact arrives as a request attribute. The lookup does not disappear; it moves to the PEP, to a Synapse data source, or to a service that keeps answering it.
 
-**No ordering.** Cerbos [conflict resolution](https://docs.cerbos.dev/cerbos/latest/policies/evaluation?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) is fixed: for a single role, a matching deny beats a matching allow; across roles, an allow from any role wins; anything without an explicit allow is denied. There is no priority field and no first-match. A rule set whose meaning depends on evaluation order has to be restated, not translated.
+**No ordering.** Cerbos [conflict resolution](https://docs.cerbos.dev/cerbos/latest/policies/evaluation?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-evaluation) is fixed: for a single role, a matching deny beats a matching allow; across roles, an allow from any role wins; anything without an explicit allow is denied. There is no priority field and no first-match. A rule set whose meaning depends on evaluation order has to be restated, not translated.
 
-**Boolean only.** A condition must evaluate to a boolean. Rules that compute documents, transform inputs, or aggregate over data stay in the application. An [output](https://docs.cerbos.dev/cerbos/latest/policies/outputs?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) can return a map alongside the decision, but it does not participate in it.
+**Boolean only.** A condition must evaluate to a boolean. Rules that compute documents, transform inputs, or aggregate over data stay in the application. An [output](https://docs.cerbos.dev/cerbos/latest/policies/outputs?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-outputs) can return a map alongside the decision, but it does not participate in it.
 
 ## OPA / Rego
 
 | Rego | Cerbos |
 |---|---|
-| A package per resource or service | A [resource policy](https://docs.cerbos.dev/cerbos/latest/policies/resource_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) per resource kind |
+| A package per resource or service | A [resource policy](https://docs.cerbos.dev/cerbos/latest/policies/resource_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-resource-policies) per resource kind |
 | `default allow = false` | Deny-by-default, already the engine's behaviour — nothing to write |
 | Multiple definitions of `allow`, implicitly OR'd | Multiple rules for the same action; any matching allow grants |
 | A rule body's conjunction of expressions | A `condition` with an `all` block |
 | `input.user`, `input.action`, `input.resource` | `request.principal`, the rule's `actions`, `request.resource` |
 | A role test inside a body | `roles` on the rule, hoisted out of the condition |
-| Helper rules used as named predicates | [Exported variables](https://docs.cerbos.dev/cerbos/latest/policies/variables?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration), imported where needed |
+| Helper rules used as named predicates | [Exported variables](https://docs.cerbos.dev/cerbos/latest/policies/variables?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-variables), imported where needed |
 | Constants in `data` | Exported constants |
 | Entity data loaded into `data` | Request attributes. There is no store to load them into |
-| Partial evaluation for filtering | [`PlanResources`](https://docs.cerbos.dev/cerbos/latest/recipes/filtering-resources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration); both return a residual condition for a query layer |
+| Partial evaluation for filtering | [`PlanResources`](https://docs.cerbos.dev/cerbos/latest/recipes/filtering-resources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-recipes-filtering-resources); both return a residual condition for a query layer |
 | `deny[msg]` sets, as used for admission control | `EFFECT_DENY` rules; the message becomes an `output`, not part of the effect |
 
 **Does not survive.** Comprehensions and aggregation over a data document — `count`, `sum`, set operations across entities — have no equivalent, because the entities are not there to iterate. Rules producing non-boolean values. Recursive or mutually-dependent rule graphs. Anything relying on the bundle being a queryable document rather than a request payload.
@@ -41,10 +41,10 @@ Three constraints apply no matter which system you are leaving, and they account
 | `[request_definition]` subject, object, action | `request.principal`, `request.resource`, the requested action |
 | A `p` policy line — subject, object, action | One rule in the resource policy for that object |
 | A `g` grouping line assigning a user to a role | Role assignment. It leaves the policy entirely and is sent as `principal.roles` from the IdP or the app |
-| A `g` line nesting one role inside another | Flatten into the roles sent at request time, or express as [role policy](https://docs.cerbos.dev/cerbos/latest/policies/role_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) `parentRoles` when the child role genuinely narrows the parent |
+| A `g` line nesting one role inside another | Flatten into the roles sent at request time, or express as [role policy](https://docs.cerbos.dev/cerbos/latest/policies/role_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-role-policies) `parentRoles` when the child role genuinely narrows the parent |
 | `[matchers]` expression | A CEL `condition`, once the role and object matching is hoisted into `roles` and the resource `kind` |
 | Path or pattern matching on the object | The resource `kind` plus action wildcards, or a `matches()` condition on an attribute. Cerbos action wildcards honour the `:` delimiter — `view:*` matches `view:public` but not `view` |
-| A domain or tenant argument in the model | A tenant attribute in a condition, or a [scope](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) if tenants have genuinely different rules |
+| A domain or tenant argument in the model | A tenant attribute in a condition, or a [scope](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-scoped-policies) if tenants have genuinely different rules |
 | An explicit deny effect in a policy line | `EFFECT_DENY` on the rule |
 
 **Does not survive.** The `[policy_effect]` line. Casbin lets the effect expression itself be configured — allow-override, deny-override, priority, and custom combinations — and Cerbos's resolution is fixed. A deny-override model maps cleanly and needs no thought. A priority model does not map at all: work out what the priorities were compensating for and write that intent directly.
@@ -58,7 +58,7 @@ Three constraints apply no matter which system you are leaving, and they account
 | `allow(actor, action, resource)` rules | Resource policy rules |
 | A resource block's declared `permissions` | The rule's `actions` |
 | A resource block's declared `roles` | Static `roles`, if assigned by the IdP; otherwise see below |
-| A role held *on a specific resource* | A [derived role](https://docs.cerbos.dev/cerbos/latest/policies/derived_roles?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) conditioned on an attribute that names the actor's relation to that instance |
+| A role held *on a specific resource* | A [derived role](https://docs.cerbos.dev/cerbos/latest/policies/derived_roles?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-derived-roles) conditioned on an attribute that names the actor's relation to that instance |
 | Rule bodies testing actor or resource fields | A CEL `condition` |
 | Shorthand rules implying a role on a related resource | Relationship resolution — see the caveat below |
 | Data filtering / list endpoints | `PlanResources` and a query plan adapter |
@@ -79,7 +79,7 @@ A Zanzibar-style system stores relationship tuples — *this object, this relati
 | A named permission on a type | An action |
 | A direct relation that behaves like a role on an object — viewer, editor, owner | A derived role conditioned on an attribute naming the actor's relation to this instance |
 | A contextual tuple supplied per request | The closest analogue to a request attribute, and the right mental model for what the PEP now sends |
-| Schema type constraints | JSON [schemas](https://docs.cerbos.dev/cerbos/latest/policies/schemas?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) on the resource policy, enforced at `warn` or `reject` by PDP configuration |
+| Schema type constraints | JSON [schemas](https://docs.cerbos.dev/cerbos/latest/policies/schemas?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-schemas) on the resource policy, enforced at `warn` or `reject` by PDP configuration |
 | A list-objects query | `PlanResources`, but only over attributes — not over the graph |
 
 **What does not map, plainly.** Computed and tuple-to-userset relations — *a viewer of a document is anyone who is a viewer of its parent folder*, group-within-group nesting, wildcard subjects, recursive containment. These are the core of the model, and Cerbos cannot evaluate them: there is no data to walk. A schema that is mostly `permission X = relation from parent` lines is mostly the part that does not port.
@@ -106,7 +106,7 @@ Keycloak has two halves and only one of them moves. It stays your identity provi
 | Authorization scopes on a resource | Actions |
 | A role-based policy | `roles` on a rule |
 | A group-based policy | A condition over a group attribute, or a derived role |
-| A user-based policy | A [principal policy](https://docs.cerbos.dev/cerbos/latest/policies/principal_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) |
+| A user-based policy | A [principal policy](https://docs.cerbos.dev/cerbos/latest/policies/principal_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-principal-policies) |
 | A time-based policy | A condition using `now()` |
 | A client or scope policy | A condition over a token claim, sent as auxiliary JWT data |
 | A rule written in script | A CEL condition, rewritten by hand — the semantics do not transfer mechanically |
@@ -138,7 +138,7 @@ The closest fit of the named systems — the evaluation model genuinely lines up
 
 **Does not survive.** The entity store. Cedar resolves `in` against a supplied entity hierarchy — group membership, resource containment, parent chains — and Cerbos has no entity graph. Two replacements, and which one fits depends on the shape:
 
-- **A containment path** — org, then department, then team — maps well to a dotted string plus the [hierarchy functions](https://docs.cerbos.dev/cerbos/latest/recipes/hierarchies-and-multi-tenancy?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) (`ancestorOf`, `descendentOf`, `immediateParentOf`, `siblingOf` and the rest), which is the same idea expressed as a prefix comparison rather than a graph walk.
+- **A containment path** — org, then department, then team — maps well to a dotted string plus the [hierarchy functions](https://docs.cerbos.dev/cerbos/latest/recipes/hierarchies-and-multi-tenancy?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-recipes-hierarchies-and-multi-tenancy) (`ancestorOf`, `descendentOf`, `immediateParentOf`, `siblingOf` and the rest), which is the same idea expressed as a prefix comparison rather than a graph walk.
 - **Arbitrary membership** — a user in several unrelated groups — becomes a principal attribute listing them, with the condition testing membership.
 
 Cedar's action groups flatten into action wildcards where the naming supports it; where it does not, list the actions explicitly.

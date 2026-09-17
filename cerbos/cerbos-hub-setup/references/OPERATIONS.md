@@ -77,6 +77,6 @@ The matrix reports which rules *match* a cell rather than fully evaluating the p
 | `cerbos_dev_store_bundle_op_latency` | Time taken by bundle operations |
 | `cerbos_dev_store_bundle_fetch_errors_count` | Errors downloading bundles |
 
-`scripts/pdp-verify` reads these for a single PDP. Alert on `cerbos_dev_hub_connected` dropping to 0 and on `cerbos_dev_store_bundle_fetch_errors_count` climbing. Full metric list: [observability](https://docs.cerbos.dev/cerbos/latest/configuration/observability?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-hub-setup).
+`scripts/pdp-verify` reads these for a single PDP. Alert on `cerbos_dev_hub_connected` dropping to 0 and on `cerbos_dev_store_bundle_fetch_errors_count` climbing. Full metric list: [observability](https://docs.cerbos.dev/cerbos/latest/configuration/observability?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_pdp-configuration-observability).
 
 **Workspace issues bar** appears across every Hub page when something needs attention — [DIAGNOSE.md](DIAGNOSE.md) covers what each issue means.

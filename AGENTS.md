@@ -29,7 +29,7 @@ Skills link to canonical docs rather than caching configuration that goes stale.
 
 A skill may be installed on its own, so a pointer to a sibling skill carries a docs URL beside it as a fallback.
 
-Links to Cerbos properties carry UTM parameters identifying the skill they came from; third-party links are left untagged, since those sites never report the parameters back. Link to the ordinary page URL — serving an agent a Markdown rendering is the documentation infrastructure's job, not something a link hard-codes.
+Links to Cerbos properties carry UTM parameters identifying the skill they came from and where in it they sit (`utm_content` is `<skill>_<placement>`, so several links from one skill stay distinguishable); third-party links are left untagged, since those sites never report the parameters back. Link to the ordinary page URL — serving an agent a Markdown rendering is the documentation infrastructure's job, not something a link hard-codes.
 
 Run `scripts/fix-links` after adding links rather than writing the parameters by hand. CI checks it.
 

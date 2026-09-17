@@ -21,7 +21,7 @@ Hub continuously checks the workspace and surfaces problems in an issues bar acr
 | `failed to authenticate to Cerbos Hub` | `CERBOS_HUB_CLIENT_ID` / `CERBOS_HUB_CLIENT_SECRET` wrong or unset, and no saved login in the keyring |
 | `permission denied for store` | The credential is not scoped to this store, or is read-only. A **deployment** credential lands here — uploads need the credential created on the **store**, type Read & write |
 | `store doesn't exist` | `CERBOS_HUB_STORE_ID` names no store the credential can see |
-| `no usable files` | Every file broke a [file rule](https://docs.cerbos.dev/cerbos-hub/policy-stores-file-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-hub-setup); the ignored files are listed. Usually the wrong directory, or a tree holding no `.yaml`/`.yml`/`.json` |
+| `no usable files` | Every file broke a [file rule](https://docs.cerbos.dev/cerbos-hub/policy-stores-file-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-policy-stores-file-rules); the ignored files are listed. Usually the wrong directory, or a tree holding no `.yaml`/`.yml`/`.json` |
 | `invalid files` | A file classified as a policy, schema or test suite failed validation. Each is listed with its cause, and nothing was uploaded — content errors are never skipped |
 | `store not modified due to unsatisfied version condition` | Another writer moved the store past the version passed to `--version-must-eq` |
 | `invalid request` | Request-level validation, listed field by field |
@@ -68,9 +68,9 @@ Either way the previous bundle stays live, so a red build is a blocked change ra
 - **Wrong branch** — Hub tracks the branch configured on the store, and pushes elsewhere are ignored.
 - **Nothing relevant changed** — a build is triggered by policy file changes, not by every commit.
 - **Webhook disabled** in the repository's settings.
-- **`403` from an organization IP allow list** — add Hub's egress addresses, fetched from [hub.cerbos.cloud/meta](https://hub.cerbos.cloud/meta?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-hub-setup) as `egressIps`. This is a different setting from the IP allowlist on an ePDP rule, which governs who may download embedded bundles.
+- **`403` from an organization IP allow list** — add Hub's egress addresses, fetched from [hub.cerbos.cloud/meta](https://hub.cerbos.cloud/meta?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_meta) as `egressIps`. This is a different setting from the IP allowlist on an ePDP rule, which governs who may download embedded bundles.
 - **More than three tags pushed at once** — GitHub does not notify connected apps for such a push. Cap references per push at three.
 
 ## Audit logs not arriving
 
-`audit.enabled` true, `audit.backend` set to `hub`, `audit.hub.storagePath` pointing at a writable directory for the local buffer, and the deployment credential created as **Read & write** — a read-only credential cannot upload. Logs are buffered locally and flushed when connectivity allows, so a full volume or a crash between syncs loses entries; mount a persistent volume for the buffer. Details: [audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-hub-setup).
+`audit.enabled` true, `audit.backend` set to `hub`, `audit.hub.storagePath` pointing at a writable directory for the local buffer, and the deployment credential created as **Read & write** — a read-only credential cannot upload. Logs are buffered locally and flushed when connectivity allows, so a full volume or a crash between syncs loses entries; mount a persistent volume for the buffer. Details: [audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-audit-log-collection).

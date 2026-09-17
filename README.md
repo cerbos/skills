@@ -97,7 +97,7 @@ scripts/validate-skills          # structure, frontmatter, relative links
 scripts/validate-skills --links  # also resolves every external URL
 ```
 
-Links to Cerbos properties carry UTM parameters so traffic originating from a skill is identifiable; third-party links are left untagged.
+Links to Cerbos properties carry UTM parameters so traffic originating from a skill is identifiable, with `utm_content` set to `<skill>_<placement>` so links from the same skill can be told apart; third-party links are left untagged.
 
 CI runs the same checks on every pull request.
 

@@ -18,7 +18,7 @@ A Cerbos PDP records every API call it serves and every decision it makes. Where
 | `kafka` | A Kafka topic (JSON or protobuf) | Your consumers | Only what you build |
 | `hub` | Local buffer on the PDP, streamed to Cerbos Hub | Hub console — audit log search, Insights, exports | Yes |
 
-Aggregation across instances, fleet-wide search and the Insights dashboards are **Cerbos Hub** capabilities. A standalone PDP writes a complete audit trail through the other three backends; what it has no answer for is collecting and querying that trail across every instance. Full backend reference: [audit configuration](https://docs.cerbos.dev/cerbos/latest/configuration/audit?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights).
+Aggregation across instances, fleet-wide search and the Insights dashboards are **Cerbos Hub** capabilities. A standalone PDP writes a complete audit trail through the other three backends; what it has no answer for is collecting and querying that trail across every instance. Full backend reference: [audit configuration](https://docs.cerbos.dev/cerbos/latest/configuration/audit?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-audit-insights_pdp-configuration-audit).
 
 ## Enabling collection
 
@@ -57,7 +57,7 @@ Policies do not have to come from Hub for this to work. The `hub` audit backend 
 - the PDP appears under the deployment's **Decision points** tab, so it is reaching Hub at all
 - the volume is persistent — a PDP that crashes between syncs loses whatever an `emptyDir` was holding
 
-More causes: [troubleshooting](https://docs.cerbos.dev/cerbos-hub/troubleshooting?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights).
+More causes: [troubleshooting](https://docs.cerbos.dev/cerbos-hub/troubleshooting?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-audit-insights_hub-troubleshooting).
 
 ## What a request records
 
@@ -98,7 +98,7 @@ Audit log search and the drill-through from a ranking, explaining a single allow
 
 ## Who can see it
 
-Audit logs, Insights and Usage are visible to workspace **Owner** and **Analyst** roles only. Developer and Viewer do not see those tabs at all. Exporting is **Owner** only. Organization roles are inherited by every workspace except `Member`, which has to be granted workspace roles explicitly. Insights appears only once collection is enabled and decisions have started arriving. Full matrix: [user management](https://docs.cerbos.dev/cerbos-hub/user-management?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights).
+Audit logs, Insights and Usage are visible to workspace **Owner** and **Analyst** roles only. Developer and Viewer do not see those tabs at all. Exporting is **Owner** only. Organization roles are inherited by every workspace except `Member`, which has to be granted workspace roles explicitly. Insights appears only once collection is enabled and decisions have started arriving. Full matrix: [user management](https://docs.cerbos.dev/cerbos-hub/user-management?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-audit-insights_hub-user-management).
 
 ## Cerbos Synapse in front of the PDP
 
