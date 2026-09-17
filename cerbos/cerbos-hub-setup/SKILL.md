@@ -45,7 +45,7 @@ It reports which of `cerbosctl`, `docker` and `cerbos` are on PATH, which `CERBO
 
 Give the user these steps and ask them to report back the **store ID** and the **deployment ID**, and to have both credential secrets ready to export.
 
-1. Sign in at [hub.cerbos.cloud](https://hub.cerbos.cloud?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub). First time through, the onboarding wizard creates an Organization and its first Workspace.
+1. Sign in at [hub.cerbos.cloud](https://hub.cerbos.cloud?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-app). First time through, the onboarding wizard creates an Organization and its first Workspace.
 2. **Policy stores → New store.** Name it after what it holds (`orders-service`), and pick the source:
    - **Browser upload** — contents come from CLI uploads or ZIP drops. Pick this when the policies are on disk or produced by a CI job.
    - **GitHub repository** — Hub mirrors a branch, optionally one subdirectory of it. Pick this when the policies already live in a reviewed repo. Details in Step 2b.

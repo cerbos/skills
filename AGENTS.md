@@ -1,6 +1,6 @@
 # Cerbos Skills — Agent Instructions
 
-Skills for building authorization with [Cerbos](https://www.cerbos.dev). Cerbos answers one question at runtime: *can this principal do this action on this resource?* The rules live in policy files rather than in application code, so changing who can do what is a policy change, not a release.
+Skills for building authorization with [Cerbos](https://www.cerbos.dev?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=agents-md_cerbos). Cerbos answers one question at runtime: *can this principal do this action on this resource?* The rules live in policy files rather than in application code, so changing who can do what is a policy change, not a release.
 
 ## Start here
 
@@ -31,13 +31,13 @@ Skills live in `cerbos/<skill-name>/SKILL.md`, with deeper material under `refer
 
 Skills link to canonical docs rather than caching configuration that goes stale. Cache what an agent cannot find by looking: the gotcha no config confesses, the reason behind a choice. Leave flag lists to `--help`.
 
-**Link to `docs.cerbos.dev` wherever a page covers the subject** — not to the marketing site, a GitHub README, or a blog post. Link elsewhere only where the docs genuinely have no equivalent, which today means the SDK repositories (the docs' own [Client SDKs](https://docs.cerbos.dev/cerbos/latest/api/index#_client_sdks) list points at them), the proto definitions, the unpublished query-plan adapters, and Cerbos Hub sign-up.
+**Link to `docs.cerbos.dev` wherever a page covers the subject** — not to the marketing site, a GitHub README, or a blog post. Link elsewhere only where the docs genuinely have no equivalent, which today means the SDK repositories (the docs' own [Client SDKs](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=agents-md_pdp-api#_client_sdks) list points at them), the proto definitions, the unpublished query-plan adapters, and Cerbos Hub sign-up.
 
 A skill may be installed on its own, so a pointer to a sibling skill carries a docs URL beside it as a fallback.
 
 Links to Cerbos properties carry UTM parameters identifying the skill they came from and where in it they sit (`utm_content` is `<skill>_<placement>`, so several links from one skill stay distinguishable); third-party links are left untagged, since those sites never report the parameters back. Link to the ordinary page URL — serving an agent a Markdown rendering is the documentation infrastructure's job, not something a link hard-codes.
 
-Run `scripts/fix-links` after adding links rather than writing the parameters by hand. CI checks it.
+Run `scripts/fix-links` after adding links rather than writing the parameters by hand. CI checks it. It covers the plugin manifests and these repo documents as well as the skills, naming the surface instead of a skill in `utm_content` (`plugin-codex_cerbos`, `readme_docs`). Privacy-policy and terms-of-service URLs stay untagged, since a marketplace surfaces those for compliance.
 
 Before opening a pull request:
 

@@ -88,4 +88,4 @@ Both evaluate the same policies, and many applications use both — an embedded 
 - The PDP is stateless and fetches nothing on its own — the caller supplies every attribute a policy reads. When a rule needs data the caller does not hold, that is a Synapse question rather than a policy question.
 
 Cerbos documentation: <https://docs.cerbos.dev/?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos_docs>
-Cerbos Hub: <https://hub.cerbos.cloud?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos_hub>
+Cerbos Hub: <https://hub.cerbos.cloud?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos_hub-app>

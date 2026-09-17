@@ -31,6 +31,22 @@ from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = ROOT / "cerbos"
 
+# Repo-level surfaces are tagged too, so a click from a plugin listing or the
+# README is attributable. They have no skill name, so the first half of
+# utm_content names the surface instead.
+SURFACES = {
+    "README.md": "readme",
+    "AGENTS.md": "agents-md",
+    ".codex-plugin/plugin.json": "plugin-codex",
+    ".cursor-plugin/plugin.json": "plugin-cursor",
+    ".claude-plugin/marketplace.json": "plugin-claude",
+    ".agents/plugins/marketplace.json": "plugin-agents",
+    "plugins/cerbos-skills/.claude-plugin/plugin.json": "plugin-claude",
+}
+
+# Legal URLs a marketplace surfaces for compliance stay clean.
+UNTAGGED_PATHS = {"/privacy-policy", "/terms-of-service"}
+
 UTM_CAMPAIGN = "brand_cerbos"
 UTM_SOURCE = "agent_skills"
 UTM_MEDIUM = "referral"
@@ -64,7 +80,9 @@ def placement(parts) -> str:
     if not segments:
         # No path of its own: name the property instead.
         host = parts.netloc.removeprefix("www.")
-        segments = ["hub"] if host == "hub.cerbos.cloud" else [host.split(".")[0]]
+        # `hub-app` rather than `hub`, so it does not collide with the Hub
+        # documentation section, which also reduces to `hub`.
+        segments = ["hub-app"] if host == "hub.cerbos.cloud" else [host.split(".")[0]]
 
     slug = "-".join(segments).replace("_", "-").replace(".", "-").lower()
     return re.sub(r"-+", "-", slug).strip("-")
@@ -72,7 +90,7 @@ def placement(parts) -> str:
 
 def normalise(url: str, skill: str) -> str:
     parts = urlsplit(url)
-    if parts.netloc not in CERBOS_HOSTS:
+    if parts.netloc not in CERBOS_HOSTS or parts.path in UNTAGGED_PATHS:
         return url
 
     path = parts.path
@@ -88,15 +106,15 @@ def normalise(url: str, skill: str) -> str:
     return urlunsplit((parts.scheme, parts.netloc, path, urlencode(query), parts.fragment))
 
 
-def rewrite(text: str, skill: str) -> tuple[str, list[tuple[str, str]]]:
-    """Rewrite prose URLs, leaving code spans untouched."""
+def rewrite(text: str, skill: str, prose_only: bool = True) -> tuple[str, list[tuple[str, str]]]:
+    """Rewrite URLs. In markdown, code spans are left untouched."""
     protected: list[str] = []
 
     def stash(m: re.Match[str]) -> str:
         protected.append(m.group(0))
         return f"\x00{len(protected) - 1}\x00"
 
-    staged = INLINE_CODE_RE.sub(stash, FENCE_RE.sub(stash, text))
+    staged = INLINE_CODE_RE.sub(stash, FENCE_RE.sub(stash, text)) if prose_only else text
 
     changes: list[tuple[str, str]] = []
 
@@ -130,6 +148,26 @@ def main() -> int:
 
     total = 0
     touched = 0
+
+    if not args.skills:  # repo-level surfaces, only on a full run
+        for rel, surface in SURFACES.items():
+            f = ROOT / rel
+            if not f.is_file():
+                continue
+            text = f.read_text(encoding="utf-8")
+            # JSON has no prose or code spans; markdown does.
+            fixed, changes = rewrite(text, surface, prose_only=not rel.endswith(".json"))
+            if not changes:
+                continue
+            total += len(changes)
+            touched += 1
+            print(f"\n{rel}")
+            for before, after in changes:
+                print(f"  - {before}")
+                print(f"  + {after}")
+            if not args.check:
+                f.write_text(fixed, encoding="utf-8")
+
     for skill_dir in paths:
         skill = skill_dir.name
         for md in sorted(skill_dir.rglob("*.md")):

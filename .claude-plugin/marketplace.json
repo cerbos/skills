@@ -2,7 +2,7 @@
   "name": "cerbos-skills",
   "owner": {
     "name": "Cerbos",
-    "url": "https://www.cerbos.dev"
+    "url": "https://www.cerbos.dev?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=plugin-claude_cerbos"
   },
   "metadata": {
     "description": "Agent skills for Cerbos: authorization policy authoring, distribution through Cerbos Hub, and enforcement in application code"

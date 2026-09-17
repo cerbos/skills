@@ -1,6 +1,6 @@
 # Cerbos Skills
 
-Agent skills for [Cerbos](https://www.cerbos.dev), the authorization management platform. Enforce fine-grained, contextual authorization across applications, gateways, workloads, and AI agents.
+Agent skills for [Cerbos](https://www.cerbos.dev?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=readme_cerbos), the authorization management platform. Enforce fine-grained, contextual authorization across applications, gateways, workloads, and AI agents.
 
 ## What These Skills Do
 
@@ -32,7 +32,7 @@ Start with `cerbos`. It maps a described need onto the right component and hands
 | **Cerbos Synapse** | Context enrichment and protocol adapters for Envoy, Kafka, Trino and others. |
 | **PEP SDKs** | JavaScript, Go, Python, Java, .NET, Rust, PHP, Ruby. |
 
-The open-source PDP runs standalone with no account and no licence. [Cerbos Hub](https://docs.cerbos.dev/cerbos-hub/index) adds the managed pipeline, fleet-wide push distribution, embedded PDPs and audit aggregation on top of it; switching is a configuration change, not a policy rewrite.
+The open-source PDP runs standalone with no account and no licence. [Cerbos Hub](https://docs.cerbos.dev/cerbos-hub/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=readme_hub) adds the managed pipeline, fleet-wide push distribution, embedded PDPs and audit aggregation on top of it; switching is a configuration change, not a policy rewrite.
 
 ## Installation
 
@@ -103,8 +103,8 @@ CI runs the same checks on every pull request.
 
 ## References
 
-- [Cerbos documentation](https://docs.cerbos.dev)
-- [Cerbos Hub](https://hub.cerbos.cloud)
+- [Cerbos documentation](https://docs.cerbos.dev?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=readme_docs)
+- [Cerbos Hub](https://hub.cerbos.cloud?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=readme_hub-app)
 - [Cerbos on GitHub](https://github.com/cerbos/cerbos)
 
 ## License

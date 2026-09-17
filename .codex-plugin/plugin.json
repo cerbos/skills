@@ -4,9 +4,9 @@
   "description": "Author, test, distribute and enforce Cerbos authorization policies across applications, gateways and AI agents.",
   "author": {
     "name": "Cerbos",
-    "url": "https://www.cerbos.dev"
+    "url": "https://www.cerbos.dev?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=plugin-codex_cerbos"
   },
-  "homepage": "https://docs.cerbos.dev",
+  "homepage": "https://docs.cerbos.dev?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=plugin-codex_docs",
   "repository": "https://github.com/cerbos/skills",
   "license": "Apache-2.0",
   "keywords": [
@@ -32,7 +32,7 @@
       "Interactive",
       "Write"
     ],
-    "websiteURL": "https://www.cerbos.dev",
+    "websiteURL": "https://www.cerbos.dev?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=plugin-codex_cerbos",
     "privacyPolicyURL": "https://www.cerbos.dev/privacy-policy",
     "termsOfServiceURL": "https://www.cerbos.dev/terms-of-service",
     "defaultPrompt": [
