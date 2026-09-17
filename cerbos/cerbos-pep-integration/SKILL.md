@@ -1,6 +1,6 @@
 ---
 name: cerbos-pep-integration
-description: Call a Cerbos PDP from application code — the policy enforcement point. Use when adding a permission check to a handler, filtering a query or list by permission (`planResources`, ORM adapters), passing JWT claims to the PDP, or choosing an SDK for JavaScript, Go, Python, Java, .NET, Rust, PHP or Ruby.
+description: Call a Cerbos PDP from application code — the policy enforcement point. Use when adding a permission check to a handler, filtering a query or list by permission (`planResources`, ORM adapters), passing JWT claims to the PDP, or choosing an SDK for JavaScript, Go, Python, Java, .NET, Rust, PHP or Ruby. Not for browser-side permission checks, which belong to `cerbos-embedded-pdp`.
 license: Apache-2.0
 metadata:
   author: cerbos

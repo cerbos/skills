@@ -1,6 +1,6 @@
 ---
 name: cerbos-embedded-pdp
-description: Embedded Cerbos PDP (ePDP) — authorization evaluated locally in WebAssembly by `@cerbos/embedded-client`, with no call to a PDP server. Use when showing or hiding UI by permission in a browser or React Native app, authorizing offline or inside an edge function, CDN worker, or serverless handler, configuring an ePDP rule in Cerbos Hub to filter which policies reach a client, or loading the Cerbos WASM module under Vite, Webpack, Rspack, Next.js, or Node.
+description: Embedded Cerbos PDP (ePDP) — authorization evaluated locally in WebAssembly by `@cerbos/embedded-client`, with no call to a PDP server. Use when showing or hiding UI by permission in a browser or React Native app, authorizing offline or inside an edge function, CDN worker, or serverless handler, configuring an ePDP rule in Cerbos Hub to filter which policies reach a client, or loading the Cerbos WASM module under Vite, Webpack, Rspack, Next.js, or Node. Not for server-side enforcement — API routes, server actions and middleware call a service PDP through `cerbos-pep-integration`.
 license: Apache-2.0
 metadata:
   author: cerbos

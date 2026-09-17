@@ -21,6 +21,8 @@ When a user describes an access-control problem — in their words, not Cerbos's
 
 Each skill's own `description` is the source of truth for when it fires; this table is the index. The README table is the human-facing one.
 
+A description states both when the skill should trigger **and when it should not**, naming the neighbouring skill that owns the adjacent case. Hosts cap the skills list they show a model — 2% of the context window, or 8,000 characters when that is unknown — and truncate descriptions past it, so front-load the trigger words. `scripts/validate-skills` reports the footprint.
+
 ## Working in this repository
 
 Skills live in `cerbos/<skill-name>/SKILL.md`, with deeper material under `references/` and executable helpers under `scripts/`. `plugins/cerbos-skills/skills` symlinks to `cerbos/`, so a new skill directory needs no plugin registration — add a row to the table above and to the README.

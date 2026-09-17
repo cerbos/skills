@@ -36,6 +36,12 @@ SKILLS_DIR = ROOT / "cerbos"
 # router sits near 250; past ~600 a description is doing the body's job.
 DESCRIPTION_MAX = 600
 
+# The skills list a host shows the model is capped. OpenAI documents 2% of the
+# context window, or 8,000 characters when that is unknown; past it, hosts
+# truncate descriptions and triggers start being missed. This is the budget
+# that actually bites, so it is an error rather than a warning.
+INITIAL_LIST_MAX = 8000
+
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 URL_RE = re.compile(r"https?://[^\s<>\"'\)\]`]+")
 # `references/wasm-{go,python}.md` -> head, "go,python", tail
@@ -96,6 +102,23 @@ def parse_frontmatter(text: str) -> dict[str, str] | None:
         elif key and out.get(key) in (">-", ">", "|", "|-", ""):
             out[key] = (out[key] + " " + line.strip()).strip()
     return out
+
+
+def check_initial_list(paths: list[Path], f: Findings) -> None:
+    """The name + description of every skill, which is what a host lists."""
+    total = 0
+    for p in paths:
+        skill_md = p / "SKILL.md"
+        if not skill_md.is_file():
+            continue
+        fm = parse_frontmatter(skill_md.read_text(encoding="utf-8")) or {}
+        total += len(p.name) + len(fm.get("description", ""))
+
+    pct = round(100 * total / INITIAL_LIST_MAX)
+    if total > INITIAL_LIST_MAX:
+        f.error("initial list", f"names + descriptions total {total} chars, over the {INITIAL_LIST_MAX} budget")
+    else:
+        print(f"initial-list footprint: {total}/{INITIAL_LIST_MAX} chars ({pct}%)")
 
 
 def check_skill(path: Path, f: Findings) -> list[str]:
@@ -219,6 +242,7 @@ def main() -> int:
     urls: set[str] = set()
     for p in paths:
         urls.update(check_skill(p, f))
+    check_initial_list(paths, f)
 
     if args.links:
         check_urls(urls, f)

@@ -1,6 +1,6 @@
 ---
 name: cerbos-hub-setup
-description: Stand up and operate Cerbos Hub — policy store, deployment, client credentials, and a PDP fetching signed bundles. Use when setting up Cerbos Hub for the first time, connecting or configuring a PDP against a Hub deployment, rolling back or freezing a deployment, monitoring connected PDPs, or diagnosing a PDP that will not connect, a stalled deployment, a blocked API key, or a policy store that stopped syncing.
+description: Stand up and operate Cerbos Hub — policy store, deployment, client credentials, and a PDP fetching signed bundles. Use when setting up Cerbos Hub for the first time, connecting or configuring a PDP against a Hub deployment, rolling back or freezing a deployment, monitoring connected PDPs, or diagnosing a PDP that will not connect, a stalled deployment, a blocked API key, or a policy store that stopped syncing. Not for authoring the policies themselves, which is `cerbos-policy`.
 license: Apache-2.0
 compatibility: Requires cerbosctl, and Docker or a local Cerbos binary to run a PDP
 metadata:

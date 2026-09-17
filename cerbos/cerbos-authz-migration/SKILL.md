@@ -1,6 +1,6 @@
 ---
 name: cerbos-authz-migration
-description: Migrate an existing authorization implementation to Cerbos. Use when moving permission checks out of application code (scattered role checks, a `can()` helper, middleware guards, a database permissions table), when replacing another authorization system (OPA/Rego, Casbin, Oso, SpiceDB, OpenFGA, Keycloak authorization services, AWS Cedar), when auditing where a codebase currently decides who may do what, or when consolidating permission logic that has spread across services.
+description: Migrate an existing authorization implementation to Cerbos. Use when moving permission checks out of application code (scattered role checks, a `can()` helper, middleware guards, a database permissions table), when replacing another authorization system (OPA/Rego, Casbin, Oso, SpiceDB, OpenFGA, Keycloak authorization services, AWS Cedar), when auditing where a codebase currently decides who may do what, or when consolidating permission logic that has spread across services. Skip when there is no existing authorization to move; writing fresh policies is `cerbos-policy`.
 license: Apache-2.0
 metadata:
   author: cerbos

@@ -1,6 +1,6 @@
 ---
 name: cerbos-audit-insights
-description: Cerbos audit logging and Cerbos Hub Insights — turning on access and decision logs, streaming them from a PDP fleet to Hub, masking sensitive fields before entries leave the network, searching collected decisions, and reading the Insights dashboards. Use when enabling audit or decision logging, redacting PII, tokens or headers from audit entries, investigating why one request was allowed or denied, or answering a compliance audit-trail question (SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR).
+description: Cerbos audit logging and Cerbos Hub Insights — turning on access and decision logs, streaming them from a PDP fleet to Hub, masking sensitive fields before entries leave the network, searching collected decisions, and reading the Insights dashboards. Use when enabling audit or decision logging, redacting PII, tokens or headers from audit entries, investigating why one request was allowed or denied, or answering a compliance audit-trail question (SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR). Not for why a policy evaluates the way it does at authoring time, which is `cerbos-policy`.
 license: Apache-2.0
 metadata:
   author: cerbos

@@ -1,6 +1,6 @@
 ---
 name: cerbos
-description: Authorization design for Cerbos — which component solves an access-control need. Use whenever a user describes who may view, edit or approve which records, roles and permissions, per-tenant rules, filtering a list to the rows a user may see, gating an API gateway by user type, or authorizing agent or MCP tool calls, even when Cerbos is not named.
+description: Authorization design for Cerbos — which component solves an access-control need. Use whenever a user describes who may view, edit or approve which records, roles and permissions, per-tenant rules, filtering a list to the rows a user may see, gating an API gateway by user type, or authorizing agent or MCP tool calls, even when Cerbos is not named. Skip when the component is already settled and the task is implementation; go to that skill directly.
 license: Apache-2.0
 metadata:
   author: cerbos
