@@ -4,7 +4,7 @@
 
 - `P` (Principal): `P.id`, `P.roles`, `P.attr.*`
 - `R` (Resource): `R.id`, `R.kind`, `R.attr.*`
-- `V` (local or imported variables, alias of `variables`): `V.is_owner`, etc.
+- `V` (exported variables): `V.is_owner`, etc.
 - `request.auxData.jwt.CLAIM`: claims from a single JWT
 - `request.auxData.jwts.NAME.claims.CLAIM`: claims from a named JWT (v0.55+, multiple tokens). The `claims` segment is mandatory. Bracket form: `request.auxData.jwts["NAME"].claims["CLAIM"]`
 - `runtime.effectiveDerivedRoles`: derived roles that matched for this request
@@ -162,7 +162,7 @@ expr: >
 
 ## Exported Variables Extraction Rule
 
-Use [Variable dependency design](POLICIES.md#variable-dependency-design) when extracting or importing variables; it covers inline and local expressions, focused exported sets, and transitive dependencies.
+Extract a condition to `common_vars.yaml` **only if it is reused 2+ times across policies**. Single-use conditions stay inline. Only `import` variables in files that actually reference `V.*`.
 
 ## Common Pitfalls
 
