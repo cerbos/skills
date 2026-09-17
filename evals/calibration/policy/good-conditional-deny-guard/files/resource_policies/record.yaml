@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: record
+  version: default
+  rules:
+    # Support agents may read customer records (subject to the legal-hold deny).
+    - actions: ["read"]
+      effect: EFFECT_ALLOW
+      roles: ["support"]
+      name: support-can-read
+
+    # Compliance officers may read any record, held or not.
+    - actions: ["read"]
+      effect: EFFECT_ALLOW
+      roles: ["compliance"]
+      name: compliance-can-read-any
+
+    # Security-critical hard-stop: support must never read a record we cannot
+    # CONFIRM is clear of a legal hold. legalHold is often absent, so guard the
+    # reference with has(): a missing attribute must not raise a runtime error
+    # that skips this deny (fail open). Missing => treated as held => denied.
+    - actions: ["read"]
+      effect: EFFECT_DENY
+      roles: ["support"]
+      condition:
+        match:
+          expr: >
+            !has(request.resource.attr.legalHold) ||
+            request.resource.attr.legalHold == true
+      name: support-denied-unless-confirmed-clear

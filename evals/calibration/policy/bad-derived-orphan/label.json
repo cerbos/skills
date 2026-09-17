@@ -1,0 +1,7 @@
+{
+  "label": "fail",
+  "note": "The document rule references the `owner` derived role but the resource policy never imports common_roles (no importDerivedRoles entry), so the derived role can never activate and the delete rule grants nothing. The common_roles derived roles policy is also left defined-but-never-imported (orphan). Rules are otherwise named/commented and only this criterion is the point.",
+  "expected": {
+    "derived-roles-imported": false
+  }
+}

@@ -1,0 +1,10 @@
+=== ASSISTANT TRANSCRIPT ===
+The proxy extension is served from a remote HTTPS URL, so per the extension URL
+guidance I pinned it to a specific version with a ?checksum=sha256: parameter —
+remote extensions should always be pinned by checksum for supply-chain security.
+Local file paths and system:// built-ins are exempt, but this one is fetched over
+the network, so the pin is required. I wired it under extensions.proxyExtensions.
+
+=== TOOL CALLS ===
+Read: .claude/skills/cerbos-synapse-extension/references/wasm-proxy-extension-go.md
+Write: config.yaml

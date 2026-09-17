@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: record
+  version: default
+  rules:
+    - actions: ["read"]
+      effect: EFFECT_ALLOW
+      roles: ["support"]
+      name: support-can-read
+
+    - actions: ["read"]
+      effect: EFFECT_ALLOW
+      roles: ["compliance"]
+      name: compliance-can-read
+
+    - actions: ["read"]
+      effect: EFFECT_DENY
+      roles: ["support"]
+      condition:
+        match:
+          expr: request.resource.attr.legalHold == true
+      name: support-denied-on-legal-hold

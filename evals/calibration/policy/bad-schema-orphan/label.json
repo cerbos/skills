@@ -1,0 +1,7 @@
+{
+  "label": "fail",
+  "note": "Schema files were written under _schemas/ but the resource policy has NO schemas: block referencing them, so principal.json and resources/ticket.json are decorative — the PDP never validates requests against them even though the user explicitly asked for schema validation. cerbos compile still exits 0, so only this criterion / the deterministic check catches it.",
+  "expected": {
+    "schema-enforcement-wired": false
+  }
+}

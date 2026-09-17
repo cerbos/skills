@@ -1,0 +1,7 @@
+{
+  "label": "pass",
+  "note": "The denied response has to be built from the Cerbos policy outputs (only known after the PDP responds), so the extension correctly uses the Cerbos-check-request mode: envoy_check returns a cerbos_check_request and a correctly-named map_cerbos_response builds the final Envoy response, injecting the policy output message on deny. Only envoy-response-mode is asserted; the other criteria are treated as N/A for this fixture.",
+  "expected": {
+    "envoy-response-mode": true
+  }
+}

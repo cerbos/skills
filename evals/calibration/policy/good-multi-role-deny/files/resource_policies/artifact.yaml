@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: artifact
+  version: default
+  rules:
+    # Employees browse and pull artifacts from the registry.
+    - actions: ["view", "download"]
+      effect: EFFECT_ALLOW
+      roles: ["employee"]
+      name: employees-view-and-download
+
+    # Contractors may only browse, never pull artifacts.
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["contractor"]
+      name: contractors-view-only
+
+    # Admins operate the registry.
+    - actions: ["view", "download", "delete"]
+      effect: EFFECT_ALLOW
+      roles: ["admin"]
+      name: admins-manage-everything
+
+    # Hard restriction: a contractor must never pull an artifact. Scoped to
+    # roles:["*"] with a role-membership condition so a matching allow on
+    # another role (e.g. employee) cannot defeat it across roles.
+    - actions: ["download"]
+      effect: EFFECT_DENY
+      roles: ["*"]
+      condition:
+        match:
+          expr: '"contractor" in request.principal.roles'
+      name: contractors-never-download

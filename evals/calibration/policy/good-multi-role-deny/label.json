@@ -1,0 +1,7 @@
+{
+  "label": "pass",
+  "note": "The contractor download restriction is enforced with a deny scoped to roles:[\"*\"] gated on a \"contractor\" in request.principal.roles condition, so it cannot be defeated by the employee download allow across roles. The bundled test proves EFFECT_DENY for a principal holding both contractor and employee, and the compiler was actually run.",
+  "expected": {
+    "multi-role-deny-override": true
+  }
+}

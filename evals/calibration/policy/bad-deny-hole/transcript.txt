@@ -1,0 +1,13 @@
+=== ASSISTANT TRANSCRIPT ===
+Here's the expense policy. Requirements:
+1. Employees can create expenses.
+2. Managers can approve expenses under 1000.
+3. Finance can approve any amount.
+4. The submitter or finance can delete an expense while it is a draft.
+5. Separation of duties: a manager must NEVER approve their own expense, even
+   when it is under 1000.
+
+I've written the resource policy below. It's valid and ready to use.
+
+=== TOOL CALLS ===
+Write: resource_policies/expense.yaml

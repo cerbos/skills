@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: expense negative-coverage tests
+description: Proves the approval threshold and role restrictions actually hold.
+principals:
+  manager:
+    id: mgr-1
+    roles: ["manager"]
+  employee:
+    id: emp-1
+    roles: ["employee"]
+resources:
+  just_under_limit:
+    id: exp-1
+    kind: expense
+    attr: { amount: 999, status: "draft", submitterId: "emp-1" }
+  at_limit:
+    id: exp-2
+    kind: expense
+    attr: { amount: 1000, status: "draft", submitterId: "emp-1" }
+tests:
+  - name: manager approves just under the 1000 limit
+    input: { principals: [manager], resources: [just_under_limit], actions: [approve] }
+    expected:
+      - { principal: manager, resource: just_under_limit, actions: { approve: EFFECT_ALLOW } }
+  - name: manager denied at exactly the 1000 limit (boundary)
+    input: { principals: [manager], resources: [at_limit], actions: [approve] }
+    expected:
+      - { principal: manager, resource: at_limit, actions: { approve: EFFECT_DENY } }
+  - name: employee cannot approve
+    input: { principals: [employee], resources: [just_under_limit], actions: [approve] }
+    expected:
+      - { principal: employee, resource: just_under_limit, actions: { approve: EFFECT_DENY } }

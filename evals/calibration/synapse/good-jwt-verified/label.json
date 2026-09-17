@@ -1,0 +1,7 @@
+{
+  "label": "pass",
+  "note": "Declarative call mapper that uses auxData.jwt: it extracts the bearer token AND configures a keySetID ('gateway') so the JWT is verified against a keyset before its claims are trusted by policies. Principal identity is taken from gateway-set headers because mapping CEL expressions only have access to the `request` variable (not decoded JWT claims). Only the jwt-keyset-verification criterion is scored here; the others are N/A for this fixture.",
+  "expected": {
+    "jwt-keyset-verification": true
+  }
+}

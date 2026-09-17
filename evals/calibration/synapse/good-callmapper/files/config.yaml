@@ -1,0 +1,27 @@
+# Declarative call mapper (route extension). CEL only, no code, no build step.
+# Maps an incoming HTTP request to a Cerbos CheckResources request, and the
+# Cerbos decision back to an HTTP status. Served under /ext/.
+extensions:
+  routeExtensions:
+    jwtMapper:
+      mapping:
+        request:
+          principal:
+            # Identity is taken from headers the gateway forwards; the raw JWT is
+            # passed through as auxData below so policies can use its claims.
+            id: 'request.header["X-User-Id"]'
+            roles:
+              - 'request.header["X-User-Roles"]'
+          resource:
+            kind: 'request.body.json.kind'
+            id: 'request.body.json.id'
+          action: 'request.method.lowerAscii()'
+          auxData:
+            jwt:
+              token: 'request.header["Authorization"].replace("Bearer ", "", 1)'
+              # Verify the token against the gateway keyset — never trust an unverified JWT.
+              keySetID: "'gateway'"
+        response:
+          status: 'check.allow ? 200 : 403'
+      routes:
+        '/api/{kind}/{id}': []

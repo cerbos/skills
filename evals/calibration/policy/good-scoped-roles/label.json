@@ -1,0 +1,7 @@
+{
+  "label": "pass",
+  "note": "Each requested role is granted exactly the actions it needs; there is no catch-all EFFECT_ALLOW. The only wildcard is roles:[\"*\"] on an EFFECT_DENY rule, which only narrows access and is safe/encouraged.",
+  "expected": {
+    "least-privilege-wildcards": true
+  }
+}

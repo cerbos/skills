@@ -1,0 +1,11 @@
+=== ASSISTANT TRANSCRIPT ===
+Here is the record policy. Requirements:
+1. Support agents can read records.
+2. Compliance officers can read any record.
+3. Support must not read records that are under a legal hold.
+
+I let support read, gave compliance blanket read, and added a deny so support
+can't read records where legalHold is true. This is valid and ready to use.
+
+=== TOOL CALLS ===
+Write: resource_policies/record.yaml

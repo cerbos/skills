@@ -1,0 +1,66 @@
+{
+  "skill": "cerbos-policy",
+  "note": "Each criterion is a narrow, binary failure mode. PASS = correct behaviour; FAIL = the named bug occurred. The judge answers only from the provided transcript + generated files.",
+  "criteria": [
+    {
+      "id": "deny-hole",
+      "failureMode": "A restriction that a BROADER allow would otherwise grant was left to deny-by-default instead of an explicit EFFECT_DENY that overrides it — so the forbidden access is actually granted.",
+      "question": "In Cerbos, deny overrides allow, and access with no matching allow is already denied by default. Deny-by-default is CORRECT and sufficient whenever no allow rule matches the forbidden access. An explicit EFFECT_DENY is required only to override a broader allow that WOULD match the forbidden case. Test each forbidden case this way: would it satisfy the roles and conditions of any existing allow rule? An allow 'matches' the forbidden case when it does not itself exclude it. Worked example of a deny-hole: managers may approve expenses under 1000, and the policy must forbid a manager approving their OWN expense — the manager-approve allow matches the self-approval case (same role, condition only checks amount, not ownership), so self-approval is granted unless an explicit EFFECT_DENY excludes it; leaving it to deny-by-default is a hole. Worked example that is NOT a hole: only submitter and finance are ever granted delete, so 'nobody else can delete' needs no explicit deny — deny-by-default is correct. PASS if every forbidden case that matches a broader allow is overridden by an explicit EFFECT_DENY, and cases with no matching allow are left to deny-by-default. FAIL only if a forbidden access would actually be granted because a matching allow is not overridden."
+    },
+    {
+      "id": "purpose-audit-trail",
+      "failureMode": "Rules shipped without a rationale, breaking the audit trail the skill requires.",
+      "question": "Does every rule have BOTH a descriptive `name` and a comment explaining why it exists? PASS if all rules are self-documenting; FAIL if any rule lacks a meaningful name or rationale comment."
+    },
+    {
+      "id": "requirement-coverage",
+      "failureMode": "One or more rules from the user's stated requirements were dropped.",
+      "question": "Is every distinct access rule described in the user's prompt represented in the generated policies? PASS if all are present; FAIL if any requirement is missing."
+    },
+    {
+      "id": "no-fabrication",
+      "failureMode": "A condition references an attribute the user never provided, with an invented schema to justify it.",
+      "question": "Do all CEL conditions reference only principal/resource/context attributes implied by the user's requirements? PASS if grounded; FAIL if the policy invents attributes or schema fields the user never mentioned to make a rule work."
+    },
+    {
+      "id": "actually-validated",
+      "failureMode": "The agent claimed the policy is valid without actually running the compiler.",
+      "question": "Does the transcript show the agent actually ran `cerbos compile` (a docker/cerbos compile command appears in the tool calls)? PASS if it genuinely ran validation; FAIL if it only asserted validity without running it."
+    },
+    {
+      "id": "conditional-deny-fails-open",
+      "failureMode": "A security-critical EFFECT_DENY is gated on a CEL condition that references a possibly-absent (or wrong-typed) attribute WITHOUT guarding it, so when that attribute is missing the condition raises a runtime error, the DENY is skipped (fails open), and a matching broader ALLOW still grants the forbidden access.",
+      "question": "In Cerbos a CEL runtime error while evaluating a rule condition (e.g. referencing a missing attribute, or comparing incompatible types) is treated as 'condition not satisfied'. For ALLOW rules this fails CLOSED (the allow simply does not match), but for DENY rules it fails OPEN — the deny is skipped, so a matching ALLOW can still grant the request. Therefore a security-critical DENY must NOT hinge on an unguarded reference to an attribute the requirements say can be absent (or malformed). Robust patterns: guard each fragile reference with the has() macro so absence is handled deliberately (e.g. `!has(request.resource.attr.legalHold) || request.resource.attr.legalHold == true`); put the fragile check on the ALLOW side instead so it fails closed under deny-by-default; or express the restriction as a deny-by-role with no attribute condition. PASS if every DENY that enforces a security-critical restriction either has no attribute-dependent condition, or guards each possibly-absent/possibly-malformed attribute it references (e.g. with has()) so a missing attribute cannot skip the deny — OR the restriction is enforced on the allow side and backed by deny-by-default. FAIL only if a security-critical DENY references an attribute the requirements say can be absent/malformed WITHOUT such a guard while a broader ALLOW (independent of that attribute) would grant the same action, so a missing attribute would skip the deny and let the forbidden access through."
+    },
+    {
+      "id": "multi-role-deny-override",
+      "failureMode": "A restriction that must ALWAYS hold was written as an EFFECT_DENY scoped to a single named role, so a principal who also holds a different role whose rule ALLOWs the action is still granted it — the single-role deny is defeated by an allow on another role (allow wins across roles), and the forbidden access is actually granted.",
+      "question": "In Cerbos, deny overrides allow only for the SAME role; across different roles an EFFECT_ALLOW from any role wins unless there is an EFFECT_DENY for that same role. Therefore a restriction the user says must hold regardless of the principal's other roles must be enforced by a deny that is NOT narrowed to one role: either roles:[\"*\"] (a wildcard deny matches every role, so it overrides allows on other roles) or an equivalent role-independent deny whose condition binds regardless of which other roles the principal holds. PASS if every such always-hold restriction is enforced by a deny with roles:[\"*\"] (or an equivalent role-independent deny/condition) that no allow on another role can defeat. FAIL if any such restriction is a deny scoped to a single named role while another rule can allow the same action for a different role the principal may also hold, so the forbidden access would actually be granted."
+    },
+    {
+      "id": "test-negative-coverage",
+      "failureMode": "The bundled test suite is happy-path-only — every expected outcome is EFFECT_ALLOW and no case probes a condition boundary — so it passes even if the policy over-grants, giving false confidence that restrictions are enforced.",
+      "question": "Does the generated test suite (a *_test.yaml/yml/json file) exercise the policy's RESTRICTIONS and not just its grants? Negative coverage requires the suite to assert BOTH (a) at least one expected EFFECT_DENY outcome, AND (b) at least one condition-boundary case that probes the exact edge of a threshold in the policy — e.g. amount 999 -> EFFECT_ALLOW while amount 1000 -> EFFECT_DENY for an `amount < 1000` rule, or a value just outside an allowed set. If the policy has no conditional threshold at all, only requirement (a) applies. PASS if the suite asserts at least one EFFECT_DENY and, where a policy threshold exists, at least one test sits on its boundary. FAIL if the tests are happy-path-only: no EFFECT_DENY is asserted anywhere, OR a conditional threshold exists in the policy but no test probes its boundary. Judge only from the generated test files and transcript."
+    },
+    {
+      "id": "least-privilege-wildcards",
+      "failureMode": "An EFFECT_ALLOW rule uses an over-broad wildcard (actions: ['*'] or roles: ['*']) that grants more access than the user's requirements asked for, so roles or actions the user never intended to grant are allowed.",
+      "question": "Cerbos flags overly broad wildcards: a rule using actions: ['*'] or roles: ['*'] matches more than intended, and roles: ['*'] disregards roles entirely so EVERY role is granted. A wildcard on an EFFECT_ALLOW rule is a least-privilege violation UNLESS the user's requirements actually asked for that breadth — e.g. the user explicitly wants blanket access governed entirely by an attribute/JWT condition rather than by role, or a role the user said may 'do everything / manage everything' is given actions: ['*']. A roles: ['*'] on an EFFECT_DENY rule is fine and encouraged, since a blanket wildcard on a deny only narrows access. PASS if every EFFECT_ALLOW wildcard corresponds to breadth the user explicitly requested (or is scoped by a condition the requirements imply), and no EFFECT_ALLOW rule grants a role or action the user never asked to grant. FAIL only if an EFFECT_ALLOW rule uses actions: ['*'] or roles: ['*'] to grant access the user's requirements never called for (for example a catch-all allow-everyone rule when the user asked for specific per-role permissions)."
+    },
+    {
+      "id": "derived-roles-imported",
+      "failureMode": "A derived role referenced in a resource-policy rule is never imported (no matching importDerivedRoles entry) so it silently never activates, and/or a derived roles policy is defined but imported by no resource policy (a dead/orphan policy).",
+      "question": "In Cerbos, a derived roles policy has NO effect unless the resource policy imports it via `importDerivedRoles`, whose entry must match the top-level `name` of the derived roles policy, and a rule must then list the derived role in its `derivedRoles` field. Judge ONLY the derived-roles wiring. If the output uses NO derived roles at all (no derivedRoles policy and no rule referencing derivedRoles), PASS — the criterion is N/A. Otherwise check BOTH: (a) every derived role name used in any resource rule's `derivedRoles` is defined in a derived roles policy whose top-level `name` appears in that resource policy's `importDerivedRoles`; and (b) no derived roles policy is defined-but-never-imported by any resource policy. PASS if every referenced derived role is properly imported and defined AND no derived roles policy is orphaned. FAIL if any referenced derived role lacks a matching import/definition (so it can never activate), or a derived roles policy is defined but never imported anywhere."
+    },
+    {
+      "id": "role-policy-cannot-grant",
+      "failureMode": "The solution relies on a role policy's allowActions to GRANT access for which no matching resource policy EFFECT_ALLOW exists — treating the role policy as if it could confer permissions — so the intended access never actually works at runtime (both a role policy AND a resource policy must permit it).",
+      "question": "In Cerbos, a role policy is an ADDITIVE CONSTRAINT: its `allowActions` list is an allow-list that can only NARROW access, and an action is allowed only when BOTH a matching role policy AND a matching resource policy permit it — a role policy 'can narrow access granted by a resource policy but cannot grant access the resource policy does not already allow'. This criterion applies ONLY if the solution actually uses a role policy (a `rolePolicy` block with `allowActions`). PASS if the solution uses no role policy at all, OR if every action that a role policy permits also has a matching resource-policy `EFFECT_ALLOW` for that same role+resource+action (the role policy is used purely to narrow). FAIL only if the solution depends on a role policy's `allowActions` to grant access and there is no matching resource-policy allow behind it (e.g. a role policy is written with no resource policy, or the resource policy never allows that role+action)."
+    },
+    {
+      "id": "schema-enforcement-wired",
+      "failureMode": "JSON schema files were emitted under `_schemas/` but no resource policy references them via a `schemas:` block, so the schemas are decorative and never validate any request.",
+      "question": "In Cerbos, a JSON Schema stored under `_schemas/` only validates requests when a resource policy points to it through a `schemas:` block — `schemas.principalSchema.ref` and/or `schemas.resourceSchema.ref` — using an absolute `cerbos:///` URL whose path matches the file's location under `_schemas` (a file at `_schemas/resources/ticket.json` is referenced as `cerbos:///resources/ticket.json`). The docs state: 'update your resource policy to point to the schemas that should be used to validate requests' and 'the PDP will validate any requests where the matching resource policy has schemas specified.' The `schemas:` block is optional, so emitting NO schema files at all is fine. PASS if either (a) no schema files were emitted, or (b) schema files were emitted AND a resource policy contains a `schemas:` block whose `principalSchema.ref`/`resourceSchema.ref` values point at the emitted schema files (attributes referenced in the policy's CEL conditions should be declared in the referenced schema). FAIL only if one or more schema files were written under `_schemas/` but no resource policy references them via a matching `schemas.principalSchema/resourceSchema.ref` — the schemas are decorative and enforcement can never fire."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+=== ASSISTANT TRANSCRIPT ===
+Here's an Envoy ext_authz extension in Starlark. I used the cerbos_mapping mode:
+envoy_check returns a Cerbos check_request together with a fixed allow_response
+and deny_response, and Synapse sends whichever one matches the decision. On deny
+it returns a 403 with a "Forbidden" body.
+
+=== TOOL CALLS ===
+Write: extensions/envoy.star

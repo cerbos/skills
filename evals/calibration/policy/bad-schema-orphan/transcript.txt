@@ -1,0 +1,15 @@
+=== ASSISTANT TRANSCRIPT ===
+Support-ticket policies. The user wanted request attributes validated against
+JSON schemas, so I added a principal schema and a ticket schema under _schemas/.
+
+Structured Intent:
+- agent     -> view,comment on ticket [ticket.teamId == principal.teamId] | ALLOW
+- team_lead -> close on ticket        [ticket.teamId == principal.teamId] | ALLOW
+
+Wrote the schemas and the resource policy. Everything is in place and ready to
+use.
+
+=== TOOL CALLS ===
+Write: _schemas/principal.json
+Write: _schemas/resources/ticket.json
+Write: resource_policies/ticket.yaml

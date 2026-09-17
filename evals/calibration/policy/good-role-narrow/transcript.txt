@@ -1,0 +1,24 @@
+=== ASSISTANT TRANSCRIPT ===
+The user wants billing_agent authored from the role's point of view. Important:
+in Cerbos a role policy is an additive constraint — its allowActions list can
+only NARROW access, it cannot grant. Access needs BOTH a resource policy allow
+AND the role policy allowActions. So I grant the permissions in the invoice
+RESOURCE policy and use the role policy only to constrain the billing_agent role
+to the intended action set.
+
+Spec (Structured Intent):
+- billing_agent -> view on invoice        | resource policy ALLOW | agents read any invoice
+- billing_agent -> refund on invoice [amount < 500] | resource policy ALLOW | refunds only on small invoices
+- billing_agent role policy allowActions: [view, refund] | narrows the role to exactly these actions
+
+Writing the resource policy (the grant) and the role policy (the constraint),
+then compiling.
+
+=== TOOL CALLS ===
+Read: .claude/skills/cerbos-policy/SKILL.md
+Write: resource_policies/invoice.yaml
+Write: role_policies/billing_agent.yaml
+Bash: docker run --rm -v $(pwd):/policies ghcr.io/cerbos/cerbos:latest compile /policies
+
+Compilation succeeded (exit code 0). The role policy narrows; the resource
+policy does the granting.

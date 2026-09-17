@@ -1,0 +1,6 @@
+# Proxy extension loaded from a remote CDN, pinned to a specific version by
+# checksum for supply-chain security.
+extensions:
+  proxyExtensions:
+    idp:
+      extensionURL: "https://cdn.example.com/synapse/idp.wasm?checksum=sha256:677cce2788330f16f27981130eaa50aa4189beab2121903bcea5b3c4c918dccc"

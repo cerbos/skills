@@ -1,0 +1,7 @@
+{
+  "label": "pass",
+  "note": "Test suite exercises restrictions: an explicit EFFECT_DENY at the 1000 boundary (999 allowed vs 1000 denied) and a role denial, not just grants.",
+  "expected": {
+    "test-negative-coverage": true
+  }
+}

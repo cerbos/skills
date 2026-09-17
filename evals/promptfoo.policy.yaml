@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: Cerbos policy skill — nightly eval
+
+prompts:
+  - '{{request}}'
+
+providers:
+  - id: file://providers/skill-runner.js
+    label: cerbos-policy
+    config:
+      skill: cerbos-policy
+
+# Every policy case runs the same battery: ground-truth compile, structural
+# checks, the narrow-criteria judge, and the trigger check. Per-case vars can
+# scope the judge to a subset of criteria and flip trigger expectations.
+defaultTest:
+  assert:
+    - type: javascript
+      value: file://assertions/cerbos-compile.js
+    - type: javascript
+      value: file://assertions/policy-static.js
+    - type: javascript
+      value: file://assertions/judge.js
+    - type: javascript
+      value: file://assertions/skill-fired.js
+
+    - type: javascript
+      value: file://assertions/policy-conditional-deny-fails-open.js
+    - type: javascript
+      value: file://assertions/policy-test-negative-coverage.js
+    - type: javascript
+      value: file://assertions/policy-least-privilege-wildcards.js
+    - type: javascript
+      value: file://assertions/policy-derived-roles-imported.js
+    - type: javascript
+      value: file://assertions/policy-role-policy-cannot-grant.js
+    - type: javascript
+      value: file://assertions/policy-schema-enforcement-wired.js
+tests: file://tests/policy.yaml

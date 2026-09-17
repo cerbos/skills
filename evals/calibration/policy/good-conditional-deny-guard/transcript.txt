@@ -1,0 +1,24 @@
+=== ASSISTANT TRANSCRIPT ===
+Using the cerbos-policy skill.
+
+The key risk here is fail-open: in Cerbos a CEL runtime error in a condition is
+treated as "not satisfied". ALLOW rules fail closed, but a DENY rule fails OPEN
+(the deny is skipped, a matching ALLOW still grants). `legalHold` is often
+missing, so a naive DENY gated on `request.resource.attr.legalHold == true`
+would error on those records and be skipped, letting support read them. I guard
+the reference with the has() macro and treat a missing flag as denied (fail safe).
+
+Spec (Structured Intent):
+- support    -> read on record | ALLOW | support agents may read records
+- compliance -> read on record | ALLOW | compliance may read any record
+- support    -> read on record [absent OR legalHold == true] | DENY | never expose a record we cannot confirm is clear; missing flag => denied
+
+Writing the resource policy and tests, then compiling.
+
+=== TOOL CALLS ===
+Read: .claude/skills/cerbos-policy/SKILL.md
+Write: resource_policies/record.yaml
+Write: resource_policies/record_test.yaml
+Bash: docker run --rm -v $(pwd):/policies ghcr.io/cerbos/cerbos:latest compile /policies
+
+Compilation succeeded and all tests passed, including the absent-legalHold case (exit code 0).

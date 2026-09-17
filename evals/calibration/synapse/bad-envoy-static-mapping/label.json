@@ -1,0 +1,7 @@
+{
+  "label": "fail",
+  "note": "The denial message/status must come from the Cerbos policy outputs (dynamic, only known after the PDP responds), but the extension uses the single-shot cerbos_mapping mode with a hard-coded deny body and no map_cerbos_response, so the policy output can never reach the response. Wrong response mode for the task. The deterministic check deliberately does NOT fire here (no cerbos_check_request) — this fixture calibrates the judge's mode-fit reasoning. Only envoy-response-mode is asserted.",
+  "expected": {
+    "envoy-response-mode": false
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "label": "fail",
+  "note": "The security-critical support-read DENY is gated on an UNGUARDED reference to legalHold (`request.resource.attr.legalHold == true`). On records where legalHold is absent the condition raises a CEL runtime error, the DENY is skipped (fails open), and the broader unconditional support-read ALLOW still grants — support reads records that cannot be confirmed clear. A genuine fail-open hole.",
+  "expected": {
+    "conditional-deny-fails-open": false
+  }
+}

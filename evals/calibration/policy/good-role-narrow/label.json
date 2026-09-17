@@ -1,0 +1,7 @@
+{
+  "label": "pass",
+  "note": "Correct use of a role policy: the invoice RESOURCE policy is what grants billing_agent view+refund (EFFECT_ALLOW), and the role policy only NARROWS by listing the same actions in allowActions. Nothing is granted by the role policy alone, so role-policy-cannot-grant PASSes. Other criteria are N/A for this fixture.",
+  "expected": {
+    "role-policy-cannot-grant": true
+  }
+}

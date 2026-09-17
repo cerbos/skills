@@ -1,0 +1,7 @@
+{
+  "label": "fail",
+  "note": "The agent tries to GRANT billing_agent its permissions using only a role policy's allowActions, with no resource policy behind it. A role policy is additive-only and cannot grant — at runtime billing_agent gets nothing because no resource policy allows it. This is exactly the role-policy-cannot-grant failure mode.",
+  "expected": {
+    "role-policy-cannot-grant": false
+  }
+}

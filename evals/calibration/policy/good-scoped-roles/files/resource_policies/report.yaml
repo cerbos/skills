@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: report
+  version: default
+  rules:
+    # Analysts may read reports.
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["analyst"]
+      name: analysts-can-view
+
+    # Admins may read and delete reports.
+    - actions: ["view", "delete"]
+      effect: EFFECT_ALLOW
+      roles: ["admin"]
+      name: admins-view-and-delete
+
+    # Data export is not permitted for anyone yet. A wildcard role on an
+    # EFFECT_DENY only narrows access, so it is safe and keeps the block
+    # explicit and auditable.
+    - actions: ["export"]
+      effect: EFFECT_DENY
+      roles: ["*"]
+      name: export-not-permitted

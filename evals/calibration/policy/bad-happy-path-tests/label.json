@@ -1,0 +1,7 @@
+{
+  "label": "fail",
+  "note": "Test suite is happy-path-only: every expected outcome is EFFECT_ALLOW, there is no EFFECT_DENY assertion and no test probes the 1000 approval boundary — the policy could over-grant and still pass its own tests.",
+  "expected": {
+    "test-negative-coverage": false
+  }
+}

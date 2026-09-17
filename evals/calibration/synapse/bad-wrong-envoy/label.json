@@ -1,0 +1,11 @@
+{
+  "label": "fail",
+  "note": "Envoy kind is correct, but the callback is misnamed envoy_map_cerbos_response (should be map_cerbos_response), it was written from memory with no references read, and it ran docker against a hard-coded distribution repo without asking. Tests were not requested.",
+  "expected": {
+    "ask-license-first": false,
+    "simplest-kind": true,
+    "loaded-references": false,
+    "correct-entrypoints": false,
+    "tests-when-asked": true
+  }
+}
