@@ -76,7 +76,7 @@ Verified adapters: `@cerbos/orm-prisma`, `@cerbos/orm-drizzle`, `@cerbos/orm-mon
 
 Put the check in the layer that owns the operation — the handler, the service method, the resolver — so one operation has one check in one readable place.
 
-Deny on error. A PDP that is unreachable or past its deadline is an outage; let it surface as a 5xx. Falling through to "allowed" turns an outage into an authorization bypass.
+Deny on error. A PDP that is unreachable or past its deadline is an outage; let it surface as a 5xx. Falling through to "allowed" turns an outage into an authorization bypass. Keep the two distinguishable in your own logs as well: an outage that reads as a deny in your telemetry looks exactly like a policy bug, and the check that separates them is whether the PDP recorded the request at all — the `cerbos-audit-insights` skill covers that flow.
 
 ## JWT auxiliary data
 

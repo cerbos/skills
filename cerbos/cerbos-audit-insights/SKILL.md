@@ -1,6 +1,6 @@
 ---
 name: cerbos-audit-insights
-description: Cerbos audit logging and Cerbos Hub Insights — turning on access and decision logs, streaming them from a PDP fleet to Hub, masking sensitive fields before entries leave the network, searching collected decisions, and reading the Insights dashboards. Use when enabling audit or decision logging, redacting PII, tokens or headers from audit entries, investigating why one request was allowed or denied, or answering a compliance audit-trail question (SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR). Not for why a policy evaluates the way it does at authoring time, which is `cerbos-policy`.
+description: Cerbos audit logs and Cerbos Hub Insights. Use when enabling audit or decision logging, getting a PDP or Synapse instance to emit decisions at all, debugging an application that allows or denies the wrong thing, masking PII, tokens or headers before entries leave the network, or answering a compliance audit-trail question (SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR). Not for why a policy evaluates the way it does at authoring time, which is `cerbos-policy`.
 license: Apache-2.0
 metadata:
   author: cerbos
@@ -95,6 +95,14 @@ Path syntax, worked examples for headers, tokens and PII, request-metadata handl
 ## Reading the decisions back
 
 Audit log search and the drill-through from a ranking, explaining a single allow or deny, the Insights charts and activity rankings, the usage dashboard, encrypted exports, retention and residency, and what to put in front of an auditor: [references/READING.md](references/READING.md).
+
+## Debugging a decision that looks wrong
+
+When an application allows or denies the wrong thing, the decision entry is the evidence: it records the request **as the PDP evaluated it**, so it shows what the PEP actually sent rather than what you believe it sent.
+
+Work down the chain — did the request reach the PDP, are the logs on, what do the inputs say, which rule matched. Two facts settle most of the false starts: **`audit.enabled` defaults to `false`**, so there is usually nothing to read until it is set; and **using Cerbos Hub does not take stdout away**, since the storage driver and the audit backend are independent, and the Hub backend can pipe a redacted copy to a second backend anyway.
+
+The ordered flow, the minimum configuration for each backend, `cerbosctl audit` and the `cerbosctl decisions` terminal UI, and a table of the usual causes: [references/DEBUG.md](references/DEBUG.md).
 
 ## Who can see it
 
