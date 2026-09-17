@@ -64,7 +64,7 @@ Before writing variables or imports, read [Variable dependency design](reference
 Batch-write all files in a single pass, in this order:
 
 1. `_schemas/` (principal + resources)
-2. Derived roles and focused exported-variable sets, only where required by the spec
+2. `derived_roles/` (shared roles and exported-variable files, only where required by the spec)
 3. `resource_policies/` / `role_policies/`
 4. `testdata/` fixtures
 5. `*_test.yaml`
@@ -78,7 +78,8 @@ _schemas/                    # Attribute schemas (at root)
     <resource>.json
 derived_roles/
   common_roles.yaml          # Shared derived roles
-  <concern>_vars.yaml         # Optional, focused exported-variable sets
+  common_vars.yaml           # Optional shared exported variables
+  <concern>_vars.yaml         # Additional focused sets where needed
 principal_policies/
   <name>.yaml
 resource_policies/
