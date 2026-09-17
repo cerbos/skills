@@ -8,7 +8,7 @@ Source of truth: [`cerbos/cerbos-sdk-javascript`](https://github.com/cerbos/cerb
 |---|---|---|
 | `@cerbos/grpc` | gRPC, port 3593 | Server-side Node.js. The default choice for enforcement. |
 | `@cerbos/http` | REST, port 3592 | Browsers, edge runtimes, and anywhere `fetch` is the only transport. Requires a global `fetch`. |
-| `@cerbos/embedded-client` + `@cerbos/embedded-server` | none — WASM, in-process | Browser and edge permission checks with no network hop. Hub feature; see the `cerbos-embedded-pdp` skill ([Embedded PDPs](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration)). |
+| `@cerbos/embedded-client` + `@cerbos/embedded-server` | none — WASM, in-process | Browser and edge permission checks with no network hop. Hub feature; see the `cerbos-embedded-pdp` skill ([Embedded PDPs](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration)). |
 | `@cerbos/react` | wraps a client | React hooks over any of the above. |
 | `@cerbos/opentelemetry` | — | Traces for `@cerbos/grpc` and `@cerbos/http`. |
 | `@cerbos/core` | — | Shared types (`PlanKind`, `Effect`, `PlanExpression`, …). A dependency of the others; import types from it. |

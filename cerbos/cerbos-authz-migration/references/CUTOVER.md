@@ -31,7 +31,7 @@ Four properties are non-negotiable:
 
 Where a `can()` helper already exists, this is a one-file change and every caller comes along for free. Where guards are scattered inline, introduce the helper first — that refactor is worth doing on its own, and it is far safer than editing forty call sites twice.
 
-`cerbos-pep-integration` ([API](https://docs.cerbos.dev/cerbos/latest/api/index.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)) owns the SDK call and the request construction.
+`cerbos-pep-integration` ([API](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)) owns the SDK call and the request construction.
 
 ## What to record
 
@@ -52,11 +52,11 @@ Log only on disagreement plus a sample of agreements, not every call. A busy ser
 
 ## The Cerbos half, for free
 
-Turn on Hub [audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) and the Cerbos side of every comparison is already recorded: the principal with roles and attributes, the effective derived roles, the resource with its attributes and scope, the effect per action, the matched policy, and any rule outputs. Policy names in an entry link through to the policy in the store.
+Turn on Hub [audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) and the Cerbos side of every comparison is already recorded: the principal with roles and attributes, the effective derived roles, the resource with its attributes and scope, the effect per action, the matched policy, and any rule outputs. Policy names in an entry link through to the policy in the store.
 
 That is the entire right-hand column of the diff, with the evaluation detail attached — which matters because the interesting question is never *what* Cerbos decided but *why*. Building an equivalent decision log by hand, during the riskiest weeks of the project, is work with no lasting value.
 
-The [Insights](https://docs.cerbos.dev/cerbos-hub/insights.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) view aggregates the same data: allow/deny volume per hour and per day, active principals, and the busiest resource-and-action pairs. During shadow it answers "is the shadow path actually being exercised, and by how much"; after each flip it is where a swing in the deny ratio shows up first. Querying both is `cerbos-audit-insights` ([Audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)).
+The [Insights](https://docs.cerbos.dev/cerbos-hub/insights?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) view aggregates the same data: allow/deny volume per hour and per day, active principals, and the busiest resource-and-action pairs. During shadow it answers "is the shadow path actually being exercised, and by how much"; after each flip it is where a swing in the deny ratio shows up first. Querying both is `cerbos-audit-insights` ([Audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)).
 
 Your application-side record then only needs the legacy effect and the correlation ID. Keep the PDP ID distinct for the shadow fleet so shadow traffic is separable from anything already in production.
 
@@ -104,7 +104,7 @@ Every fix follows the same loop, and the middle step is the one people skip:
 2. **Add the case to the test suite**, named after the inventory row's Source. This is what stops a closed disagreement reopening.
 3. Redeploy and confirm the disagreement stops appearing in the next report.
 
-With a Hub policy store the loop is minutes: upload, Hub compiles and runs every suite in the store, and a green build reaches every connected PDP within seconds. A failing suite blocks the bundle and leaves the previous one live, so a bad fix cannot reach the shadow fleet. `cerbos-hub-setup` ([Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)) covers the store and deployment; `cerbos-policy` ([Testing policies](https://docs.cerbos.dev/cerbos/latest/policies/compile.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)) owns the upload command and the suite format.
+With a Hub policy store the loop is minutes: upload, Hub compiles and runs every suite in the store, and a green build reaches every connected PDP within seconds. A failing suite blocks the bundle and leaves the previous one live, so a bad fix cannot reach the shadow fleet. `cerbos-hub-setup` ([Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)) covers the store and deployment; `cerbos-policy` ([Testing policies](https://docs.cerbos.dev/cerbos/latest/policies/compile?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration)) owns the upload command and the suite format.
 
 ## Exit criterion
 
@@ -134,7 +134,7 @@ Two levers. Test both before the first flip, because a rollback path that has ne
 | The `enforce_cerbos` flag | Returns one resource kind to the legacy decision | Instant, one kind, requires the legacy code to still be there — which is why deletion trails the flip |
 | Hub deployment freeze or rollback | Pins every connected PDP to a known-good bundle | Seconds, fleet-wide, no application deploy |
 
-[Freezing](https://docs.cerbos.dev/cerbos-hub/deployments.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) holds the live bundle in place while you diagnose; rolling back promotes an earlier build and freezes the deployment so the next policy change does not silently undo it. Every build records the contributing stores and their versions, so "which policies were live at 14:20" is answerable rather than reconstructed.
+[Freezing](https://docs.cerbos.dev/cerbos-hub/deployments?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-authz-migration) holds the live bundle in place while you diagnose; rolling back promotes an earlier build and freezes the deployment so the next policy change does not silently undo it. Every build records the contributing stores and their versions, so "which policies were live at 14:20" is answerable rather than reconstructed.
 
 Once a kind's legacy code is deleted, the flag is gone and the deployment lever is the only one left. That is the right end state; reaching it deliberately, one kind at a time, is the point of the sequence.
 

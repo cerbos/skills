@@ -151,4 +151,4 @@ pdp:
 
 Fronting an existing PDP fleet instead (`pdp.external`), Hub credentials and the audit block live on the upstream PDP; the top-level `audit.instanceAnnotations` still applies, because Synapse adds them before forwarding.
 
-Canonical reference: [Cerbos Hub audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights) and the [audit configuration block](https://docs.cerbos.dev/cerbos/latest/configuration/audit.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights).
+Canonical reference: [Cerbos Hub audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights) and the [audit configuration block](https://docs.cerbos.dev/cerbos/latest/configuration/audit?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-audit-insights).

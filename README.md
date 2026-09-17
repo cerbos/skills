@@ -92,12 +92,12 @@ Skills live in `cerbos/<skill-name>/SKILL.md`, with deeper material under `refer
 Before opening a pull request:
 
 ```bash
-scripts/fix-links                # add .md suffixes and UTM tags to Cerbos links
+scripts/fix-links                # add UTM tags to Cerbos links
 scripts/validate-skills          # structure, frontmatter, relative links
 scripts/validate-skills --links  # also resolves every external URL
 ```
 
-Links to `docs.cerbos.dev` point at the Markdown rendering of each page (`.md`, or `index.md` for an index), which is what agents read. Cerbos-owned links carry UTM parameters so traffic from skills is identifiable; third-party links are left untagged.
+Links to Cerbos properties carry UTM parameters so traffic originating from a skill is identifiable; third-party links are left untagged.
 
 CI runs the same checks on every pull request.
 

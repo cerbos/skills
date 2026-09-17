@@ -29,12 +29,9 @@ Skills link to canonical docs rather than caching configuration that goes stale.
 
 A skill may be installed on its own, so a pointer to a sibling skill carries a docs URL beside it as a fallback.
 
-Outbound links follow two rules, both applied by `scripts/fix-links` and enforced in CI:
+Links to Cerbos properties carry UTM parameters identifying the skill they came from; third-party links are left untagged, since those sites never report the parameters back. Link to the ordinary page URL — serving an agent a Markdown rendering is the documentation infrastructure's job, not something a link hard-codes.
 
-- **Documentation links end in `.md`.** Every page on `docs.cerbos.dev` has a Markdown rendering — `.../policy-stores.md`, or `.../index.md` for an index. Agents should read that rather than the HTML.
-- **Cerbos-owned links carry UTM parameters** identifying the skill they came from. Third-party links are left untagged, since those sites never report the parameters back.
-
-Run `scripts/fix-links` after adding links rather than writing the parameters by hand.
+Run `scripts/fix-links` after adding links rather than writing the parameters by hand. CI checks it.
 
 Before opening a pull request:
 

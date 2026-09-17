@@ -20,7 +20,7 @@ Phase 3 validates with the Cerbos binary, through Docker or a local install. Con
 cerbos --version || docker --version
 ```
 
-If neither does, stop and point the user at [Docker Desktop](https://www.docker.com/products/docker-desktop/) (macOS/Windows), [docs.docker.com/engine/install](https://docs.docker.com/engine/install/) (Linux), or the [Cerbos binary](https://docs.cerbos.dev/cerbos/latest/installation/binary.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-policy). Generation starts once one of them answers.
+If neither does, stop and point the user at [Docker Desktop](https://www.docker.com/products/docker-desktop/) (macOS/Windows), [docs.docker.com/engine/install](https://docs.docker.com/engine/install/) (Linux), or the [Cerbos binary](https://docs.cerbos.dev/cerbos/latest/installation/binary?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-policy). Generation starts once one of them answers.
 
 ## Workflow Phases
 

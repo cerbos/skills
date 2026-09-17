@@ -50,9 +50,9 @@ Required, enforced by request validation (`cerbos/engine/v1/engine.proto`):
 - `resource.kind` — non-empty; selects the resource policy.
 - `resource.id` — non-empty; the instance identifier, and available in conditions as `R.id`.
 
-Optional: `attr` on either side (free-form JSON, the whole basis for ABAC conditions), `policyVersion`, `scope` (dot-separated, drives [scoped policy](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration) inheritance), `requestId` (echoed back; put your trace ID here), `includeMeta`.
+Optional: `attr` on either side (free-form JSON, the whole basis for ABAC conditions), `policyVersion`, `scope` (dot-separated, drives [scoped policy](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration) inheritance), `requestId` (echoed back; put your trace ID here), `includeMeta`.
 
-**Batch limits**: 50 resources per request and 50 actions per resource, both defaults, both raisable under `server.requestLimits` in the PDP config ([server configuration](https://docs.cerbos.dev/cerbos/latest/configuration/server.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration)). Chunk larger batches client-side rather than raising the limit.
+**Batch limits**: 50 resources per request and 50 actions per resource, both defaults, both raisable under `server.requestLimits` in the PDP config ([server configuration](https://docs.cerbos.dev/cerbos/latest/configuration/server?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration)). Chunk larger batches client-side rather than raising the limit.
 
 ### Response
 
@@ -79,8 +79,8 @@ Optional: `attr` on either side (free-form JSON, the whole basis for ABAC condit
 
 - `results` comes back in request order, one entry per resource.
 - Every action maps to `EFFECT_ALLOW` or `EFFECT_DENY`. Cerbos is deny-by-default: an action no rule allows is `EFFECT_DENY`, and a policy that fails to load produces denials rather than errors.
-- `outputs` carries [policy output expressions](https://docs.cerbos.dev/cerbos/latest/policies/outputs.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration) — the mechanism behind returning a permitted-field list for field-level security.
-- `validationErrors` appears when [schema enforcement](https://docs.cerbos.dev/cerbos/latest/policies/schemas.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration) is on and the attributes you sent did not match. Surface these in development; they mean the PEP is sending the wrong shape.
+- `outputs` carries [policy output expressions](https://docs.cerbos.dev/cerbos/latest/policies/outputs?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration) — the mechanism behind returning a permitted-field list for field-level security.
+- `validationErrors` appears when [schema enforcement](https://docs.cerbos.dev/cerbos/latest/policies/schemas?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration) is on and the attributes you sent did not match. Surface these in development; they mean the PEP is sending the wrong shape.
 - `meta` is populated only when `includeMeta` was set. It names the matched policy and the derived roles that activated — the first thing to look at when a decision surprises you.
 - `cerbosCallId` ties the decision to the PDP's audit log entry. Log it next to your own request ID.
 
@@ -174,7 +174,7 @@ A lambda (`R.attr.values.filter(t, t > 0)`) nests an `operator: "lambda"` node w
 - `keySetId` is optional when the PDP has exactly one keyset configured, and **mandatory** as soon as it has more than one.
 - In policy conditions the claims land at `request.auxData.jwt.<claim>` for the single form and `request.auxData.jwts.<name>.claims.<claim>` for the named form — the `claims` segment is not optional.
 
-The PDP verifies the signature and the `exp`/`nbf` claims against the keysets configured under `auxData.jwt.keySets` ([auxdata configuration](https://docs.cerbos.dev/cerbos/latest/configuration/auxdata.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration)) — JWKS URL, local `.jwks` file, inline base64, or PEM. Refresh honours `Cache-Control`/`Expiry` headers unless `refreshInterval` is set, defaulting to one hour.
+The PDP verifies the signature and the `exp`/`nbf` claims against the keysets configured under `auxData.jwt.keySets` ([auxdata configuration](https://docs.cerbos.dev/cerbos/latest/configuration/auxdata?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration)) — JWKS URL, local `.jwks` file, inline base64, or PEM. Refresh honours `Cache-Control`/`Expiry` headers unless `refreshInterval` is set, defaulting to one hour.
 
 Cerbos treats its own JWT verification as a convenience, not the authoritative check: verify the token at your gateway or in your application before calling the PDP. Sending a JWT saves you unpacking claims into `principal.attr` by hand; it does not move authentication into the PDP.
 
@@ -189,4 +189,4 @@ cat <<EOF | grpcurl -plaintext -d @ localhost:3593 cerbos.svc.v1.CerbosService/C
 EOF
 ```
 
-For a language with no Cerbos SDK, generate a client from the OpenAPI document the PDP serves at `/schema/swagger.json`, or from the protobuf definitions in [`cerbos/cerbos/api/public`](https://github.com/cerbos/cerbos/tree/main/api/public). Full instructions: [the Cerbos API](https://docs.cerbos.dev/cerbos/latest/api/index.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration).
+For a language with no Cerbos SDK, generate a client from the OpenAPI document the PDP serves at `/schema/swagger.json`, or from the protobuf definitions in [`cerbos/cerbos/api/public`](https://github.com/cerbos/cerbos/tree/main/api/public). Full instructions: [the Cerbos API](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration).

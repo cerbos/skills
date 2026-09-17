@@ -21,7 +21,7 @@ Hub continuously checks the workspace and surfaces problems in an issues bar acr
 | `failed to authenticate to Cerbos Hub` | `CERBOS_HUB_CLIENT_ID` / `CERBOS_HUB_CLIENT_SECRET` wrong or unset, and no saved login in the keyring |
 | `permission denied for store` | The credential is not scoped to this store, or is read-only. A **deployment** credential lands here — uploads need the credential created on the **store**, type Read & write |
 | `store doesn't exist` | `CERBOS_HUB_STORE_ID` names no store the credential can see |
-| `no usable files` | Every file broke a [file rule](https://docs.cerbos.dev/cerbos-hub/policy-stores-file-rules.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-hub-setup); the ignored files are listed. Usually the wrong directory, or a tree holding no `.yaml`/`.yml`/`.json` |
+| `no usable files` | Every file broke a [file rule](https://docs.cerbos.dev/cerbos-hub/policy-stores-file-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-hub-setup); the ignored files are listed. Usually the wrong directory, or a tree holding no `.yaml`/`.yml`/`.json` |
 | `invalid files` | A file classified as a policy, schema or test suite failed validation. Each is listed with its cause, and nothing was uploaded — content errors are never skipped |
 | `store not modified due to unsatisfied version condition` | Another writer moved the store past the version passed to `--version-must-eq` |
 | `invalid request` | Request-level validation, listed field by field |
@@ -73,4 +73,4 @@ Either way the previous bundle stays live, so a red build is a blocked change ra
 
 ## Audit logs not arriving
 
-`audit.enabled` true, `audit.backend` set to `hub`, `audit.hub.storagePath` pointing at a writable directory for the local buffer, and the deployment credential created as **Read & write** — a read-only credential cannot upload. Logs are buffered locally and flushed when connectivity allows, so a full volume or a crash between syncs loses entries; mount a persistent volume for the buffer. Details: [audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-hub-setup).
+`audit.enabled` true, `audit.backend` set to `hub`, `audit.hub.storagePath` pointing at a writable directory for the local buffer, and the deployment credential created as **Read & write** — a read-only credential cannot upload. Logs are buffered locally and flushed when connectivity allows, so a full volume or a crash between syncs loses entries; mount a persistent volume for the buffer. Details: [audit log collection](https://docs.cerbos.dev/cerbos-hub/audit-log-collection?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-hub-setup).

@@ -115,7 +115,7 @@ query = get_query(plan, Contact, {
 }, [(User, Contact.owner_id == User.id)])
 ```
 
-`get_query(plan, table_or_entity, attr_map, joins=None)` returns a SQLAlchemy `Select` you can keep building on with `.where(...)` and `.with_only_columns(...)`. The fourth argument is required as soon as `attr_map` spans more than one table. Supported operators are `and or not eq ne lt gt le ge in`; `operator_override_fns` swaps an operator's implementation for a dialect-specific one (`{"in": lambda c, v: c == any_(v)}`). Full detail: [SQLAlchemy adapter](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/sqlalchemy.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration).
+`get_query(plan, table_or_entity, attr_map, joins=None)` returns a SQLAlchemy `Select` you can keep building on with `.where(...)` and `.with_only_columns(...)`. The fourth argument is required as soon as `attr_map` spans more than one table. Supported operators are `and or not eq ne lt gt le ge in`; `operator_override_fns` swaps an operator's implementation for a dialect-specific one (`{"in": lambda c, v: c == any_(v)}`). Full detail: [SQLAlchemy adapter](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/sqlalchemy?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration).
 
 ## JWT auxiliary data
 
@@ -123,4 +123,4 @@ Every call takes `aux_data` (a `request_pb2.AuxData`), and `with_principal(princ
 
 ## Framework wiring
 
-There is no Cerbos middleware for Django, FastAPI or Flask. Wire it yourself: one dependency or helper that maps your authenticated user onto a `Principal`, another that loads the resource, and an explicit check in the handler. The [FastAPI + SQLAlchemy walkthrough](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/sqlalchemy.md?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration) shows the dependency-injection shape end to end.
+There is no Cerbos middleware for Django, FastAPI or Flask. Wire it yourself: one dependency or helper that maps your authenticated user onto a `Principal`, another that loads the resource, and an explicit check in the handler. The [FastAPI + SQLAlchemy walkthrough](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/sqlalchemy?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=skill&utm_content=cerbos-pep-integration) shows the dependency-injection shape end to end.

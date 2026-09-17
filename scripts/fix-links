@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
-"""Normalise outbound Cerbos links in skill markdown.
+"""Tag outbound Cerbos links in skill markdown.
 
-Two rules, applied to Cerbos-owned URLs only:
+Every Cerbos-owned URL carries UTM parameters identifying the skill it came
+from, matching the convention already used in the Cerbos docs.
 
-  1. Documentation pages get a `.md` suffix. docs.cerbos.dev serves a
-     Markdown rendering of every page, which is what an agent should read
-     rather than the HTML. A path ending in `/` becomes `index.md`. The
-     marketing site has Markdown for only some pages, so it keeps its HTML
-     URLs and is tagged but not suffixed.
-  2. Every Cerbos-owned URL carries UTM parameters identifying the skill it
-     came from, matching the convention already used in the Cerbos docs.
+Links point at the ordinary page URL. Serving a Markdown rendering to an
+agent is the documentation infrastructure's job through content negotiation,
+not something a link should hard-code, so a `.md` suffix is stripped.
 
 Third-party URLs are left alone: those sites never report our UTM back, so
 tagging them is noise. URLs inside fenced blocks and inline code are left
@@ -38,9 +35,6 @@ UTM_MEDIUM = "skill"
 
 # Cerbos properties. Only these are tagged.
 CERBOS_HOSTS = {"docs.cerbos.dev", "www.cerbos.dev", "cerbos.dev", "hub.cerbos.cloud"}
-# The documentation site serves a Markdown rendering of every page. The
-# marketing site does so only for some, so it is left as HTML.
-MARKDOWN_HOSTS = {"docs.cerbos.dev"}
 
 FENCE_RE = re.compile(r"^```.*?^```", re.S | re.M)
 INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
@@ -53,13 +47,7 @@ def normalise(url: str, skill: str) -> str:
         return url
 
     path = parts.path
-    if parts.netloc in MARKDOWN_HOSTS and path not in ("", "/"):
-        if path.endswith("/"):
-            path += "index.md"
-        elif not Path(path).suffix:
-            path += ".md"
-    elif path.endswith(".md"):
-        # Self-correcting: a host that does not serve Markdown loses the suffix.
+    if path.endswith(".md"):
         path = path[: -len(".md")]
 
     query = dict(parse_qsl(parts.query, keep_blank_values=True))
