@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires Docker for policy validation
 metadata:
   author: cerbos
-  version: "1.3"
+  version: "1.4"
   targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Write Edit Bash Glob Grep Task WebFetch
 ---
