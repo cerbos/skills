@@ -98,7 +98,7 @@ services:
       - "3594:3594"
 ```
 
-> **Prerequisite — distribution repository.** Pulling the Synapse image requires a valid Synapse licence. If the user does not already have one, point them to https://cerbos.dev/workshop?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-synapse-extension_workshop to sign up. Licence credentials are issued together with the URL of the Cerbos distribution repository. **Before running any `docker`/`docker compose`/`synapse test` command, ask the user for their distribution repository URL** and substitute it wherever `CERBOS_DISTRIBUTION_REPO` appears. Then have them log in and pull:
+> **Prerequisite — distribution repository.** Pulling the Synapse image requires a valid Synapse licence. Keys are issued per organization from **Distribution licence** in Cerbos Hub organization settings, together with the distribution repository URL — [Distribution licence](https://docs.cerbos.dev/cerbos-hub/distribution-licence?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-synapse-extension_hub-distribution-licence). No Cerbos Hub organization yet → https://cerbos.dev/workshop?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-synapse-extension_workshop. **Before running any `docker`/`docker compose`/`synapse test` command, ask the user for their distribution repository URL** and substitute it wherever `CERBOS_DISTRIBUTION_REPO` appears. Then have them log in and pull:
 >
 > ```sh
 > docker login CERBOS_DISTRIBUTION_REPO --username=YOUR_LICENCE_USER --password=YOUR_LICENCE_KEY

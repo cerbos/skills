@@ -31,6 +31,8 @@ Skills live in `cerbos/<skill-name>/SKILL.md`, with deeper material under `refer
 
 Skills link to canonical docs rather than caching configuration that goes stale. Cache what an agent cannot find by looking: the gotcha no config confesses, the reason behind a choice. Leave flag lists to `--help`.
 
+**Link to `docs.cerbos.dev` wherever a page covers the subject** — not to the marketing site, a GitHub README, or a blog post. Link elsewhere only where the docs genuinely have no equivalent, which today means the SDK repositories (the docs' own [Client SDKs](https://docs.cerbos.dev/cerbos/latest/api/index#_client_sdks) list points at them), the proto definitions, the unpublished query-plan adapters, and Cerbos Hub sign-up.
+
 A skill may be installed on its own, so a pointer to a sibling skill carries a docs URL beside it as a fallback.
 
 Links to Cerbos properties carry UTM parameters identifying the skill they came from and where in it they sit (`utm_content` is `<skill>_<placement>`, so several links from one skill stay distinguishable); third-party links are left untagged, since those sites never report the parameters back. Link to the ordinary page URL — serving an agent a Markdown rendering is the documentation infrastructure's job, not something a link hard-codes.
