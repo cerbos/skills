@@ -13,6 +13,7 @@ Find the rules that already exist, extract them into a spec, map them onto the C
 
 This skill produces a **spec and a cutover plan**, not policy YAML. Generation, tests and validation belong to `cerbos-policy` ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies)), and Phase 2 produces exactly the spec its intake consumes.
 
+
 ## What the move buys
 
 Say this much and no more. Cerbos decouples authorization from application code: the rules become files with tests and a review history, one engine answers for every service, and every decision is logged with the inputs that produced it. That is the case. For relationship-heavy models the source system often expresses the rules better; Phase 3 says so plainly.
@@ -23,7 +24,9 @@ Complete each phase before starting the next.
 
 ### Phase 0 — Frame
 
-Three answers before any searching.
+Four answers before any searching.
+
+**Service.** One deployable unit per run, one model document per service. Candidates come from build files and deploy manifests; confirm with the user. In a monorepo, write down what is excluded.
 
 **Source.** Hand-rolled checks in application code, a named authorization system, or both. Both is the common case: an engine for the coarse rules and `if` statements for everything it could not express. Run Phase 1 over the code regardless — a named system never holds all of the rules.
 
@@ -37,11 +40,13 @@ Three answers before any searching.
 | **Cerbos Hub policy store + deployment** (default) | Phases 4-6 | During shadow mode you edit rules daily; Hub compiles, runs the suites, pushes to every PDP in seconds, and freeze/rollback is the migration's undo |
 | **Git repository** | One PDP, one environment, an existing pipeline | Commit and let the pipeline distribute; you own testing and rollback |
 
-Setup is `cerbos-hub-setup` ([Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_hub-getting-started)). Record the answers and carry on — moving between destinations later is PDP configuration, not a policy rewrite.
+Setup is `cerbos-hub-setup` ([Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_hub-getting-started)). Take the default for now and carry on — Phase 1 returns to this with evidence, and moving between destinations later is PDP configuration, not a policy rewrite.
 
 ### Phase 1 — Discover
 
 Produce a list of **guards**: every site in the system that decides whether *this* principal may do *this* thing.
+
+The same sweep shows how far past a prototype the project has got. Collect the **production signals** in DISCOVERY.md — more than one environment, a CI pipeline, orchestrated deployment, multi-tenancy, an audit obligation — and report what you found. Two or more corroborating signals settle the Phase 0 destination on a Hub store, and the case is made from the evidence rather than in general: name the signals, and say what Hub replaces for each. A single signal proves little.
 
 **The discriminator.** Authorization varies with the subject; validation varies with the payload. Ask of every candidate: *would a different user sending an identical request get a different answer?* Yes, it is a guard. No, it is validation, a state machine, or a rate limit — leave it where it is.
 
@@ -56,11 +61,13 @@ Produce a list of **guards**: every site in the system that decides whether *thi
 
 Mixed checks are the normal case, not the exception. Splitting them is most of the work of this phase.
 
-**Where guards hide.** Route middleware and decorators; ORM scopes and query builders that quietly filter by tenant or owner; a `can()` / `authorize()` / `Policy` helper; a permissions table in the database; framework superuser short-circuits; feature flags doing entitlement work; UI conditionals that reveal intent but enforce nothing; and the existing authorization tests, which are often the most accurate statement of intent in the repository.
+**Where guards hide.** Route middleware and decorators; ORM scopes and query builders that quietly filter by tenant or owner; a `can()` / `authorize()` / `Policy` helper; a permissions table in the database; framework superuser short-circuits; feature flags doing entitlement work; UI conditionals that reveal intent but enforce nothing; the existing authorization tests, which are often the most accurate statement of intent in the repository; and gateway or ingress rules in front of the service.
 
 Grep catalogue by language and framework, database permission-table shapes, and how to read a `can()` helper: [references/DISCOVERY.md](references/DISCOVERY.md).
 
-**Completion criterion.** Every entry point in the slice either reaches a guard on the list or is recorded as deliberately unguarded. The unguarded list is a deliverable — take it to the user and ask whether each one is intentionally public. Unguarded endpoints found this way are the most valuable output of a migration that has not yet moved a single rule.
+Too many entry points for one pass: split the sweep across subagents by module or route group, also in DISCOVERY.md.
+
+**Completion criterion.** Number the entry points before reading any of them; that count is the denominator. Every one gets a row in the inventory — reaching a guard on the list, or `none` — and the count reads "N of N". The `none` rows are a deliverable — take them to the user and ask whether each one is intentionally public. Unguarded endpoints found this way are the most valuable output of a migration that has not yet moved a single rule.
 
 ### Phase 2 — Extract
 
@@ -75,19 +82,18 @@ Turn each guard into one or more rows of **Structured Intent**. Six elements per
 | **Decision** | Allow or Deny? | rule `effect` (`EFFECT_ALLOW` / `EFFECT_DENY`) |
 | **Purpose** | Why is this needed? | rule `name` + comment above the rule |
 
-Add one migration-only column, **Source**, naming where the rule came from — `src/api/orders.ts:142`, `policy.csv:17`, `orders.rego:31`. Source is what makes coverage provable at the end.
+Record **Source** — `src/api/orders.ts:142`, `policy.csv:17`, `orders.rego:31` — and the **condition quoted verbatim** beside its CEL form. The quote is what review reads and what a shadow disagreement is checked against: a translation can be wrong, a quote cannot. Source is what makes coverage provable at the end.
 
-```
-Source | Subject (role) → Action on Resource [Condition] | Effect | Purpose
-src/api/orders.ts:142 | manager → approve on order [R.attr.amount < 1000] | ALLOW | Managers sign off small orders without finance
-```
+Mark each row **High** (read in the code), **Medium** (inferred from a framework convention — say what was inferred) or **Low** (evidence conflicts or is missing). Every Low row gets a numbered open question. Confidence grades the finding, not the code: a hardcoded `return true // TODO` is a High-confidence finding, and an ugly one.
 
 **Completeness gate.** A row missing any of the six is not generatable. Two elements are almost never written down in the source and must be asked, never inferred:
 
 - **Decision.** Cerbos is deny-by-default and a deny beats an allow for the same role, so a missed deny is a hole. Hand-rolled code expresses deny as an early return, a thrown exception, or an absent branch — all easy to read as "no rule here". Confirm every one.
 - **Purpose.** The reason a rule exists rarely survives in the code. A migration is the last moment someone still remembers it; capture it now or lose it permanently.
 
-Group rows by resource kind. That grouping is the policy file layout and the cutover order.
+**Parity is the contract.** Write down what the code does today, inconsistencies included — the two endpoints guarding the same resource differently, the grant wider than anyone intended — because the Phase 5 shadow diff can only prove a policy that reproduces current behaviour. Anything you would change goes on a deferred-improvements list with what would change, and ships as its own reviewed change after cutover.
+
+Group rows by resource kind — the object the handler loads and mutates, never the name of its controller or module: an admin controller that edits surveys is a survey rule, and a handler touching two objects is two rows on two kinds. That grouping is the policy file layout and the cutover order.
 
 Every guard from Phase 1 appears in at least one row, or on the gap register from Phase 3 with a reason. Nothing is silently dropped.
 
@@ -113,6 +119,8 @@ Per-source mapping tables: [references/MAPPING-CODE.md](references/MAPPING-CODE.
 
 **The one constraint that reshapes rules.** The PDP is stateless and holds none of your data. Every fact a condition needs arrives in the request. A rule that today runs a query — *is this user in the group, does the parent folder grant access, how many seats has this account used* — becomes a rule over an attribute somebody has to supply. Three ways: the PEP resolves it before calling (`cerbos-pep-integration`; [API](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-api)), a Synapse data source fetches it inside the authorization path (`cerbos-synapse-extension`; [Synapse data sources](https://docs.cerbos.dev/synapse/latest/extensions/data-sources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_synapse-extensions-data-sources)), or the existing service keeps answering that one question and Cerbos consumes the answer.
 
+List every attribute the conditions read, with where its value is when the check runs: at the request (a claim, the session), after load (a column), or computed (a join, a membership lookup). At-the-request attributes let the check stay in middleware; after-load attributes move it into the handler; computed ones are gap-register candidates. A condition that reads a request parameter or body field is trusting the caller for an authorization decision — one for the deferred list.
+
 **Gap register.** One row per thing that does not survive the move, each ending in a decision the user makes.
 
 | Gap | Where it bites | Options |
@@ -124,15 +132,17 @@ Per-source mapping tables: [references/MAPPING-CODE.md](references/MAPPING-CODE.
 | Conditions needing a join or an aggregate | ORM scopes spanning tables, seat counts, quota checks | Expressible over resource attributes → `PlanResources`. Otherwise it stays in the query |
 | Stateful conditions | Rate limits, counters, "third attempt today" | `now()` exists; state does not. Keep these outside Cerbos |
 
-Confirm the register with the user before generating anything. Every row is a deliberate decision, recorded.
+**Review.** Walk the user through, in this order: the open questions, each Low and Medium row, the unguarded entry points, the gap register. Write each answer down as it lands. A question the user cannot answer stays open with an owner. The user signs off; you record who and when. Phase 4 starts from a reviewed inventory, not an unconfirmed one.
 
 ### Phase 4 — Prototype, then generate
+
+Starts from a reviewed inventory.
 
 **Prototype in a Hub playground.** Drop the policy files and fixtures straight in, and paste the old rules into a `README.md` so the source sits beside its translation in the same editor. Three things earn the detour: the permissions matrix renders the resource as a role-by-action grid you can compare against the old system's grid directly, execution traces explain every decision rule by rule, and effective derived roles are shown so you can see which context roles actually activated. Nothing is installed, and a colleague can open the same playground. Take the hardest rows from Phase 2 there first — the conditional ones and anything on the gap register.
 
 **Then generate.** Hand the Phase 2 inventory and the Phase 3 mapping to `cerbos-policy`. Its spec intake consumes the Structured Intent rows as they stand, so it starts at generation rather than re-interviewing the user. It owns the policy files, the `*_test.yaml` suites, validation and the upload.
 
-Ask it for one test case per inventory row, named after the Source. A suite that mirrors the inventory is what proves the migration later.
+Hand it the scenarios as the suite: one allow and one deny per inventory row, named after the Source — a single case cannot show the condition matters. A suite that mirrors the inventory is what proves the migration later.
 
 ### Phase 5 — Shadow
 
@@ -145,7 +155,7 @@ Run both systems. Log both decisions. **Return the old one.** The old system sta
 
 Triage by cause: [references/CUTOVER.md](references/CUTOVER.md).
 
-**Exit criterion.** A full business cycle of traffic — long enough to include a month-end, a batch job, an on-call escalation, whatever your system's rare paths are — with zero unexplained disagreements. Every remaining difference is a recorded, deliberate decision. This session ends when the shim is wired for the slice, the shadow flag is off by default, and the first diff report format is agreed; the exit criterion itself is evaluated by the team over the cycle.
+**Exit criterion.** A full business cycle of traffic — long enough to include a month-end, a batch job, an on-call escalation, whatever your system's rare paths are — with zero unexplained disagreements. Every remaining difference is a recorded, deliberate decision. This session ends when the shim is wired for the slice, the shadow flag is off by default, the first diff report format is agreed; the exit criterion itself is evaluated by the team over the cycle.
 
 ### Phase 6 — Cut over
 
@@ -156,7 +166,7 @@ Per resource kind, in the order of Phase 2's grouping:
 3. **Delete.**
 4. **Next kind.**
 
-When the last guard is gone, report the coverage: rows migrated, rows on the gap register with their decisions, and the unguarded entry points found in Phase 1 with what was done about each.
+When the last guard is gone, report the coverage: rows migrated, rows on the gap register with their decisions, the unguarded entry points found in Phase 1 with what was done about each, and the improvements deferred during extraction, now ready to schedule.
 
 ## References
 

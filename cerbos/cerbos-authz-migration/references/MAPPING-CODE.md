@@ -134,6 +134,8 @@ condition:
 
 Sending the whole ACL for a resource with thousands of grantees is a request-size problem, not a policy problem. Send only the calling principal's entry.
 
+Name actions at the granularity the code has. Where it guards `approve` differently from `update`, those are two actions; where it only distinguishes reading from writing, two actions beat seven CRUD verbs. An action no guard ever tested is one the shadow diff can never exercise.
+
 ## The superuser short-circuit
 
 ```py

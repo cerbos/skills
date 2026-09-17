@@ -33,6 +33,8 @@ Where a `can()` helper already exists, this is a one-file change and every calle
 
 `cerbos-pep-integration` ([API](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-api)) owns the SDK call and the request construction.
 
+If the codebase already runs a Scientist-style experiment library, build the shim on it rather than beside it: legacy is the control, Cerbos the candidate, and the publish hook is `record`. The team already trusts that machinery.
+
 ## What to record
 
 One row per comparison:
@@ -49,6 +51,8 @@ One row per comparison:
 | Guard site | `file:line`, matching the inventory's Source column, so a diff points at a rule |
 
 Log only on disagreement plus a sample of agreements, not every call. A busy service produces a volume nobody reads, and the sample is enough to prove the shadow path is actually running.
+
+Where a metrics stack exists, also emit one counter per comparison, tagged by resource kind and `agree | disagree | error`. `error` stays its own status: in production it is the signal for a missing attribute or an unreachable PDP, and folding it into either side hides it.
 
 ## The Cerbos half, for free
 
@@ -146,6 +150,7 @@ When the last guard is gone:
 - Gap-register items, each with the option taken and who decided.
 - Rules deliberately dropped, with reasons.
 - Unguarded entry points found in Phase 1 and what was done about each.
+- Improvements deferred during extraction, now ready to schedule.
 - Behaviour changes users may notice — a `404` that became a `403`, an error message that changed, a multi-role case that now grants where it used to refuse.
 
 The last item is the one that generates support tickets. Write it before the tickets arrive.
