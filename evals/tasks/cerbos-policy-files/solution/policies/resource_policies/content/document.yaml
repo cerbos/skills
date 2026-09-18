@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+# Readers consume content; editors maintain it.
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: document
+  version: default
+  schemas:
+    principalSchema:
+      ref: cerbos:///principal.json
+    resourceSchema:
+      ref: cerbos:///resources/document.json
+  rules:
+  - name: reader_document_access
+    actions:
+    - view
+    roles:
+    - reader
+    effect: EFFECT_ALLOW
+  - name: editor_document_access
+    actions:
+    - view
+    - edit
+    roles:
+    - editor
+    effect: EFFECT_ALLOW

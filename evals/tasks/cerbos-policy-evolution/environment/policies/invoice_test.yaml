@@ -1,0 +1,242 @@
+name: invoice regression
+principals:
+  employee:
+    id: employee-1
+    roles:
+    - employee
+    attr:
+      tenant: north
+  accountant:
+    id: accountant-1
+    roles:
+    - accountant
+    attr:
+      tenant: north
+  finance_admin:
+    id: finance_admin-1
+    roles:
+    - finance_admin
+    attr:
+      tenant: north
+  visitor:
+    id: visitor-1
+    roles:
+    - visitor
+    attr:
+      tenant: north
+  mixed:
+    id: mixed-1
+    roles:
+    - accountant
+    - finance_admin
+    attr:
+      tenant: north
+resources:
+  small:
+    id: small
+    kind: invoice
+    attr:
+      tenant: north
+      status: submitted
+      owner: someone-else
+      amount: 100
+  raised:
+    id: raised
+    kind: invoice
+    attr:
+      tenant: north
+      status: submitted
+      owner: someone-else
+      amount: 4000
+  boundary:
+    id: boundary
+    kind: invoice
+    attr:
+      tenant: north
+      status: submitted
+      owner: someone-else
+      amount: 5000
+  above:
+    id: above
+    kind: invoice
+    attr:
+      tenant: north
+      status: submitted
+      owner: someone-else
+      amount: 5001
+  large:
+    id: large
+    kind: invoice
+    attr:
+      tenant: north
+      status: submitted
+      owner: someone-else
+      amount: 500000
+  held:
+    id: held
+    kind: invoice
+    attr:
+      tenant: north
+      status: submitted
+      owner: someone-else
+      amount: 100
+      on_hold: true
+  clear:
+    id: clear
+    kind: invoice
+    attr:
+      tenant: north
+      status: submitted
+      owner: someone-else
+      amount: 100
+      on_hold: false
+  draft:
+    id: draft
+    kind: invoice
+    attr:
+      tenant: north
+      status: draft
+      owner: someone-else
+      amount: 100
+  paid:
+    id: paid
+    kind: invoice
+    attr:
+      tenant: north
+      status: paid
+      owner: someone-else
+      amount: 100
+  foreign:
+    id: foreign
+    kind: invoice
+    attr:
+      tenant: south
+      status: submitted
+      owner: someone-else
+      amount: 100
+  self_accountant:
+    id: self_accountant
+    kind: invoice
+    attr:
+      tenant: north
+      status: submitted
+      owner: accountant-1
+      amount: 100
+  self_admin:
+    id: self_admin
+    kind: invoice
+    attr:
+      tenant: north
+      status: submitted
+      owner: finance_admin-1
+      amount: 100
+tests:
+- name: accountant small invoice
+  input:
+    principals:
+    - accountant
+    resources:
+    - small
+    actions:
+    - read
+    - approve
+    - delete
+  expected:
+  - principal: accountant
+    resource: small
+    actions:
+      read: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: accountant above old limit
+  input:
+    principals:
+    - accountant
+    resources:
+    - raised
+    actions:
+    - approve
+  expected:
+  - principal: accountant
+    resource: raised
+    actions:
+      approve: EFFECT_DENY
+- name: employee read only
+  input:
+    principals:
+    - employee
+    resources:
+    - small
+    actions:
+    - read
+    - approve
+    - delete
+  expected:
+  - principal: employee
+    resource: small
+    actions:
+      read: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: admin draft delete
+  input:
+    principals:
+    - finance_admin
+    resources:
+    - draft
+    actions:
+    - read
+    - delete
+  expected:
+  - principal: finance_admin
+    resource: draft
+    actions:
+      read: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: admin submitted deletion denied
+  input:
+    principals:
+    - finance_admin
+    resources:
+    - small
+    actions:
+    - delete
+  expected:
+  - principal: finance_admin
+    resource: small
+    actions:
+      delete: EFFECT_DENY
+- name: foreign tenant denied
+  input:
+    principals:
+    - finance_admin
+    resources:
+    - foreign
+    actions:
+    - read
+    - approve
+    - delete
+  expected:
+  - principal: finance_admin
+    resource: foreign
+    actions:
+      read: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: visitor denied
+  input:
+    principals:
+    - visitor
+    resources:
+    - small
+    actions:
+    - read
+    - approve
+    - delete
+  expected:
+  - principal: visitor
+    resource: small
+    actions:
+      read: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY

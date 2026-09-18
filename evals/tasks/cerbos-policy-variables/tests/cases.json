@@ -1,0 +1,956 @@
+{
+  "principals": {
+    "invoice_defaults": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "invoice_boundary": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "invoice_over": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "invoice_other_tenant": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "other"
+      }
+    },
+    "invoice_own": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "invoice_paid": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "invoice_blocked": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "invoice_not_blocked": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "suspended": false
+      }
+    },
+    "invoice_suspended": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "suspended": true
+      }
+    },
+    "invoice_outsider": {
+      "id": "a",
+      "roles": [
+        "viewer"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "invoice_override_low": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 5
+      }
+    },
+    "invoice_override_exact": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 5
+      }
+    },
+    "invoice_override_high": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 1100
+      }
+    },
+    "invoice_override_high_over": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 1100
+      }
+    },
+    "invoice_zero_limit": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 0
+      }
+    },
+    "invoice_zero_amount": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 0
+      }
+    },
+    "expense_defaults": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "expense_boundary": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "expense_over": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "expense_other_tenant": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "other"
+      }
+    },
+    "expense_own": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "expense_paid": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "expense_blocked": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "expense_not_blocked": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "suspended": false
+      }
+    },
+    "expense_suspended": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "suspended": true
+      }
+    },
+    "expense_outsider": {
+      "id": "a",
+      "roles": [
+        "viewer"
+      ],
+      "attr": {
+        "tenant": "acme"
+      }
+    },
+    "expense_override_low": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 5
+      }
+    },
+    "expense_override_exact": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 5
+      }
+    },
+    "expense_override_high": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 350
+      }
+    },
+    "expense_override_high_over": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 350
+      }
+    },
+    "expense_zero_limit": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 0
+      }
+    },
+    "expense_zero_amount": {
+      "id": "a",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "tenant": "acme",
+        "approval_limit": 0
+      }
+    }
+  },
+  "resources": {
+    "invoice_defaults": {
+      "id": "invoice_defaults",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10
+      }
+    },
+    "invoice_boundary": {
+      "id": "invoice_boundary",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 1000
+      }
+    },
+    "invoice_over": {
+      "id": "invoice_over",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 1001
+      }
+    },
+    "invoice_other_tenant": {
+      "id": "invoice_other_tenant",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10
+      }
+    },
+    "invoice_own": {
+      "id": "invoice_own",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "a",
+        "status": "pending",
+        "amount": 10
+      }
+    },
+    "invoice_paid": {
+      "id": "invoice_paid",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "paid",
+        "amount": 10
+      }
+    },
+    "invoice_blocked": {
+      "id": "invoice_blocked",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10,
+        "blocked": true
+      }
+    },
+    "invoice_not_blocked": {
+      "id": "invoice_not_blocked",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10,
+        "blocked": false
+      }
+    },
+    "invoice_suspended": {
+      "id": "invoice_suspended",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10
+      }
+    },
+    "invoice_outsider": {
+      "id": "invoice_outsider",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10
+      }
+    },
+    "invoice_override_low": {
+      "id": "invoice_override_low",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 6
+      }
+    },
+    "invoice_override_exact": {
+      "id": "invoice_override_exact",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 5
+      }
+    },
+    "invoice_override_high": {
+      "id": "invoice_override_high",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 1100
+      }
+    },
+    "invoice_override_high_over": {
+      "id": "invoice_override_high_over",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 1101
+      }
+    },
+    "invoice_zero_limit": {
+      "id": "invoice_zero_limit",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 1
+      }
+    },
+    "invoice_zero_amount": {
+      "id": "invoice_zero_amount",
+      "kind": "invoice",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 0
+      }
+    },
+    "expense_defaults": {
+      "id": "expense_defaults",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10
+      }
+    },
+    "expense_boundary": {
+      "id": "expense_boundary",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 250
+      }
+    },
+    "expense_over": {
+      "id": "expense_over",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 251
+      }
+    },
+    "expense_other_tenant": {
+      "id": "expense_other_tenant",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10
+      }
+    },
+    "expense_own": {
+      "id": "expense_own",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "a",
+        "status": "pending",
+        "amount": 10
+      }
+    },
+    "expense_paid": {
+      "id": "expense_paid",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "paid",
+        "amount": 10
+      }
+    },
+    "expense_blocked": {
+      "id": "expense_blocked",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10,
+        "blocked": true
+      }
+    },
+    "expense_not_blocked": {
+      "id": "expense_not_blocked",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10,
+        "blocked": false
+      }
+    },
+    "expense_suspended": {
+      "id": "expense_suspended",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10
+      }
+    },
+    "expense_outsider": {
+      "id": "expense_outsider",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 10
+      }
+    },
+    "expense_override_low": {
+      "id": "expense_override_low",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 6
+      }
+    },
+    "expense_override_exact": {
+      "id": "expense_override_exact",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 5
+      }
+    },
+    "expense_override_high": {
+      "id": "expense_override_high",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 350
+      }
+    },
+    "expense_override_high_over": {
+      "id": "expense_override_high_over",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 351
+      }
+    },
+    "expense_zero_limit": {
+      "id": "expense_zero_limit",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 1
+      }
+    },
+    "expense_zero_amount": {
+      "id": "expense_zero_amount",
+      "kind": "expense",
+      "attr": {
+        "tenant": "acme",
+        "owner": "other",
+        "status": "pending",
+        "amount": 0
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "invoice_defaults",
+      "principal": "invoice_defaults",
+      "resource": "invoice_defaults",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_boundary",
+      "principal": "invoice_boundary",
+      "resource": "invoice_boundary",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_over",
+      "principal": "invoice_over",
+      "resource": "invoice_over",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_other_tenant",
+      "principal": "invoice_other_tenant",
+      "resource": "invoice_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_own",
+      "principal": "invoice_own",
+      "resource": "invoice_own",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_paid",
+      "principal": "invoice_paid",
+      "resource": "invoice_paid",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_blocked",
+      "principal": "invoice_blocked",
+      "resource": "invoice_blocked",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_not_blocked",
+      "principal": "invoice_not_blocked",
+      "resource": "invoice_not_blocked",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_suspended",
+      "principal": "invoice_suspended",
+      "resource": "invoice_suspended",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_outsider",
+      "principal": "invoice_outsider",
+      "resource": "invoice_outsider",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_override_low",
+      "principal": "invoice_override_low",
+      "resource": "invoice_override_low",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_override_exact",
+      "principal": "invoice_override_exact",
+      "resource": "invoice_override_exact",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_override_high",
+      "principal": "invoice_override_high",
+      "resource": "invoice_override_high",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_override_high_over",
+      "principal": "invoice_override_high_over",
+      "resource": "invoice_override_high_over",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_zero_limit",
+      "principal": "invoice_zero_limit",
+      "resource": "invoice_zero_limit",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice_zero_amount",
+      "principal": "invoice_zero_amount",
+      "resource": "invoice_zero_amount",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_defaults",
+      "principal": "expense_defaults",
+      "resource": "expense_defaults",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_boundary",
+      "principal": "expense_boundary",
+      "resource": "expense_boundary",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_over",
+      "principal": "expense_over",
+      "resource": "expense_over",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_other_tenant",
+      "principal": "expense_other_tenant",
+      "resource": "expense_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_own",
+      "principal": "expense_own",
+      "resource": "expense_own",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_paid",
+      "principal": "expense_paid",
+      "resource": "expense_paid",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_blocked",
+      "principal": "expense_blocked",
+      "resource": "expense_blocked",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_not_blocked",
+      "principal": "expense_not_blocked",
+      "resource": "expense_not_blocked",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_suspended",
+      "principal": "expense_suspended",
+      "resource": "expense_suspended",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_outsider",
+      "principal": "expense_outsider",
+      "resource": "expense_outsider",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_override_low",
+      "principal": "expense_override_low",
+      "resource": "expense_override_low",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_override_exact",
+      "principal": "expense_override_exact",
+      "resource": "expense_override_exact",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_override_high",
+      "principal": "expense_override_high",
+      "resource": "expense_override_high",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_override_high_over",
+      "principal": "expense_override_high_over",
+      "resource": "expense_override_high_over",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_zero_limit",
+      "principal": "expense_zero_limit",
+      "resource": "expense_zero_limit",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "expense_zero_amount",
+      "principal": "expense_zero_amount",
+      "resource": "expense_zero_amount",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+principals:
+  invoice_defaults:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  invoice_boundary:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  invoice_over:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  invoice_other_tenant:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: other
+  invoice_own:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  invoice_paid:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  invoice_blocked:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  invoice_not_blocked:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      suspended: false
+  invoice_suspended:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      suspended: true
+  invoice_outsider:
+    id: a
+    roles:
+    - viewer
+    attr:
+      tenant: acme
+  invoice_override_low:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 5
+  invoice_override_exact:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 5
+  invoice_override_high:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 1100
+  invoice_override_high_over:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 1100
+  invoice_zero_limit:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 0
+  invoice_zero_amount:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 0
+  expense_defaults:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  expense_boundary:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  expense_over:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  expense_other_tenant:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: other
+  expense_own:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  expense_paid:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  expense_blocked:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+  expense_not_blocked:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      suspended: false
+  expense_suspended:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      suspended: true
+  expense_outsider:
+    id: a
+    roles:
+    - viewer
+    attr:
+      tenant: acme
+  expense_override_low:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 5
+  expense_override_exact:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 5
+  expense_override_high:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 350
+  expense_override_high_over:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 350
+  expense_zero_limit:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 0
+  expense_zero_amount:
+    id: a
+    roles:
+    - accountant
+    attr:
+      tenant: acme
+      approval_limit: 0

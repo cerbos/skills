@@ -55,6 +55,14 @@ Copy the `SKILL.md` files from `cerbos/` to your agent's skills directory.
 | `cerbos-policy` | Generate Cerbos authorization policies from requirements (RBAC/ABAC, derived roles, resource permissions) |
 | `cerbos-synapse-extension` | Build, scaffold, test, and debug Cerbos Synapse extensions — call mappers, data sources, proxy/route/Envoy ext_authz extensions in YAML/CEL, Starlark, or WASM (Go, TypeScript, Python) |
 
+## Evals
+
+[Four Harbor evals](evals/README.md) test `cerbos-policy` locally in Docker:
+generating policies, evolving existing policies, using shared derived roles,
+and managing exported and local variables. Checks cover generated files,
+native compilation and real PDP decisions. Run them directly with Harbor and
+inspect the generated files and scores in its viewer.
+
 ## References
 
 - [Cerbos Documentation](https://docs.cerbos.dev)

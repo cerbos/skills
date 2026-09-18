@@ -1,6 +1,30 @@
 {
   "version": 1,
   "skills": {
+    "create-adapter": {
+      "source": "harbor-framework/harbor",
+      "sourceType": "github",
+      "skillPath": "skills/create-adapter/SKILL.md",
+      "computedHash": "f1d292559674cb4f33ba23f898da3ac26dd8c6a63978a79847de667379e92dc0"
+    },
+    "create-task": {
+      "source": "harbor-framework/harbor",
+      "sourceType": "github",
+      "skillPath": "skills/create-task/SKILL.md",
+      "computedHash": "0a966eaae08dbe0bdd1769637dba56e61b8ca819c11af75a372a3758510a491e"
+    },
+    "harbor-exec": {
+      "source": "harbor-framework/harbor",
+      "sourceType": "github",
+      "skillPath": "skills/harbor-exec/SKILL.md",
+      "computedHash": "be02912ed459ea5d13af0c7edca969000f78aeeec4f3930ea1a2172617568e1c"
+    },
+    "rewardkit": {
+      "source": "harbor-framework/harbor",
+      "sourceType": "github",
+      "skillPath": "skills/rewardkit/SKILL.md",
+      "computedHash": "2056428ab6f728e04b677225b16e7d60bcec93a3fb0d8ded2eada9af7e2c031e"
+    },
     "writing-great-skills": {
       "source": "mattpocock/skills",
       "sourceType": "github",

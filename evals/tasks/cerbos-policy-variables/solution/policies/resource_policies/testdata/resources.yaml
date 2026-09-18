@@ -1,0 +1,261 @@
+resources:
+  invoice_defaults:
+    id: invoice_defaults
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+  invoice_boundary:
+    id: invoice_boundary
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 1000
+  invoice_over:
+    id: invoice_over
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 1001
+  invoice_other_tenant:
+    id: invoice_other_tenant
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+  invoice_own:
+    id: invoice_own
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: a
+      status: pending
+      amount: 10
+  invoice_paid:
+    id: invoice_paid
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: paid
+      amount: 10
+  invoice_blocked:
+    id: invoice_blocked
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+      blocked: true
+  invoice_not_blocked:
+    id: invoice_not_blocked
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+      blocked: false
+  invoice_suspended:
+    id: invoice_suspended
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+  invoice_outsider:
+    id: invoice_outsider
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+  invoice_override_low:
+    id: invoice_override_low
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 6
+  invoice_override_exact:
+    id: invoice_override_exact
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 5
+  invoice_override_high:
+    id: invoice_override_high
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 1100
+  invoice_override_high_over:
+    id: invoice_override_high_over
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 1101
+  invoice_zero_limit:
+    id: invoice_zero_limit
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 1
+  invoice_zero_amount:
+    id: invoice_zero_amount
+    kind: invoice
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 0
+  expense_defaults:
+    id: expense_defaults
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+  expense_boundary:
+    id: expense_boundary
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 250
+  expense_over:
+    id: expense_over
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 251
+  expense_other_tenant:
+    id: expense_other_tenant
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+  expense_own:
+    id: expense_own
+    kind: expense
+    attr:
+      tenant: acme
+      owner: a
+      status: pending
+      amount: 10
+  expense_paid:
+    id: expense_paid
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: paid
+      amount: 10
+  expense_blocked:
+    id: expense_blocked
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+      blocked: true
+  expense_not_blocked:
+    id: expense_not_blocked
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+      blocked: false
+  expense_suspended:
+    id: expense_suspended
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+  expense_outsider:
+    id: expense_outsider
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 10
+  expense_override_low:
+    id: expense_override_low
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 6
+  expense_override_exact:
+    id: expense_override_exact
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 5
+  expense_override_high:
+    id: expense_override_high
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 350
+  expense_override_high_over:
+    id: expense_override_high_over
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 351
+  expense_zero_limit:
+    id: expense_zero_limit
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 1
+  expense_zero_amount:
+    id: expense_zero_amount
+    kind: expense
+    attr:
+      tenant: acme
+      owner: other
+      status: pending
+      amount: 0

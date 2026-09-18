@@ -1,0 +1,71 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: document access
+tests:
+- name: reader document decisions
+  input:
+    principals:
+    - reader
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: reader
+    resource: document
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: editor document decisions
+  input:
+    principals:
+    - editor
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor
+    resource: document
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: accountant document decisions
+  input:
+    principals:
+    - accountant
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: accountant
+    resource: document
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: visitor document decisions
+  input:
+    principals:
+    - visitor
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: visitor
+    resource: document
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY

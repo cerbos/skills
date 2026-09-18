@@ -1,0 +1,30 @@
+name: audit regression
+principals:
+  auditor:
+    id: audit-1
+    roles:
+    - auditor
+    attr:
+      tenant: north
+resources:
+  log:
+    id: log-1
+    kind: audit_log
+    attr:
+      tenant: north
+tests:
+- name: audit access
+  input:
+    principals:
+    - auditor
+    resources:
+    - log
+    actions:
+    - read
+    - delete
+  expected:
+  - principal: auditor
+    resource: log
+    actions:
+      read: EFFECT_ALLOW
+      delete: EFFECT_DENY

@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+principals:
+  reader:
+    id: reader-1
+    roles:
+    - reader
+    attr: {}
+  editor:
+    id: editor-1
+    roles:
+    - editor
+    attr: {}
+  accountant:
+    id: accountant-1
+    roles:
+    - accountant
+    attr: {}
+  visitor:
+    id: visitor-1
+    roles:
+    - visitor
+    attr: {}
