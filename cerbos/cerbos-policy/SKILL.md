@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires Docker for policy validation
 metadata:
   author: cerbos
-  version: "1.3"
+  version: "1.4"
   targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Write Edit Bash Glob Grep Task WebFetch
 ---
@@ -55,16 +55,20 @@ e.g. manager → approve on expense [R.attr.amount < 1000] | ALLOW | Managers si
 
 List resources, principals/roles, and shared derived roles/variables alongside. Confirm the spec with the user before generating.
 
+For schema-driven code generation, distinguish database structure from authorization requirements. A table, foreign key, or folder name does not establish who may access it. Keep unresolved business rules as questions in the spec; generate only confirmed rules. Keep a generated baseline independent of business-layer helpers unless a confirmed rule requires that dependency. For relationship-based authorization, establish the access rule, applicable resources, and required input attributes before implementing it.
+
 ### Phase 2 — Write
 
 Read [POLICIES.md](references/POLICIES.md) before writing attribute schemas or policy definitions, and [TEST-SUITES.md](references/TEST-SUITES.md#coverage-plan) before writing fixtures and tests.
 
 Save a **coverage plan** outside the policy directory before writing tests. Give each resource/action its allowed request, independent denial prerequisites, and applicable boundaries, defaults and role combinations. Map every row to concrete fixture keys and an expected effect; for isolated denials, also name the ALLOW control and the request field that changes. Shared definitions need coverage in every consuming resource policy.
 
+Before writing variables or imports, read [Variable dependency design](references/POLICIES.md#variable-dependency-design). Generate each policy's dependencies from its actual expressions, including transitive variable references; a shared template must not attach every available variable set to every resource.
+
 Batch-write all files in a single pass, in this order:
 
 1. `_schemas/` (principal + resources)
-2. `derived_roles/` and `common_vars.yaml`
+2. `derived_roles/` (shared roles and exported-variable files, only where required by the spec)
 3. `resource_policies/` / `role_policies/`
 4. `testdata/` fixtures
 5. `*_test.yaml`
@@ -78,7 +82,8 @@ _schemas/                    # Attribute schemas (at root)
     <resource>.json
 derived_roles/
   common_roles.yaml          # Shared derived roles
-  common_vars.yaml           # Shared exported variables
+  common_vars.yaml           # Optional shared exported variables
+  <concern>_vars.yaml         # Additional focused sets where needed
 principal_policies/
   <name>.yaml
 resource_policies/
@@ -101,6 +106,8 @@ Carry the **Purpose** captured in Phase 1 into every rule: set a descriptive rul
 Write every file before validating anything.
 
 ### Phase 3 — Validate
+
+First audit dependencies using [Variable dependency design](references/POLICIES.md#variable-dependency-design). Every retained import must supply a variable or derived role reachable from the policy's conditions or outputs, with its attribute requirements satisfied by that policy's inputs. Preserve transitive dependencies and dependencies used by other policies when pruning shared definitions.
 
 Launch one fresh coverage-review subagent using [COVERAGE-REVIEW.md](references/COVERAGE-REVIEW.md). Give it the original confirmed requirements and bundle path, not your coverage plan as its checklist. Keep its work read-only while you run compilation and the fixture audit below. This independent derivation catches requirements omitted from both a plan and its checker. If subagents are unavailable, perform the same requirements-first review as a separate pass and report that it was not independent.
 
