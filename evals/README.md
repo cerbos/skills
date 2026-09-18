@@ -1,10 +1,14 @@
-# Local policy skill eval
+# Local policy skill evals
 
-This is one native [Harbor task](https://www.harborframework.com/docs/tasks):
-[`cerbos-policy-files`](tasks/cerbos-policy-files/README.md). Each attempt asks an
-agent to generate a document/invoice policy bundle from business requirements.
-The prompt supplies the destination and permissions; the `cerbos-policy` skill
-supplies the folder layout, schemas, fixtures and test conventions.
+These native [Harbor tasks](https://www.harborframework.com/docs/tasks) evaluate
+the `cerbos-policy` skill against distinct policy authoring workflows.
+
+| Task | Coverage |
+| --- | --- |
+| [`cerbos-policy-files`](tasks/cerbos-policy-files/README.md) | Generate document/invoice policies from business requirements, including schemas, fixtures and tests. |
+| [`cerbos-policy-evolution`](tasks/cerbos-policy-evolution/README.md) | Change existing permissions while preserving unaffected behavior and regression tests. |
+| [`cerbos-policy-derived-roles`](tasks/cerbos-policy-derived-roles/README.md) | Share conditional derived roles across resources, with parent-role and tenant boundaries. |
+| [`cerbos-policy-variables`](tasks/cerbos-policy-variables/README.md) | Manage shared exported variables and policy-local variables while preserving authorization behavior. |
 
 ## Task layout
 
@@ -20,8 +24,9 @@ evals/tasks/cerbos-policy-files/
 
 Harbor builds the Docker environment, runs the selected agent, then uploads and
 runs `tests/test.sh`, which launches `tests/verify.py`. The tests assess the generated files; they are not part of
-the agent's instructions. Everything needed to run this task is inside its
-folder. Cerbos runs directly in the container; Docker-in-Docker is unnecessary.
+the agent's instructions. Everything needed to run each task is inside its
+folder. Tasks that modify existing policies also include a starting bundle in
+`environment/`. Cerbos runs directly in the container; Docker-in-Docker is unnecessary.
 
 ## Run
 
@@ -36,7 +41,7 @@ uvx --from harbor==0.23.0 harbor run \
   --jobs-dir evals/jobs --job-name policy-oracle
 ```
 
-Check an empty attempt (expected reward 0):
+Check an unfinished attempt (expected overall reward 0):
 
 ```bash
 uvx --from harbor==0.23.0 harbor run \
@@ -54,8 +59,11 @@ uvx --from harbor==0.23.0 harbor run \
   --jobs-dir evals/jobs --job-name policy-live
 ```
 
-Oracle and nop check the task itself. The real-agent run measures how well the
-skill helps generate the bundle. No model is called until that command is run.
+Replace `cerbos-policy-files` in these commands with any task in the table above
+and choose a distinct job name. Oracle and nop check the task itself. For tasks
+with a starting bundle, nop leaves it unchanged; individual checks may pass,
+but overall reward must be 0. The real-agent run measures how well the skill
+helps complete the task. No model is called until that command is run.
 
 To try a different skill checkout, change `--skill` and use a fresh job name.
 Use `--n-attempts 3` to repeat the same task three times. When comparing skill
@@ -67,14 +75,16 @@ versions locally, keep the task, model, agent version and attempt count the same
 uvx --from harbor==0.23.0 harbor view evals/jobs --jobs
 ```
 
-Each generation receives nine scores: `files`, `folder_structure`,
+The generation task receives nine scores: `files`, `folder_structure`,
 `resource_policies`, `schemas`, `generated_tests`, `fixtures`, `compile_normal`,
 `compile_strict`, and `pdp_decisions`. Overall `reward` is 1 only when every check
 passes. A successful Harbor process exit alone does not establish reward 1.
 
-The PDP check sends 16 real CheckResources requests covering 64 action decisions
-in normal and strict mode. Its independent inputs establish whether the generated
-policies work; passing generated tests alone is insufficient.
+The generation task's PDP check sends 16 real CheckResources requests covering
+64 action decisions in normal and strict mode. The other tasks have their own
+named checks and decision matrices, described in their READMEs. All tasks check
+independent decisions against normal and strict PDPs; passing generated tests
+alone is insufficient.
 
 In the trial viewer, **Artifacts** contains generated workspace files, including
 policies, schemas, fixtures, tests and helper scripts. Agent bootstrap files,

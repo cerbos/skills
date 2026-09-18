@@ -1,0 +1,81 @@
+{
+  "accountant small invoice": {
+    "role": "accountant",
+    "status": "submitted",
+    "same_tenant": true,
+    "min_amount_exclusive": null,
+    "max_amount": 1000,
+    "actions": {
+      "read": "EFFECT_ALLOW",
+      "approve": "EFFECT_ALLOW",
+      "delete": "EFFECT_DENY"
+    }
+  },
+  "accountant above old limit": {
+    "role": "accountant",
+    "status": "submitted",
+    "same_tenant": true,
+    "min_amount_exclusive": 1000,
+    "max_amount": 5000,
+    "actions": {
+      "approve": "EFFECT_ALLOW"
+    }
+  },
+  "employee read only": {
+    "role": "employee",
+    "status": "submitted",
+    "same_tenant": true,
+    "min_amount_exclusive": null,
+    "max_amount": 1000,
+    "actions": {
+      "read": "EFFECT_ALLOW",
+      "approve": "EFFECT_DENY",
+      "delete": "EFFECT_DENY"
+    }
+  },
+  "admin draft delete": {
+    "role": "finance_admin",
+    "status": "draft",
+    "same_tenant": true,
+    "min_amount_exclusive": null,
+    "max_amount": 1000,
+    "actions": {
+      "read": "EFFECT_ALLOW",
+      "delete": "EFFECT_ALLOW"
+    }
+  },
+  "admin submitted deletion denied": {
+    "role": "finance_admin",
+    "status": "submitted",
+    "same_tenant": true,
+    "min_amount_exclusive": null,
+    "max_amount": 1000,
+    "actions": {
+      "delete": "EFFECT_DENY"
+    }
+  },
+  "foreign tenant denied": {
+    "role": "finance_admin",
+    "status": "submitted",
+    "same_tenant": false,
+    "min_amount_exclusive": null,
+    "max_amount": 1000,
+    "actions": {
+      "read": "EFFECT_DENY",
+      "approve": "EFFECT_DENY",
+      "delete": "EFFECT_DENY"
+    }
+  },
+  "visitor denied": {
+    "role": "visitor",
+    "status": "submitted",
+    "same_tenant": true,
+    "min_amount_exclusive": null,
+    "max_amount": 1000,
+    "actions": {
+      "read": "EFFECT_DENY",
+      "approve": "EFFECT_DENY",
+      "delete": "EFFECT_DENY"
+    }
+  }
+}

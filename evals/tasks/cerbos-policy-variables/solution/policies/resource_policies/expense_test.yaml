@@ -1,0 +1,274 @@
+name: expense variable behavior
+tests:
+- name: expense_defaults
+  input:
+    principals:
+    - expense_defaults
+    resources:
+    - expense_defaults
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_defaults
+    resource: expense_defaults
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: expense_boundary
+  input:
+    principals:
+    - expense_boundary
+    resources:
+    - expense_boundary
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_boundary
+    resource: expense_boundary
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: expense_over
+  input:
+    principals:
+    - expense_over
+    resources:
+    - expense_over
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_over
+    resource: expense_over
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: expense_other_tenant
+  input:
+    principals:
+    - expense_other_tenant
+    resources:
+    - expense_other_tenant
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_other_tenant
+    resource: expense_other_tenant
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: expense_own
+  input:
+    principals:
+    - expense_own
+    resources:
+    - expense_own
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_own
+    resource: expense_own
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: expense_paid
+  input:
+    principals:
+    - expense_paid
+    resources:
+    - expense_paid
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_paid
+    resource: expense_paid
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: expense_blocked
+  input:
+    principals:
+    - expense_blocked
+    resources:
+    - expense_blocked
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_blocked
+    resource: expense_blocked
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: expense_not_blocked
+  input:
+    principals:
+    - expense_not_blocked
+    resources:
+    - expense_not_blocked
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_not_blocked
+    resource: expense_not_blocked
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: expense_suspended
+  input:
+    principals:
+    - expense_suspended
+    resources:
+    - expense_suspended
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_suspended
+    resource: expense_suspended
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: expense_outsider
+  input:
+    principals:
+    - expense_outsider
+    resources:
+    - expense_outsider
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_outsider
+    resource: expense_outsider
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: expense_override_low
+  input:
+    principals:
+    - expense_override_low
+    resources:
+    - expense_override_low
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_override_low
+    resource: expense_override_low
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: expense_override_exact
+  input:
+    principals:
+    - expense_override_exact
+    resources:
+    - expense_override_exact
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_override_exact
+    resource: expense_override_exact
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: expense_override_high
+  input:
+    principals:
+    - expense_override_high
+    resources:
+    - expense_override_high
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_override_high
+    resource: expense_override_high
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: expense_override_high_over
+  input:
+    principals:
+    - expense_override_high_over
+    resources:
+    - expense_override_high_over
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_override_high_over
+    resource: expense_override_high_over
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: expense_zero_limit
+  input:
+    principals:
+    - expense_zero_limit
+    resources:
+    - expense_zero_limit
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_zero_limit
+    resource: expense_zero_limit
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: expense_zero_amount
+  input:
+    principals:
+    - expense_zero_amount
+    resources:
+    - expense_zero_amount
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: expense_zero_amount
+    resource: expense_zero_amount
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY

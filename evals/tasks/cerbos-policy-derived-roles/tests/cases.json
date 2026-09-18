@@ -1,0 +1,1036 @@
+{
+  "principals": {
+    "owner": {
+      "id": "hidden-alice",
+      "roles": [
+        "employee"
+      ],
+      "attr": {
+        "tenant": "hidden-a",
+        "department": "hidden-sales"
+      }
+    },
+    "reviewer": {
+      "id": "hidden-bob",
+      "roles": [
+        "reviewer"
+      ],
+      "attr": {
+        "tenant": "hidden-a",
+        "department": "hidden-sales"
+      }
+    },
+    "overlap": {
+      "id": "hidden-alice",
+      "roles": [
+        "employee",
+        "reviewer"
+      ],
+      "attr": {
+        "tenant": "hidden-a",
+        "department": "hidden-sales"
+      }
+    },
+    "visitor": {
+      "id": "hidden-alice",
+      "roles": [
+        "visitor"
+      ],
+      "attr": {
+        "tenant": "hidden-a",
+        "department": "hidden-sales"
+      }
+    },
+    "foreign_owner": {
+      "id": "hidden-alice",
+      "roles": [
+        "employee"
+      ],
+      "attr": {
+        "tenant": "hidden-b",
+        "department": "hidden-sales"
+      }
+    },
+    "foreign_reviewer": {
+      "id": "hidden-bob",
+      "roles": [
+        "reviewer"
+      ],
+      "attr": {
+        "tenant": "hidden-b",
+        "department": "hidden-sales"
+      }
+    },
+    "nonowner": {
+      "id": "hidden-eve",
+      "roles": [
+        "employee"
+      ],
+      "attr": {
+        "tenant": "hidden-a",
+        "department": "hidden-sales"
+      }
+    },
+    "wrong_department": {
+      "id": "hidden-bob",
+      "roles": [
+        "reviewer"
+      ],
+      "attr": {
+        "tenant": "hidden-a",
+        "department": "hidden-ops"
+      }
+    },
+    "spoofed": {
+      "id": "hidden-alice",
+      "roles": [
+        "employee_owner",
+        "department_reviewer"
+      ],
+      "attr": {
+        "tenant": "hidden-a",
+        "department": "hidden-sales"
+      }
+    }
+  },
+  "resources": {
+    "document_base": {
+      "id": "document-base",
+      "kind": "document",
+      "attr": {
+        "owner": "hidden-alice",
+        "tenant": "hidden-a",
+        "department": "hidden-sales"
+      }
+    },
+    "document_other_owner": {
+      "id": "document-other_owner",
+      "kind": "document",
+      "attr": {
+        "owner": "hidden-eve",
+        "tenant": "hidden-a",
+        "department": "hidden-sales"
+      }
+    },
+    "document_other_department": {
+      "id": "document-other_department",
+      "kind": "document",
+      "attr": {
+        "owner": "hidden-alice",
+        "tenant": "hidden-a",
+        "department": "hidden-ops"
+      }
+    },
+    "document_other_tenant": {
+      "id": "document-other_tenant",
+      "kind": "document",
+      "attr": {
+        "owner": "hidden-alice",
+        "tenant": "hidden-b",
+        "department": "hidden-sales"
+      }
+    },
+    "expense_base": {
+      "id": "expense-base",
+      "kind": "expense",
+      "attr": {
+        "owner": "hidden-alice",
+        "tenant": "hidden-a",
+        "department": "hidden-sales"
+      }
+    },
+    "expense_other_owner": {
+      "id": "expense-other_owner",
+      "kind": "expense",
+      "attr": {
+        "owner": "hidden-eve",
+        "tenant": "hidden-a",
+        "department": "hidden-sales"
+      }
+    },
+    "expense_other_department": {
+      "id": "expense-other_department",
+      "kind": "expense",
+      "attr": {
+        "owner": "hidden-alice",
+        "tenant": "hidden-a",
+        "department": "hidden-ops"
+      }
+    },
+    "expense_other_tenant": {
+      "id": "expense-other_tenant",
+      "kind": "expense",
+      "attr": {
+        "owner": "hidden-alice",
+        "tenant": "hidden-b",
+        "department": "hidden-sales"
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "owner_document_base",
+      "principal": "owner",
+      "resource": "document_base",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "owner_document_other_owner",
+      "principal": "owner",
+      "resource": "document_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "owner_document_other_department",
+      "principal": "owner",
+      "resource": "document_other_department",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "owner_document_other_tenant",
+      "principal": "owner",
+      "resource": "document_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "owner_expense_base",
+      "principal": "owner",
+      "resource": "expense_base",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "owner_expense_other_owner",
+      "principal": "owner",
+      "resource": "expense_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "owner_expense_other_department",
+      "principal": "owner",
+      "resource": "expense_other_department",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "owner_expense_other_tenant",
+      "principal": "owner",
+      "resource": "expense_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reviewer_document_base",
+      "principal": "reviewer",
+      "resource": "document_base",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reviewer_document_other_owner",
+      "principal": "reviewer",
+      "resource": "document_other_owner",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reviewer_document_other_department",
+      "principal": "reviewer",
+      "resource": "document_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reviewer_document_other_tenant",
+      "principal": "reviewer",
+      "resource": "document_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reviewer_expense_base",
+      "principal": "reviewer",
+      "resource": "expense_base",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reviewer_expense_other_owner",
+      "principal": "reviewer",
+      "resource": "expense_other_owner",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reviewer_expense_other_department",
+      "principal": "reviewer",
+      "resource": "expense_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reviewer_expense_other_tenant",
+      "principal": "reviewer",
+      "resource": "expense_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "overlap_document_base",
+      "principal": "overlap",
+      "resource": "document_base",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "overlap_document_other_owner",
+      "principal": "overlap",
+      "resource": "document_other_owner",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "overlap_document_other_department",
+      "principal": "overlap",
+      "resource": "document_other_department",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "overlap_document_other_tenant",
+      "principal": "overlap",
+      "resource": "document_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "overlap_expense_base",
+      "principal": "overlap",
+      "resource": "expense_base",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "overlap_expense_other_owner",
+      "principal": "overlap",
+      "resource": "expense_other_owner",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "overlap_expense_other_department",
+      "principal": "overlap",
+      "resource": "expense_other_department",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "overlap_expense_other_tenant",
+      "principal": "overlap",
+      "resource": "expense_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "visitor_document_base",
+      "principal": "visitor",
+      "resource": "document_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "visitor_document_other_owner",
+      "principal": "visitor",
+      "resource": "document_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "visitor_document_other_department",
+      "principal": "visitor",
+      "resource": "document_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "visitor_document_other_tenant",
+      "principal": "visitor",
+      "resource": "document_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "visitor_expense_base",
+      "principal": "visitor",
+      "resource": "expense_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "visitor_expense_other_owner",
+      "principal": "visitor",
+      "resource": "expense_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "visitor_expense_other_department",
+      "principal": "visitor",
+      "resource": "expense_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "visitor_expense_other_tenant",
+      "principal": "visitor",
+      "resource": "expense_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_owner_document_base",
+      "principal": "foreign_owner",
+      "resource": "document_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_owner_document_other_owner",
+      "principal": "foreign_owner",
+      "resource": "document_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_owner_document_other_department",
+      "principal": "foreign_owner",
+      "resource": "document_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_owner_document_other_tenant",
+      "principal": "foreign_owner",
+      "resource": "document_other_tenant",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_owner_expense_base",
+      "principal": "foreign_owner",
+      "resource": "expense_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_owner_expense_other_owner",
+      "principal": "foreign_owner",
+      "resource": "expense_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_owner_expense_other_department",
+      "principal": "foreign_owner",
+      "resource": "expense_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_owner_expense_other_tenant",
+      "principal": "foreign_owner",
+      "resource": "expense_other_tenant",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_reviewer_document_base",
+      "principal": "foreign_reviewer",
+      "resource": "document_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_reviewer_document_other_owner",
+      "principal": "foreign_reviewer",
+      "resource": "document_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_reviewer_document_other_department",
+      "principal": "foreign_reviewer",
+      "resource": "document_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_reviewer_document_other_tenant",
+      "principal": "foreign_reviewer",
+      "resource": "document_other_tenant",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_reviewer_expense_base",
+      "principal": "foreign_reviewer",
+      "resource": "expense_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_reviewer_expense_other_owner",
+      "principal": "foreign_reviewer",
+      "resource": "expense_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_reviewer_expense_other_department",
+      "principal": "foreign_reviewer",
+      "resource": "expense_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "foreign_reviewer_expense_other_tenant",
+      "principal": "foreign_reviewer",
+      "resource": "expense_other_tenant",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "nonowner_document_base",
+      "principal": "nonowner",
+      "resource": "document_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "nonowner_document_other_owner",
+      "principal": "nonowner",
+      "resource": "document_other_owner",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "nonowner_document_other_department",
+      "principal": "nonowner",
+      "resource": "document_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "nonowner_document_other_tenant",
+      "principal": "nonowner",
+      "resource": "document_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "nonowner_expense_base",
+      "principal": "nonowner",
+      "resource": "expense_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "nonowner_expense_other_owner",
+      "principal": "nonowner",
+      "resource": "expense_other_owner",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "nonowner_expense_other_department",
+      "principal": "nonowner",
+      "resource": "expense_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "nonowner_expense_other_tenant",
+      "principal": "nonowner",
+      "resource": "expense_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "wrong_department_document_base",
+      "principal": "wrong_department",
+      "resource": "document_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "wrong_department_document_other_owner",
+      "principal": "wrong_department",
+      "resource": "document_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "wrong_department_document_other_department",
+      "principal": "wrong_department",
+      "resource": "document_other_department",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "wrong_department_document_other_tenant",
+      "principal": "wrong_department",
+      "resource": "document_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "wrong_department_expense_base",
+      "principal": "wrong_department",
+      "resource": "expense_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "wrong_department_expense_other_owner",
+      "principal": "wrong_department",
+      "resource": "expense_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "wrong_department_expense_other_department",
+      "principal": "wrong_department",
+      "resource": "expense_other_department",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "wrong_department_expense_other_tenant",
+      "principal": "wrong_department",
+      "resource": "expense_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "spoofed_document_base",
+      "principal": "spoofed",
+      "resource": "document_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "spoofed_document_other_owner",
+      "principal": "spoofed",
+      "resource": "document_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "spoofed_document_other_department",
+      "principal": "spoofed",
+      "resource": "document_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "spoofed_document_other_tenant",
+      "principal": "spoofed",
+      "resource": "document_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "spoofed_expense_base",
+      "principal": "spoofed",
+      "resource": "expense_base",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "spoofed_expense_other_owner",
+      "principal": "spoofed",
+      "resource": "expense_other_owner",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "spoofed_expense_other_department",
+      "principal": "spoofed",
+      "resource": "expense_other_department",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "spoofed_expense_other_tenant",
+      "principal": "spoofed",
+      "resource": "expense_other_tenant",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    }
+  ]
+}
