@@ -69,6 +69,17 @@ To try a different skill checkout, change `--skill` and use a fresh job name.
 Use `--n-attempts 3` to repeat the same task three times. When comparing skill
 versions locally, keep the task, model, agent version and attempt count the same.
 
+## Verifier regression tests
+
+Run the local coverage-classification regressions without Docker or model calls:
+
+```bash
+uv run --no-project --with PyYAML==6.0.2 python -m unittest discover -s evals -p 'test_*verifier.py'
+```
+
+These checks accept equivalent fixture designs while rejecting missing or
+confounded coverage. They complement the oracle, nop, and live task runs.
+
 ## Inspect results
 
 ```bash

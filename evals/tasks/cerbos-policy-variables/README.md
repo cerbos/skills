@@ -19,6 +19,11 @@ Digest-pinned Python 3.12 Bookworm with the digest-pinned Cerbos 0.55.0 binary, 
 
 `reward` is 1 only when every dimension passes. Per-dimension scores and logs remain available in `/logs/verifier`. The variable perturbations prevent unused definitions and imports from earning full credit. Static `V.*` reference checks follow the syntax explicitly requested by the task. Generated-test grading resolves inline fixtures and conventional sibling `testdata` fixtures from the native report.
 
+Version 1.0.1 credits each absent optional attribute independently on successful
+approval requests. Every resource still needs coverage of all three defaults,
+but the attributes need not all be absent in the same request. This corrects a
+false negative for suites that distribute default coverage across cases.
+
 ## Layout
 
 ```text

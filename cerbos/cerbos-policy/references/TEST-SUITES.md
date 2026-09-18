@@ -216,13 +216,46 @@ resources:
       public: false
 ```
 
-## Coverage Guidelines
+## Coverage Plan
 
-- Every policy needs tests for BOTH ALLOW and DENY cases
-- If a rule has a condition, cover both the condition-true and condition-false branches
-- If a derived role depends on `P.attr.context.*`, populate that field in the principal fixture — otherwise the derived role silently never applies and tests flip to DENY
-- Every DENY rule with a condition needs a test proving it actually fires. A DENY whose condition errors at runtime silently no-ops and the action gets allowed — the strict pass catches it ([CEL.md](CEL.md#strict-evaluation-v055))
-- Pin `options.now` for any time-dependent rule rather than relying on the wall clock
+Save a small table from the requirements outside the policy directory before writing tests:
+
+```text
+Resource/action | Requirement | Fixture keys | Expected effect | Test case | ALLOW control and changed field (isolated denials)
+```
+
+Plan cases separately for each resource policy, including those that import the same derived roles or variables. Exercise these branches where the specification uses them:
+
+- An allowed request for each grant and denial for unrelated roles/actions.
+- Each independent authorization prerequisite: base role, tenant, ownership, department, status, or other attribute condition.
+- Exact threshold values and values on either side; missing optional attributes and their explicit values; overrides that change a decision from the default.
+- Overlapping roles and alternative grant paths, using the confirmed combination semantics.
+
+**Isolate the denial.** Pair each denial of an authorization prerequisite with an active ALLOW assertion for the same resource kind and action. Copy that allowed request and change only the prerequisite under test. Preserve IDs and relationship attributes unless that relationship is the subject of the test; distinguish fixture variants by their keys instead of changing their IDs. Record the allow-control test and the changed value in the coverage plan. One allowed case can serve as the control for several negatives. For example, if editing requires a base role, ownership and a matching tenant:
+
+| Case | Base role | Owner equals principal ID | Tenant matches | Effect |
+| --- | --- | --- | --- | --- |
+| Allowed | Present | Yes | Yes | ALLOW |
+| Missing parent role | Absent; only unrelated roles | Yes | Yes | DENY |
+| Different owner | Present | No | Yes | DENY |
+| Different tenant | Present | Yes | No | DENY |
+
+Keep other grant paths inactive when isolating a denial, then test role combinations separately. A tenant test that also changes the owner cannot establish which boundary caused the denial. The same principle applies to a blocked resource, suspended principal or amount limit: satisfy the other prerequisites so the intended condition determines the result.
+
+For derived roles, test matching attributes with unrelated base roles, the required parent role with a failing relationship, and a derived-role name supplied as a principal role. Include a valid positive case for each role before relying on its negative cases.
+
+For explicit DENY rules, start with a request another rule would allow and activate the denying condition. This proves the denial overrides a real grant. Run the strict pass to expose condition errors that could otherwise make the deny silently no-op ([CEL.md](CEL.md#strict-evaluation-v055)). Pin `options.now` for time-dependent cases.
+
+## Coverage Audit
+
+After writing or fixing the bundle, write and run a small coverage-audit script outside the policy directory. Check the emitted YAML and native JSON compilation report against the saved table, using an available YAML parser. Keep this check specific to the confirmed requirements; it need not interpret CEL or implement Cerbos authorization semantics.
+
+1. Resolve each planned case's principal and resource references, including shared fixtures and inline overrides, from the written files. Assert the required relationships using actual IDs, roles and attribute values.
+2. For every isolated denial, load its explicitly mapped ALLOW control and assert that the resolved requests differ only at the intended field. Print that field's before/after values. For a missing-parent-role case, use unrelated roles while retaining all matching attributes; check derived-role-name impersonation separately. A fixture name such as `other_tenant` is only a label, so compare actual values.
+3. Match every row to a successful, executed assertion in the native report with the planned resource, principal, action and effect. Also require the mapped control to have executed with ALLOW. Fail on missing or skipped cases; aggregate pass counts are insufficient.
+4. Print a result for every row and fail if any requirement lacks coverage in a consuming resource. A test of one consumer does not establish coverage of another consumer of a shared variable or derived role.
+
+Save the script and output alongside the coverage plan. Correct missing cases and rerun both validation modes and the audit until all three exit 0. Compilation establishes that the submitted assertions pass; this audit establishes that those assertions cover the requested behavior.
 
 ## Common Test Failures
 

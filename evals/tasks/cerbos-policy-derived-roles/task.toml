@@ -3,7 +3,7 @@ artifacts = [{ source = "/workspace", destination = "workspace", exclude = [".ag
 
 [task]
 name = "cerbos/cerbos-policy-derived-roles"
-version = "1.0.0"
+version = "1.0.1"
 description = "Reuse tenant-aware derived roles across resource policies."
 keywords = ["cerbos", "authorization", "custom-verifier", "policy", "derived-roles"]
 

@@ -28,6 +28,13 @@ as principal roles. The 144 independent requests check 720 action decisions.
 Logs and request/response evidence go to `/logs/verifier`; Harbor collects the
 workspace as an artifact. All stages run even after earlier failures.
 
+Parent-role coverage is action-specific: an owner `edit` denial needs matching
+tenant and owner with no `employee` role; a reviewer `approve` denial needs
+matching tenant and department with no `reviewer` role. The other base role is
+allowed in either fixture because it cannot grant the action being tested.
+Version 1.0.1 corrects a false negative in 1.0.0 that required both base roles
+to be absent and both relationships to match simultaneously.
+
 The shared-container verifier follows the existing eval convention; it is not
 hardened against deliberate runtime tampering. Finite decision coverage checks
 this contract rather than proving arbitrary policy equivalence.

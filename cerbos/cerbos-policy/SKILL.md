@@ -57,6 +57,10 @@ List resources, principals/roles, and shared derived roles/variables alongside. 
 
 ### Phase 2 — Write
 
+Read [POLICIES.md](references/POLICIES.md) before writing attribute schemas or policy definitions, and [TEST-SUITES.md](references/TEST-SUITES.md#coverage-plan) before writing fixtures and tests.
+
+Save a **coverage plan** outside the policy directory before writing tests. Give each resource/action its allowed request, independent denial prerequisites, and applicable boundaries, defaults and role combinations. Map every row to concrete fixture keys and an expected effect; for isolated denials, also name the ALLOW control and the request field that changes. Shared definitions need coverage in every consuming resource policy.
+
 Batch-write all files in a single pass, in this order:
 
 1. `_schemas/` (principal + resources)
@@ -98,6 +102,8 @@ Write every file before validating anything.
 
 ### Phase 3 — Validate
 
+Launch one fresh coverage-review subagent using [COVERAGE-REVIEW.md](references/COVERAGE-REVIEW.md). Give it the original confirmed requirements and bundle path, not your coverage plan as its checklist. Keep its work read-only while you run compilation and the fixture audit below. This independent derivation catches requirements omitted from both a plan and its checker. If subagents are unavailable, perform the same requirements-first review as a separate pass and report that it was not independent.
+
 Run two passes. The first compiles the policies and runs the tests:
 
 ```bash
@@ -110,7 +116,11 @@ The second re-runs the tests with strict evaluation, which turns runtime CEL err
 docker run --rm -v "$(pwd):/policies" ghcr.io/cerbos/cerbos:latest compile --strict-evaluation /policies
 ```
 
-Both must exit 0. A test that passes the first pass but fails the second has a condition erroring at runtime — most dangerously on a DENY rule, where the error makes the deny silently no-op and the action gets allowed. Treat it as a real defect and fix it in Phase 4; keep the strict pass in place while doing so.
+Both must exit 0. Then run the [coverage audit](references/TEST-SUITES.md#coverage-audit): a one-off executable check that loads the emitted fixtures and the compiler's JSON report (`--output=json`), verifies the planned request pairs, and confirms each planned assertion executed. Save the check and its per-row results outside the policy directory. A compiler pass count alone cannot establish that a denial exercised the intended boundary.
+
+Wait for the coverage reviewer. Reconcile every row it derives with the written tests, extend the plan and tests for supported gaps, and rerun both compilation modes and the audit after repairs. Retain its findings and their resolution outside the policy directory.
+
+A test that passes the first pass but fails the second has a condition erroring at runtime — most dangerously on a DENY rule, where the error makes the deny silently no-op and the action gets allowed. Treat it as a real defect and fix it in Phase 4; keep the strict pass in place while doing so.
 
 Otherwise capture the error list and move to Phase 4.
 
@@ -132,11 +142,11 @@ Rules:
 
 ### Phase 5 — Finalize
 
-Confirm both validation passes exit 0, then report what was created and any assumptions made during spec intake.
+Finish when the requirements-first review has no unresolved coverage gaps, both validation passes and the executable coverage audit exit 0, and every planned row has a passing audit result. Report what was created, the coverage verified, and any assumptions made during spec intake.
 
 ## Modifying existing policies
 
-Read the current policy files before editing, change only the files the request touches, and update the tests covering any rule whose behaviour changed. Then run Phase 3 in full — both passes, over the whole tree.
+Read the current policy files before editing, change only the files the request touches, and update the tests covering any rule whose behaviour changed. Preserve existing regression scenarios as well as their names; extend the coverage plan for new behavior and affected consumers of shared definitions. Then run Phase 3 in full — both passes and the coverage audit, over the whole tree.
 
 ## References
 

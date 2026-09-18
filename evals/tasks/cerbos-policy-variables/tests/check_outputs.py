@@ -145,12 +145,12 @@ def generated_tests():
                                 ra["amount"] <= default
                             ):
                                 covered.add("override")
-                        if (
-                            approves
-                            and not {"suspended", "approval_limit"} & pa.keys()
-                            and "blocked" not in ra
-                        ):
-                            covered.add("absent")
+                        if approves:
+                            for name in ("suspended", "approval_limit"):
+                                if name not in pa:
+                                    covered.add(f"absent_{name}")
+                            if "blocked" not in ra:
+                                covered.add("absent_blocked")
     required = {
         "tenant",
         "owner",
@@ -159,7 +159,9 @@ def generated_tests():
         "override",
         "blocked",
         "suspended",
-        "absent",
+        "absent_suspended",
+        "absent_approval_limit",
+        "absent_blocked",
     }
     for kind, covered in coverage.items():
         assert effects[kind] == {"EFFECT_ALLOW", "EFFECT_DENY"}, (

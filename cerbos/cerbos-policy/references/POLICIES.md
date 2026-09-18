@@ -30,16 +30,15 @@ resourcePolicy:
   rules:
     - actions: ["view"]
       effect: EFFECT_ALLOW
-      roles: ["user"]
-      condition:
-        match:
-          expr: R.attr.owner == P.id
+      derivedRoles: ["owner"]
 ```
 
 Always include the `schemas` field:
 
 - `principalSchema.ref`: `cerbos:///principal.json`
 - `resourceSchema.ref`: `cerbos:///resources/{resource_name}.json` (must match the resource name)
+
+These JSON schemas validate `P.attr` and `R.attr`. Put attribute properties at the schema root. For example, `P.attr: {tenant: "acme"}` is validated by `{"type": "object", "properties": {"tenant": {"type": "string"}}, "required": ["tenant"]}`. The request envelope fields (`id`, `roles`, `kind`, `attr`) belong to the API request, outside the attribute schema. See [attribute schemas](https://docs.cerbos.dev/cerbos/latest/policies/schemas.html).
 
 ## Derived Roles
 
@@ -56,7 +55,7 @@ derivedRoles:
           expr: R.attr.owner == P.id
 ```
 
-Derived roles are referenced by resource policies via `importDerivedRoles`.
+Import the definition set with `resourcePolicy.importDerivedRoles`, then select a definition with the rule's `derivedRoles` field, as in the resource policy above. The rule's `roles` field matches caller-supplied base roles. Keep those base roles in principal fixtures; Cerbos computes derived roles from `parentRoles` and the condition. See [derived roles](https://docs.cerbos.dev/cerbos/latest/policies/derived_roles.html).
 
 ## Exported Variables
 

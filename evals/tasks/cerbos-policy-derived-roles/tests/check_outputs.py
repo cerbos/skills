@@ -79,15 +79,17 @@ def relationship(p, r):
         labels.add("reviewer")
     if is_owner and is_reviewer:
         labels.add("overlap")
-    if same and owner and department and not roles & {"employee", "reviewer"}:
-        labels.add("wrong_parent")
+    if same and owner and "employee" not in roles:
+        labels.add("wrong_owner_parent")
+    if same and department and "reviewer" not in roles:
+        labels.add("wrong_reviewer_parent")
     if not same and owner and "employee" in roles:
         labels.add("foreign_owner")
     if not same and department and "reviewer" in roles:
         labels.add("foreign_reviewer")
-    if same and not owner and roles == {"employee"}:
+    if same and not owner and "employee" in roles:
         labels.add("nonowner")
-    if same and not department and roles == {"reviewer"}:
+    if same and not department and "reviewer" in roles:
         labels.add("wrong_department")
     return is_owner, is_reviewer, labels
 
@@ -134,8 +136,8 @@ def generated_tests():
             ("reviewer", "approve"),
             ("overlap", "edit"),
             ("overlap", "approve"),
-            ("wrong_parent", "edit"),
-            ("wrong_parent", "approve"),
+            ("wrong_owner_parent", "edit"),
+            ("wrong_reviewer_parent", "approve"),
             ("foreign_owner", "edit"),
             ("foreign_reviewer", "approve"),
             ("nonowner", "edit"),
