@@ -12,13 +12,13 @@ Two things to carry back here: the store credential and the deployment credentia
 
 ## Authenticating
 
-`cerbosctl` reads three environment variables:
+Have the user run `cerbosctl hub auth` in their own terminal. It prints a URL and then blocks while they approve a device code in the browser, so it belongs where the user sees output as it arrives; the login goes to the OS keyring, where your `cerbosctl` finds it. After that an upload needs only the store ID, which is not a secret, so put it on the command yourself:
 
 ```bash
-export CERBOS_HUB_CLIENT_ID=... CERBOS_HUB_CLIENT_SECRET=... CERBOS_HUB_STORE_ID=...
+CERBOS_HUB_STORE_ID=... cerbosctl hub store replace-files .
 ```
 
-Keep secrets out of command lines and out of the transcript — export them in the user's shell, or have the user run `cerbosctl hub auth`, which opens a device-code flow in the browser and needs no secret pasted anywhere.
+Uploads from CI authenticate with the store credential instead, as `CERBOS_HUB_CLIENT_ID` and `CERBOS_HUB_CLIENT_SECRET` in the pipeline's secret store. A secret stays out of command lines and out of the transcript, which is a log that gets shared; one that lands there anyway is exposed, so have the user rotate it on the store's **Client credentials** tab.
 
 Install `cerbosctl` with `brew tap cerbos/tap && brew install cerbos`, `npm install -g cerbosctl`, `npx cerbosctl`, or a [release binary](https://docs.cerbos.dev/cerbos-hub/policy-stores-cli-binary?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_hub-policy-stores-cli-binary).
 

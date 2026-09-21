@@ -7,7 +7,7 @@ metadata:
   author: cerbos
   version: "1.0"
   targetsCerbosVersion: "0.55.0"
-allowed-tools: Read Write Edit Bash Glob Grep WebFetch
+allowed-tools: Read Write Edit Glob Grep WebFetch Bash(cerbosctl hub store:*)
 ---
 
 # Cerbos Hub setup
@@ -16,7 +16,15 @@ Get from policies on disk to a PDP serving Hub-built bundles, and keep it runnin
 
 ## Secrets
 
-Client secrets live in the user's environment and travel from there into the process that needs them. Read them as `CERBOS_HUB_CLIENT_SECRET`, pass that variable onward, and let the user export it in their own shell. Every script under `scripts/` works this way, and so must every command written into the transcript.
+A client secret travels from the Hub console to the process that uses it without passing through you. The transcript is a log that gets scrolled, screen-shared and pasted into tickets, so a secret that lands there is exposed. Every script under `scripts/` reads secrets from the environment and reports them only as set or unset, and every command you write holds to the same rule.
+
+- **Uploads need no secret.** The user runs `cerbosctl hub auth` in their own terminal and approves a device code in the browser; the login goes to the OS keyring, where your `cerbosctl` finds it. The command prints its URL and then blocks until approval, so it belongs where the user sees output as it arrives — an agent's shell holds that output until the command exits.
+- **The PDP is the one process that needs a secret**, the deployment credential's. Hand the user the Step 3 command to run in a terminal where they have set `CERBOS_HUB_CLIENT_SECRET` — `read -rs CERBOS_HUB_CLIENT_SECRET && export CERBOS_HUB_CLIENT_SECRET` keeps it out of shell history too. Run it yourself only when `scripts/check-prereqs` reports the variable set in your own shell.
+- **IDs are not secrets.** Put store IDs, deployment IDs and client IDs on commands yourself: `CERBOS_HUB_STORE_ID=... scripts/store-upload ./policies`.
+
+Confirm a secret by whether it is set, never by its value: `scripts/check-prereqs` in your shell, and `kubectl describe secret <name>` on Kubernetes, which lists each key with its size in bytes. The commands that print a value are read-only, which is why they get run without a second thought — `echo "$CERBOS_HUB_CLIENT_SECRET"`, `env`, `docker inspect` on the PDP container, `kubectl get secret -o yaml`, `helm get values` on a release given the secret with `--set`. Hand those to the user.
+
+A secret that reaches the conversation anyway is exposed. Have the user rotate it on the credential's **Client credentials** tab.
 
 ## The shape of the job
 
@@ -27,7 +35,7 @@ Four things have to exist before a PDP can start, and **all four are created in 
 | 1 | Organization + workspace | — |
 | 2 | Policy store | store ID |
 | 3 | Deployment referencing that store | deployment ID |
-| 4 | One credential on the store, one on the deployment | client ID + secret |
+| 4 | A credential on the deployment, plus one on the store for uploads from CI | client ID + secret |
 
 Creating stores, deployments and credentials — and freezing or rolling back a deployment later — needs the `Owner` or `Developer` role in the workspace ([roles](https://docs.cerbos.dev/cerbos-hub/user-management?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-user-management)).
 
@@ -43,19 +51,19 @@ It reports which of `cerbosctl`, `docker` and `cerbos` are on PATH, which `CERBO
 
 ## Step 1 — the console handoff
 
-Give the user these steps and ask them to report back the **store ID** and the **deployment ID**, and to have both credential secrets ready to export.
+Give the user these steps and ask them to report back the **store ID**, the **deployment ID** and the deployment credential's **client ID**. The secret stays with them; [Secrets](#secrets) covers where it goes.
 
 1. Sign in at [hub.cerbos.cloud](https://hub.cerbos.cloud?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-app). First time through, the onboarding wizard creates an Organization and its first Workspace.
 2. **Policy stores → New store.** Name it after what it holds (`orders-service`), and pick the source:
    - **Browser upload** — contents come from CLI uploads or ZIP drops. Pick this when the policies are on disk or produced by a CI job.
    - **GitHub repository** — Hub mirrors a branch, optionally one subdirectory of it. Pick this when the policies already live in a reviewed repo. Details in Step 2b.
 3. **Deployments → New deployment.** Select the store, **Create**. Hub starts the first build; note the deployment ID from the detail page.
-4. On the **store's Client credentials** tab: **Generate a client credential**, type **Read & write**. This is the upload credential.
-5. On the **deployment's Client credentials** tab: **Generate a client credential**, type **Read only**. This is the PDP credential. Choose **Read & write** instead if these PDPs will also ship [audit logs](https://docs.cerbos.dev/cerbos-hub/audit-log-collection?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-audit-log-collection) to Hub.
+4. On the **deployment's Client credentials** tab: **Generate a client credential**, type **Read only**. This is the PDP credential. Choose **Read & write** instead if these PDPs will also ship [audit logs](https://docs.cerbos.dev/cerbos-hub/audit-log-collection?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-audit-log-collection) to Hub.
+5. Only when uploads will run from CI or another machine without a browser: on the **store's Client credentials** tab, **Generate a client credential**, type **Read & write**. Interactive uploads use `cerbosctl hub auth` instead.
 
 Each secret is shown once, at creation.
 
-**Store credentials and deployment credentials are scoped to the thing they were created on and are not interchangeable.** Uploads authenticate with the store credential plus the store ID; PDPs authenticate with the deployment credential plus the deployment ID. Crossing them is the most common setup failure — see [DIAGNOSE.md](references/DIAGNOSE.md) for the errors it produces.
+**Store credentials and deployment credentials are scoped to the thing they were created on and are not interchangeable.** Credential-based uploads authenticate with the store credential plus the store ID; PDPs authenticate with the deployment credential plus the deployment ID. Crossing them is the most common setup failure — see [DIAGNOSE.md](references/DIAGNOSE.md) for the errors it produces.
 
 Full console walkthrough with screenshots: [Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-getting-started).
 
@@ -63,20 +71,14 @@ Full console walkthrough with screenshots: [Hub getting started](https://docs.ce
 
 ### 2a — CLI upload
 
-Ask the user to export these in the shell that will run the upload:
+Once the user has run `cerbosctl hub auth` (see [Secrets](#secrets)), the store ID is all an upload needs:
 
 ```bash
-export CERBOS_HUB_STORE_ID=...      # from the store's detail page
-export CERBOS_HUB_CLIENT_ID=...     # store credential, read & write
-export CERBOS_HUB_CLIENT_SECRET=... # store credential, read & write
+CERBOS_HUB_STORE_ID=... scripts/store-upload ./policies
+CERBOS_HUB_STORE_ID=... scripts/store-status
 ```
 
-Or skip the secret entirely: `scripts/hub-login` runs `cerbosctl hub auth` in device-code mode, the user approves in a browser, and the token is saved to the OS keyring. After that only `CERBOS_HUB_STORE_ID` is needed.
-
-```bash
-scripts/store-upload ./policies
-scripts/store-status
-```
+Uploads from CI authenticate with the store credential instead, as `CERBOS_HUB_CLIENT_ID` and `CERBOS_HUB_CLIENT_SECRET` in the pipeline's secret store.
 
 `store-upload` wraps `cerbosctl hub store replace-files`, which makes the store's contents exactly what the directory holds. It is safe to point at a repository root: anything the store's [file rules](https://docs.cerbos.dev/cerbos-hub/policy-stores-file-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-policy-stores-file-rules) reject is skipped and listed, while a file that parses as a malformed policy fails the upload outright and leaves the store untouched. Keep test suites and `testdata/` in the store — Hub runs them on every build and strips them from the runtime bundle.
 
@@ -94,15 +96,16 @@ Drag a ZIP onto the store's **Import** tab, with the policies at the root of the
 
 ## Step 3 — connect a PDP
 
-The PDP needs the deployment ID and the **deployment** credential.
+The PDP needs the deployment ID and the **deployment** credential. Fill in the two IDs and hand the command over as [Secrets](#secrets) describes:
 
 ```bash
 docker run --rm --name cerbos -p 3592:3592 -p 3593:3593 \
-  -e CERBOS_HUB_DEPLOYMENT_ID -e CERBOS_HUB_CLIENT_ID -e CERBOS_HUB_CLIENT_SECRET \
+  -e CERBOS_HUB_DEPLOYMENT_ID=... -e CERBOS_HUB_CLIENT_ID=... \
+  -e CERBOS_HUB_CLIENT_SECRET \
   ghcr.io/cerbos/cerbos:latest server
 ```
 
-Naming a variable with no `=value` forwards its value from the caller's shell, so the secret never reaches the command line. Set `CERBOS_HUB_PDP_ID` as well to name this instance on the Decision points tab; without it Hub generates a random identifier.
+`-e CERBOS_HUB_CLIENT_SECRET` with no `=value` forwards the value from the shell that runs the command, so the secret never reaches the command line. Set `CERBOS_HUB_PDP_ID` as well to name this instance on the Decision points tab; without it Hub generates a random identifier.
 
 The configuration-file equivalent:
 
@@ -140,15 +143,25 @@ All five checks pass before the setup is done.
 
 A connected PDP running an older build than check 2 reported means the deployment is frozen or pinned by a rollback — see [OPERATIONS.md](references/OPERATIONS.md).
 
+## Step 5 — close the loop
+
+Step 4 proves a PDP can load a bundle. This step proves what Hub is for: a policy change reaching a running PDP with no restart and no release. Run it on a new deployment fed by CLI upload, before anything depends on it.
+
+1. `scripts/pdp-verify` and note `cerbos_dev_store_bundle_updates_count`. The PDP bumps it each time it swaps in a new bundle.
+2. Change the rule check 5 exercised so its answer flips — one condition or one role is enough — and upload with `scripts/store-upload`.
+3. `scripts/pdp-verify --await-update <count>` returns once the new bundle is live, or after a minute with where to look. Re-running it with the same count keeps waiting.
+4. Send the check 5 request again and show the user both responses: same request, different answer, no code shipped.
+5. Revert the change and upload again, so the store holds the policies the user intended.
+
 ## Scripts
 
 | Script | Does |
 |---|---|
 | `scripts/check-prereqs` | Which tools are installed, which `CERBOS_HUB_*` variables are set |
-| `scripts/hub-login` | `cerbosctl hub auth` via the device-code flow, saved to the OS keyring |
+| `scripts/hub-login` | `cerbosctl hub auth` forced into the device-code flow — for the user's terminal, like the command it wraps |
 | `scripts/store-upload <dir>` | `cerbosctl hub store replace-files`, after checking the environment |
 | `scripts/store-status` | The store's current version and file list |
-| `scripts/pdp-verify [host:port]` | PDP health and the `cerbos_dev_hub_connected` gauge |
+| `scripts/pdp-verify [--await-update N] [host:port]` | PDP health and the `cerbos_dev_hub_connected` gauge; with `--await-update`, waits for the bundle-update counter to pass `N` |
 
 Each takes `-h`. `store-upload` passes extra `cerbosctl` flags through after `--`, and `cerbosctl hub store --help` is the authority on what those flags are.
 

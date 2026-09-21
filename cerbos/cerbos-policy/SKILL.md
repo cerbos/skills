@@ -7,7 +7,7 @@ metadata:
   author: cerbos
   version: "1.4"
   targetsCerbosVersion: "0.55.0"
-allowed-tools: Read Write Edit Bash Glob Grep Task WebFetch
+allowed-tools: Read Write Edit Glob Grep Task WebFetch Bash(cerbos compile:*) Bash(cerbosctl hub store:*)
 ---
 
 # Cerbos Policy Generator
@@ -151,11 +151,10 @@ Confirm both validation passes exit 0, then get the policies to the Phase 0 dest
 **Policy store** — upload, and Hub compiles, runs every suite in the store, and pushes a signed bundle to each PDP on a deployment that references it:
 
 ```bash
-export CERBOS_HUB_CLIENT_ID=... CERBOS_HUB_CLIENT_SECRET=... CERBOS_HUB_STORE_ID=...
-cerbosctl hub store replace-files .
+CERBOS_HUB_STORE_ID=... cerbosctl hub store replace-files .
 ```
 
-Missing any of those three, or uploading for the first time → [references/HUB.md](references/HUB.md), which also covers the `upload-git` flow and the store's file rules.
+`failed to authenticate`, or uploading for the first time → [references/HUB.md](references/HUB.md), which also covers the `upload-git` flow and the store's file rules.
 
 **Playground** — drag the policy directory onto the editor at [hub.cerbos.cloud](https://hub.cerbos.cloud?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_hub-app).
 

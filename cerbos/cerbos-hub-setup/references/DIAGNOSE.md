@@ -18,7 +18,7 @@ Hub continuously checks the workspace and surfaces problems in an issues bar acr
 
 | Message | Cause |
 |---|---|
-| `failed to authenticate to Cerbos Hub` | `CERBOS_HUB_CLIENT_ID` / `CERBOS_HUB_CLIENT_SECRET` wrong or unset, and no saved login in the keyring |
+| `failed to authenticate to Cerbos Hub` | `CERBOS_HUB_CLIENT_ID` / `CERBOS_HUB_CLIENT_SECRET` wrong or unset, and no saved login in the keyring. `scripts/check-prereqs` shows which are set; the user fixes a wrong value by running `cerbosctl hub auth` again or re-exporting it, without it being read back ([Secrets](../SKILL.md#secrets)) |
 | `permission denied for store` | The credential is not scoped to this store, or is read-only. A **deployment** credential lands here — uploads need the credential created on the **store**, type Read & write |
 | `store doesn't exist` | `CERBOS_HUB_STORE_ID` names no store the credential can see |
 | `no usable files` | Every file broke a [file rule](https://docs.cerbos.dev/cerbos-hub/policy-stores-file-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-policy-stores-file-rules); the ignored files are listed. Usually the wrong directory, or a tree holding no `.yaml`/`.yml`/`.json` |
@@ -32,6 +32,7 @@ Hub continuously checks the workspace and surfaces problems in an issues bar acr
 
 The PDP contacts Hub at startup and refuses to start when it cannot reach it, so a startup failure is almost always credentials or egress. A Hub *API* outage alone does not block a cold start: the last built bundle for each deployment is served from `cdn.cerbos.cloud` independently of the API, encrypted to your client credentials, so a new PDP boots from the CDN and picks up the API connection in the background. Losing egress to the CDN is what stops a cold start.
 
+- **Secret not forwarded.** `-e CERBOS_HUB_CLIENT_SECRET` with no value passes nothing when the variable is unset in the shell that ran `docker run` — typically a different terminal from the one it was exported in. Have the user export it in that terminal and run the command again.
 - **Wrong credential kind.** PDPs use the credential created on the **deployment**, not the store. Read only is enough to receive bundles; audit log upload needs Read & write.
 - **Wrong deployment ID.** `CERBOS_HUB_DEPLOYMENT_ID` must match the ID on the deployment detail page. Exactly one of `storage.hub.remote.deploymentID` or `playgroundID` may be set — supplying both, or neither, fails configuration validation.
 - **Egress blocked.** Outbound 443 to `api.cerbos.cloud` and `cdn.cerbos.cloud` through every firewall, security group and network policy in the path. TLS 1.3 is required, so a middlebox that terminates and downgrades TLS is refused. Set `HTTPS_PROXY` and `NO_PROXY` where a proxy is mandatory.
