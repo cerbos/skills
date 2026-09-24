@@ -24,6 +24,12 @@ approval requests. Every resource still needs coverage of all three defaults,
 but the attributes need not all be absent in the same request. This corrects a
 false negative for suites that distribute default coverage across cases.
 
+Version 1.0.2 follows rule-to-variable references written as either `V.name` or
+`variables.name`, which Cerbos treats as the same variable. The shared
+eligibility variable must still depend on other exported variables through `V.*`,
+as the instruction requests. This corrects a false negative for policies that
+reference local variables with the long form.
+
 ## Layout
 
 ```text

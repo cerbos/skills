@@ -93,5 +93,44 @@ class OptionalDefaultCoverageTests(unittest.TestCase):
             self.check_coverage(denied=True)
 
 
+class VariableReferenceTests(unittest.TestCase):
+    def check_variables(self, approval, shared="V.tenant_ok && V.active"):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "exported_variables").mkdir()
+            (root / "exported_variables/common_vars.yaml").write_text(yaml.safe_dump({
+                "exportVariables": {"name": "billing_common", "definitions": {
+                    "tenant_ok": "P.attr.tenant == R.attr.tenant",
+                    "active": "!(has(P.attr.suspended) && P.attr.suspended)",
+                    "eligible": shared,
+                }},
+            }))
+            for kind in ("invoice", "expense"):
+                (root / f"{kind}.yaml").write_text(yaml.safe_dump({"resourcePolicy": {
+                    "resource": kind, "version": "default",
+                    "variables": {"import": ["billing_common"], "local": {
+                        f"{kind}_limit": "1000",
+                        f"{kind}_approvable": f"V.eligible && R.attr.amount <= variables.{kind}_limit",
+                    }},
+                    "rules": [
+                        {"actions": ["view"], "condition": {"match": {"expr": "V.eligible"}}},
+                        {"actions": ["approve"], "condition": {"match": {"expr": approval.format(kind=kind)}}},
+                    ],
+                }}))
+            with patch.object(verifier, "ROOT", root):
+                verifier.variables()
+
+    def test_long_form_variable_references_count_as_use(self):
+        self.check_variables("variables.{kind}_approvable")
+
+    def test_unused_locals_still_fail(self):
+        with self.assertRaisesRegex(AssertionError, "local variables"):
+            self.check_variables("V.eligible")
+
+    def test_shared_dependency_still_requires_v_prefix(self):
+        with self.assertRaisesRegex(AssertionError, "through V"):
+            self.check_variables("V.{kind}_approvable", shared="variables.tenant_ok")
+
+
 if __name__ == "__main__":
     unittest.main()

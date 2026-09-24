@@ -9,6 +9,10 @@ the `cerbos-policy` skill against distinct policy authoring workflows.
 | [`cerbos-policy-evolution`](tasks/cerbos-policy-evolution/README.md) | Change existing permissions while preserving unaffected behavior and regression tests. |
 | [`cerbos-policy-derived-roles`](tasks/cerbos-policy-derived-roles/README.md) | Share conditional derived roles across resources, with parent-role and tenant boundaries. |
 | [`cerbos-policy-variables`](tasks/cerbos-policy-variables/README.md) | Manage shared exported variables and policy-local variables while preserving authorization behavior. |
+| [`cerbos-policy-hierarchy`](tasks/cerbos-policy-hierarchy/README.md) | Build a scoped policy hierarchy with narrowing-only and overriding scopes, multi-level chains, and multi-role principals. |
+| [`cerbos-policy-tests-schemas`](tasks/cerbos-policy-tests-schemas/README.md) | Add attribute schemas with reject-mode enforcement and `create` exemptions, plus native test suites using shared fixture files and inline fixtures. |
+| [`cerbos-policy-role-policies`](tasks/cerbos-policy-role-policies/README.md) | Define scoped custom roles with role policies, parent roles, and a narrowed IdP role over unchanged base resource policies. |
+| [`cerbos-policy-outputs`](tasks/cerbos-policy-outputs/README.md) | Add `ruleActivated` and `conditionNotMet` outputs for audit events and denial reasons, and assert them in native tests. |
 
 ## Task layout
 
@@ -64,6 +68,12 @@ and choose a distinct job name. Oracle and nop check the task itself. For tasks
 with a starting bundle, nop leaves it unchanged; individual checks may pass,
 but overall reward must be 0. The real-agent run measures how well the skill
 helps complete the task. No model is called until that command is run.
+
+Codex authenticates with `OPENAI_API_KEY`; set `CODEX_FORCE_AUTH_JSON=1` to use
+`~/.codex/auth.json` instead. To run every task in one job, pass `-p evals/tasks`.
+Harbor installs the agent in each container, which can exceed the 360-second
+setup limit when several trials start together; add
+`--agent-setup-timeout-multiplier 4` rather than raising the agent timeout.
 
 To try a different skill checkout, change `--skill` and use a fresh job name.
 Use `--n-attempts 3` to repeat the same task three times. When comparing skill

@@ -13,8 +13,14 @@ def documents():
     return [(p, yaml.safe_load(p.read_text())) for p in ROOT.rglob("*.yaml")]
 
 
-def refs(value):
-    return set(re.findall(r"\bV\.([A-Za-z_][A-Za-z_0-9]*)", str(value)))
+def refs(value, prefixes="V"):
+    pattern = rf"(?<![\w.])(?:{prefixes})\.([A-Za-z_][A-Za-z_0-9]*)"
+    return set(re.findall(pattern, str(value)))
+
+
+def uses(value):
+    """Variable references in either Cerbos spelling: V.name or variables.name."""
+    return refs(value, "V|variables")
 
 
 def variables():
@@ -44,11 +50,11 @@ def variables():
         assert "billing_common" in variables["import"]
         local = variables["local"]
         assert local and not definitions.keys() & local.keys()
-        reachable = refs(policy["rules"])
+        reachable = uses(policy["rules"])
         pending = list(reachable)
         while pending:
             name = pending.pop()
-            for dependency in refs({**definitions, **local}.get(name, "")) - reachable:
+            for dependency in uses({**definitions, **local}.get(name, "")) - reachable:
                 reachable.add(dependency)
                 pending.append(dependency)
         assert dependent & reachable, f"{kind} does not use shared eligibility"
