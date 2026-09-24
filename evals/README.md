@@ -79,6 +79,22 @@ To try a different skill checkout, change `--skill` and use a fresh job name.
 Use `--n-attempts 3` to repeat the same task three times. When comparing skill
 versions locally, keep the task, model, agent version and attempt count the same.
 
+## New Cerbos releases
+
+When a new PDP version ships, run from the repository root with Docker running:
+
+```bash
+uv run --no-project --with PyYAML==6.0.2 python evals/update_cerbos_version.py [VERSION]
+```
+
+VERSION defaults to the latest GitHub release. The script:
+- repins every task image by digest;
+- updates the version named in instructions, READMEs and the skill's `targetsCerbosVersion`;
+- bumps the patch version of each changed task;
+- runs the verifier regression tests, then oracle (expected reward 1) and nop (expected reward 0) on every task.
+
+The oracle run replays each task's contract-derived decisions against the new PDP. A failure there usually means the release changed behaviour that a task encodes: inspect the named stage's logs, confirm the change in the release notes, and update that task's `contract.py`, `cases.json` and reference solution. Use `--dry-run` to preview the edits, and `--live` to also run the skill once per task. Review the release notes for skill guidance that needs updating too.
+
 ## Verifier regression tests
 
 Run the local coverage-classification regressions without Docker or model calls:
