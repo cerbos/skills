@@ -180,9 +180,18 @@ Each entry under `expected` accepts `src`, `val`, `error`, and `action`. Since v
 
 ## Shared Fixtures
 
-- There is only ONE `principals.yaml` and ONE `resources.yaml` per `testdata/` folder
-- Fixtures are SHARED across ALL `*_test.yaml` files in the parent directory
-- When writing fixtures, combine all principals/resources needed by all tests in that domain into single files
+Fixtures come from two places, and a suite can use either or both:
+
+- **Inline**: the suite's own `principals`, `resources` and `auxData` maps. A self-contained suite defines everything inline and needs no `testdata/` folder.
+- **Shared files**: `testdata/principals.yaml`, `testdata/resources.yaml` and `testdata/auxdata.yaml` (`.yml` or `.json` also work) in the directory that contains the test file. They are shared by every `*_test.yaml` in that directory. A suite that uses only shared fixtures omits the inline `principals` and `resources` keys entirely.
+
+There is only one file of each kind per `testdata/` folder, so combine everything the directory's suites need into it. When a key exists in both places, the suite's inline definition wins for that suite. When the requirements ask for one style, follow it exactly: do not create a `testdata/` folder beside a suite meant to be self-contained.
+
+A principal/resource pair listed in `input` but absent from `expected` is expected to be DENY for every action, and the omitted actions of a listed pair default to DENY too. Write DENY expectations explicitly anyway, so the intent is readable.
+
+### Scoped fixtures
+
+Put `scope` on the resource fixture (`scope: acme.eu`), or set `options.defaultScope` for the suite or test. A test's `options` replace the suite's `options` instead of merging, so repeat any other suite option you still need.
 
 ## Standalone Fixture File Format
 
@@ -218,44 +227,90 @@ resources:
 
 ## Coverage Plan
 
-Save a small table from the requirements outside the policy directory before writing tests:
+Before writing tests, save the plan outside the policy directory as `coverage-plan.yaml`. It is the input to the [coverage audit](#coverage-audit), so write it in that script's format.
 
-```text
-Resource/action | Requirement | Fixture keys | Expected effect | Test case | ALLOW control and changed field (isolated denials)
+Start with `paths`: one entry per **grant path**, meaning a rule, role or derived role that allows actions on one resource kind. List every prerequisite in that path's condition, including the parent role. A prerequisite shared by several paths, such as a tenant check in two derived roles, appears in each path, and each consuming resource kind gets its own paths.
+
+Then write one row per planned assertion, keyed by the fixture keys the tests will use. Each denial that isolates a prerequisite names its `path` and `prerequisite`; the audit fails if any listed prerequisite of any path lacks such a row.
+
+```yaml
+paths:
+  - id: document-owner
+    kind: document
+    requires: [parent-role, tenant, ownership]
+  - id: document-reviewer
+    kind: document
+    requires: [parent-role, tenant, department]
+rows:
+  - id: document-owner-edit
+    principal: alice_employee            # principal fixture key
+    resource: document_owned_by_alice    # resource fixture key
+    action: edit
+    effect: EFFECT_ALLOW
+  - id: document-missing-parent-role-edit
+    principal: alice_reviewer_only       # same id "alice", roles changed
+    resource: document_owned_by_alice
+    action: edit
+    effect: EFFECT_DENY
+    control: document-owner-edit         # row with the opposite effect
+    change: principal.roles              # the ONE field that differs from the control
+    path: document-owner
+    prerequisite: parent-role
 ```
 
-Plan cases separately for each resource policy, including those that import the same derived roles or variables. Exercise these branches where the specification uses them:
+When a requirement names a qualifying condition, such as "even for contractor-visible reports" or "an amount equal to the limit", record it in the row's `facts` (for example `resource.attr.contractor_visible: true` or `resource.scope: acme`; use `null` for an absent attribute). The audit then checks the resolved fixture instead of trusting its name.
+
+Field paths for `change` and `facts` are `principal.id`, `principal.roles`, `principal.attr.<name>`, `resource.attr.<name>`, `resource.kind`, and `scope`/`policyVersion` on either side. An optional `suite` (test file relative to the policy directory) or `test` (test case name) narrows the match.
+
+Plan rows separately for each resource policy, including those that import the same derived roles or variables. Exercise these branches where the specification uses them:
 
 - An allowed request for each grant and denial for unrelated roles/actions.
 - Each independent authorization prerequisite: base role, tenant, ownership, department, status, or other attribute condition.
 - Exact threshold values and values on either side; missing optional attributes and their explicit values; overrides that change a decision from the default.
 - Overlapping roles and alternative grant paths, using the confirmed combination semantics.
 
-**Isolate the denial.** Pair each denial of an authorization prerequisite with an active ALLOW assertion for the same resource kind and action. Copy that allowed request and change only the prerequisite under test. Preserve IDs and relationship attributes unless that relationship is the subject of the test; distinguish fixture variants by their keys instead of changing their IDs. Record the allow-control test and the changed value in the coverage plan. One allowed case can serve as the control for several negatives. For example, if editing requires a base role, ownership and a matching tenant:
+**Isolate the denial.** Give each denial of an authorization prerequisite a `control`: an active ALLOW row for the same resource kind and action. Copy that allowed request and change only the prerequisite under test. One allowed case can serve as the control for several negatives. For example, if editing requires a base role, ownership and a matching tenant:
 
-| Case | Base role | Owner equals principal ID | Tenant matches | Effect |
-| --- | --- | --- | --- | --- |
-| Allowed | Present | Yes | Yes | ALLOW |
-| Missing parent role | Absent; only unrelated roles | Yes | Yes | DENY |
-| Different owner | Present | No | Yes | DENY |
-| Different tenant | Present | Yes | No | DENY |
+| Case | Base role | Owner equals principal ID | Tenant matches | Effect | `change` |
+| --- | --- | --- | --- | --- | --- |
+| Allowed (control) | Present | Yes | Yes | ALLOW | — |
+| Missing parent role | Absent; only unrelated roles | Yes | Yes | DENY | `principal.roles` |
+| Different owner | Present | No | Yes | DENY | `resource.attr.owner` |
+| Different tenant | Present | Yes | No | DENY | `resource.attr.tenant` or `principal.attr.tenant` |
+
+**Fixture keys are unique; principal IDs need not be.** Several principal fixtures may share one `id`. A missing-parent-role variant of owner `alice` is a new key such as `alice_reviewer_only` with `id: alice` and different roles, so the resource's `owner` still matches. Giving the variant a new ID also breaks ownership, so the test no longer shows which prerequisite caused the denial. Likewise, a limit-override principal keeps the default principal's ID and differs only in the override attribute.
 
 Keep other grant paths inactive when isolating a denial, then test role combinations separately. A tenant test that also changes the owner cannot establish which boundary caused the denial. The same principle applies to a blocked resource, suspended principal or amount limit: satisfy the other prerequisites so the intended condition determines the result.
 
+**Defaults and overrides must flip a decision.** Pair an optional attribute or override with a control whose effect is opposite. For a principal limit that replaces a default of 250, test an amount between the two limits: 200 with limit 150 is DENY while the default principal gets ALLOW, or 400 with limit 500 is ALLOW while the default principal gets DENY. An amount within both limits proves nothing about the override. Do this for every resource with its own default.
+
 For derived roles, test matching attributes with unrelated base roles, the required parent role with a failing relationship, and a derived-role name supplied as a principal role. Include a valid positive case for each role before relying on its negative cases.
+
+**Schema rejections need a request the policy would allow.** Tests run with schema enforcement in reject mode, so a schema denial proves something only when the same request with valid attributes is ALLOW. Use an ALLOW row as the control, and break one attribute in its fixture: remove a required attribute, give one an invalid value, add an undeclared attribute, or make one principal attribute invalid. Use one violation per fixture, and break an attribute that the granting rule does not read. If the rule checks `owner` or `status`, a missing or invalid value there is denied by the policy anyway, so it cannot show the schema at work; break `amount` on a request that does not compare `amount` instead. When a fixture's name claims a property (such as "visible"), check that its attributes actually have it. For `ignoreWhen`, add a check for the ignored action alone on an incomplete resource, expecting ALLOW. See [POLICIES.md](POLICIES.md#schema-enforcement).
+
+**Scope-specific rules need a request that qualifies.** To show that a grant from one scope does not apply elsewhere, reuse the request that is allowed in the granting scope and change only the resource's `scope`. To show that a restriction applies only in its scope, reuse the request it denies (for example, an editor on another department's document) and change only the `scope`, expecting ALLOW. A request the restriction would allow anyway proves nothing. For example, a Globex contractor viewing a report marked shareable becomes the same request in the base scope or `acme`, expecting DENY. Test each restriction in the scope that adds it and in each descendant that inherits it. Test inherited base permissions in every scope, and test a principal with several roles where one role alone would be denied.
 
 For explicit DENY rules, start with a request another rule would allow and activate the denying condition. This proves the denial overrides a real grant. Run the strict pass to expose condition errors that could otherwise make the deny silently no-op ([CEL.md](CEL.md#strict-evaluation-v055)). Pin `options.now` for time-dependent cases.
 
 ## Coverage Audit
 
-After writing or fixing the bundle, write and run a small coverage-audit script outside the policy directory. Check the emitted YAML and native JSON compilation report against the saved table, using an available YAML parser. Keep this check specific to the confirmed requirements; it need not interpret CEL or implement Cerbos authorization semantics.
+Run the bundled audit after writing or fixing the bundle. It needs Python 3 with PyYAML (`uv run --with PyYAML python ...` works where PyYAML is absent). Save both compile reports outside the policy directory first:
 
-1. Resolve each planned case's principal and resource references, including shared fixtures and inline overrides, from the written files. Assert the required relationships using actual IDs, roles and attribute values.
-2. For every isolated denial, load its explicitly mapped ALLOW control and assert that the resolved requests differ only at the intended field. Print that field's before/after values. For a missing-parent-role case, use unrelated roles while retaining all matching attributes; check derived-role-name impersonation separately. A fixture name such as `other_tenant` is only a label, so compare actual values.
-3. Match every row to a successful, executed assertion in the native report with the planned resource, principal, action and effect. Also require the mapped control to have executed with ALLOW. Fail on missing or skipped cases; aggregate pass counts are insufficient.
-4. Print a result for every row and fail if any requirement lacks coverage in a consuming resource. A test of one consumer does not establish coverage of another consumer of a shared variable or derived role.
+```bash
+cerbos compile --output=json policies > normal.json
+cerbos compile --output=json --strict-evaluation policies > strict.json
+python3 <skill-dir>/scripts/coverage_audit.py --policies policies \
+  --plan coverage-plan.yaml --report normal.json --report strict.json
+```
 
-Save the script and output alongside the coverage plan. Correct missing cases and rerun both validation modes and the audit until all three exit 0. Compilation establishes that the submitted assertions pass; this audit establishes that those assertions cover the requested behavior.
+With Docker, mount the working directory and redirect the container's stdout the same way. For each row the audit:
+
+1. Finds an executed, passing assertion with the planned principal, resource, action and effect in every report. Missing or skipped cases fail; aggregate pass counts are insufficient.
+2. Resolves the fixture keys through the suite's `testdata/` files and inline suite fixtures to actual IDs, roles and attributes. Fixture names are only labels.
+3. For a row with a `control`, requires the control to have the opposite effect and the same action, and the resolved requests to differ at exactly the `change` field (ignoring `resource.id`). It prints that field's before/after values.
+4. For every prerequisite of every declared path, requires a passing row with that `path`, `prerequisite` and a control on a resource of the path's kind.
+
+Every requirement needs rows in each consuming resource; a test of one consumer does not establish coverage of another consumer of a shared variable or derived role. Do not weaken the plan to make the audit pass: when a row fails, fix the fixture or test. Save the plan and audit output together. Rerun both validation modes and the audit until all three exit 0. Compilation shows the submitted assertions pass; the audit shows they cover the requested behavior.
 
 ## Common Test Failures
 
@@ -263,6 +318,8 @@ Save the script and output alongside the coverage plan. Correct missing cases an
 |---|---|---|
 | `additional property not allowed` | Extra field in test or fixture | Remove the field — schema is strict |
 | Expected ALLOW, got DENY | Derived role not matching, or fixture missing an attribute | Reproduce in REPL ([TESTING.md](TESTING.md)) |
+| Expected ALLOW, got DENY for every action on a fixture | Fixture attributes fail the policy's schema (tests enforce schemas in reject mode), or `create` shares a check with a validated action | Fix the fixture, or test `create` alone on incomplete resources |
+| Compile error about a missing scope policy | A scoped policy lacks an ancestor (`acme` for `acme.eu`, or the base policy) | Add every ancestor policy in the chain |
 | Expected DENY, got ALLOW | Duplicate unconditional rule, wildcard action grant, or a DENY condition erroring at runtime | Search for conflicting rules; re-run with `--strict-evaluation` |
 | Passes normally, fails under `--strict-evaluation` | Condition errors at runtime and silently evaluates false | Fix the expression or add the missing fixture attribute |
 | Output assertion fails with an `error` value | Output expression itself errored rather than returning a wrong value | Fix the output expression, not the expected `val` |

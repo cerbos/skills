@@ -40,6 +40,44 @@ Always include the `schemas` field:
 
 These JSON schemas validate `P.attr` and `R.attr`. Put attribute properties at the schema root. For example, `P.attr: {tenant: "acme"}` is validated by `{"type": "object", "properties": {"tenant": {"type": "string"}}, "required": ["tenant"]}`. The request envelope fields (`id`, `roles`, `kind`, `attr`) belong to the API request, outside the attribute schema. See [attribute schemas](https://docs.cerbos.dev/cerbos/latest/policies/schemas.html).
 
+### Schema enforcement
+
+Schemas use JSON Schema draft 2020-12. Enforcement is PDP configuration (`schema.enforcement: warn | reject`), not policy content. In `reject` mode an invalid principal or resource denies **every** action in the check and the response carries `validationErrors`. `cerbos compile` runs policy tests in reject mode, so a fixture with invalid attributes gets DENY even where a rule grants.
+
+- Set `"additionalProperties": false` when the requirements forbid undeclared attributes; JSON Schema allows them by default.
+- Use `"type": "integer"` for whole numbers; `number` accepts `2.5`.
+- `resourceSchema.ignoreWhen.actions` skips resource validation, typically for `create`, where the new record's attributes are incomplete. It applies only when **every** action in the check is listed: a check for `create` alone on an incomplete resource can be allowed, but `create` plus `view` on the same resource is validated and denied. Principal attributes are always validated unless `principalSchema` has its own `ignoreWhen`.
+- In a scope chain, every policy for the resource must declare the same schemas.
+
+## Rule Outputs
+
+A rule's `output` block returns values in CheckResources responses, such as audit events or denial reasons. It is supported on resource, principal and role policy rules. See [outputs](https://docs.cerbos.dev/cerbos/latest/policies/outputs.html).
+
+```yaml
+    - name: approve-within-limit
+      actions: [approve]
+      roles: [manager]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: R.attr.amount <= P.attr.approval_limit
+      output:
+        when:
+          # The rule matched the role and action, and its condition was true.
+          ruleActivated: '{"event": "payout_approved", "payout": R.id, "approver": P.id}'
+          # The rule matched the role and action, but its condition was false.
+          conditionNotMet: '{"reason": "over_limit", "amount": R.attr.amount, "limit": P.attr.approval_limit}'
+```
+
+- Each output is reported per action as `{src, action, val}`, where `src` is `resource.<kind>.v<version>#<rule name>`. Give every rule with an output a stable `name`, because consumers and tests match on `src`.
+- To explain why a rule did not grant, put the explanation in that rule's `conditionNotMet`. Do not add a separate DENY rule: it changes the policy's decision logic and emits a different `src`. A rule for another role or action emits nothing.
+- Outputs work on DENY rules too; `ruleActivated` fires when the denial applies.
+- Overlapping rules can each emit, so a response may contain an ALLOW rule's `ruleActivated` output alongside the DENY that decided the action. Consumers must read the effect, not infer a decision from an output. Whether rules listed after the deciding DENY rule still emit depends on rule order, so do not rely on it.
+- An output expression that fails at runtime yields an `error` entry instead of `val`; guard optional attributes with `has()`.
+- Output expressions accept any CEL value: strings, numbers, maps, lists, and conditionals such as `R.attr.amount > 10000 ? "high" : "normal"`.
+
+Test-suite `outputs` assertions (see [TEST-SUITES.md](TEST-SUITES.md#output-assertions)) are subset checks: listed outputs must match, and unlisted outputs are ignored. Assert every output a requirement specifies. Cover each branch: activation, the unmet condition, and both sides of any boundary inside the expression.
+
 ## Derived Roles
 
 ```yaml
@@ -90,7 +128,7 @@ Role policies define permissions from the perspective of an IdP role. Unlike res
 apiVersion: api.cerbos.dev/v1
 rolePolicy:
   role: "acme_admin"
-  scope: "acme"           # optional: principal scope
+  scope: "acme"           # optional: matched against the resource's scope
   parentRoles:            # optional: inherit and narrow permissions
     - "admin"
   rules:
@@ -116,6 +154,46 @@ Key characteristics:
 - **Wildcards**: both `resource` and `allowActions` support wildcards (`view:*`)
 - **Conditions**: optional CEL expressions per rule entry
 - **`allowActions` must be non-empty**: `allowActions: []` is a validation error
+- **Never grants beyond resource policies**: an allowed action also needs a grant from the resource-policy chain for the role, or for its `parentRoles`. A custom role with no `parentRoles` that map to resource-policy roles gets nothing. A resource policy is always required, but no scoped resource policy is needed; the chain falls through to the base policy.
+- **Parents resolve recursively**: a parent role with its own role policy in the same scope applies that policy's restrictions too. If Acme narrows `editor`, a custom role based on `editor` inherits the narrowing.
+- **Narrowing an IdP role**: a role policy named after an existing role (`role: editor`, no `parentRoles`) restricts that role within its scope only; outside the scope the role keeps its resource-policy permissions.
+- **Failed conditions deny**: a matching rule whose condition is false denies that action, even if another rule in the policy lists it unconditionally. Put each action in one rule.
+- **Strict subset is checked at evaluation, not compile time**: listing an action the parent lacks compiles but is denied.
+- **Scope**: a scoped role policy applies to requests for resources with that scope; the principal's scope does not select it. An unscoped role policy applies only to unscoped requests.
+
+## Scoped Resource Policies (policy hierarchy)
+
+A resource policy with `scope: "acme.eu"` applies to requests whose resource (or principal, for principal policies) has that scope. Cerbos evaluates the chain from most to least specific: `acme.eu`, `acme`, then the unscoped base policy. Every ancestor in the chain must exist, including the base policy, or compilation fails. Without `lenientScopeSearch` (engine config), a request for a scope with no policy of its own is denied. Imports (derived roles, variables) are not inherited: each scoped policy imports what its own rules use. See [scoped policies](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies.html).
+
+`scopePermissions` decides what a scoped policy may do relative to its parents, and must match for all policies in the same scope:
+
+| Setting | Rule matches, condition true | Rule matches, condition false | No rule matches | Use when |
+|---|---|---|---|---|
+| `SCOPE_PERMISSIONS_OVERRIDE_PARENT` (default) | Its effect is final | Continue to parent | Continue to parent | The scope may grant or revoke independently of its parents |
+| `SCOPE_PERMISSIONS_REQUIRE_PARENTAL_CONSENT_FOR_ALLOWS` | ALLOW still needs a parent ALLOW; DENY is final | Implicit DENY | Continue to parent | The scope may only narrow what its parents allow |
+
+Map requirements to the setting, not only to today's decisions. "May only restrict", "cannot grant beyond the parent", or "narrowing only" requires `REQUIRE_PARENTAL_CONSENT_FOR_ALLOWS` on that scope and on each descendant that must keep the guarantee. An override-mode policy that restates parent grants and adds DENY rules can produce the same decisions today, but any future ALLOW rule in it can exceed the parent.
+
+In consent mode, express a restriction as a conditional ALLOW for the affected roles and actions. When the condition fails, the result is an implicit DENY. Leave unaffected permissions out of the policy so they fall through to the parent; do not restate the parent's grants. Roles are evaluated separately and the results combined, so a principal with an unrestricted second role keeps that role's access. An ALLOW rule for `roles: ["*"]` and `actions: ["*"]` gated by a condition adds a requirement across the whole scope, such as data residency, without granting anything the parent denies.
+
+```yaml
+resourcePolicy:
+  resource: report
+  version: default
+  scope: acme
+  scopePermissions: SCOPE_PERMISSIONS_REQUIRE_PARENTAL_CONSENT_FOR_ALLOWS
+  rules:
+    # Acme editors may change drafts only; other base permissions pass through.
+    - name: editors-edit-drafts
+      actions: [edit]
+      roles: [editor]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: R.attr.status == "draft"
+```
+
+Place scoped policies in folders that mirror the scope (`resource_policies/acme/eu/report.yaml`). Resource fixtures carry `scope`; see [TEST-SUITES.md](TEST-SUITES.md#scoped-fixtures).
 
 ## Scoped Role Policies (`parentRoles` + `scope`)
 
