@@ -1,0 +1,4158 @@
+{
+  "principals": {
+    "clerk": {
+      "id": "hidden-clerk",
+      "roles": [
+        "clerk"
+      ],
+      "attr": {}
+    },
+    "manager_1000": {
+      "id": "hidden-mgr",
+      "roles": [
+        "manager"
+      ],
+      "attr": {
+        "approval_limit": 1000
+      }
+    },
+    "manager_0": {
+      "id": "hidden-mgr0",
+      "roles": [
+        "manager"
+      ],
+      "attr": {
+        "approval_limit": 0
+      }
+    },
+    "manager_high": {
+      "id": "hidden-mgr-high",
+      "roles": [
+        "manager"
+      ],
+      "attr": {
+        "approval_limit": 50000
+      }
+    },
+    "guest": {
+      "id": "hidden-guest",
+      "roles": [
+        "guest"
+      ],
+      "attr": {}
+    }
+  },
+  "resources": {
+    "payout_0_absent": {
+      "kind": "payout",
+      "id": "hidden-payout_0_absent",
+      "attr": {
+        "amount": 0,
+        "account": "hidden-acct-0"
+      }
+    },
+    "payout_0_false": {
+      "kind": "payout",
+      "id": "hidden-payout_0_false",
+      "attr": {
+        "amount": 0,
+        "account": "hidden-acct-0",
+        "frozen": false
+      }
+    },
+    "payout_0_true": {
+      "kind": "payout",
+      "id": "hidden-payout_0_true",
+      "attr": {
+        "amount": 0,
+        "account": "hidden-acct-0",
+        "frozen": true
+      }
+    },
+    "payout_500_absent": {
+      "kind": "payout",
+      "id": "hidden-payout_500_absent",
+      "attr": {
+        "amount": 500,
+        "account": "hidden-acct-500"
+      }
+    },
+    "payout_500_false": {
+      "kind": "payout",
+      "id": "hidden-payout_500_false",
+      "attr": {
+        "amount": 500,
+        "account": "hidden-acct-500",
+        "frozen": false
+      }
+    },
+    "payout_500_true": {
+      "kind": "payout",
+      "id": "hidden-payout_500_true",
+      "attr": {
+        "amount": 500,
+        "account": "hidden-acct-500",
+        "frozen": true
+      }
+    },
+    "payout_1000_absent": {
+      "kind": "payout",
+      "id": "hidden-payout_1000_absent",
+      "attr": {
+        "amount": 1000,
+        "account": "hidden-acct-1000"
+      }
+    },
+    "payout_1000_false": {
+      "kind": "payout",
+      "id": "hidden-payout_1000_false",
+      "attr": {
+        "amount": 1000,
+        "account": "hidden-acct-1000",
+        "frozen": false
+      }
+    },
+    "payout_1000_true": {
+      "kind": "payout",
+      "id": "hidden-payout_1000_true",
+      "attr": {
+        "amount": 1000,
+        "account": "hidden-acct-1000",
+        "frozen": true
+      }
+    },
+    "payout_1001_absent": {
+      "kind": "payout",
+      "id": "hidden-payout_1001_absent",
+      "attr": {
+        "amount": 1001,
+        "account": "hidden-acct-1001"
+      }
+    },
+    "payout_1001_false": {
+      "kind": "payout",
+      "id": "hidden-payout_1001_false",
+      "attr": {
+        "amount": 1001,
+        "account": "hidden-acct-1001",
+        "frozen": false
+      }
+    },
+    "payout_1001_true": {
+      "kind": "payout",
+      "id": "hidden-payout_1001_true",
+      "attr": {
+        "amount": 1001,
+        "account": "hidden-acct-1001",
+        "frozen": true
+      }
+    },
+    "payout_10000_absent": {
+      "kind": "payout",
+      "id": "hidden-payout_10000_absent",
+      "attr": {
+        "amount": 10000,
+        "account": "hidden-acct-10000"
+      }
+    },
+    "payout_10000_false": {
+      "kind": "payout",
+      "id": "hidden-payout_10000_false",
+      "attr": {
+        "amount": 10000,
+        "account": "hidden-acct-10000",
+        "frozen": false
+      }
+    },
+    "payout_10000_true": {
+      "kind": "payout",
+      "id": "hidden-payout_10000_true",
+      "attr": {
+        "amount": 10000,
+        "account": "hidden-acct-10000",
+        "frozen": true
+      }
+    },
+    "payout_10001_absent": {
+      "kind": "payout",
+      "id": "hidden-payout_10001_absent",
+      "attr": {
+        "amount": 10001,
+        "account": "hidden-acct-10001"
+      }
+    },
+    "payout_10001_false": {
+      "kind": "payout",
+      "id": "hidden-payout_10001_false",
+      "attr": {
+        "amount": 10001,
+        "account": "hidden-acct-10001",
+        "frozen": false
+      }
+    },
+    "payout_10001_true": {
+      "kind": "payout",
+      "id": "hidden-payout_10001_true",
+      "attr": {
+        "amount": 10001,
+        "account": "hidden-acct-10001",
+        "frozen": true
+      }
+    },
+    "payout_60000_absent": {
+      "kind": "payout",
+      "id": "hidden-payout_60000_absent",
+      "attr": {
+        "amount": 60000,
+        "account": "hidden-acct-60000"
+      }
+    },
+    "payout_60000_false": {
+      "kind": "payout",
+      "id": "hidden-payout_60000_false",
+      "attr": {
+        "amount": 60000,
+        "account": "hidden-acct-60000",
+        "frozen": false
+      }
+    },
+    "payout_60000_true": {
+      "kind": "payout",
+      "id": "hidden-payout_60000_true",
+      "attr": {
+        "amount": 60000,
+        "account": "hidden-acct-60000",
+        "frozen": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "clerk:payout_0_absent",
+      "principal": "clerk",
+      "resource": "payout_0_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_0_false",
+      "principal": "clerk",
+      "resource": "payout_0_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_0_true",
+      "principal": "clerk",
+      "resource": "payout_0_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "clerk:payout_500_absent",
+      "principal": "clerk",
+      "resource": "payout_500_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_500_false",
+      "principal": "clerk",
+      "resource": "payout_500_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_500_true",
+      "principal": "clerk",
+      "resource": "payout_500_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "clerk:payout_1000_absent",
+      "principal": "clerk",
+      "resource": "payout_1000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_1000_false",
+      "principal": "clerk",
+      "resource": "payout_1000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_1000_true",
+      "principal": "clerk",
+      "resource": "payout_1000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "clerk:payout_1001_absent",
+      "principal": "clerk",
+      "resource": "payout_1001_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_1001_false",
+      "principal": "clerk",
+      "resource": "payout_1001_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_1001_true",
+      "principal": "clerk",
+      "resource": "payout_1001_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "clerk:payout_10000_absent",
+      "principal": "clerk",
+      "resource": "payout_10000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_10000_false",
+      "principal": "clerk",
+      "resource": "payout_10000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_10000_true",
+      "principal": "clerk",
+      "resource": "payout_10000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "clerk:payout_10001_absent",
+      "principal": "clerk",
+      "resource": "payout_10001_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_10001_false",
+      "principal": "clerk",
+      "resource": "payout_10001_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_10001_true",
+      "principal": "clerk",
+      "resource": "payout_10001_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "high"
+          }
+        }
+      ]
+    },
+    {
+      "name": "clerk:payout_60000_absent",
+      "principal": "clerk",
+      "resource": "payout_60000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_60000_false",
+      "principal": "clerk",
+      "resource": "payout_60000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "clerk:payout_60000_true",
+      "principal": "clerk",
+      "resource": "payout_60000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-clerk",
+            "priority": "high"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_1000:payout_0_absent",
+      "principal": "manager_1000",
+      "resource": "payout_0_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_0_absent",
+            "approver": "hidden-mgr"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_0_false",
+      "principal": "manager_1000",
+      "resource": "payout_0_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_0_false",
+            "approver": "hidden-mgr"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_0_true",
+      "principal": "manager_1000",
+      "resource": "payout_0_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_0_true",
+            "approver": "hidden-mgr"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_1000:payout_500_absent",
+      "principal": "manager_1000",
+      "resource": "payout_500_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_500_absent",
+            "approver": "hidden-mgr"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_500_false",
+      "principal": "manager_1000",
+      "resource": "payout_500_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_500_false",
+            "approver": "hidden-mgr"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_500_true",
+      "principal": "manager_1000",
+      "resource": "payout_500_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_500_true",
+            "approver": "hidden-mgr"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_1000:payout_1000_absent",
+      "principal": "manager_1000",
+      "resource": "payout_1000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_1000_absent",
+            "approver": "hidden-mgr"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_1000_false",
+      "principal": "manager_1000",
+      "resource": "payout_1000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_1000_false",
+            "approver": "hidden-mgr"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_1000_true",
+      "principal": "manager_1000",
+      "resource": "payout_1000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_1000_true",
+            "approver": "hidden-mgr"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_1000:payout_1001_absent",
+      "principal": "manager_1000",
+      "resource": "payout_1001_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 1001,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_1001_false",
+      "principal": "manager_1000",
+      "resource": "payout_1001_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 1001,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_1001_true",
+      "principal": "manager_1000",
+      "resource": "payout_1001_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 1001,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_1000:payout_10000_absent",
+      "principal": "manager_1000",
+      "resource": "payout_10000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10000,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_10000_false",
+      "principal": "manager_1000",
+      "resource": "payout_10000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10000,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_10000_true",
+      "principal": "manager_1000",
+      "resource": "payout_10000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10000,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_1000:payout_10001_absent",
+      "principal": "manager_1000",
+      "resource": "payout_10001_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10001,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_10001_false",
+      "principal": "manager_1000",
+      "resource": "payout_10001_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10001,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_10001_true",
+      "principal": "manager_1000",
+      "resource": "payout_10001_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10001,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "high"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_1000:payout_60000_absent",
+      "principal": "manager_1000",
+      "resource": "payout_60000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 60000,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_60000_false",
+      "principal": "manager_1000",
+      "resource": "payout_60000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 60000,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_1000:payout_60000_true",
+      "principal": "manager_1000",
+      "resource": "payout_60000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 60000,
+            "limit": 1000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr",
+            "priority": "high"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_0:payout_0_absent",
+      "principal": "manager_0",
+      "resource": "payout_0_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_0_absent",
+            "approver": "hidden-mgr0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_0_false",
+      "principal": "manager_0",
+      "resource": "payout_0_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_0_false",
+            "approver": "hidden-mgr0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_0_true",
+      "principal": "manager_0",
+      "resource": "payout_0_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_0_true",
+            "approver": "hidden-mgr0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_0:payout_500_absent",
+      "principal": "manager_0",
+      "resource": "payout_500_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 500,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_500_false",
+      "principal": "manager_0",
+      "resource": "payout_500_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 500,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_500_true",
+      "principal": "manager_0",
+      "resource": "payout_500_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 500,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_0:payout_1000_absent",
+      "principal": "manager_0",
+      "resource": "payout_1000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 1000,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_1000_false",
+      "principal": "manager_0",
+      "resource": "payout_1000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 1000,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_1000_true",
+      "principal": "manager_0",
+      "resource": "payout_1000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 1000,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_0:payout_1001_absent",
+      "principal": "manager_0",
+      "resource": "payout_1001_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 1001,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_1001_false",
+      "principal": "manager_0",
+      "resource": "payout_1001_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 1001,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_1001_true",
+      "principal": "manager_0",
+      "resource": "payout_1001_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 1001,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_0:payout_10000_absent",
+      "principal": "manager_0",
+      "resource": "payout_10000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10000,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_10000_false",
+      "principal": "manager_0",
+      "resource": "payout_10000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10000,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_10000_true",
+      "principal": "manager_0",
+      "resource": "payout_10000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10000,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_0:payout_10001_absent",
+      "principal": "manager_0",
+      "resource": "payout_10001_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10001,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_10001_false",
+      "principal": "manager_0",
+      "resource": "payout_10001_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10001,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_10001_true",
+      "principal": "manager_0",
+      "resource": "payout_10001_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 10001,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "high"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_0:payout_60000_absent",
+      "principal": "manager_0",
+      "resource": "payout_60000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 60000,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_60000_false",
+      "principal": "manager_0",
+      "resource": "payout_60000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 60000,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_0:payout_60000_true",
+      "principal": "manager_0",
+      "resource": "payout_60000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 60000,
+            "limit": 0
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr0",
+            "priority": "high"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_high:payout_0_absent",
+      "principal": "manager_high",
+      "resource": "payout_0_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_0_absent",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_0_false",
+      "principal": "manager_high",
+      "resource": "payout_0_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_0_false",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_0_true",
+      "principal": "manager_high",
+      "resource": "payout_0_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_0_true",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_high:payout_500_absent",
+      "principal": "manager_high",
+      "resource": "payout_500_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_500_absent",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_500_false",
+      "principal": "manager_high",
+      "resource": "payout_500_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_500_false",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_500_true",
+      "principal": "manager_high",
+      "resource": "payout_500_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_500_true",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_high:payout_1000_absent",
+      "principal": "manager_high",
+      "resource": "payout_1000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_1000_absent",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_1000_false",
+      "principal": "manager_high",
+      "resource": "payout_1000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_1000_false",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_1000_true",
+      "principal": "manager_high",
+      "resource": "payout_1000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_1000_true",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_high:payout_1001_absent",
+      "principal": "manager_high",
+      "resource": "payout_1001_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_1001_absent",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_1001_false",
+      "principal": "manager_high",
+      "resource": "payout_1001_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_1001_false",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_1001_true",
+      "principal": "manager_high",
+      "resource": "payout_1001_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_1001_true",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_high:payout_10000_absent",
+      "principal": "manager_high",
+      "resource": "payout_10000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_10000_absent",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_10000_false",
+      "principal": "manager_high",
+      "resource": "payout_10000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_10000_false",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_10000_true",
+      "principal": "manager_high",
+      "resource": "payout_10000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_10000_true",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "normal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_high:payout_10001_absent",
+      "principal": "manager_high",
+      "resource": "payout_10001_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_10001_absent",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_10001_false",
+      "principal": "manager_high",
+      "resource": "payout_10001_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_10001_false",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_10001_true",
+      "principal": "manager_high",
+      "resource": "payout_10001_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "event": "payout_approved",
+            "payout": "hidden-payout_10001_true",
+            "approver": "hidden-mgr-high"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "high"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_high:payout_60000_absent",
+      "principal": "manager_high",
+      "resource": "payout_60000_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 60000,
+            "limit": 50000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_60000_false",
+      "principal": "manager_high",
+      "resource": "payout_60000_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 60000,
+            "limit": 50000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "high"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "manager_high:payout_60000_true",
+      "principal": "manager_high",
+      "resource": "payout_60000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        }
+      ],
+      "optionalOutputs": [
+        {
+          "src": "resource.payout.vdefault#approve-within-limit",
+          "action": "approve",
+          "val": {
+            "reason": "over_limit",
+            "amount": 60000,
+            "limit": 50000
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#flag-payouts",
+          "action": "flag",
+          "val": {
+            "event": "payout_flagged",
+            "by": "hidden-mgr-high",
+            "priority": "high"
+          }
+        }
+      ]
+    },
+    {
+      "name": "guest:payout_0_absent",
+      "principal": "guest",
+      "resource": "payout_0_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_0_false",
+      "principal": "guest",
+      "resource": "payout_0_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_0_true",
+      "principal": "guest",
+      "resource": "payout_0_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-0"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_500_absent",
+      "principal": "guest",
+      "resource": "payout_500_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_500_false",
+      "principal": "guest",
+      "resource": "payout_500_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_500_true",
+      "principal": "guest",
+      "resource": "payout_500_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-500"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_1000_absent",
+      "principal": "guest",
+      "resource": "payout_1000_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_1000_false",
+      "principal": "guest",
+      "resource": "payout_1000_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_1000_true",
+      "principal": "guest",
+      "resource": "payout_1000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1000"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_1001_absent",
+      "principal": "guest",
+      "resource": "payout_1001_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_1001_false",
+      "principal": "guest",
+      "resource": "payout_1001_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_1001_true",
+      "principal": "guest",
+      "resource": "payout_1001_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-1001"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_10000_absent",
+      "principal": "guest",
+      "resource": "payout_10000_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_10000_false",
+      "principal": "guest",
+      "resource": "payout_10000_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_10000_true",
+      "principal": "guest",
+      "resource": "payout_10000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10000"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_10001_absent",
+      "principal": "guest",
+      "resource": "payout_10001_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_10001_false",
+      "principal": "guest",
+      "resource": "payout_10001_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_10001_true",
+      "principal": "guest",
+      "resource": "payout_10001_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-10001"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_60000_absent",
+      "principal": "guest",
+      "resource": "payout_60000_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_60000_false",
+      "principal": "guest",
+      "resource": "payout_60000_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [],
+      "optionalOutputs": []
+    },
+    {
+      "name": "guest:payout_60000_true",
+      "principal": "guest",
+      "resource": "payout_60000_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "flag": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      },
+      "outputs": [
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "view",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "approve",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "flag",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        },
+        {
+          "src": "resource.payout.vdefault#block-frozen-accounts",
+          "action": "delete",
+          "val": {
+            "reason": "account_frozen",
+            "account": "hidden-acct-60000"
+          }
+        }
+      ],
+      "optionalOutputs": []
+    }
+  ]
+}

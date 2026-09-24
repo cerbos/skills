@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: expense
+  version: default
+  schemas:
+    principalSchema:
+      ref: cerbos:///principal.json
+    resourceSchema:
+      ref: cerbos:///resources/expense.json
+      # Clients check create before a new record's attributes are assigned.
+      ignoreWhen:
+        actions: [create]
+  rules:
+    # Employees submit new expense claims.
+    - name: submit-expense
+      actions: [create]
+      roles: [employee]
+      effect: EFFECT_ALLOW
+    # Employees track their own claims.
+    - name: view-own-expense
+      actions: [view]
+      roles: [employee]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: R.attr.owner == P.id
+    # Employees correct their own claims before submission.
+    - name: edit-own-draft
+      actions: [edit]
+      roles: [employee]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.owner == P.id
+              - expr: R.attr.status == "draft"
+    # Managers oversee spending in their department.
+    - name: view-department-expense
+      actions: [view]
+      roles: [manager]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: R.attr.department == P.attr.department
+    # Managers approve other people's submitted claims within their limit.
+    - name: approve-department-expense
+      actions: [approve]
+      roles: [manager]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.department == P.attr.department
+              - expr: R.attr.status == "submitted"
+              - expr: R.attr.owner != P.id
+              - expr: 'R.attr.amount <= (has(P.attr.approval_limit) ? P.attr.approval_limit : 1000)'

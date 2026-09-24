@@ -57,9 +57,11 @@ Copy the `SKILL.md` files from `cerbos/` to your agent's skills directory.
 
 ## Evals
 
-[Four Harbor evals](evals/README.md) test `cerbos-policy` locally in Docker:
+[Eight Harbor evals](evals/README.md) test `cerbos-policy` locally in Docker:
 generating policies, evolving existing policies, using shared derived roles,
-and managing exported and local variables. Checks cover generated files,
+managing exported and local variables, building scoped policy hierarchies,
+adding attribute schemas with shared and inline test fixtures, defining custom
+roles with role policies, and adding policy outputs. Checks cover generated files,
 native compilation and real PDP decisions. Run them directly with Harbor and
 inspect the generated files and scores in its viewer.
 

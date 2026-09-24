@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: payout
+  version: default
+  rules:
+    # Finance staff review pending payouts.
+    - name: view-payouts
+      actions: [view]
+      roles: [clerk, manager]
+      effect: EFFECT_ALLOW
+    # Managers release payouts up to their approval limit.
+    - name: approve-within-limit
+      actions: [approve]
+      roles: [manager]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: R.attr.amount <= P.attr.approval_limit
+      output:
+        when:
+          ruleActivated: '{"event": "payout_approved", "payout": R.id, "approver": P.id}'
+          conditionNotMet: '{"reason": "over_limit", "amount": R.attr.amount, "limit": P.attr.approval_limit}'
+    # Flagging raises a review ticket, prioritised by amount.
+    - name: flag-payouts
+      actions: [flag]
+      roles: [clerk, manager]
+      effect: EFFECT_ALLOW
+      output:
+        when:
+          ruleActivated: '{"event": "payout_flagged", "by": P.id, "priority": R.attr.amount > 10000 ? "high" : "normal"}'
+    # Nobody acts on payouts from frozen accounts.
+    - name: block-frozen-accounts
+      actions: ["*"]
+      roles: ["*"]
+      effect: EFFECT_DENY
+      condition:
+        match:
+          expr: has(R.attr.frozen) && R.attr.frozen == true
+      output:
+        when:
+          ruleActivated: '{"reason": "account_frozen", "account": R.attr.account}'

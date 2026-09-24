@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: leave_request
+  version: default
+  schemas:
+    principalSchema:
+      ref: cerbos:///principal.json
+    resourceSchema:
+      ref: cerbos:///resources/leave_request.json
+      # Clients check create before a new record's attributes are assigned.
+      ignoreWhen:
+        actions: [create]
+  rules:
+    # Employees request time off.
+    - name: request-leave
+      actions: [create]
+      roles: [employee]
+      effect: EFFECT_ALLOW
+    # Employees track their own requests.
+    - name: view-own-leave
+      actions: [view]
+      roles: [employee]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: R.attr.owner == P.id
+    # Managers review and approve other people's leave in their department.
+    - name: review-department-leave
+      actions: [view, approve]
+      roles: [manager]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.department == P.attr.department
+              - expr: R.attr.owner != P.id

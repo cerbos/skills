@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+resources:
+  small:
+    kind: payout
+    id: po-1
+    attr:
+      amount: 400
+      account: acct-7
+  at_limit:
+    kind: payout
+    id: po-2
+    attr:
+      amount: 1000
+      account: acct-7
+  over_limit:
+    kind: payout
+    id: po-3
+    attr:
+      amount: 1001
+      account: acct-7
+  frozen_small:
+    kind: payout
+    id: po-4
+    attr:
+      amount: 400
+      account: acct-7
+      frozen: true
+  at_10000:
+    kind: payout
+    id: po-5
+    attr:
+      amount: 10000
+      account: acct-7
+  above_10000:
+    kind: payout
+    id: po-6
+    attr:
+      amount: 10001
+      account: acct-7
+  not_frozen:
+    kind: payout
+    id: po-7
+    attr:
+      amount: 400
+      account: acct-7
+      frozen: false

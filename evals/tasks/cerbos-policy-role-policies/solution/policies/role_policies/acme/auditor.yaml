@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+# Auditors inspect Acme records without changing them.
+apiVersion: api.cerbos.dev/v1
+rolePolicy:
+  role: auditor
+  scope: acme
+  parentRoles: [viewer, accountant]
+  rules:
+    - resource: document
+      allowActions: [view]
+    - resource: invoice
+      allowActions: [view]

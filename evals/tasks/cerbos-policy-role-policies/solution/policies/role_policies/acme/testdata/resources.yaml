@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+resources:
+  acme_doc:
+    kind: document
+    id: doc-1
+    attr:
+      department: eng
+    scope: acme
+  acme_doc_editable:
+    kind: document
+    id: doc-1
+    attr:
+      department: eng
+      contractor_editable: true
+    scope: acme
+  acme_doc_not_editable:
+    kind: document
+    id: doc-1
+    attr:
+      department: eng
+      contractor_editable: false
+    scope: acme
+  acme_doc_sales:
+    kind: document
+    id: doc-1
+    attr:
+      department: sales
+    scope: acme
+  acme_doc_sales_editable:
+    kind: document
+    id: doc-1
+    attr:
+      department: sales
+      contractor_editable: true
+    scope: acme
+  base_doc:
+    kind: document
+    id: doc-1
+    attr:
+      department: eng
+  base_doc_sales:
+    kind: document
+    id: doc-1
+    attr:
+      department: sales
+  acme_invoice:
+    kind: invoice
+    id: inv-1
+    attr:
+      department: eng
+    scope: acme
+  base_invoice:
+    kind: invoice
+    id: inv-1
+    attr:
+      department: eng
