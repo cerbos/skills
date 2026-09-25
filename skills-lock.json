@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "build-review-interface": {
+      "source": "ai-evals-course/evals-skills",
+      "sourceType": "github",
+      "skillPath": "skills/build-review-interface/SKILL.md",
+      "computedHash": "a204429dae16d0259475d6023c6390c1beeebd5e3dc1a7c1f34ed847c43b54a3"
+    },
     "create-adapter": {
       "source": "harbor-framework/harbor",
       "sourceType": "github",
@@ -13,6 +19,30 @@
       "skillPath": "skills/create-task/SKILL.md",
       "computedHash": "0a966eaae08dbe0bdd1769637dba56e61b8ca819c11af75a372a3758510a491e"
     },
+    "error-discovery": {
+      "source": "ai-evals-course/evals-skills",
+      "sourceType": "github",
+      "skillPath": "skills/error-discovery/SKILL.md",
+      "computedHash": "784dfca4e39887f25a2fb038858e424695ddafc8d869a45665012c3327523f9b"
+    },
+    "eval-audit": {
+      "source": "ai-evals-course/evals-skills",
+      "sourceType": "github",
+      "skillPath": "skills/eval-audit/SKILL.md",
+      "computedHash": "61dc5dc1763fe031616a603c020e6dd54068e45d6135feea94f068f4cbb9150f"
+    },
+    "evals-start": {
+      "source": "ai-evals-course/evals-skills",
+      "sourceType": "github",
+      "skillPath": "skills/evals-start/SKILL.md",
+      "computedHash": "905d907ce7f65d5741644f22f4486c54760c89dbf02731984a4273460892cfe0"
+    },
+    "generate-synthetic-data": {
+      "source": "ai-evals-course/evals-skills",
+      "sourceType": "github",
+      "skillPath": "skills/generate-synthetic-data/SKILL.md",
+      "computedHash": "3674add3975e2ce031fc775bdde482b35b08f4ce20e9261ae0f2bff43d2730ff"
+    },
     "harbor-exec": {
       "source": "harbor-framework/harbor",
       "sourceType": "github",
@@ -24,6 +54,18 @@
       "sourceType": "github",
       "skillPath": "skills/rewardkit/SKILL.md",
       "computedHash": "2056428ab6f728e04b677225b16e7d60bcec93a3fb0d8ded2eada9af7e2c031e"
+    },
+    "validate-evaluator": {
+      "source": "ai-evals-course/evals-skills",
+      "sourceType": "github",
+      "skillPath": "skills/validate-evaluator/SKILL.md",
+      "computedHash": "b7d2c042d6cd7a0b02f96c600d8d935ee66346a52da295f51a09fa24c24b6636"
+    },
+    "write-judge-prompt": {
+      "source": "ai-evals-course/evals-skills",
+      "sourceType": "github",
+      "skillPath": "skills/write-judge-prompt/SKILL.md",
+      "computedHash": "139fb8b73e2e97f574f0a742d3fe572dfc5d720bf4c2e6fdafc1b233c4402740"
     },
     "writing-great-skills": {
       "source": "mattpocock/skills",
