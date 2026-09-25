@@ -28,10 +28,9 @@ extensions:
   dataDir: /tmp/data
   cacheDir: /tmp/cache
   routeExtensions:
-    builtinRouteExtension:
+    documentsApi:
       routes:
-        "/api/v1/documents": ["GET", "POST"]
-        "/api/v1/documents/{id}": ["GET", "PUT", "DELETE"]
+        "/api/v1/documents": ["GET", "POST", "PUT", "DELETE"]
       mapping:
         request:
           principal:
@@ -39,7 +38,8 @@ extensions:
             roles: 'request.header["X-Roles"].split(",")'
           resource:
             kind: '"document"'
-            id: 'size(request.path.split("/")) > 4 ? request.path.split("/")[4] : "new"'
+            # Mapping CEL has no path; the client sends the document ID as a header.
+            id: '"X-Document-Id" in request.header ? request.header["X-Document-Id"] : "new"'
             attr:
               org_id: 'request.header["X-Org-Id"]'
           action: |-
@@ -117,7 +117,7 @@ extensions:
 ```yaml
 extensions:
   routeExtensions:
-    builtinRouteExtension:
+    teapot:
       routes:
         "/teapot": ["POST"]
       mapping:

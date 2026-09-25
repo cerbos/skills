@@ -22,8 +22,8 @@ Load with: `shared/python-wasm-common.md` (module behaviors, host functions, mem
 | Export | Purpose |
 |--------|---------|
 | `lookup` | Handle data source lookup request, return result |
-| `cerbosInit` | Called once on module load; optional lifecycle hook |
-| `cerbosDeinit` | Called once on module unload; optional lifecycle hook |
+| `cerbosInit` | Optional. Runs once per pooled instance, so several times per module; set up per-instance state |
+| `cerbosDeinit` | Optional. Runs on every instance at graceful shutdown; release per-instance resources |
 
 ## Lookup Request Format
 
@@ -58,7 +58,7 @@ Only `dataSource` and `query` required. `query`: any valid JSON value (string, o
 
 ## Implementation
 
-Kind-specific logic only; host function import declarations (`cacheGet`, `cacheSetIfNotExists`, `cacheDelete`), memory helpers, and cache helpers (`cache_get`, `cache_set_if_not_exists`, `cache_delete`) are verbatim from `shared/python-wasm-common.md`.
+Kind-specific logic only; host function import declarations (`cacheGet`, `cacheSetIfNotExists`), memory helpers, and cache helpers (`cache_get`, `cache_set_if_not_exists`) are verbatim from `shared/python-wasm-common.md`.
 
 ```python
 import json
@@ -78,13 +78,18 @@ def strip_json_quotes(s):
         return json.loads(s)
     return s
 
-@extism.plugin_fn
-def cerbosInit():
-    cache_set_if_not_exists("datasource:initialized", b"true", CACHE_TTL_MS)
+# Per-instance state, set by cerbosInit in every pooled instance.
+default_clearance = None
 
 @extism.plugin_fn
+def cerbosInit():
+    global default_clearance
+    default_clearance = extism.config_str("defaultClearance")
+
+# Release per-instance resources here.
+@extism.plugin_fn
 def cerbosDeinit():
-    cache_delete("datasource:initialized")
+    pass
 
 @extism.plugin_fn
 def lookup():
@@ -99,7 +104,6 @@ def lookup():
 
     profile = PROFILES.get(query)
     if profile is None:
-        default_clearance = extism.config_str("defaultClearance")
         if not default_clearance:
             extism.output_str(json.dumps({"result": None}))
             return

@@ -20,8 +20,8 @@ Go WASM modules implementing custom data source lookups; provide attribute data 
 | Export | Purpose |
 |--------|---------|
 | `lookup` | Handle data source lookup request, return result |
-| `cerbosInit` | Called once on module load; optional lifecycle hook |
-| `cerbosDeinit` | Called once on module unload; optional lifecycle hook |
+| `cerbosInit` | Optional. Runs once per pooled instance, so several times per module; set up per-instance state |
+| `cerbosDeinit` | Optional. Runs on every instance at graceful shutdown; release per-instance resources |
 
 ## Lookup Request Format
 
@@ -65,9 +65,9 @@ import (
     "github.com/extism/go-pdk"
 )
 
-// Host import declarations (_cacheGet, _cacheSetIfNotExists, _cacheDelete) and
-// the cacheGetHelper / cacheSetIfNotExistsHelper / cacheDeleteHelper / outputJSON
-// wrappers come from shared/go-wasm-common.md.
+// Host import declarations (_cacheGet, _cacheSetIfNotExists) and the
+// cacheGetHelper / cacheSetIfNotExistsHelper / outputJSON wrappers come from
+// shared/go-wasm-common.md.
 
 type LookupRequest struct {
     DataSource string          `json:"dataSource"`
@@ -83,15 +83,19 @@ var profiles = map[string]map[string]string{
     "bob":   {"department": "marketing", "role": "viewer", "clearance": "public"},
 }
 
+// Per-instance state, set by cerbosInit in every pooled instance.
+var defaultClearance string
+var hasDefault bool
+
 //go:wasmexport cerbosInit
 func cerbosInit() int32 {
-    cacheSetIfNotExistsHelper("datasource:initialized", []byte("true"), 300000)
+    defaultClearance, hasDefault = pdk.GetConfig("defaultClearance")
     return 0
 }
 
+// Release per-instance resources (connections, handles) here.
 //go:wasmexport cerbosDeinit
 func cerbosDeinit() int32 {
-    cacheDeleteHelper("datasource:initialized")
     return 0
 }
 
@@ -116,7 +120,6 @@ func lookup() int32 {
 
     profile, ok := profiles[query]
     if !ok {
-        defaultClearance, hasDefault := pdk.GetConfig("defaultClearance")
         if !hasDefault {
             return outputJSON(LookupResponse{Result: json.RawMessage("null")})
         }
@@ -163,7 +166,9 @@ def augment_check_request(req):
     if req.principal.id != "":
         response = cerbos.data_source_lookup("userProfile", req.principal.id)
         if response != None and response.result != None:
-            req.principal.attr = response.result
+            result = json.decode(json.encode(response.result))
+            for k in result:
+                req.principal.attr[k] = result[k]   # per-key writes keep caller-sent attributes
     return req
 ```
 

@@ -31,11 +31,17 @@ Load with: `shared/starlark-environment.md` (host functions, modules, extension 
 ```python
 struct(
     data_source = "myDataSource",
-    query = "simon"
+    query = "simon",
+    query_parameters = {"employee_id": "simon"},   # optional
+    cache_options = struct(                        # 0.10+, when the caller passes cache kwargs
+        cache_key = "simon",
+        cache_expiry = time.minute,
+        if_not_exists = True,
+    ),
 )
 ```
 
-Only `data_source` and `query` required. `query` can be any type (string, struct, etc).
+`query` can be any type (string, struct, etc). `query_parameters` values can be any type; numbers arrive as `float`. `cache_options` is always present; `cache_key` is `""` unless the caller passed cache kwargs to `cerbos.data_source_lookup`.
 
 If callers may pass different formats, check with `type()`:
 
@@ -86,14 +92,36 @@ load("json", "json")
 
 def lookup(req):
     cache_key = "user:" + str(req.query)
-    cached = cerbos.cache_get(cache_key)
-    if cached != None:
+    cached = cerbos.cache_get(cache_key)   # "" on a miss
+    if cached:
         return struct(result = json.decode(cached))
 
     resp = http.get(context.extension_config["apiEndpoint"] + "/users/" + str(req.query))
     user = json.decode(resp.body())
     result = {"department": user["department"], "role": user["role"]}
     cerbos.cache_set(cache_key, json.encode(result), time.minute * 5)
+    return struct(result = result)
+```
+
+### Honouring Caller Cache Options
+
+Synapse passes the caller's `cache_key` / `cache_expiry` / `cache_if_not_exists` through in `req.cache_options` and does not cache custom data source results itself. Apply them in `lookup`; `cache_expiry` is a proto `Duration`, so convert it for `cerbos.cache_set`:
+
+```python
+load("json", "json")
+
+def lookup(req):
+    opts = req.cache_options
+    if opts.cache_key:
+        cached = cerbos.cache_get(opts.cache_key)   # "" on a miss
+        if cached:
+            return struct(result = json.decode(cached))
+
+    result = fetch_user(req.query)   # your lookup logic
+
+    if opts.cache_key:
+        expiry = time.second * opts.cache_expiry.seconds if opts.cache_expiry.seconds else None
+        cerbos.cache_set(opts.cache_key, json.encode(result), expiry, opts.if_not_exists)
     return struct(result = result)
 ```
 
@@ -135,12 +163,8 @@ def augment_check_request(req):
         response = cerbos.data_source_lookup("userProfile", req.principal.id)
         if response != None and response.result != None:
             result = json.decode(json.encode(response.result))
-            # attr is usually empty here; in-place writes to an empty proto map
-            # are not persisted, so build the map and assign it as a whole.
-            attr = dict(req.principal.attr)
             for k in result:
-                attr[k] = result[k]
-            req.principal.attr = attr
+                req.principal.attr[k] = result[k]
     return req
 ```
 

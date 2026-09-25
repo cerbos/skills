@@ -26,7 +26,7 @@ docker run \
     -v $(pwd)/config.yaml:/config/config.yaml:ro \
     -v $(pwd)/policies:/policies:ro \
     -v $(pwd)/extensions:/extensions:ro \
-    CERBOS_DISTRIBUTION_REPO/synapse/synapse:latest \
+    CERBOS_DISTRIBUTION_REPO/synapse/synapse:0.10.2 \
     test /extensions
 ```
 
@@ -34,6 +34,8 @@ docker run \
 - `test --match='^enrich' /tests` — only test cases whose names match the regex.
 - `test --output=jsonl /tests` — JSONLines output for scripted processing (default: `console`).
 - `test --verbose /tests` — Synapse instance logs + `print()` output from test cases. First stop when debugging.
+- Suites load the same `config.yaml` the server uses, mounted at `/config/config.yaml` (as in `run-and-test.md`). Send its audit log to `stderr` (`pdp.inProcess.audit.file.path: stderr`): with `stdout`, every `access`/`decision` audit line lands in the runner's output, interleaved with results and between `--output=jsonl` records.
+- `--output=jsonl` emits one record per suite: `status`, `name`, `file`, `testCases`, `passed` / `failed` / `skipped`, and base64 `logOutput`.
 
 Output:
 
@@ -77,7 +79,7 @@ Optional module-level `test_suite` struct configures the suite:
 ```python
 test_suite = struct(
     name = "Tests for extension foo",                          # default: derived from file name
-    synapse_config = testing.load_synapse_config("synapse.yaml"),
+    synapse_config = testing.load_synapse_config("/config/config.yaml"),
     skip = True,                                               # skip the whole suite
     test_cases = { ... },                                      # explicit test list (see below)
 )
@@ -109,7 +111,7 @@ test_suite = struct(
       return testing.fail("I always fail")
 
   test_suite = struct(
-      synapse_config = testing.load_synapse_config("synapse.yaml"),
+      synapse_config = testing.load_synapse_config("/config/config.yaml"),
       test_cases = {
           "always_pass": lambda context: testing.ok("I always pass"),
           "always_fail": always_fail,
@@ -123,7 +125,7 @@ Runner sets the working directory **and** the `SYNAPSE_ROOT` environment variabl
 
 - Relative paths in `testing.load_synapse_config(...)` / `testing.load_testdata(...)` resolve relative to the test file.
 - Use `${SYNAPSE_ROOT}` inside the Synapse config (file or inline) to reference policies/extensions stored next to the test file.
-- Container-absolute paths (e.g. `/config/config.yaml`) also work when bind-mounted, as the quickstart does.
+- Container-absolute paths work when bind-mounted. The examples here load `/config/config.yaml`, the run config mounted by the `docker run` command above, so one config serves both the server and the tests. A relative path such as `"synapse.yaml"` instead needs that file next to the test suite.
 
 ## The `testing` module
 
@@ -132,7 +134,7 @@ Available in every suite without `load()`:
 | Function | Description |
 |----------|-------------|
 | `testing.assert(expression)` | Assert that the expression evaluates to true |
-| `testing.compare_equal(expected, actual)` | Deep/proto-aware comparison; returns a result whose message is the diff — pass it to `testing.assert(...)` |
+| `testing.compare_equal(expected, actual)` | Deep/proto-aware comparison; returns a result whose message is the diff — pass it to `testing.assert(...)`. Compare fields, not whole responses (see Gotchas) |
 | `testing.load_synapse_config(path)` | Load a Synapse configuration file |
 | `testing.load_testdata(path)` | Load a test data file (see below) |
 | `testing.ok(message)` | Explicitly mark the test as passed |
@@ -151,13 +153,14 @@ Each test function receives a `context` with helpers that send requests to the s
 | `context.access_evaluation_batch(request)` | Proxy extensions via AuthZEN batch evaluation |
 | `context.envoy_check(request)` | Envoy ext_authz extensions |
 | `context.http_get/post/put/patch/delete/head/options(path, params=None, headers=None, auth=(), body=None, json_body=None, form_body=None, form_encoding="", timeout=30, allow_redirects=True, verify=True)` | Route extensions under `/ext/...` (same signature as the Starlark `http` module) |
+| `context.get/post/put/patch/delete/head/options/postForm/call`, `try_*` variants, `set_timeout` / `get_timeout` | Also present — the Starlark `http` module's surface; prefer the `http_*` helpers above for `/ext/` routes |
 
 Requests built with `struct(...)` mirroring the proto shapes:
 
 ```python
 test_suite = struct(
     name = "Test principal enrichment",
-    synapse_config = testing.load_synapse_config("synapse.yaml"),
+    synapse_config = testing.load_synapse_config("/config/config.yaml"),
 )
 
 def test_enrichment(context):
@@ -282,7 +285,7 @@ def build_test_case_list():
 
 test_suite = struct(
     name = "CheckResources tests",
-    synapse_config = testing.load_synapse_config("synapse.yaml"),
+    synapse_config = testing.load_synapse_config("/config/config.yaml"),
     test_cases = build_test_case_list(),
 )
 ```
@@ -305,7 +308,7 @@ def test_regex(context):
 
    ```sh
    docker run -v $(pwd):/tests:ro \
-       CERBOS_DISTRIBUTION_REPO/synapse/synapse:latest \
+       CERBOS_DISTRIBUTION_REPO/synapse/synapse:0.10.2 \
        starlark repl /tests/fail_test.star
    ```
 
@@ -317,3 +320,5 @@ def test_regex(context):
 - **`test_cases` disables discovery.** Once set, `test_` prefixed functions not listed in it will *not* run.
 - **No extensions by default.** A suite without `synapse_config` starts a bare PDP — your extension won't be loaded and tests will pass/fail against vanilla policy evaluation.
 - **Proto maps in responses** behave as everywhere else in Starlark Synapse: use `"key" in map` / `map["key"]`, not `.get()`; wrap in `dict(...)` to iterate `.items()`.
+- **Whole-response `compare_equal` always fails.** A live CheckResources response carries a generated `cerbos_call_id` that no testdata `checkResourcesResponse` matches (the diff shows `+ "cerbos_call_id": ...`). Compare the fields under test, such as `results[i].actions[...]`, as in [Parameterized tests](#parameterized-tests).
+- **Envoy HTTP statuses read back as enum names.** An extension that sets `denied_response = struct(status = struct(code = 403), ...)` yields `have.denied_response.status.code == "Forbidden"` in `context.envoy_check` results, not `403`. The gRPC `have.status.code` stays numeric (`0`, `7`).

@@ -22,8 +22,8 @@ Export at least one (WASM export names are camelCase):
 
 | Export | Purpose |
 |--------|---------|
-| `cerbosInit` | Called once when the extension is loaded |
-| `cerbosDeinit` | Called once when the extension is unloaded |
+| `cerbosInit` | Optional. Runs once per pooled instance, so several times per module; set up per-instance state |
+| `cerbosDeinit` | Optional. Runs on every instance at graceful shutdown; release per-instance resources |
 | `augmentCheckRequest` | Modify CheckResources request before PDP |
 | `augmentCheckResponse` | Modify CheckResources response before returning |
 | `augmentPlanRequest` | Modify PlanResources request before PDP |
@@ -43,8 +43,8 @@ Each function: read JSON via `Host.inputString()`, write (possibly modified) JSO
 {
   "principal": { "id": "...", "roles": ["..."], "attr": {} },
   "resources": [{ "resource": { "kind": "...", "id": "...", "attr": {} }, "actions": ["..."] }],
-  "auxData": { "jwt": { "token": "...", "keySetID": "..." } },
-  "requestID": "..."
+  "auxData": { "jwt": { "token": "...", "keySetId": "..." } },
+  "requestId": "..."
 }
 ```
 
@@ -64,14 +64,14 @@ declare module "main" {
 }
 
 // Plus the `extism:host` declaration from shared/typescript-wasm-common.md
-// (this module uses cacheGet, cacheSet, cacheSetIfNotExists, cacheDelete,
-// dataSourceLookup).
+// (this module uses cacheGet, cacheSet, dataSourceLookup).
 ```
 
 ### src/index.ts
 
 ```ts
-// cacheGet / cacheSet / cacheSetIfNotExists / cacheDelete / dataSourceLookup
+/// <reference path="../node_modules/@extism/js-pdk/dist/index.d.ts" />
+// cacheGet / cacheSet / dataSourceLookup
 // wrappers: copy from shared/typescript-wasm-common.md (Host Function Wrappers).
 
 const principals: Record<string, Record<string, string>> = {
@@ -88,13 +88,11 @@ function lookupPrincipalAttrs(principalID: string): Record<string, unknown> | nu
   return resp.result ?? null;
 }
 
-export function cerbosInit() {
-  cacheSetIfNotExists("proxy:initialized", "true", 300000);
-}
+// Runs in every pooled instance: set up per-instance state here.
+export function cerbosInit() {}
 
-export function cerbosDeinit() {
-  cacheDelete("proxy:initialized");
-}
+// Runs on every instance at graceful shutdown: release per-instance resources here.
+export function cerbosDeinit() {}
 
 export function augmentCheckRequest() {
   const req = JSON.parse(Host.inputString());

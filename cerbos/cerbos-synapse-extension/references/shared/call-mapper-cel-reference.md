@@ -1,23 +1,54 @@
 # CEL Expression Reference
 
+## Mapping Fields
+
+Every value is a CEL expression, so string literals need inner quotes: `kind: '"document"'` (bare `kind: document` is a reference to an undefined variable).
+
+| Field | Returns |
+|-------|---------|
+| `request.requestID` | string |
+| `request.principal.id` | string (required) |
+| `request.principal.roles` | list of strings, or a YAML list of expressions each returning a string (required) |
+| `request.principal.attr` | map, or a YAML map of expressions |
+| `request.principal.policyVersion`, `.scope` | string |
+| `request.resource.kind`, `.id` | string (required) |
+| `request.resource.attr` | map, or a YAML map of expressions |
+| `request.resource.policyVersion`, `.scope` | string |
+| `request.action` | string (required) |
+| `request.auxData.jwt.token`, `.keySetID` | string |
+| `response.status` | int; defaults to 200 when allowed, 403 when denied |
+| `response.headers` | map of strings, or a YAML map of expressions |
+| `response.body` | string or bytes |
+
 ## Request Context Variables
+
+Request expressions see the incoming HTTP request as `request`:
 
 | Variable | Description |
 |----------|-------------|
-| `request.header["Name"]` | HTTP request header value |
-| `request.body.json.*` | Parsed JSON body fields |
-| `request.path` | Request URL path |
-| `request.method` | HTTP method |
-| `request.attributes.*` | Envoy-specific attributes |
+| `request.method` | HTTP method, uppercase |
+| `request.header["Name"]` | Header value as a string (comma-joined when repeated); keys in canonical case |
+| `request.headers["Name"]` | Header values as a list |
+| `request.body.json.*` | Parsed JSON body |
+| `request.body.text` | Body as a string |
+| `request.body.bytes` | Raw body |
+
+These are the only fields: path, URL and query string are not available. When a value lives in the path, use a Starlark or WASM route extension.
+
+For `envoyExternalAuthz`, `request` is the Envoy `CheckRequest` instead: read `request.attributes.request.http.{method,path,headers}`.
 
 ## Response Context Variables
+
+Response expressions see the decision as `check`; `request` is not available here:
 
 | Variable | Description |
 |----------|-------------|
 | `check.allow` | Boolean authorization result |
-| `check.cerbosCallId` | Unique request identifier |
-| `check.outputs` | Policy rule outputs map |
-| `check.outputs["policy.rule#action"]` | Specific rule output |
+| `check.cerbosCallId` | Audit log call ID |
+| `check.requestId`, `check.principal`, `check.resource`, `check.action` | The inputs the request expressions produced |
+| `check.outputs` | Policy outputs, keyed by `<policy-id>#<rule-name>` |
+| `check.outputs["resource.document.vdefault#approve-rule"]` | One rule's output; an unnamed rule is keyed `#rule-NNN` by position |
+| `check.validationErrors` | Schema validation errors for principal and resource |
 
 ## String Functions
 
@@ -99,11 +130,6 @@ action: |-
   request.method == "POST" ? "create" :
   request.method == "PUT" ? "update" :
   request.method == "DELETE" ? "delete" : "unknown"
-```
-
-### Resource ID from Path
-```yaml
-id: 'request.path.split("/")[3]'  # /api/v1/documents/{id}
 ```
 
 ### Conditional Response with Outputs

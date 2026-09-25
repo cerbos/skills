@@ -103,7 +103,7 @@ Cerbos Synapse calls PDP, then invokes `envoyMapCerbosResponse` with:
 }
 ```
 
-Must return an Envoy CheckResponse.
+Must return an Envoy CheckResponse (`{"status": {"code": 0}}` to allow, code `7` with `deniedResponse` to deny). Echoing the input back is not a valid response.
 
 ## Implementation
 
@@ -124,6 +124,7 @@ declare module "main" {
 ### src/index.ts
 
 ```ts
+/// <reference path="../node_modules/@extism/js-pdk/dist/index.d.ts" />
 export function cerbosInit() {}
 export function cerbosDeinit() {}
 
@@ -131,15 +132,24 @@ export function envoyCheck() {
   const req = JSON.parse(Host.inputString());
   const httpReq = req.attributes.request.http;
 
+  const checkRequest = {
+    principal: { id: "user-1", roles: ["user"] },
+    resources: [{
+      resource: { id: "request", kind: "http_request", attr: { path: httpReq.path } },
+      actions: [httpReq.method]
+    }]
+  };
+
+  // Callback mode for /admin: Synapse sends cerbosCheckRequest to the PDP,
+  // then calls envoyMapCerbosResponse.
+  if (httpReq.path.startsWith("/admin")) {
+    Host.outputString(JSON.stringify({ cerbosCheckRequest: checkRequest }));
+    return;
+  }
+
   const result = {
     cerbosMapping: {
-      checkRequest: {
-        principal: { id: "user-1", roles: ["user"] },
-        resources: [{
-          resource: { id: "request", kind: "http_request", attr: { path: httpReq.path } },
-          actions: [httpReq.method]
-        }]
-      },
+      checkRequest,
       allowResponse: { status: { code: 0 } },
       denyResponse: { status: { code: 7 }, deniedResponse: { body: "Access denied" } }
     }
@@ -147,8 +157,14 @@ export function envoyCheck() {
   Host.outputString(JSON.stringify(result));
 }
 
+// Callback mode: turn the PDP decision into an Envoy CheckResponse.
 export function envoyMapCerbosResponse() {
-  Host.outputString(Host.inputString());
+  const { cerbosResponse } = JSON.parse(Host.inputString());
+  const effects = Object.values(cerbosResponse.results?.[0]?.actions ?? {});
+  const allowed = effects.length > 0 && effects.every((e) => e === "EFFECT_ALLOW");
+  Host.outputString(JSON.stringify(allowed
+    ? { status: { code: 0 } }
+    : { status: { code: 7 }, deniedResponse: { body: "Denied by policy" } }));
 }
 ```
 

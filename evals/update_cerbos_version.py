@@ -8,8 +8,10 @@ VERSION defaults to the latest GitHub release (for example 0.56.0). The script:
 
 1. Resolves the multi-arch image digest for ghcr.io/cerbos/cerbos:VERSION.
 2. Repins every task Dockerfile, updates the version named in task instructions,
-   task READMEs and the skill's targetsCerbosVersion, and bumps each task's patch
-   version. Feature minimums such as "0.55+" in the skill references are left alone.
+   task READMEs, the skill's targetsCerbosVersion and the cerbos/cerbosctl image
+   tags in the skill's Markdown, and bumps each task's patch version and the
+   skill's minor version. Feature minimums such as "0.55+" in the skill
+   references are left alone.
 3. Runs the verifier regression tests, then Harbor's oracle (expected reward 1) and
    nop (expected reward 0) agents on every task. The oracle run is the real check:
    it replays each task's contract-derived decisions against the new PDP.
@@ -41,6 +43,8 @@ TASKS = ROOT / "evals" / "tasks"
 SKILL = ROOT / "cerbos" / "cerbos-policy" / "SKILL.md"
 IMAGE = "ghcr.io/cerbos/cerbos"
 HARBOR = ["uvx", "--from", "harbor==0.23.0", "harbor"]
+# Only the policy tasks run on the Cerbos PDP; Synapse tasks follow Synapse releases.
+POLICY_TASKS = "cerbos-policy-*"
 PIN = re.compile(rf"{re.escape(IMAGE)}:(\d+\.\d+\.\d+)@sha256:[0-9a-f]{{64}}")
 
 
@@ -64,7 +68,7 @@ def resolve_digest(version):
 
 def current_version():
     versions = set()
-    for dockerfile in TASKS.glob("*/environment/Dockerfile"):
+    for dockerfile in TASKS.glob(f"{POLICY_TASKS}/environment/Dockerfile"):
         versions.update(PIN.findall(dockerfile.read_text()))
     if len(versions) != 1:
         sys.exit(f"Expected one pinned Cerbos version across tasks, found {sorted(versions)}")
@@ -87,7 +91,7 @@ def planned_edits(old, new, digest):
     """Return {path: new_text} for every file whose content changes."""
     version = re.compile(rf"(?<![\d.]){re.escape(old)}(?![\d.])")
     edits = {}
-    for task in sorted(p for p in TASKS.iterdir() if (p / "task.toml").is_file()):
+    for task in sorted(p for p in TASKS.glob(POLICY_TASKS) if (p / "task.toml").is_file()):
         changed = False
         dockerfile = task / "environment" / "Dockerfile"
         if dockerfile.is_file():
@@ -107,6 +111,17 @@ def planned_edits(old, new, digest):
     edits[SKILL] = re.sub(
         r'(targetsCerbosVersion:\s*)"[^"]*"', rf'\g<1>"{new}"', skill, count=1
     )
+    # Tags only: prose such as "requires v0.55.0 or later" keeps its version.
+    tag = re.compile(rf"({re.escape(IMAGE)}(?:ctl)?):{re.escape(old)}(?![\d.])")
+    for path in sorted(SKILL.parent.rglob("*.md")):
+        edits[path] = tag.sub(rf"\g<1>:{new}", edits.get(path, path.read_text()))
+    if edits[SKILL] != skill:
+        # CI requires a skill version bump whenever the skill's files change.
+        edits[SKILL] = re.sub(
+            r'(\n  version:\s*)"(\d+)\.(\d+)"',
+            lambda m: f'{m.group(1)}"{m.group(2)}.{int(m.group(3)) + 1}"',
+            edits[SKILL], count=1,
+        )
     return {path: text for path, text in edits.items() if text != path.read_text()}
 
 
@@ -117,7 +132,7 @@ def run(command, **kwargs):
 
 def harbor_job(name, agent_args, env=None):
     jobs = ROOT / "evals" / "jobs"
-    command = HARBOR + ["run", "-p", "evals/tasks", *agent_args, "-q",
+    command = HARBOR + ["run", "-p", "evals/tasks", "-i", f"*{POLICY_TASKS}", *agent_args, "-q",
                         "--jobs-dir", str(jobs), "--job-name", name]
     run(command, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
     rewards = {}

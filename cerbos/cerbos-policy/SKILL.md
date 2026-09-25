@@ -5,12 +5,21 @@ license: Apache-2.0
 compatibility: Requires the cerbos CLI or Docker for policy validation
 metadata:
   author: cerbos
-  version: "1.6"
+  version: "1.7"
   targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Write Edit Bash Glob Grep Task WebFetch
 ---
 
 # Cerbos Policy Generator
+
+## Scope
+
+This skill owns the policy bundle: resource, role and principal policies, derived roles, exported variables, `_schemas/`, and `*_test.yaml` suites with their `testdata/` fixtures.
+
+Route adjacent work elsewhere:
+
+- Synapse extensions, call mappers, `*_test.star` suites and Synapse `config.yaml` belong to `cerbos-synapse-extension`. When a Synapse extension needs new or changed rules, write those rules here.
+- Application code that calls the PDP (SDK clients, `checkResources` requests) and PDP server configuration are ordinary engineering work; use this skill for the policies they evaluate.
 
 ## Prerequisites
 
@@ -115,7 +124,7 @@ Run two passes, saving each JSON report outside the policy directory. The first 
 
 ```bash
 cerbos compile --output=json policies > normal.json
-# Docker: docker run --rm -v "$(pwd)/policies:/policies" ghcr.io/cerbos/cerbos:latest compile --output=json /policies > normal.json
+# Docker: docker run --rm -v "$(pwd)/policies:/policies" ghcr.io/cerbos/cerbos:0.55.0 compile --output=json /policies > normal.json
 ```
 
 The second re-runs the tests with strict evaluation, which turns runtime CEL errors into denials instead of silently treating them as false:
@@ -170,3 +179,4 @@ Read the current policy files before editing, change only the files the request 
 - [references/TEST-SUITES.md](references/TEST-SUITES.md) — `*_test.yaml` schema and fixture files
 - [references/TESTING.md](references/TESTING.md) — `cerbosctl repl` usage and debugging recipes
 - [scripts/coverage_audit.py](scripts/coverage_audit.py) — checks the coverage plan against native compile reports
+- [references/sources.md](references/sources.md) — the Cerbos documentation this guidance is checked against; start here when updating the skill for a new Cerbos release

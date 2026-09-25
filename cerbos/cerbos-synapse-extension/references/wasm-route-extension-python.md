@@ -23,8 +23,8 @@ Load with: `shared/python-wasm-common.md` (module behaviors, host functions, mem
 |--------|---------|
 | `handleHTTPRoute` | Handle incoming HTTP request, return authorization result |
 | `handleCerbosResponse` | Map Cerbos response to HTTP response (Cerbos request mode only) |
-| `cerbosInit` | Called once on module load; optional lifecycle hook |
-| `cerbosDeinit` | Called once on module unload; optional lifecycle hook |
+| `cerbosInit` | Optional. Runs once per pooled instance, so several times per module; set up per-instance state |
+| `cerbosDeinit` | Optional. Runs on every instance at graceful shutdown; release per-instance resources |
 
 ## HTTP Request Format
 
@@ -84,6 +84,26 @@ Body must be base64-encoded (use `base64.b64encode(data).decode()`):
 }
 ```
 
+### Cerbos Request (with callback)
+
+Return a top-level `checkRequest`, not wrapped in `cerbosMapping`:
+
+```json
+{ "checkRequest": { "principal": { ... }, "resources": [ ... ] } }
+```
+
+Cerbos Synapse sends it to the PDP (through any configured proxy extensions), then invokes `handleCerbosResponse` with:
+
+```json
+{
+    "httpRequest": { ... },
+    "cerbosRequest": { ... },
+    "cerbosResponse": { ... }
+}
+```
+
+`handleCerbosResponse` must return a bare HTTP response, `{"status", "headers", "body"}` with a base64 body, not wrapped in `httpResponse`. Echoing the input back fails the request with HTTP 500.
+
 ## Implementation
 
 **IMPORTANT**: All response `body` fields must be base64-encoded strings, not raw bytes. Helper: `base64.b64encode(data).decode()`.
@@ -139,9 +159,25 @@ def cerbosInit():
 def cerbosDeinit():
     pass
 
+# Callback mode: turn the PDP decision into the HTTP response.
 @extism.plugin_fn
 def handleCerbosResponse():
-    extism.output_str(extism.input_str())
+    cerbos_response = json.loads(extism.input_str())["cerbosResponse"]
+    results = cerbos_response.get("results") or [{}]
+    effects = list(results[0].get("actions", {}).values())
+    allowed = bool(effects) and all(e == "EFFECT_ALLOW" for e in effects)
+    extism.output_str(json.dumps({
+        "status": 200 if allowed else 403,
+        "headers": json_header(),
+        "body": b64body(json.dumps({"allowed": allowed})),
+    }))
+
+# Callback mode: Synapse sends checkRequest to the PDP, then calls handleCerbosResponse.
+def handle_decision():
+    return {"checkRequest": {
+        "principal": {"id": "user-1", "roles": ["user"]},
+        "resources": [{"resource": {"id": "doc-1", "kind": "document"}, "actions": ["view"]}],
+    }}
 
 @extism.plugin_fn
 def handleHTTPRoute():
@@ -151,6 +187,7 @@ def handleHTTPRoute():
     handlers = {
         "/ext/health": lambda req: handle_health(),
         "/ext/check": handle_check,
+        "/ext/decision": lambda req: handle_decision(),
     }
 
     handler = handlers.get(path)
@@ -177,4 +214,5 @@ extensions:
       routes:
         "/health": ["GET"]
         "/check": ["POST"]
+        "/decision": ["GET"]
 ```
