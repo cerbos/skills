@@ -1,0 +1,17 @@
+server:
+  listenAddress: ":3594"
+
+pdp:
+  inProcess:
+    storage:
+      driver: "disk"
+      disk:
+        directory: /workspace/policies
+
+extensions:
+  routeExtensions:
+    documentAccess:
+      extension:
+        extensionURL: /workspace/extensions/document_access.star
+      routes:
+        "/documents": ["GET"]

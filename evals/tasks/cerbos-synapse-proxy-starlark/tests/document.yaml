@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: default
+  resource: document
+  rules:
+    # Employees read documents owned by their own department within their own tenant.
+    - name: view-own-department
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["employee"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: P.attr.department == R.attr.department
+              - expr: P.attr.tenant == R.attr.tenant

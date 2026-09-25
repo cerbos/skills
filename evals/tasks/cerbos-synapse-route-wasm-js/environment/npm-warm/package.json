@@ -1,0 +1,10 @@
+{
+  "name": "npm-warm",
+  "private": true,
+  "description": "Installing this caches the packages an Extism JS extension typically uses.",
+  "devDependencies": {
+    "@extism/js-pdk": "1.1.1",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2"
+  }
+}

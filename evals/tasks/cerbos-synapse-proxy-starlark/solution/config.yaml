@@ -1,0 +1,15 @@
+server:
+  listenAddress: ":3594"
+
+pdp:
+  inProcess:
+    storage:
+      driver: "disk"
+      disk:
+        directory: /workspace/policies
+
+extensions:
+  proxyExtensions:
+    enrichPrincipal:
+      extensionURL: /workspace/extensions/enrich_principal.star
+      required: true

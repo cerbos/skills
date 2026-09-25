@@ -1,7 +1,8 @@
-# Local policy skill evals
+# Local skill evals
 
 These native [Harbor tasks](https://www.harborframework.com/docs/tasks) evaluate
-the `cerbos-policy` skill against distinct policy authoring workflows.
+the `cerbos-policy` skill against distinct policy authoring workflows, and smoke
+test the `cerbos-synapse-extension` skill.
 
 | Task | Coverage |
 | --- | --- |
@@ -13,6 +14,23 @@ the `cerbos-policy` skill against distinct policy authoring workflows.
 | [`cerbos-policy-tests-schemas`](tasks/cerbos-policy-tests-schemas/README.md) | Add attribute schemas with reject-mode enforcement and `create` exemptions, plus native test suites using shared fixture files and inline fixtures. |
 | [`cerbos-policy-role-policies`](tasks/cerbos-policy-role-policies/README.md) | Define scoped custom roles with role policies, parent roles, and a narrowed IdP role over unchanged base resource policies. |
 | [`cerbos-policy-outputs`](tasks/cerbos-policy-outputs/README.md) | Add `ruleActivated` and `conditionNotMet` outputs for audit events and denial reasons, and assert them in native tests. |
+
+Synapse smoke tasks cover the `cerbos-synapse-extension` skill across extension kinds
+and runtimes. Each task writes one extension, wires it into `config.yaml`, proves it
+with a `synapse test` suite, and is checked against real Synapse decisions:
+
+| Kind | Starlark | Go WASM | JS/TS WASM | Python WASM |
+| --- | --- | --- | --- | --- |
+| Proxy: enrich principals before CheckResources | [`cerbos-synapse-proxy-starlark`](tasks/cerbos-synapse-proxy-starlark/README.md) | [`cerbos-synapse-proxy-wasm-go`](tasks/cerbos-synapse-proxy-wasm-go/README.md) | [`cerbos-synapse-proxy-wasm-js`](tasks/cerbos-synapse-proxy-wasm-js/README.md) | [`cerbos-synapse-proxy-wasm-python`](tasks/cerbos-synapse-proxy-wasm-python/README.md) |
+| Route: `GET /ext/documents` answered by the PDP | [`cerbos-synapse-route-starlark`](tasks/cerbos-synapse-route-starlark/README.md) | [`cerbos-synapse-route-wasm-go`](tasks/cerbos-synapse-route-wasm-go/README.md) | [`cerbos-synapse-route-wasm-js`](tasks/cerbos-synapse-route-wasm-js/README.md) | [`cerbos-synapse-route-wasm-python`](tasks/cerbos-synapse-route-wasm-python/README.md) |
+| Envoy: ext_authz for `GET /documents/<id>` | [`cerbos-synapse-envoy-starlark`](tasks/cerbos-synapse-envoy-starlark/README.md) | | | |
+
+The task folders are generated: edit the sources in [`synapse/`](synapse/generate.py)
+and run `python3 evals/synapse/generate.py`; CI fails when they drift. Before running a
+Synapse task, run any task's `prepare-image.sh` once to tag the licensed Synapse image
+locally, and pass `--skill ./cerbos/cerbos-synapse-extension`. Run all of them with
+`-p evals/tasks -i '*cerbos-synapse-*'`. The Python WASM tasks build linux/amd64
+images because `extism-py` ships for x86_64 only; they run emulated on arm64 hosts.
 
 ## Task layout
 
@@ -70,7 +88,7 @@ but overall reward must be 0. The real-agent run measures how well the skill
 helps complete the task. No model is called until that command is run.
 
 Codex authenticates with `OPENAI_API_KEY`; set `CODEX_FORCE_AUTH_JSON=1` to use
-`~/.codex/auth.json` instead. To run every task in one job, pass `-p evals/tasks`.
+`~/.codex/auth.json` instead. To run every policy task in one job, pass `-p evals/tasks -i '*cerbos-policy-*'`.
 Harbor installs the agent in each container, which can exceed the 360-second
 setup limit when several trials start together; add
 `--agent-setup-timeout-multiplier 4` rather than raising the agent timeout.

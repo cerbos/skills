@@ -1,0 +1,15 @@
+server:
+  listenAddress: ":3594"
+
+pdp:
+  inProcess:
+    storage:
+      driver: "disk"
+      disk:
+        directory: /workspace/policies
+
+extensions:
+  envoyExternalAuthz:
+    enabled: true
+    extension:
+      extensionURL: /workspace/extensions/document_gate.star
