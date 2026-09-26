@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: document
+  version: default
+  importDerivedRoles:
+    - common_roles
+  rules:
+    # Readers and writers may view documents.
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["reader", "writer"]
+      name: readers-and-writers-view
+    # Writers may edit documents.
+    - actions: ["edit"]
+      effect: EFFECT_ALLOW
+      roles: ["writer"]
+      name: writers-edit
+    # Owners may delete their own documents regardless of static role.
+    - actions: ["delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["owner"]
+      name: owner-deletes-own-document

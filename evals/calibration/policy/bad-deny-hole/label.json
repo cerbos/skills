@@ -1,0 +1,10 @@
+{
+  "label": "fail",
+  "note": "Requirement 5 (managers must never self-approve) is a restriction that must OVERRIDE the manager approve allow, but there is no explicit EFFECT_DENY for it — a genuine deny-hole, and the rule is missing entirely (coverage). Rules are also unnamed/uncommented and the agent never compiled.",
+  "expected": {
+    "deny-hole": false,
+    "purpose-audit-trail": false,
+    "no-fabrication": true,
+    "actually-validated": false
+  }
+}

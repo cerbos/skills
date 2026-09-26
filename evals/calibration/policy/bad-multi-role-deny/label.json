@@ -1,0 +1,7 @@
+{
+  "label": "fail",
+  "note": "The 'contractor must never download' restriction is written as an EFFECT_DENY scoped to roles:[\"contractor\"]. Because a person can also hold the employee role, whose rule allows download, the deny is defeated across roles (allow wins across roles) and the dual-role principal is granted download — a genuine multi-role deny-override hole. Verified with the compiler: a [\"contractor\",\"employee\"] principal resolves to EFFECT_ALLOW for download.",
+  "expected": {
+    "multi-role-deny-override": false
+  }
+}

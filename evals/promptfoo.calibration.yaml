@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+# Judge calibration gate. Replays human-labeled known-good / known-bad outputs
+# through the SAME judge used in the real evals and checks the judge reproduces
+# the human verdicts. Run this FIRST in CI — if the judge no longer agrees with
+# your labels, the nightly scores can't be trusted, so fail fast here.
+#
+# Add fixtures over time (especially real failures you later disagreed with) —
+# that is how you keep the judge calibrated as the skills and models drift.
+description: Judge calibration — judge-vs-human agreement
+
+prompts:
+  - '{{fixture}}' # unused by the replay provider; satisfies promptfoo's prompt requirement
+
+providers:
+  - id: file://providers/replay.js
+    label: calibration
+
+defaultTest:
+  assert:
+    - type: javascript
+      value: file://assertions/judge.js
+
+tests:
+  - description: policy-good-expense
+    vars: { skill: cerbos-policy, fixture: calibration/policy/good-expense }
+  - description: policy-bad-deny-hole
+    vars: { skill: cerbos-policy, fixture: calibration/policy/bad-deny-hole }
+  - description: synapse-good-callmapper
+    vars: { skill: cerbos-synapse-extension, fixture: calibration/synapse/good-callmapper }
+  - description: synapse-bad-wrong-envoy
+    vars: { skill: cerbos-synapse-extension, fixture: calibration/synapse/bad-wrong-envoy }
+
+  - description: policy-good-conditional-deny-guard
+    vars: { skill: cerbos-policy, fixture: calibration/policy/good-conditional-deny-guard }
+  - description: policy-bad-conditional-deny-fails-open
+    vars: { skill: cerbos-policy, fixture: calibration/policy/bad-conditional-deny-fails-open }
+  - description: policy-good-multi-role-deny
+    vars: { skill: cerbos-policy, fixture: calibration/policy/good-multi-role-deny }
+  - description: policy-bad-multi-role-deny
+    vars: { skill: cerbos-policy, fixture: calibration/policy/bad-multi-role-deny }
+  - description: policy-good-negative-tests
+    vars: { skill: cerbos-policy, fixture: calibration/policy/good-negative-tests }
+  - description: policy-bad-happy-path-tests
+    vars: { skill: cerbos-policy, fixture: calibration/policy/bad-happy-path-tests }
+  - description: policy-good-scoped-roles
+    vars: { skill: cerbos-policy, fixture: calibration/policy/good-scoped-roles }
+  - description: policy-bad-wildcard-allow
+    vars: { skill: cerbos-policy, fixture: calibration/policy/bad-wildcard-allow }
+  - description: policy-good-derived-import
+    vars: { skill: cerbos-policy, fixture: calibration/policy/good-derived-import }
+  - description: policy-bad-derived-orphan
+    vars: { skill: cerbos-policy, fixture: calibration/policy/bad-derived-orphan }
+  - description: policy-good-role-narrow
+    vars: { skill: cerbos-policy, fixture: calibration/policy/good-role-narrow }
+  - description: policy-bad-role-grant
+    vars: { skill: cerbos-policy, fixture: calibration/policy/bad-role-grant }
+  - description: policy-good-schema-wired
+    vars: { skill: cerbos-policy, fixture: calibration/policy/good-schema-wired }
+  - description: policy-bad-schema-orphan
+    vars: { skill: cerbos-policy, fixture: calibration/policy/bad-schema-orphan }
+  - description: synapse-good-url-checksum
+    vars: { skill: cerbos-synapse-extension, fixture: calibration/synapse/good-url-checksum }
+  - description: synapse-bad-url-nochecksum
+    vars: { skill: cerbos-synapse-extension, fixture: calibration/synapse/bad-url-nochecksum }
+  - description: synapse-good-envoy-dynamic-response
+    vars: { skill: cerbos-synapse-extension, fixture: calibration/synapse/good-envoy-dynamic-response }
+  - description: synapse-bad-envoy-static-mapping
+    vars: { skill: cerbos-synapse-extension, fixture: calibration/synapse/bad-envoy-static-mapping }
+  - description: synapse-bad-envoy-missing-callback
+    vars: { skill: cerbos-synapse-extension, fixture: calibration/synapse/bad-envoy-missing-callback }
+  - description: synapse-good-jwt-verified
+    vars: { skill: cerbos-synapse-extension, fixture: calibration/synapse/good-jwt-verified }
+  - description: synapse-bad-jwt-unverified
+    vars: { skill: cerbos-synapse-extension, fixture: calibration/synapse/bad-jwt-unverified }

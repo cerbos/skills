@@ -1,0 +1,7 @@
+{
+  "label": "pass",
+  "note": "Security-critical support-read DENY guards the possibly-absent legalHold attribute with has() so a missing attribute cannot raise a runtime error and skip the deny (fail open). A missing flag is explicitly treated as denied (fail safe), and a bundled test exercises the absent-legalHold case expecting EFFECT_DENY. No fail-open hole.",
+  "expected": {
+    "conditional-deny-fails-open": true
+  }
+}

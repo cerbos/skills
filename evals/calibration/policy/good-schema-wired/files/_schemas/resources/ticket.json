@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "teamId": { "type": "string" },
+    "priority": { "type": "string", "enum": ["low", "medium", "high", "urgent"] },
+    "status": { "type": "string", "enum": ["open", "pending", "closed"] }
+  },
+  "required": ["teamId", "status"]
+}

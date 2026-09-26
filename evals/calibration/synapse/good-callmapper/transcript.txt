@@ -1,0 +1,18 @@
+=== ASSISTANT TRANSCRIPT ===
+This is a static HTTP -> Cerbos mapping with no external lookups, so per the
+decision flow it's a declarative call mapper — a route extension configured with
+CEL only, no code and no build step. Loading the call mapper reference before
+writing.
+
+I configured it under extensions.routeExtensions.<name>.mapping: the request
+section extracts the principal, resource and action with CEL, and passes the
+bearer token through as auxData.jwt so policies can use the verified claims; the
+response section maps the Cerbos decision to an HTTP status. The routes map binds
+it under /ext/. No docker/run commands are needed to author this; you can test it
+locally when ready.
+
+=== TOOL CALLS ===
+Read: .claude/skills/cerbos-synapse-extension/SKILL.md
+Read: .claude/skills/cerbos-synapse-extension/references/call-mapper.md
+Read: .claude/skills/cerbos-synapse-extension/references/shared/call-mapper-cel-reference.md
+Write: config.yaml

@@ -1,0 +1,46 @@
+{
+  "skill": "cerbos-synapse-extension",
+  "note": "Synapse can't be run in CI (licensed image), so the judge carries more weight here. Each criterion is a narrow, binary failure mode grounded in the skill's own rules.",
+  "criteria": [
+    {
+      "id": "ask-license-first",
+      "failureMode": "The agent emitted a docker/synapse command to RUN the extension without first asking for the user's distribution repo.",
+      "question": "If the output contains any `docker`, `docker compose`, or `synapse test` command intended to RUN Synapse, did the agent first ask the user for their distribution repository URL (or explicitly use a CERBOS_DISTRIBUTION_REPO placeholder to be substituted)? PASS if it asked / used a placeholder, or if no run command was emitted; FAIL if it hard-coded a real repo or ran without asking."
+    },
+    {
+      "id": "simplest-kind",
+      "failureMode": "Used a heavier RUNTIME than the task needs — WASM where Starlark suffices, or custom code where a declarative CEL call mapper suffices.",
+      "question": "Given the (correct) extension kind for the task, is the RUNTIME the simplest that satisfies it per the skill's guidance — declarative CEL when a static HTTP->Cerbos mapping suffices, and Starlark over WASM unless compiled performance or third-party libraries are needed? PASS if the runtime is appropriately minimal, or if a heavier runtime is justified by the task; FAIL only if it reached for a more complex runtime than needed. Note: choosing the correct KIND for the task (e.g. an Envoy extension for an Envoy ext_authz task, which needs callback logic) is NOT over-engineering — judge the runtime, not the kind."
+    },
+    {
+      "id": "loaded-references",
+      "failureMode": "Authored the extension from memory without loading the relevant reference files.",
+      "question": "Does the transcript show the agent read the relevant reference(s) for the chosen kind/runtime (e.g. run-and-test.md, patterns-and-gotchas.md, or the per-kind reference) before writing code? PASS if it grounded itself in the references; FAIL if it wrote code without reading any."
+    },
+    {
+      "id": "correct-entrypoints",
+      "failureMode": "Wrong entry-point or callback function names for the chosen kind/runtime.",
+      "question": "Are the extension's entry-point and callback function names correct for the chosen kind and runtime (e.g. Envoy callback is `map_cerbos_response`, NOT `envoy_map_cerbos_response`; data source exports `lookup`; proxy uses augment{Check,Plan,...})? PASS if all names are correct; FAIL if any entry point/callback is misnamed."
+    },
+    {
+      "id": "tests-when-asked",
+      "failureMode": "User asked for tests but no *_test.star suite was produced (or it doesn't use the testing framework).",
+      "question": "If the user asked for tests, did the agent produce a `*_test.star` suite using the synapse testing framework (test_suite struct, testing module)? PASS if tests were requested and delivered correctly, or if tests were not requested; FAIL if requested but missing/malformed."
+    },
+    {
+      "id": "extension-url-checksum",
+      "failureMode": "A remote extensionURL (loaded over http/https, s3::, gcs::, or starlark+http(s)) in the produced Synapse config was not pinned to a specific version with a ?checksum=sha256:... parameter.",
+      "question": "For every remote extensionURL in the produced Synapse config — values loaded over the network (http(s)://, s3::, gcs::, or starlark+http(s)://) — is it pinned with a `?checksum=sha256:...` parameter? Local file paths (starting with `/` or a relative path) and `system://` built-ins (e.g. system://sqldb) are exempt. PASS if every remote extensionURL is checksum-pinned, or if the config contains no remote extensionURL at all; FAIL if any remote extensionURL is left unpinned."
+    },
+    {
+      "id": "envoy-response-mode",
+      "failureMode": "The Envoy extension chose a response mode that cannot produce the response the task needs — e.g. a single-shot cerbos_mapping (or a direct envoy_check_response) when the final Envoy response must be built dynamically from the Cerbos response (policy outputs) — so the required second map_cerbos_response callback is missing or misnamed.",
+      "question": "A Cerbos Synapse Envoy extension's envoy_check returns one of three modes: (a) a direct Envoy CheckResponse (struct(envoy_check_response=...)) for a known/hard-coded response; (b) a single-shot Cerbos mapping (struct(cerbos_mapping=...) with check_request, allow_response and deny_response) where Synapse sends the fixed allow-or-deny response; or (c) a Cerbos check request (struct(cerbos_check_request=...)) PLUS a second function map_cerbos_response, used when the final Envoy response must be built dynamically from the Cerbos CheckResources response (e.g. injecting policy outputs). Does the chosen mode fit the task, AND — when the task requires building the Envoy response from values that only exist in the Cerbos response — is the second map_cerbos_response function implemented with exactly that name (in Starlark; the WASM equivalent is envoyMapCerbosResponse)? PASS if the chosen mode can produce the required response and any needed map_cerbos_response callback is present and correctly named. FAIL if it picked a mode that cannot produce the required response (e.g. cerbos_mapping or a direct response when the response must be derived from the Cerbos decision's outputs), or if it returned a cerbos_check_request but omitted or misnamed map_cerbos_response. Using mode (c) when mode (b) would have sufficed is NOT this failure (that is over-engineering, judged elsewhere) — judge only whether the mode can produce the required response and the needed callback exists."
+    },
+    {
+      "id": "jwt-keyset-verification",
+      "failureMode": "The mapping configured auxData.jwt with a token expression but no keySetID, so the extracted JWT is trusted without being verified against a keyset — an unverified-token security hole.",
+      "question": "In a Synapse declarative mapping, auxData.jwt.token is the CEL expression that extracts the raw JWT and auxData.jwt.keySetID is the CEL expression selecting the keyset used to VERIFY it. If the extension's request mapping configures auxData.jwt with a token expression, does it ALSO configure a non-empty keySetID (verification), rather than only extracting the token? PASS if a keySetID is present alongside the token, or if the mapping does not use auxData.jwt at all; FAIL if a JWT token is extracted but no keySetID/verification is configured, so the token would be trusted unverified."
+    }
+  ]
+}

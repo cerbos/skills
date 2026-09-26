@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: Cerbos Synapse extension skill — nightly eval
+
+prompts:
+  - '{{request}}'
+
+providers:
+  - id: file://providers/skill-runner.js
+    label: cerbos-synapse-extension
+    config:
+      skill: cerbos-synapse-extension
+
+# Synapse can't be executed in CI (licensed distribution image), so there is no
+# ground-truth compile step — static signature checks + the narrow-criteria
+# judge carry the load, plus the trigger check.
+defaultTest:
+  assert:
+    - type: javascript
+      value: file://assertions/synapse-static.js
+    - type: javascript
+      value: file://assertions/judge.js
+    - type: javascript
+      value: file://assertions/skill-fired.js
+
+    - type: javascript
+      value: file://assertions/synapse-extension-url-checksum.js
+    - type: javascript
+      value: file://assertions/synapse-envoy-response-mode.js
+    - type: javascript
+      value: file://assertions/synapse-jwt-keyset-verification.js
+tests: file://tests/synapse.yaml

@@ -55,6 +55,14 @@ Copy the `SKILL.md` files from `cerbos/` to your agent's skills directory.
 | `cerbos-policy` | Generate Cerbos authorization policies from requirements (RBAC/ABAC, derived roles, resource permissions) |
 | `cerbos-synapse-extension` | Build, scaffold, test, and debug Cerbos Synapse extensions — call mappers, data sources, proxy/route/Envoy ext_authz extensions in YAML/CEL, Starlark, or WASM (Go, TypeScript, Python) |
 
+## Evals
+
+The skills are evaluated with [promptfoo](https://promptfoo.dev): a headless
+Claude agent runs each skill and the output is scored with deterministic checks
+(real `cerbos compile`) and a calibrated LLM-as-judge. The eval runs
+automatically on PRs, running only the suite(s) for the skill(s) changed. See
+[`evals/`](evals/) and the [workflow](.github/workflows/skill-evals.yml).
+
 ## References
 
 - [Cerbos Documentation](https://docs.cerbos.dev)

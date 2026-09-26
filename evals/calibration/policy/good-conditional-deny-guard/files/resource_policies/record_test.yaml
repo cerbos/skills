@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: record read tests
+description: Verifies the legal-hold hard-stop holds even when legalHold is absent.
+principals:
+  support:
+    id: sup-1
+    roles: ["support"]
+  compliance:
+    id: cmp-1
+    roles: ["compliance"]
+resources:
+  clear_record:
+    id: rec-clear
+    kind: record
+    attr: { legalHold: false }
+  held_record:
+    id: rec-held
+    kind: record
+    attr: { legalHold: true }
+  unknown_record:
+    id: rec-unknown
+    kind: record
+    attr: {}
+tests:
+  - name: support reads a confirmed-clear record
+    input: { principals: [support], resources: [clear_record], actions: [read] }
+    expected:
+      - { principal: support, resource: clear_record, actions: { read: EFFECT_ALLOW } }
+  - name: support cannot read a held record
+    input: { principals: [support], resources: [held_record], actions: [read] }
+    expected:
+      - { principal: support, resource: held_record, actions: { read: EFFECT_DENY } }
+  - name: support cannot read a record with legalHold absent (fail safe)
+    input: { principals: [support], resources: [unknown_record], actions: [read] }
+    expected:
+      - { principal: support, resource: unknown_record, actions: { read: EFFECT_DENY } }
+  - name: compliance reads a record with legalHold absent
+    input: { principals: [compliance], resources: [unknown_record], actions: [read] }
+    expected:
+      - { principal: compliance, resource: unknown_record, actions: { read: EFFECT_ALLOW } }

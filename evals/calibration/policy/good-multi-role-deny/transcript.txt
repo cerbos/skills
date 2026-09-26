@@ -1,0 +1,26 @@
+=== ASSISTANT TRANSCRIPT ===
+I'll use the cerbos-policy skill to build this.
+
+Spec (Structured Intent):
+- employee  -> view, download on artifact | ALLOW | employees browse and pull artifacts
+- contractor -> view on artifact          | ALLOW | contractors browse only
+- admin     -> view, download, delete      | ALLOW | admins operate the registry
+- HARD RULE: contractor -> download on artifact | DENY | contractors must never pull artifacts
+
+Cross-role trap: in Cerbos, deny overrides allow only for the SAME role, and an
+allow on any other role wins across roles. A person can be BOTH contractor and
+employee, and the employee rule allows download. If I scope the deny to
+roles:["contractor"] it is defeated by the employee allow and the download is
+granted. So I enforce the restriction with a deny scoped to roles:["*"] gated on
+a "contractor" in request.principal.roles condition — a wildcard deny applies to
+every role the principal holds (including employee), so no cross-role allow can
+defeat it. I add a test with a principal holding ["contractor", "employee"] that
+asserts EFFECT_DENY.
+
+=== TOOL CALLS ===
+Read: .claude/skills/cerbos-policy/SKILL.md
+Write: resource_policies/artifact.yaml
+Write: resource_policies/artifact_test.yaml
+Bash: docker run --rm -v $(pwd):/policies ghcr.io/cerbos/cerbos:latest compile /policies
+
+Compilation succeeded and all tests passed, including the dual-role download-deny case (exit code 0).

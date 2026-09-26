@@ -1,0 +1,23 @@
+=== ASSISTANT TRANSCRIPT ===
+I'll use the cerbos-policy skill to build this.
+
+Spec (Structured Intent):
+- employee -> create on expense | ALLOW | employees submit their own expenses
+- manager  -> approve on expense [amount < 1000] | ALLOW | managers sign off small expenses
+- finance  -> approve on expense | ALLOW | finance approves any amount
+- submitter/finance -> delete on expense [status == draft] | ALLOW | only owner or finance removes drafts
+- everyone else -> delete on expense | DENY | nobody else may delete expenses
+
+Writing schemas, the resource policy, fixtures and tests, then compiling.
+
+=== TOOL CALLS ===
+Read: .claude/skills/cerbos-policy/SKILL.md
+Write: _schemas/principal.json
+Write: _schemas/resources/expense.json
+Write: resource_policies/expense.yaml
+Write: resource_policies/expense_test.yaml
+Write: testdata/principals.yaml
+Write: testdata/resources.yaml
+Bash: docker run --rm -v $(pwd):/policies ghcr.io/cerbos/cerbos:latest compile /policies
+
+Compilation succeeded and all tests passed (exit code 0).

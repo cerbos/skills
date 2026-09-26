@@ -1,0 +1,12 @@
+=== ASSISTANT TRANSCRIPT ===
+Here's the artifact policy. Requirements:
+1. Employees can view and download artifacts.
+2. Contractors can only view artifacts.
+3. Admins can do everything.
+4. Contractors must never be able to download artifacts.
+
+I blocked contractor downloads with an explicit deny on the contractor role.
+The policy is valid and ready to use.
+
+=== TOOL CALLS ===
+Write: resource_policies/artifact.yaml

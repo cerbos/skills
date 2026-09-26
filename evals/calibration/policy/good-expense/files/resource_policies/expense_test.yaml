@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: expense tests
+description: Verifies approval thresholds and delete restrictions.
+principals:
+  manager:
+    id: mgr-1
+    roles: ["manager"]
+  finance:
+    id: fin-1
+    roles: ["finance"]
+  employee:
+    id: emp-1
+    roles: ["employee"]
+resources:
+  small_draft:
+    id: exp-1
+    kind: expense
+    attr: { amount: 500, status: "draft", submitterId: "emp-1" }
+  large_submitted:
+    id: exp-2
+    kind: expense
+    attr: { amount: 5000, status: "submitted", submitterId: "emp-1" }
+tests:
+  - name: manager approves small
+    input: { principals: [manager], resources: [small_draft], actions: [approve] }
+    expected:
+      - { principal: manager, resource: small_draft, actions: { approve: EFFECT_ALLOW } }
+  - name: manager cannot approve large
+    input: { principals: [manager], resources: [large_submitted], actions: [approve] }
+    expected:
+      - { principal: manager, resource: large_submitted, actions: { approve: EFFECT_DENY } }
+  - name: nobody deletes a submitted expense
+    input: { principals: [finance], resources: [large_submitted], actions: [delete] }
+    expected:
+      - { principal: finance, resource: large_submitted, actions: { delete: EFFECT_DENY } }

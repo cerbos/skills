@@ -1,0 +1,18 @@
+=== ASSISTANT TRANSCRIPT ===
+I'll build the expense policy and a test suite that proves the restrictions,
+not just the happy paths.
+
+Test plan:
+- manager approve at amount 999  -> EFFECT_ALLOW (just under the 1000 limit)
+- manager approve at amount 1000 -> EFFECT_DENY  (boundary: the limit is exclusive)
+- employee approve               -> EFFECT_DENY  (only managers/finance may approve)
+
+Writing the policy, the test suite, then compiling so the tests actually run.
+
+=== TOOL CALLS ===
+Read: .claude/skills/cerbos-policy/SKILL.md
+Write: resource_policies/expense.yaml
+Write: resource_policies/expense_test.yaml
+Bash: docker run --rm -v $(pwd):/policies ghcr.io/cerbos/cerbos:latest compile /policies
+
+Compilation succeeded and all tests passed (exit code 0).

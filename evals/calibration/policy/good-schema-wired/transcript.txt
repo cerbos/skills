@@ -1,0 +1,23 @@
+=== ASSISTANT TRANSCRIPT ===
+Using the cerbos-policy skill for the support-ticket system.
+
+Structured Intent:
+- agent     -> view,comment on ticket [ticket.teamId == principal.teamId] | ALLOW | agents only touch their own team's tickets
+- team_lead -> close on ticket        [ticket.teamId == principal.teamId] | ALLOW | leads close tickets in their own team
+
+The user asked for request attributes to be validated against JSON schemas, so I
+wrote a principal schema and a ticket resource schema under _schemas/ and wired
+them into the resource policy via a schemas: block (principalSchema.ref /
+resourceSchema.ref) so the PDP validates incoming requests. The priority/status
+enums live in the resource schema, and teamId (used in the conditions) is
+declared in both schemas.
+
+=== TOOL CALLS ===
+Read: .claude/skills/cerbos-policy/SKILL.md
+Write: _schemas/principal.json
+Write: _schemas/resources/ticket.json
+Write: resource_policies/ticket.yaml
+Write: resource_policies/ticket_test.yaml
+Bash: docker run --rm -v $(pwd):/policies ghcr.io/cerbos/cerbos:latest compile /policies
+
+Compilation succeeded and all tests passed (exit code 0).

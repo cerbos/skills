@@ -1,0 +1,7 @@
+{
+  "label": "fail",
+  "note": "Proxy extension loaded from a remote HTTPS URL with no ?checksum= pin. Remote extensions must be pinned to a specific version by checksum; leaving it unpinned is the named failure mode.",
+  "expected": {
+    "extension-url-checksum": false
+  }
+}

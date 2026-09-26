@@ -1,0 +1,7 @@
+{
+  "label": "pass",
+  "note": "Owner derived role is defined in common_roles, that policy is imported via importDerivedRoles in the document resource policy, and a rule references the owner derived role. Compiles cleanly. No orphan derived roles policy.",
+  "expected": {
+    "derived-roles-imported": true
+  }
+}

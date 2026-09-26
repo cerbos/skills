@@ -1,0 +1,7 @@
+=== ASSISTANT TRANSCRIPT ===
+Here's the expense policy with a test suite covering the main flows: a manager
+approving an expense, finance approving, and an employee creating one.
+
+=== TOOL CALLS ===
+Write: resource_policies/expense.yaml
+Write: resource_policies/expense_test.yaml

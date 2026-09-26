@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: artifact
+  version: default
+  rules:
+    # Employees browse and pull artifacts.
+    - actions: ["view", "download"]
+      effect: EFFECT_ALLOW
+      roles: ["employee"]
+      name: employees-view-and-download
+
+    # Contractors may only browse.
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["contractor"]
+      name: contractors-view-only
+
+    # Admins operate the registry.
+    - actions: ["view", "download", "delete"]
+      effect: EFFECT_ALLOW
+      roles: ["admin"]
+      name: admins-manage-everything
+
+    # BUG: deny scoped to the contractor role only. A person who is also an
+    # employee still matches employees-view-and-download, and allow wins across
+    # roles, so this deny is defeated and the download is granted.
+    - actions: ["download"]
+      effect: EFFECT_DENY
+      roles: ["contractor"]
+      name: contractors-cannot-download

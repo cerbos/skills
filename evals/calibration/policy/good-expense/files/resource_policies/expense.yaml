@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: expense
+  version: default
+  rules:
+    # Employees submit their own expenses.
+    - actions: ["create"]
+      effect: EFFECT_ALLOW
+      roles: ["employee"]
+      name: employees-can-submit
+
+    # Managers sign off small expenses without finance involvement.
+    - actions: ["approve"]
+      effect: EFFECT_ALLOW
+      roles: ["manager"]
+      condition:
+        match:
+          expr: request.resource.attr.amount < 1000
+      name: managers-approve-small-expenses
+
+    # Finance can approve any amount.
+    - actions: ["approve"]
+      effect: EFFECT_ALLOW
+      roles: ["finance"]
+      name: finance-approves-any-amount
+
+    # Only the submitter or finance may delete, and only while still a draft.
+    - actions: ["delete"]
+      effect: EFFECT_ALLOW
+      roles: ["employee", "finance"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: request.resource.attr.status == "draft"
+              - expr: >
+                  request.principal.attr.role == "finance" ||
+                  request.resource.attr.submitterId == request.principal.id
+      name: owner-or-finance-deletes-drafts
+
+    # Deny-by-default is not enough for a security-critical revoke: make the
+    # "nobody else can delete" requirement explicit and auditable.
+    - actions: ["delete"]
+      effect: EFFECT_DENY
+      roles: ["*"]
+      condition:
+        match:
+          expr: request.resource.attr.status != "draft"
+      name: no-delete-after-draft

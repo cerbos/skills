@@ -1,0 +1,8 @@
+=== ASSISTANT TRANSCRIPT ===
+I built the Envoy ext_authz extension in Starlark using the Cerbos check-request
+mode so the denied response can be derived from the policy outputs: envoy_check
+returns a cerbos_check_request for Synapse to send to the PDP.
+
+=== TOOL CALLS ===
+Read: .claude/skills/cerbos-synapse-extension/references/starlark-envoy-extension.md
+Write: extensions/envoy.star
