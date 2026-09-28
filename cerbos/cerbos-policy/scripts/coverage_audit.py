@@ -44,7 +44,12 @@ control to have the opposite effect, the same action and resource kind, and
 resolved requests that differ at exactly the named field, and the resolved
 request to have every value listed in `facts`. For every declared
 path it requires, for each listed prerequisite, a passing row with that `path`,
-`prerequisite` and a control, against a resource of the path's kind.
+`prerequisite` and a control, against a resource of the path's kind. For every
+role named by a scoped resource-policy rule or scoped role policy it requires a
+passing row for a principal with that role whose `change` is
+`resource.scope` with the scope on one side, which shows that scope's policy
+deciding differently from the scope it falls back to, unless the plan's
+`scopeExemptions` lists that scope and role with a reason.
 
 Needs only the Python 3 standard library. Fixtures and suites are read with
 PyYAML when it is installed, otherwise with a built-in reader for the YAML
@@ -428,6 +433,35 @@ def load(path):
     return read_yaml(path) or {}
 
 
+def scoped_policies(policies):
+    """Return {(kind or None, scope, role or None)} for rules that exist only in a scope.
+
+    A scoped resource policy contributes each role its rules name (None for "*"
+    or derived roles),
+    keyed by its resource kind. A scoped role policy contributes its role for
+    every resource, so its kind is None.
+    """
+    scopes = set()
+    for path in sorted(policies.rglob("*")):
+        if path.suffix not in {".yaml", ".yml", ".json"} or path.name.endswith(("_test.yaml", "_test.yml", "_test.json")):
+            continue
+        if "testdata" in path.parts or "_schemas" in path.relative_to(policies).parts:
+            continue
+        document = load(path)
+        if not isinstance(document, dict):
+            continue
+        resource_policy = document.get("resourcePolicy") or {}
+        role_policy = document.get("rolePolicy") or {}
+        if resource_policy.get("scope"):
+            for rule in resource_policy.get("rules") or []:
+                # Derived roles never appear in principal fixtures, so any role qualifies.
+                for role in rule.get("roles") or ["*"]:
+                    scopes.add((resource_policy.get("resource"), resource_policy["scope"], None if role == "*" else role))
+        if role_policy.get("scope"):
+            scopes.add((None, role_policy["scope"], role_policy.get("role")))
+    return scopes
+
+
 def fixtures(policies, suite_file, cache):
     """Resolve fixture keys for a suite: sibling testdata, then inline entries."""
     if suite_file in cache:
@@ -639,6 +673,35 @@ def audit(args):
                     f"FAIL {label}: no passing isolated row with a control; add a DENY row with this "
                     "`path` and `prerequisite`, a passing ALLOW `control`, and the one differing field as `change`"
                 )
+
+    exempt = {
+        (item.get("scope"), item.get("role"))
+        for item in plan.get("scopeExemptions") or []
+        if item.get("reason")
+    }
+    for kind, scope, role in sorted(scoped_policies(policies), key=lambda item: tuple(x or "" for x in item)):
+        boundary = [
+            row["id"]
+            for row in rows
+            if row["id"] in passed
+            and row.get("change") == "resource.scope"
+            and scope in (requests[row["id"]].get("resource.scope"), requests[row["control"]].get("resource.scope"))
+            and kind in (None, requests[row["id"]]["resource.kind"])
+            and (role is None or role in requests[row["id"]]["principal.roles"])
+        ]
+        label = f"scope {scope} ({kind or 'role policy'}{', role ' + role if role else ''})"
+        if boundary:
+            print(f"PASS {label} boundary: {', '.join(boundary)}")
+        elif (scope, role) in exempt:
+            print(f"NOTE {label}: exempted in the plan")
+        else:
+            errors.append(
+                f"FAIL {label}: no passing row shows this scope's policy deciding differently; add a row "
+                f"with `change: resource.scope` whose control is a request the `{scope}` policy decides, "
+                "moved to a scope without that policy (usually the unscoped base), with the opposite effect. "
+                "If no request can differ because the rule only restates its parent, list it in `scopeExemptions` "
+                "with a reason"
+            )
     return errors
 
 

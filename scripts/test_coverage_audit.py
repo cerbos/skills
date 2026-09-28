@@ -221,6 +221,44 @@ class AuditTest(unittest.TestCase):
         self.assertEqual(len(errors), 1)
         self.assertIn("unknown field path 'scope'", errors[0])
 
+    def test_scoped_rules_need_a_boundary_row(self):
+        (self.root / "policies" / "emea.yaml").write_text(textwrap.dedent("""\
+            apiVersion: api.cerbos.dev/v1
+            resourcePolicy:
+              resource: document
+              version: default
+              scope: emea
+              rules:
+                - actions: [edit]
+                  roles: [employee]
+                  effect: EFFECT_DENY
+            """))
+        suite = self.root / "policies" / "document_test.yaml"
+        suite.write_text(SUITE.replace(
+            "tests:",
+            "  document_in_emea:\n    kind: document\n    id: doc2\n    scope: emea\n"
+            "    attr: {owner: alice, tenant: acme, created: 2024-01-01, limit: 1_000, ratio: 0.5,"
+            " archived: no, notes: \"first line\\nsecond line\\n\"}\ntests:",
+        ))
+        errors, _ = self.run_audit(audit_stdlib)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("FAIL scope emea (document, role employee)", errors[0])
+
+        plan = json.loads(json.dumps(PLAN))
+        plan["rows"].append({"id": "emea-edit", "principal": "alice_employee", "resource": "document_in_emea",
+                             "action": "edit", "effect": "EFFECT_DENY", "control": "owner-edit",
+                             "change": "resource.scope"})
+        assertions = ASSERTIONS + [("alice_employee", "document_in_emea", "edit", "EFFECT_DENY")]
+        errors, out = self.run_audit(audit_stdlib, plan, assertions)
+        self.assertEqual(errors, [])
+        self.assertIn("PASS scope emea (document, role employee) boundary: emea-edit", out)
+
+        plan = json.loads(json.dumps(PLAN))
+        plan["scopeExemptions"] = [{"scope": "emea", "role": "employee", "reason": "restates the parent"}]
+        errors, out = self.run_audit(audit_stdlib, plan)
+        self.assertEqual(errors, [])
+        self.assertIn("NOTE scope emea (document, role employee): exempted", out)
+
     def test_non_json_plan_is_unreadable(self):
         with self.assertRaises(audit_stdlib.Unreadable):
             self.run_audit(audit_stdlib, plan="rows:\n  - id: owner-edit\n")
