@@ -283,7 +283,7 @@ For derived roles, test matching attributes with unrelated base roles, the requi
 
 **Scope-specific rules need a request that qualifies.** To show that a grant from one scope does not apply elsewhere, reuse the request that is allowed in the granting scope and change only the resource's `scope`. To show that a restriction applies only in its scope, reuse the request it denies (for example, an analyst exporting a raw dataset) and change only the `scope`, expecting ALLOW. A request the restriction would allow anyway proves nothing. For example, an `apac` auditor reading a dataset marked shareable becomes the same request in the base scope or `emea`, expecting DENY. Test each restriction in the scope that adds it and in each descendant that inherits it. Test inherited base permissions in every scope, and test a principal with several roles where one role alone would be denied.
 
-In the plan, a scope boundary is a pair of rows whose fixtures differ only in `scope`. If `emea` lets analysts export only anonymised datasets, pair the `emea` DENY for a raw dataset with the same request unscoped:
+In the plan, a scope boundary is a pair of rows whose fixtures differ only in `scope`. If `emea` lets analysts export only anonymised datasets, pair the `emea` DENY for a raw dataset with the same request unscoped (in a hierarchy with only the `emea` branch; see below when there are others):
 
 ```json
 {"id": "emea-analyst-raw-export", "principal": "analyst", "resource": "emea_raw_dataset", "action": "export",
@@ -293,7 +293,7 @@ In the plan, a scope boundary is a pair of rows whose fixtures differ only in `s
  "facts": {"resource.scope": null}}
 ```
 
-The audit requires such a pair for every role named by a scoped resource-policy rule (any role for `*`) and every scoped role policy. A scoped rule that only restates its parent cannot produce one; list it under the plan's top-level `scopeExemptions` as `{"scope": "emea", "role": "analyst", "reason": "..."}`, or remove the redundant rule.
+The audit requires such a pair for every role named by a scoped resource-policy rule (any role for `*`) and every scoped role policy, in the scope that adds the rule and in each descendant scope with its own policy, because the rule governs those too. When the hierarchy has other top-level branches, the other side of the pair must be a scope in one of them rather than the unscoped base, so the same row shows the rule does not leak across branches: with `emea` and `apac` policies, pair the `emea` export DENY with the same request in `apac`. One row can meet several requirements, such as an `apac` row for a `*` rule. A scoped rule that only restates its parent cannot produce one; list it under the plan's top-level `scopeExemptions` as `{"scope": "emea", "role": "analyst", "reason": "..."}`, or remove the redundant rule.
 
 For explicit DENY rules, start with a request another rule would allow and activate the denying condition. This proves the denial overrides a real grant. Run the strict pass to expose condition errors that could otherwise make the deny silently no-op ([CEL.md](CEL.md#strict-evaluation-v055)). Pin `options.now` for time-dependent cases.
 
@@ -322,7 +322,7 @@ For each row the audit:
 2. Resolves the fixture keys through the suite's `testdata/` files and inline suite fixtures to actual IDs, roles and attributes. Fixture names are only labels.
 3. For a row with a `control`, requires the control to have the opposite effect and the same action, and the resolved requests to differ at exactly the `change` field (ignoring `resource.id`). It prints that field's before/after values.
 4. For every prerequisite of every declared path, requires a passing row with that `path`, `prerequisite` and a control on a resource of the path's kind.
-5. For every role named by a scoped resource-policy rule or scoped role policy, requires a passing row with `change: resource.scope` for a principal with that role, with the scope on one side, unless `scopeExemptions` lists it.
+5. For every role named by a scoped resource-policy rule or scoped role policy, in that scope and each descendant scope with its own policy, requires a passing row with `change: resource.scope` for a principal with that role, with that scope on one side and a scope from another top-level branch (or the unscoped base when there is none) on the other, unless `scopeExemptions` lists it.
 
 It exits 1 when coverage fails and 2 when it cannot read an input, such as fixture YAML with anchors, aliases or tags on a machine without PyYAML. When it exits 2, or neither `python3` nor Docker is available, perform these checks yourself from the plan, both reports and the fixture files, record each row's result and each control pair's before/after values next to the plan, and state in your final report that the executable audit did not run.
 

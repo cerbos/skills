@@ -242,7 +242,7 @@ class AuditTest(unittest.TestCase):
         ))
         errors, _ = self.run_audit(audit_stdlib)
         self.assertEqual(len(errors), 1)
-        self.assertIn("FAIL scope emea (document, role employee)", errors[0])
+        self.assertIn("FAIL scope emea (document, role employee) vs the unscoped base", errors[0])
 
         plan = json.loads(json.dumps(PLAN))
         plan["rows"].append({"id": "emea-edit", "principal": "alice_employee", "resource": "document_in_emea",
@@ -251,13 +251,26 @@ class AuditTest(unittest.TestCase):
         assertions = ASSERTIONS + [("alice_employee", "document_in_emea", "edit", "EFFECT_DENY")]
         errors, out = self.run_audit(audit_stdlib, plan, assertions)
         self.assertEqual(errors, [])
-        self.assertIn("PASS scope emea (document, role employee) boundary: emea-edit", out)
+        self.assertIn("PASS scope emea (document, role employee) vs the unscoped base: emea-edit", out)
 
         plan = json.loads(json.dumps(PLAN))
         plan["scopeExemptions"] = [{"scope": "emea", "role": "employee", "reason": "restates the parent"}]
         errors, out = self.run_audit(audit_stdlib, plan)
         self.assertEqual(errors, [])
-        self.assertIn("NOTE scope emea (document, role employee): exempted", out)
+        self.assertIn("NOTE scope emea (document, role employee) vs the unscoped base: exempted", out)
+
+        # A descendant with its own policy inherits the rule, and a sibling branch replaces the base.
+        for name, scope in (("emea_de.yaml", "emea.de"), ("apac.yaml", "apac")):
+            (self.root / "policies" / name).write_text(
+                f"apiVersion: api.cerbos.dev/v1\nresourcePolicy:\n  resource: document\n"
+                f"  version: default\n  scope: {scope}\n  rules: []\n"
+            )
+        errors, _ = self.run_audit(audit_stdlib, PLAN)
+        self.assertEqual(
+            sorted(e.split(":")[0] for e in errors),
+            ["FAIL scope emea (document, role employee) vs `apac`",
+             "FAIL scope emea.de (document, role employee) vs `apac`"],
+        )
 
     def test_non_json_plan_is_unreadable(self):
         with self.assertRaises(audit_stdlib.Unreadable):

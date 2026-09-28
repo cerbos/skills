@@ -45,11 +45,12 @@ resolved requests that differ at exactly the named field, and the resolved
 request to have every value listed in `facts`. For every declared
 path it requires, for each listed prerequisite, a passing row with that `path`,
 `prerequisite` and a control, against a resource of the path's kind. For every
-role named by a scoped resource-policy rule or scoped role policy it requires a
-passing row for a principal with that role whose `change` is
-`resource.scope` with the scope on one side, which shows that scope's policy
-deciding differently from the scope it falls back to, unless the plan's
-`scopeExemptions` lists that scope and role with a reason.
+role named by a scoped resource-policy rule or scoped role policy it requires,
+in that scope and in each descendant scope with its own policy, a passing row
+for a principal with that role whose `change` is `resource.scope` and whose
+effect flips. The other side is a scope in a sibling branch when one exists,
+otherwise the unscoped base. The plan's `scopeExemptions` can list a scope and
+role with a reason instead.
 
 Needs only the Python 3 standard library. Fixtures and suites are read with
 PyYAML when it is installed, otherwise with a built-in reader for the YAML
@@ -439,9 +440,9 @@ def scoped_policies(policies):
     A scoped resource policy contributes each role its rules name (None for "*"
     or derived roles),
     keyed by its resource kind. A scoped role policy contributes its role for
-    every resource, so its kind is None.
+    every resource, so its kind is None. Also returns every scope with a policy.
     """
-    scopes = set()
+    scopes, all_scopes = set(), set()
     for path in sorted(policies.rglob("*")):
         if path.suffix not in {".yaml", ".yml", ".json"} or path.name.endswith(("_test.yaml", "_test.yml", "_test.json")):
             continue
@@ -452,6 +453,7 @@ def scoped_policies(policies):
             continue
         resource_policy = document.get("resourcePolicy") or {}
         role_policy = document.get("rolePolicy") or {}
+        all_scopes.update(s for s in (resource_policy.get("scope"), role_policy.get("scope")) if s)
         if resource_policy.get("scope"):
             for rule in resource_policy.get("rules") or []:
                 # Derived roles never appear in principal fixtures, so any role qualifies.
@@ -459,7 +461,7 @@ def scoped_policies(policies):
                     scopes.add((resource_policy.get("resource"), resource_policy["scope"], None if role == "*" else role))
         if role_policy.get("scope"):
             scopes.add((None, role_policy["scope"], role_policy.get("role")))
-    return scopes
+    return scopes, all_scopes
 
 
 def fixtures(policies, suite_file, cache):
@@ -679,28 +681,40 @@ def audit(args):
         for item in plan.get("scopeExemptions") or []
         if item.get("reason")
     }
-    for kind, scope, role in sorted(scoped_policies(policies), key=lambda item: tuple(x or "" for x in item)):
+    scoped, scopes = scoped_policies(policies)
+    root = lambda scope: scope.split(".")[0]
+    required = {}
+    for kind, scope, role in scoped:
+        # A scoped rule also governs every descendant scope that has its own policy.
+        for target in [scope, *sorted(s for s in scopes if s.startswith(scope + "."))]:
+            # Compare against a sibling branch when one exists, so the pair also shows the
+            # rule does not leak there; otherwise against the unscoped base.
+            siblings = sorted(s for s in scopes if root(s) != root(target))
+            required[(kind, target, role)] = (scope, siblings or [ABSENT])
+    for (kind, target, role), (origin, others) in sorted(required.items(), key=lambda item: tuple(x or "" for x in item[0])):
         boundary = [
             row["id"]
             for row in rows
             if row["id"] in passed
             and row.get("change") == "resource.scope"
-            and scope in (requests[row["id"]].get("resource.scope"), requests[row["control"]].get("resource.scope"))
             and kind in (None, requests[row["id"]]["resource.kind"])
             and (role is None or role in requests[row["id"]]["principal.roles"])
+            and {requests[row["id"]].get("resource.scope", ABSENT), requests[row["control"]].get("resource.scope", ABSENT)}
+            in [{target, other} for other in others]
         ]
-        label = f"scope {scope} ({kind or 'role policy'}{', role ' + role if role else ''})"
+        versus = "the unscoped base" if others == [ABSENT] else " or ".join(f"`{other}`" for other in others)
+        label = f"scope {target} ({kind or 'role policy'}{', role ' + role if role else ''}) vs {versus}"
         if boundary:
-            print(f"PASS {label} boundary: {', '.join(boundary)}")
-        elif (scope, role) in exempt:
+            print(f"PASS {label}: {', '.join(boundary)}")
+        elif (target, role) in exempt or (origin, role) in exempt:
             print(f"NOTE {label}: exempted in the plan")
         else:
+            inherited = f", inherited from `{origin}`," if origin != target else ""
             errors.append(
-                f"FAIL {label}: no passing row shows this scope's policy deciding differently; add a row "
-                f"with `change: resource.scope` whose control is a request the `{scope}` policy decides, "
-                "moved to a scope without that policy (usually the unscoped base), with the opposite effect. "
-                "If no request can differ because the rule only restates its parent, list it in `scopeExemptions` "
-                "with a reason"
+                f"FAIL {label}: no passing row shows the `{target}` policy chain{inherited} deciding differently; "
+                f"add a row with `change: resource.scope` for a principal with that role whose control is a request "
+                f"decided in `{target}`, moved to {versus}, with the opposite effect. If no request can differ because "
+                "the rule only restates its parent, list it in `scopeExemptions` with a reason"
             )
     return errors
 
