@@ -59,7 +59,7 @@ Produce a short spec artifact — one row per rule capturing all six elements:
 
 ```
 Subject (role) → Action on Resource [Condition] | Effect | Purpose
-e.g. manager → approve on expense [R.attr.amount < 1000] | ALLOW | Managers sign off small expenses without finance
+e.g. buyer → approve on purchase_order [R.attr.total < 500] | ALLOW | Buyers sign off small orders without procurement
 ```
 
 List resources, principals/roles, and shared derived roles/variables alongside. Confirm the spec with the user before generating.
