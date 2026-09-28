@@ -1,0 +1,39 @@
+resources:
+  erin_notes:
+    kind: document
+    id: doc-1
+    attr:
+      owner: erin
+      size_mb: 10
+  at_limit:
+    kind: document
+    id: doc-2
+    attr:
+      owner: eli
+      size_mb: 25
+  over_limit:
+    kind: document
+    id: doc-3
+    attr:
+      owner: eli
+      size_mb: 26
+  large_archive:
+    kind: document
+    id: doc-4
+    attr:
+      owner: eli
+      size_mb: 80
+  carl_public:
+    kind: document
+    id: doc-5
+    attr:
+      owner: carl
+      size_mb: 5
+      classification: public
+  carl_internal:
+    kind: document
+    id: doc-6
+    attr:
+      owner: carl
+      size_mb: 5
+      classification: internal

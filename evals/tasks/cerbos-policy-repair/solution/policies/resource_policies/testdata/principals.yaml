@@ -1,0 +1,17 @@
+principals:
+  erin:
+    id: erin
+    roles: ["employee"]
+    attr: {}
+  eli:
+    id: eli
+    roles: ["employee"]
+    attr: {}
+  carl:
+    id: carl
+    roles: ["contractor"]
+    attr: {}
+  mia:
+    id: mia
+    roles: ["manager"]
+    attr: {}

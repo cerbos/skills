@@ -1,0 +1,1566 @@
+{
+  "principals": {
+    "employee": {
+      "id": "hidden-emp",
+      "roles": [
+        "employee"
+      ],
+      "attr": {}
+    },
+    "contractor": {
+      "id": "hidden-con",
+      "roles": [
+        "contractor"
+      ],
+      "attr": {}
+    },
+    "manager": {
+      "id": "hidden-mgr",
+      "roles": [
+        "manager"
+      ],
+      "attr": {}
+    },
+    "guest": {
+      "id": "hidden-guest",
+      "roles": [
+        "guest"
+      ],
+      "attr": {}
+    }
+  },
+  "resources": {
+    "doc_10_absent_emp": {
+      "kind": "document",
+      "id": "hidden-doc_10_absent_emp",
+      "attr": {
+        "owner": "hidden-emp",
+        "size_mb": 10
+      }
+    },
+    "doc_10_absent_con": {
+      "kind": "document",
+      "id": "hidden-doc_10_absent_con",
+      "attr": {
+        "owner": "hidden-con",
+        "size_mb": 10
+      }
+    },
+    "doc_10_absent_other": {
+      "kind": "document",
+      "id": "hidden-doc_10_absent_other",
+      "attr": {
+        "owner": "hidden-other",
+        "size_mb": 10
+      }
+    },
+    "doc_10_public_emp": {
+      "kind": "document",
+      "id": "hidden-doc_10_public_emp",
+      "attr": {
+        "owner": "hidden-emp",
+        "size_mb": 10,
+        "classification": "public"
+      }
+    },
+    "doc_10_public_con": {
+      "kind": "document",
+      "id": "hidden-doc_10_public_con",
+      "attr": {
+        "owner": "hidden-con",
+        "size_mb": 10,
+        "classification": "public"
+      }
+    },
+    "doc_10_public_other": {
+      "kind": "document",
+      "id": "hidden-doc_10_public_other",
+      "attr": {
+        "owner": "hidden-other",
+        "size_mb": 10,
+        "classification": "public"
+      }
+    },
+    "doc_10_internal_emp": {
+      "kind": "document",
+      "id": "hidden-doc_10_internal_emp",
+      "attr": {
+        "owner": "hidden-emp",
+        "size_mb": 10,
+        "classification": "internal"
+      }
+    },
+    "doc_10_internal_con": {
+      "kind": "document",
+      "id": "hidden-doc_10_internal_con",
+      "attr": {
+        "owner": "hidden-con",
+        "size_mb": 10,
+        "classification": "internal"
+      }
+    },
+    "doc_10_internal_other": {
+      "kind": "document",
+      "id": "hidden-doc_10_internal_other",
+      "attr": {
+        "owner": "hidden-other",
+        "size_mb": 10,
+        "classification": "internal"
+      }
+    },
+    "doc_25_absent_emp": {
+      "kind": "document",
+      "id": "hidden-doc_25_absent_emp",
+      "attr": {
+        "owner": "hidden-emp",
+        "size_mb": 25
+      }
+    },
+    "doc_25_absent_con": {
+      "kind": "document",
+      "id": "hidden-doc_25_absent_con",
+      "attr": {
+        "owner": "hidden-con",
+        "size_mb": 25
+      }
+    },
+    "doc_25_absent_other": {
+      "kind": "document",
+      "id": "hidden-doc_25_absent_other",
+      "attr": {
+        "owner": "hidden-other",
+        "size_mb": 25
+      }
+    },
+    "doc_25_public_emp": {
+      "kind": "document",
+      "id": "hidden-doc_25_public_emp",
+      "attr": {
+        "owner": "hidden-emp",
+        "size_mb": 25,
+        "classification": "public"
+      }
+    },
+    "doc_25_public_con": {
+      "kind": "document",
+      "id": "hidden-doc_25_public_con",
+      "attr": {
+        "owner": "hidden-con",
+        "size_mb": 25,
+        "classification": "public"
+      }
+    },
+    "doc_25_public_other": {
+      "kind": "document",
+      "id": "hidden-doc_25_public_other",
+      "attr": {
+        "owner": "hidden-other",
+        "size_mb": 25,
+        "classification": "public"
+      }
+    },
+    "doc_25_internal_emp": {
+      "kind": "document",
+      "id": "hidden-doc_25_internal_emp",
+      "attr": {
+        "owner": "hidden-emp",
+        "size_mb": 25,
+        "classification": "internal"
+      }
+    },
+    "doc_25_internal_con": {
+      "kind": "document",
+      "id": "hidden-doc_25_internal_con",
+      "attr": {
+        "owner": "hidden-con",
+        "size_mb": 25,
+        "classification": "internal"
+      }
+    },
+    "doc_25_internal_other": {
+      "kind": "document",
+      "id": "hidden-doc_25_internal_other",
+      "attr": {
+        "owner": "hidden-other",
+        "size_mb": 25,
+        "classification": "internal"
+      }
+    },
+    "doc_26_absent_emp": {
+      "kind": "document",
+      "id": "hidden-doc_26_absent_emp",
+      "attr": {
+        "owner": "hidden-emp",
+        "size_mb": 26
+      }
+    },
+    "doc_26_absent_con": {
+      "kind": "document",
+      "id": "hidden-doc_26_absent_con",
+      "attr": {
+        "owner": "hidden-con",
+        "size_mb": 26
+      }
+    },
+    "doc_26_absent_other": {
+      "kind": "document",
+      "id": "hidden-doc_26_absent_other",
+      "attr": {
+        "owner": "hidden-other",
+        "size_mb": 26
+      }
+    },
+    "doc_26_public_emp": {
+      "kind": "document",
+      "id": "hidden-doc_26_public_emp",
+      "attr": {
+        "owner": "hidden-emp",
+        "size_mb": 26,
+        "classification": "public"
+      }
+    },
+    "doc_26_public_con": {
+      "kind": "document",
+      "id": "hidden-doc_26_public_con",
+      "attr": {
+        "owner": "hidden-con",
+        "size_mb": 26,
+        "classification": "public"
+      }
+    },
+    "doc_26_public_other": {
+      "kind": "document",
+      "id": "hidden-doc_26_public_other",
+      "attr": {
+        "owner": "hidden-other",
+        "size_mb": 26,
+        "classification": "public"
+      }
+    },
+    "doc_26_internal_emp": {
+      "kind": "document",
+      "id": "hidden-doc_26_internal_emp",
+      "attr": {
+        "owner": "hidden-emp",
+        "size_mb": 26,
+        "classification": "internal"
+      }
+    },
+    "doc_26_internal_con": {
+      "kind": "document",
+      "id": "hidden-doc_26_internal_con",
+      "attr": {
+        "owner": "hidden-con",
+        "size_mb": 26,
+        "classification": "internal"
+      }
+    },
+    "doc_26_internal_other": {
+      "kind": "document",
+      "id": "hidden-doc_26_internal_other",
+      "attr": {
+        "owner": "hidden-other",
+        "size_mb": 26,
+        "classification": "internal"
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "employee doc_10_absent_emp",
+      "principal": "employee",
+      "resource": "doc_10_absent_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_10_absent_con",
+      "principal": "employee",
+      "resource": "doc_10_absent_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_10_absent_other",
+      "principal": "employee",
+      "resource": "doc_10_absent_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_10_public_emp",
+      "principal": "employee",
+      "resource": "doc_10_public_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_10_public_con",
+      "principal": "employee",
+      "resource": "doc_10_public_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_10_public_other",
+      "principal": "employee",
+      "resource": "doc_10_public_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_10_internal_emp",
+      "principal": "employee",
+      "resource": "doc_10_internal_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_10_internal_con",
+      "principal": "employee",
+      "resource": "doc_10_internal_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_10_internal_other",
+      "principal": "employee",
+      "resource": "doc_10_internal_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_25_absent_emp",
+      "principal": "employee",
+      "resource": "doc_25_absent_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_25_absent_con",
+      "principal": "employee",
+      "resource": "doc_25_absent_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_25_absent_other",
+      "principal": "employee",
+      "resource": "doc_25_absent_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_25_public_emp",
+      "principal": "employee",
+      "resource": "doc_25_public_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_25_public_con",
+      "principal": "employee",
+      "resource": "doc_25_public_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_25_public_other",
+      "principal": "employee",
+      "resource": "doc_25_public_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_25_internal_emp",
+      "principal": "employee",
+      "resource": "doc_25_internal_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_25_internal_con",
+      "principal": "employee",
+      "resource": "doc_25_internal_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_25_internal_other",
+      "principal": "employee",
+      "resource": "doc_25_internal_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_26_absent_emp",
+      "principal": "employee",
+      "resource": "doc_26_absent_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_26_absent_con",
+      "principal": "employee",
+      "resource": "doc_26_absent_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_26_absent_other",
+      "principal": "employee",
+      "resource": "doc_26_absent_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_26_public_emp",
+      "principal": "employee",
+      "resource": "doc_26_public_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_26_public_con",
+      "principal": "employee",
+      "resource": "doc_26_public_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_26_public_other",
+      "principal": "employee",
+      "resource": "doc_26_public_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_26_internal_emp",
+      "principal": "employee",
+      "resource": "doc_26_internal_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_26_internal_con",
+      "principal": "employee",
+      "resource": "doc_26_internal_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "employee doc_26_internal_other",
+      "principal": "employee",
+      "resource": "doc_26_internal_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_10_absent_emp",
+      "principal": "contractor",
+      "resource": "doc_10_absent_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_10_absent_con",
+      "principal": "contractor",
+      "resource": "doc_10_absent_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_10_absent_other",
+      "principal": "contractor",
+      "resource": "doc_10_absent_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_10_public_emp",
+      "principal": "contractor",
+      "resource": "doc_10_public_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_10_public_con",
+      "principal": "contractor",
+      "resource": "doc_10_public_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_10_public_other",
+      "principal": "contractor",
+      "resource": "doc_10_public_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_10_internal_emp",
+      "principal": "contractor",
+      "resource": "doc_10_internal_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_10_internal_con",
+      "principal": "contractor",
+      "resource": "doc_10_internal_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_10_internal_other",
+      "principal": "contractor",
+      "resource": "doc_10_internal_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_25_absent_emp",
+      "principal": "contractor",
+      "resource": "doc_25_absent_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_25_absent_con",
+      "principal": "contractor",
+      "resource": "doc_25_absent_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_25_absent_other",
+      "principal": "contractor",
+      "resource": "doc_25_absent_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_25_public_emp",
+      "principal": "contractor",
+      "resource": "doc_25_public_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_25_public_con",
+      "principal": "contractor",
+      "resource": "doc_25_public_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_25_public_other",
+      "principal": "contractor",
+      "resource": "doc_25_public_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_25_internal_emp",
+      "principal": "contractor",
+      "resource": "doc_25_internal_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_25_internal_con",
+      "principal": "contractor",
+      "resource": "doc_25_internal_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_25_internal_other",
+      "principal": "contractor",
+      "resource": "doc_25_internal_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_26_absent_emp",
+      "principal": "contractor",
+      "resource": "doc_26_absent_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_26_absent_con",
+      "principal": "contractor",
+      "resource": "doc_26_absent_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_26_absent_other",
+      "principal": "contractor",
+      "resource": "doc_26_absent_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_26_public_emp",
+      "principal": "contractor",
+      "resource": "doc_26_public_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_26_public_con",
+      "principal": "contractor",
+      "resource": "doc_26_public_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_26_public_other",
+      "principal": "contractor",
+      "resource": "doc_26_public_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_26_internal_emp",
+      "principal": "contractor",
+      "resource": "doc_26_internal_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_26_internal_con",
+      "principal": "contractor",
+      "resource": "doc_26_internal_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor doc_26_internal_other",
+      "principal": "contractor",
+      "resource": "doc_26_internal_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_10_absent_emp",
+      "principal": "manager",
+      "resource": "doc_10_absent_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_10_absent_con",
+      "principal": "manager",
+      "resource": "doc_10_absent_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_10_absent_other",
+      "principal": "manager",
+      "resource": "doc_10_absent_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_10_public_emp",
+      "principal": "manager",
+      "resource": "doc_10_public_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_10_public_con",
+      "principal": "manager",
+      "resource": "doc_10_public_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_10_public_other",
+      "principal": "manager",
+      "resource": "doc_10_public_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_10_internal_emp",
+      "principal": "manager",
+      "resource": "doc_10_internal_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_10_internal_con",
+      "principal": "manager",
+      "resource": "doc_10_internal_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_10_internal_other",
+      "principal": "manager",
+      "resource": "doc_10_internal_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_25_absent_emp",
+      "principal": "manager",
+      "resource": "doc_25_absent_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_25_absent_con",
+      "principal": "manager",
+      "resource": "doc_25_absent_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_25_absent_other",
+      "principal": "manager",
+      "resource": "doc_25_absent_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_25_public_emp",
+      "principal": "manager",
+      "resource": "doc_25_public_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_25_public_con",
+      "principal": "manager",
+      "resource": "doc_25_public_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_25_public_other",
+      "principal": "manager",
+      "resource": "doc_25_public_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_25_internal_emp",
+      "principal": "manager",
+      "resource": "doc_25_internal_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_25_internal_con",
+      "principal": "manager",
+      "resource": "doc_25_internal_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_25_internal_other",
+      "principal": "manager",
+      "resource": "doc_25_internal_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_26_absent_emp",
+      "principal": "manager",
+      "resource": "doc_26_absent_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_26_absent_con",
+      "principal": "manager",
+      "resource": "doc_26_absent_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_26_absent_other",
+      "principal": "manager",
+      "resource": "doc_26_absent_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_26_public_emp",
+      "principal": "manager",
+      "resource": "doc_26_public_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_26_public_con",
+      "principal": "manager",
+      "resource": "doc_26_public_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_26_public_other",
+      "principal": "manager",
+      "resource": "doc_26_public_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_26_internal_emp",
+      "principal": "manager",
+      "resource": "doc_26_internal_emp",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_26_internal_con",
+      "principal": "manager",
+      "resource": "doc_26_internal_con",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager doc_26_internal_other",
+      "principal": "manager",
+      "resource": "doc_26_internal_other",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_10_absent_emp",
+      "principal": "guest",
+      "resource": "doc_10_absent_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_10_absent_con",
+      "principal": "guest",
+      "resource": "doc_10_absent_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_10_absent_other",
+      "principal": "guest",
+      "resource": "doc_10_absent_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_10_public_emp",
+      "principal": "guest",
+      "resource": "doc_10_public_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_10_public_con",
+      "principal": "guest",
+      "resource": "doc_10_public_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_10_public_other",
+      "principal": "guest",
+      "resource": "doc_10_public_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_10_internal_emp",
+      "principal": "guest",
+      "resource": "doc_10_internal_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_10_internal_con",
+      "principal": "guest",
+      "resource": "doc_10_internal_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_10_internal_other",
+      "principal": "guest",
+      "resource": "doc_10_internal_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_25_absent_emp",
+      "principal": "guest",
+      "resource": "doc_25_absent_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_25_absent_con",
+      "principal": "guest",
+      "resource": "doc_25_absent_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_25_absent_other",
+      "principal": "guest",
+      "resource": "doc_25_absent_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_25_public_emp",
+      "principal": "guest",
+      "resource": "doc_25_public_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_25_public_con",
+      "principal": "guest",
+      "resource": "doc_25_public_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_25_public_other",
+      "principal": "guest",
+      "resource": "doc_25_public_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_25_internal_emp",
+      "principal": "guest",
+      "resource": "doc_25_internal_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_25_internal_con",
+      "principal": "guest",
+      "resource": "doc_25_internal_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_25_internal_other",
+      "principal": "guest",
+      "resource": "doc_25_internal_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_26_absent_emp",
+      "principal": "guest",
+      "resource": "doc_26_absent_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_26_absent_con",
+      "principal": "guest",
+      "resource": "doc_26_absent_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_26_absent_other",
+      "principal": "guest",
+      "resource": "doc_26_absent_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_26_public_emp",
+      "principal": "guest",
+      "resource": "doc_26_public_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_26_public_con",
+      "principal": "guest",
+      "resource": "doc_26_public_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_26_public_other",
+      "principal": "guest",
+      "resource": "doc_26_public_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_26_internal_emp",
+      "principal": "guest",
+      "resource": "doc_26_internal_emp",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_26_internal_con",
+      "principal": "guest",
+      "resource": "doc_26_internal_con",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest doc_26_internal_other",
+      "principal": "guest",
+      "resource": "doc_26_internal_other",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "download": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY"
+      }
+    }
+  ]
+}
