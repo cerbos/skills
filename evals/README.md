@@ -14,6 +14,9 @@ test the `cerbos-synapse-extension` skill.
 | [`cerbos-policy-tests-schemas`](tasks/cerbos-policy-tests-schemas/README.md) | Add attribute schemas with reject-mode enforcement and `create` exemptions, plus native test suites using shared fixture files and inline fixtures. |
 | [`cerbos-policy-role-policies`](tasks/cerbos-policy-role-policies/README.md) | Define scoped custom roles with role policies, parent roles, and a narrowed IdP role over unchanged base resource policies. |
 | [`cerbos-policy-outputs`](tasks/cerbos-policy-outputs/README.md) | Add `ruleActivated` and `conditionNotMet` outputs for audit events and denial reasons, and assert them in native tests. |
+| [`cerbos-policy-repair`](tasks/cerbos-policy-repair/README.md) | Repair a bundle with a compile error, a boundary bug caught by a seed test, and an explicit DENY that silently no-ops on an absent attribute, keeping the seed tests. |
+| [`cerbos-policy-principal-exceptions`](tasks/cerbos-policy-principal-exceptions/README.md) | Add a principal policy with a time-limited grant and a per-user DENY, plus a JWT claim condition, tested with `options.now` and `auxData` fixtures. |
+| [`cerbos-policy-files-no-python`](tasks/cerbos-policy-files-no-python/README.md) | `cerbos-policy-files` in a sandbox where the agent cannot run Python, exercising the coverage audit's manual fallback. |
 
 Synapse smoke tasks cover the `cerbos-synapse-extension` skill across extension kinds
 and runtimes. Each task writes one extension, wires it into `config.yaml`, proves it
@@ -92,6 +95,15 @@ Codex authenticates with `OPENAI_API_KEY`; set `CODEX_FORCE_AUTH_JSON=1` to use
 Harbor installs the agent in each container, which can exceed the 360-second
 setup limit when several trials start together; add
 `--agent-setup-timeout-multiplier 4` rather than raising the agent timeout.
+
+Each concurrent trial needs about 1 GB of free disk while Harbor installs the
+agent. When the disk fills, setup fails with `No space left on device` or Codex
+exits with `Missing optional dependency @openai/codex-linux-x64`, and the trial
+reports `NonZeroAgentExitCodeError` instead of a score. Check `df -h` before a
+long run (`docker builder prune` reclaims unused build cache), and add
+`-r 2 --retry-include NonZeroAgentExitCodeError` so these setup crashes are
+retried. Agent timeouts and verifier failures raise other exceptions and are not
+retried.
 
 To try a different skill checkout, change `--skill` and use a fresh job name.
 Use `--n-attempts 3` to repeat the same task three times. When comparing skill
