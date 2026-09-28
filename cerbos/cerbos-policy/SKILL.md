@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires the cerbos CLI or Docker for policy validation
 metadata:
   author: cerbos
-  version: "1.7"
+  version: "1.8"
   targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Write Edit Bash Glob Grep Task WebFetch
 ---
@@ -70,7 +70,7 @@ For schema-driven code generation, distinguish database structure from authoriza
 
 Read [POLICIES.md](references/POLICIES.md) before writing attribute schemas or policy definitions, and [TEST-SUITES.md](references/TEST-SUITES.md#coverage-plan) before writing fixtures and tests.
 
-Save a **coverage plan** as `coverage-plan.yaml` outside the policy directory before writing fixtures, in the [audit format](references/TEST-SUITES.md#coverage-plan). Give each resource/action its allowed request, independent denial prerequisites, and applicable boundaries, defaults, overrides and role combinations. Declare every grant path (each rule or derived role, per resource kind) with all prerequisites in its condition, then map every row to concrete fixture keys and an expected effect, recording any qualifying condition the requirement names (such as a flag value or scope) in the row's `facts`. Give every isolated denial, default and override a `control` row with the opposite effect and the single `change` field between them, then design fixtures so that only that field differs; reuse principal IDs across fixture keys where needed. Shared definitions need rows in every consuming resource policy. For a rule that exists only in some scopes, add a row whose control is the request that rule decides and whose `change` is `resource.scope`, so the other scope reverses the effect; a request the rule would decide the same way anyway does not show the scope boundary.
+Save a **coverage plan** as `coverage-plan.json` outside the policy directory before writing fixtures, in the [audit format](references/TEST-SUITES.md#coverage-plan). Give each resource/action its allowed request, independent denial prerequisites, and applicable boundaries, defaults, overrides and role combinations. Declare every grant path (each rule or derived role, per resource kind) with all prerequisites in its condition, including its role, and write each prerequisite's isolated denial row (`path`, `prerequisite`, `control`, `change`) as you declare the path; a missing role is shown by the same principal ID and attributes with only unrelated roles. Then map every row to concrete fixture keys and an expected effect, recording any qualifying condition the requirement names (such as a flag value or scope) in the row's `facts`. Give every isolated denial, default and override a `control` row with the opposite effect and the single `change` field between them, then design fixtures so that only that field differs; reuse principal IDs across fixture keys where needed. Shared definitions need rows in every consuming resource policy. For a rule that exists only in some scopes, add a row whose control is the request that rule decides and whose `change` is `resource.scope`, so the other scope reverses the effect; a request the rule would decide the same way anyway does not show the scope boundary. For example, if the `emea` scope lets analysts export only anonymised datasets, the row for a scope without that restriction is an analyst exporting a raw dataset there (control: the `emea` raw-export DENY; `change`: `resource.scope`; `facts` include the anonymised flag); an analyst exporting an anonymised dataset shows nothing. Represent "outside" a scope with the unscoped base (`resource.scope` absent), not an invented scope: a scope with no policy of its own denies everything, so it shows nothing about the rule.
 
 Before writing variables or imports, read [Variable dependency design](references/POLICIES.md#variable-dependency-design). Generate each policy's dependencies from its actual expressions, including transitive variable references; a shared template must not attach every available variable set to every resource.
 
@@ -133,14 +133,14 @@ The second re-runs the tests with strict evaluation, which turns runtime CEL err
 cerbos compile --output=json --strict-evaluation policies > strict.json
 ```
 
-Both must exit 0. Then run the bundled [coverage audit](references/TEST-SUITES.md#coverage-audit) against the plan and both reports:
+Both must exit 0. Then run the bundled [coverage audit](references/TEST-SUITES.md#coverage-audit) against the plan and both reports. It needs only the Python 3 standard library:
 
 ```bash
 python3 <skill-dir>/scripts/coverage_audit.py --policies policies \
-  --plan coverage-plan.yaml --report normal.json --report strict.json
+  --plan coverage-plan.json --report normal.json --report strict.json
 ```
 
-It confirms each planned assertion executed, that each control pair differs only at its named field, that each row's fixtures have its planned `facts`, and that every declared grant-path prerequisite has an isolated denial. Save its output next to the plan. A compiler pass count alone cannot establish that a denial exercised the intended boundary. Use the bundled script rather than writing a new audit.
+It confirms each planned assertion executed, that each control pair differs only at its named field, that each row's fixtures have its planned `facts`, and that every declared grant-path prerequisite has an isolated denial. Save its output next to the plan. A compiler pass count alone cannot establish that a denial exercised the intended boundary. Use the bundled script rather than writing a new audit. Without `python3`, run it in Docker; if neither is available, or it exits 2 because it cannot read an input, perform the same checks yourself. [TEST-SUITES.md](references/TEST-SUITES.md#coverage-audit) covers both.
 
 Wait for the coverage reviewer. Reconcile every row it derives with the written tests, extend the plan and tests for supported gaps, and rerun both compilation modes and the audit after repairs. Retain its findings and their resolution outside the policy directory.
 
@@ -166,11 +166,11 @@ Rules:
 
 ### Phase 5 — Finalize
 
-Finish when the requirements-first review has no unresolved coverage gaps, both validation passes and the executable coverage audit exit 0, and every planned row has a passing audit result. Report what was created, the coverage verified, and any assumptions made during spec intake.
+Finish when the requirements-first review has no unresolved coverage gaps, both validation passes and the coverage audit exit 0, and every planned row has a passing audit result. If the audit could not run, say so and report the manual check instead. Report what was created, the coverage verified, and any assumptions made during spec intake.
 
 ## Modifying existing policies
 
-Read the current policy files before editing, change only the files the request touches, and update the tests covering any rule whose behaviour changed. Preserve existing regression scenarios as well as their names; extend the coverage plan for new behavior and affected consumers of shared definitions. Then run Phase 3 in full — both passes and the coverage audit, over the whole tree.
+Read the current policy files before editing, change only the files the request touches, and update the tests covering any rule whose behaviour changed. Keep existing rule names, since outputs, audit logs and callers refer to them: change a rule in place, or add a new rule, rather than renaming or splitting it. Preserve existing regression scenarios as well as their names; extend the coverage plan for new behavior and affected consumers of shared definitions. Then run Phase 3 in full — both passes and the coverage audit, over the whole tree.
 
 ## References
 
@@ -178,5 +178,5 @@ Read the current policy files before editing, change only the files the request 
 - [references/CEL.md](references/CEL.md) — CEL objects, function catalogue, condition nesting, strict evaluation, pitfalls, error fix table
 - [references/TEST-SUITES.md](references/TEST-SUITES.md) — `*_test.yaml` schema and fixture files
 - [references/TESTING.md](references/TESTING.md) — `cerbosctl repl` usage and debugging recipes
-- [scripts/coverage_audit.py](scripts/coverage_audit.py) — checks the coverage plan against native compile reports
+- [scripts/coverage_audit.py](scripts/coverage_audit.py) — checks the coverage plan against native compile reports (Python 3 standard library)
 - [references/sources.md](references/sources.md) — the Cerbos documentation this guidance is checked against; start here when updating the skill for a new Cerbos release

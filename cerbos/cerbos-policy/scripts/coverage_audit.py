@@ -2,40 +2,41 @@
 """Check that a Cerbos test run covers a saved coverage plan.
 
 Usage:
-    python3 coverage_audit.py --policies DIR --plan PLAN.yaml \
+    python3 coverage_audit.py --policies DIR --plan coverage-plan.json \
         --report normal.json [--report strict.json]
 
 Each report is the stdout of `cerbos compile --output=json DIR` (add
-`--strict-evaluation` for the strict report). The plan is YAML:
+`--strict-evaluation` for the strict report). The plan is JSON:
 
-    rows:
-      - id: document-owner-edit
-        principal: alice_employee          # fixture key
-        resource: document_owned_by_alice  # fixture key
-        action: edit
-        effect: EFFECT_ALLOW
-      - id: document-missing-parent-role-edit
-        principal: alice_reviewer_only
-        resource: document_owned_by_alice
-        action: edit
-        effect: EFFECT_DENY
-        control: document-owner-edit       # row id with the opposite effect
-        change: principal.roles            # the one request field that differs
-        path: document-owner               # grant path this row isolates
-        prerequisite: parent-role          # which of the path's requirements
-        facts:                             # values the resolved request must have
-          resource.attr.owner: alice
-    paths:
-      - id: document-owner
-        kind: document
-        requires: [parent-role, tenant, ownership]
+    {
+      "paths": [
+        {"id": "document-owner", "kind": "document",
+         "requires": ["parent-role", "tenant", "ownership"]}
+      ],
+      "rows": [
+        {"id": "document-owner-edit", "principal": "alice_employee",
+         "resource": "document_owned_by_alice", "action": "edit",
+         "effect": "EFFECT_ALLOW"},
+        {"id": "document-missing-parent-role-edit",
+         "principal": "alice_reviewer_only",
+         "resource": "document_owned_by_alice", "action": "edit",
+         "effect": "EFFECT_DENY", "control": "document-owner-edit",
+         "change": "principal.roles", "path": "document-owner",
+         "prerequisite": "parent-role",
+         "facts": {"resource.attr.owner": "alice"}}
+      ]
+    }
 
+`principal` and `resource` are fixture keys. `control` names a row with the
+opposite effect, `change` the one request field that differs from it, `path`
+and `prerequisite` the grant-path requirement the row isolates, and `facts`
+values the resolved request must have (null for an absent attribute).
 Optional row fields: `suite` (test file path relative to DIR) and `test`
 (test case name) narrow the match. Field paths are `principal.id`,
-`principal.roles`, `principal.attr.<name>`, `resource.kind`,
-`resource.attr.<name>`, plus `scope` and `policyVersion` on either side.
-`resource.id` is ignored when comparing a row with its control. `facts` maps
-field paths to required values; use null for an absent attribute.
+`principal.roles`, `principal.attr.<name>`, `principal.scope`,
+`principal.policyVersion`, `resource.kind`, `resource.attr.<name>`,
+`resource.scope` and `resource.policyVersion`. `resource.id` is ignored when
+comparing a row with its control.
 
 For every row the audit requires an executed, passing assertion with the
 planned effect in every report. For a row with a control it also requires the
@@ -44,24 +45,387 @@ resolved requests that differ at exactly the named field, and the resolved
 request to have every value listed in `facts`. For every declared
 path it requires, for each listed prerequisite, a passing row with that `path`,
 `prerequisite` and a control, against a resource of the path's kind.
-Requires PyYAML.
+
+Needs only the Python 3 standard library. Fixtures and suites are read with
+PyYAML when it is installed, otherwise with a built-in reader for the YAML
+subset they use. Exits 1 when coverage fails and 2 when an input cannot be
+read, such as YAML with anchors, aliases or tags without PyYAML.
 """
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
-import yaml
+try:
+    import yaml
+except ImportError:
+    yaml = None
 
 ABSENT = "<absent>"
 EFFECTS = {"EFFECT_ALLOW", "EFFECT_DENY"}
+FIELD = re.compile(r"(principal\.(id|roles|scope|policyVersion|attr\..+)|resource\.(id|kind|scope|policyVersion|attr\..+))")
+FIELDS = (
+    "principal.id, principal.roles, principal.attr.<name>, principal.scope, principal.policyVersion, "
+    "resource.kind, resource.attr.<name>, resource.scope or resource.policyVersion"
+)
 
 
-def load_yaml(path):
+class Unreadable(Exception):
+    """An input file the audit cannot read."""
+
+
+if yaml:
+    class _Loader(yaml.SafeLoader):
+        """SafeLoader that keeps dates as strings, as Cerbos does."""
+
+    _Loader.yaml_implicit_resolvers = {
+        first: [(tag, regexp) for tag, regexp in resolvers if tag != "tag:yaml.org,2002:timestamp"]
+        for first, resolvers in yaml.SafeLoader.yaml_implicit_resolvers.items()
+    }
+
+
+NULLS = {"", "~", "null", "Null", "NULL"}
+TRUES = {"true", "True", "TRUE", "yes", "Yes", "YES", "on", "On", "ON"}
+FALSES = {"false", "False", "FALSE", "no", "No", "NO", "off", "Off", "OFF"}
+INT = re.compile(r"[-+]?(?:0|[1-9][0-9_]*)$")
+FLOAT = re.compile(r"[-+]?(?:[0-9][0-9_]*\.[0-9_]*|\.[0-9_]+)(?:[eE][-+][0-9]+)?$")
+ESCAPES = {"n": "\n", "t": "\t", "r": "\r", "0": "\0", "/": "/", "\\": "\\", '"': '"', " ": " "}
+
+
+def scalar(text):
+    """Resolve a plain scalar the way PyYAML's SafeLoader does, minus dates."""
+    if text in NULLS:
+        return None
+    if text in TRUES:
+        return True
+    if text in FALSES:
+        return False
+    if INT.match(text):
+        return int(text.replace("_", ""))
+    if FLOAT.match(text):
+        return float(text.replace("_", ""))
+    return text
+
+
+def quoted(text, pos):
+    """Parse a quoted scalar starting at text[pos]; return (value, next position)."""
+    quote, pos, out = text[pos], pos + 1, []
+    while pos < len(text):
+        char = text[pos]
+        if quote == "'" and char == "'":
+            if text[pos + 1:pos + 2] == "'":
+                out.append("'")
+                pos += 2
+                continue
+            return "".join(out), pos + 1
+        if quote == '"' and char == '"':
+            return "".join(out), pos + 1
+        if quote == '"' and char == "\\":
+            code = text[pos + 1:pos + 2]
+            if code == "u":
+                out.append(chr(int(text[pos + 2:pos + 6], 16)))
+                pos += 6
+                continue
+            if code not in ESCAPES:
+                raise ValueError(f"unsupported escape \\{code}")
+            out.append(ESCAPES[code])
+            pos += 2
+            continue
+        out.append(char)
+        pos += 1
+    raise ValueError("unterminated quoted string")
+
+
+def opens_quote(text, pos):
+    """A quote opens a quoted scalar only at the start of a token."""
+    return text[pos] in "'\"" and (pos == 0 or text[pos - 1] in " \t[{,:-")
+
+
+def closes_quote(text, pos, quote):
+    return text[pos] == quote and (quote == "'" or text[pos - 1] != "\\")
+
+
+def strip_comment(line):
+    """Drop a trailing comment outside quotes."""
+    quote = None
+    for pos, char in enumerate(line):
+        if quote:
+            if closes_quote(line, pos, quote):
+                quote = None
+        elif opens_quote(line, pos):
+            quote = char
+        elif char == "#" and (pos == 0 or line[pos - 1] in " \t"):
+            return line[:pos].rstrip()
+    return line.rstrip()
+
+
+def flow_balance(text):
+    depth, quote = 0, None
+    for pos, char in enumerate(text):
+        if quote:
+            if closes_quote(text, pos, quote):
+                quote = None
+        elif opens_quote(text, pos):
+            quote = char
+        elif char in "[{":
+            depth += 1
+        elif char in "]}":
+            depth -= 1
+    return depth
+
+
+def split_key(text):
+    """Split `key: value`; return (key, rest) or None when text is not a mapping entry."""
+    if not text or text[0] in "[{&*!|>%@`":
+        return None
+    if text[0] in "'\"":
+        key, pos = quoted(text, 0)
+        rest = text[pos:].lstrip()
+        if rest == ":" or rest.startswith(": "):
+            return key, rest[1:].strip()
+        return None
+    match = re.search(r":(?: |$)", text)
+    if not match:
+        return None
+    return scalar(text[:match.start()].rstrip()), text[match.end():].strip()
+
+
+class SubsetReader:
+    """Read the block and flow YAML used in Cerbos fixtures and test suites."""
+
+    def __init__(self, text, source):
+        self.lines = text.splitlines()
+        self.source = source
+        self.index = 0
+
+    def fail(self, message):
+        raise Unreadable(f"{self.source}:{self.index + 1}: {message} (install PyYAML to read it)")
+
+    def peek(self):
+        """Return (indent, content) of the next significant line, or None."""
+        while self.index < len(self.lines):
+            raw = self.lines[self.index]
+            content = strip_comment(raw)
+            if content.strip():
+                indent = len(content) - len(content.lstrip(" "))
+                if content[indent] == "\t":
+                    self.fail("tab indentation")
+                return indent, content.strip()
+            self.index += 1
+        return None
+
+    def document(self):
+        line = self.peek()
+        if line and line[1] == "---":
+            self.index += 1
+            line = self.peek()
+        if line is None:
+            return None
+        value = self.node(line[0])
+        line = self.peek()
+        if line and line[1] != "...":
+            self.fail("expected one document")
+        return value
+
+    def node(self, indent):
+        content = self.peek()[1]
+        if content == "-" or content.startswith("- "):
+            return self.sequence(indent)
+        try:
+            entry = split_key(content)
+        except ValueError as error:
+            self.fail(str(error))
+        if entry:
+            return self.mapping(indent)
+        self.index += 1
+        return self.inline(content)
+
+    def mapping(self, indent):
+        result = {}
+        while (line := self.peek()) and line[0] == indent:
+            content = line[1]
+            if content == "-" or content.startswith("- "):
+                break
+            try:
+                entry = split_key(content)
+            except ValueError as error:
+                self.fail(str(error))
+            if entry is None:
+                self.fail("expected `key: value`")
+            key, rest = entry
+            if key == "<<" or content.startswith("? "):
+                self.fail("merge and complex keys are not supported")
+            self.index += 1
+            result[key] = self.value(rest, indent, in_mapping=True)
+        if (line := self.peek()) and line[0] > indent:
+            self.fail("unexpected indentation")
+        return result
+
+    def sequence(self, indent):
+        result = []
+        while (line := self.peek()) and line[0] == indent:
+            content = line[1]
+            if content != "-" and not content.startswith("- "):
+                break
+            rest = content[1:].lstrip()
+            column = indent + len(content) - len(rest)
+            nested = rest == "-" or rest.startswith("- ")
+            try:
+                entry = split_key(rest) if rest and not nested else None
+            except ValueError as error:
+                self.fail(str(error))
+            if entry or nested:
+                self.lines[self.index] = " " * column + rest
+                result.append(self.mapping(column) if entry else self.sequence(column))
+                continue
+            self.index += 1
+            result.append(self.value(rest, indent, in_mapping=False))
+        return result
+
+    def value(self, rest, indent, in_mapping):
+        if rest == "":
+            line = self.peek()
+            if line and line[0] > indent:
+                return self.node(line[0])
+            if in_mapping and line and line[0] == indent and (line[1] == "-" or line[1].startswith("- ")):
+                return self.sequence(indent)
+            return None
+        if rest[0] in "|>":
+            return self.block_scalar(rest, indent)
+        if rest[0] not in "[{'\"":
+            while (line := self.peek()) and line[0] > indent:
+                rest += " " + line[1]
+                self.index += 1
+        return self.inline(rest)
+
+    def inline(self, text):
+        if text[0] in "&*!%@`?":
+            self.fail("anchors, aliases and tags are not supported")
+        if text[0] in "[{":
+            while flow_balance(text) > 0 and self.index < len(self.lines):
+                text += " " + strip_comment(self.lines[self.index]).strip()
+                self.index += 1
+            try:
+                value, pos = self.flow(text, 0)
+            except (ValueError, IndexError) as error:
+                self.fail(f"cannot read flow collection: {error}")
+            if text[pos:].strip():
+                self.fail("unexpected text after flow collection")
+            return value
+        if text[0] in "'\"":
+            try:
+                value, pos = quoted(text, 0)
+            except ValueError as error:
+                self.fail(str(error))
+            if text[pos:].strip():
+                self.fail("unexpected text after quoted string")
+            return value
+        return scalar(text)
+
+    def flow(self, text, pos):
+        pos = self.skip(text, pos)
+        char = text[pos]
+        if char == "[":
+            items, pos = [], self.skip(text, pos + 1)
+            while text[pos] != "]":
+                item, pos = self.flow(text, pos)
+                items.append(item)
+                pos = self.separator(text, pos, "]")
+            return items, pos + 1
+        if char == "{":
+            entries, pos = {}, self.skip(text, pos + 1)
+            while text[pos] != "}":
+                key, pos = self.flow(text, pos)
+                pos = self.skip(text, pos)
+                if text[pos] != ":":
+                    raise ValueError("expected `:` in flow mapping")
+                entries[key], pos = self.flow(text, pos + 1)
+                pos = self.separator(text, pos, "}")
+            return entries, pos + 1
+        if char in "'\"":
+            return quoted(text, pos)
+        end = pos
+        while end < len(text) and text[end] not in ",[]{}" and not (
+            text[end] == ":" and (end + 1 == len(text) or text[end + 1] in " ,[]{}")
+        ):
+            end += 1
+        return scalar(text[pos:end].strip()), end
+
+    @staticmethod
+    def skip(text, pos):
+        while text[pos] == " ":
+            pos += 1
+        return pos
+
+    def separator(self, text, pos, close):
+        pos = self.skip(text, pos)
+        if text[pos] == ",":
+            return self.skip(text, pos + 1)
+        if text[pos] != close:
+            raise ValueError(f"expected `,` or `{close}`")
+        return pos
+
+    def block_scalar(self, header, indent):
+        match = re.fullmatch(r"([|>])([-+]?)([1-9]?)([-+]?)", header)
+        if not match:
+            self.fail(f"unsupported block scalar header {header!r}")
+        style, chomp = match.group(1), match.group(2) or match.group(4)
+        lines = []
+        while self.index < len(self.lines):
+            raw = self.lines[self.index]
+            if raw.strip() and len(raw) - len(raw.lstrip(" ")) <= indent:
+                break
+            lines.append(raw)
+            self.index += 1
+        width = int(match.group(3)) + indent if match.group(3) else min(
+            (len(line) - len(line.lstrip(" ")) for line in lines if line.strip()), default=0
+        )
+        body = [line[width:] for line in lines]
+        while body and not body[-1].strip():
+            body.pop()
+        trailing = len(lines) - len(body)
+        if style == "|":
+            text = "\n".join(body)
+        else:
+            text, previous = "", None
+            for line in body:
+                if previous is None:
+                    text = line
+                elif not line or line.startswith(" ") or not previous or previous.startswith(" "):
+                    text += "\n" + line
+                else:
+                    text += " " + line
+                previous = line
+        if not body:
+            return ""
+        if chomp == "-":
+            return text
+        if chomp == "+":
+            return text + "\n" * (trailing + 1)
+        return text + "\n"
+
+
+def read_yaml(path):
+    text = path.read_text()
+    if yaml:
+        try:
+            return yaml.load(text, Loader=_Loader)
+        except yaml.YAMLError as error:
+            raise Unreadable(f"{path}: {error}") from error
+    return SubsetReader(text, path).document()
+
+
+def load(path):
     if not path.is_file():
         return {}
-    return yaml.safe_load(path.read_text()) or {}
+    if path.suffix == ".json":
+        try:
+            return json.loads(path.read_text()) or {}
+        except json.JSONDecodeError as error:
+            raise Unreadable(f"{path}: {error}") from error
+    return read_yaml(path) or {}
 
 
 def fixtures(policies, suite_file, cache):
@@ -70,12 +434,12 @@ def fixtures(policies, suite_file, cache):
         return cache[suite_file]
     suite_path = policies / suite_file
     testdata = suite_path.parent / "testdata"
-    suite = load_yaml(suite_path)
+    suite = load(suite_path)
     resolved = {}
     for name in ("principals", "resources"):
         shared = {}
         for extension in ("yaml", "yml", "json"):
-            shared.update(load_yaml(testdata / f"{name}.{extension}").get(name) or {})
+            shared.update(load(testdata / f"{name}.{extension}").get(name) or {})
         resolved[name] = {**shared, **(suite.get(name) or {})}
     cache[suite_file] = resolved
     return resolved
@@ -138,9 +502,19 @@ def find(row, assertions):
     ]
 
 
+def load_plan(path):
+    try:
+        plan = json.loads(Path(path).read_text())
+    except json.JSONDecodeError as error:
+        raise Unreadable(f"{path}: the coverage plan must be JSON ({error})") from error
+    if not isinstance(plan, dict):
+        raise Unreadable(f"{path}: the coverage plan must be a JSON object with `rows`")
+    return plan
+
+
 def audit(args):
     policies = Path(args.policies)
-    plan = load_yaml(Path(args.plan))
+    plan = load_plan(args.plan)
     rows = plan.get("rows") or []
     if not rows:
         return ["plan has no rows"]
@@ -155,13 +529,20 @@ def audit(args):
             errors.append(f"{row['id']}: effect must be EFFECT_ALLOW or EFFECT_DENY")
         if row["id"] in by_id:
             errors.append(f"{row['id']}: duplicate row id")
+        change = [row["change"]] if isinstance(row.get("change"), str) else []
+        for field in [*(row.get("facts") or {}), *change]:
+            if not FIELD.fullmatch(field):
+                errors.append(f"{row['id']}: unknown field path {field!r}; use {FIELDS}")
         by_id[row["id"]] = row
     if errors:
         return errors
 
     reports = []
     for path in args.report:
-        report = json.loads(Path(path).read_text())
+        try:
+            report = json.loads(Path(path).read_text())
+        except json.JSONDecodeError as error:
+            raise Unreadable(f"{path}: {error}") from error
         overall = report.get("summary", {}).get("overallResult")
         if overall != "RESULT_PASSED":
             errors.append(f"{path}: overall result is {overall}")
@@ -254,7 +635,10 @@ def audit(args):
             if isolated:
                 print(f"PASS {label}: {', '.join(isolated)}")
             else:
-                errors.append(f"FAIL {label}: no passing isolated row with a control")
+                errors.append(
+                    f"FAIL {label}: no passing isolated row with a control; add a DENY row with this "
+                    "`path` and `prerequisite`, a passing ALLOW `control`, and the one differing field as `change`"
+                )
     return errors
 
 
@@ -263,7 +647,11 @@ def main():
     parser.add_argument("--policies", required=True)
     parser.add_argument("--plan", required=True)
     parser.add_argument("--report", action="append", required=True)
-    errors = audit(parser.parse_args())
+    try:
+        errors = audit(parser.parse_args())
+    except Unreadable as error:
+        print(f"coverage audit could not run: {error}")
+        sys.exit(2)
     for error in errors:
         print(error)
     print("coverage audit " + ("FAILED" if errors else "passed"))

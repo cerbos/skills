@@ -119,6 +119,34 @@ Keep a single-use condition inline. Use `variables.local` for expressions reused
 
 Imported sets are not free abstractions: concise source files do not guarantee a small compiled bundle. Keep dependencies minimal even if compilation succeeds. See the [Cerbos variable documentation](https://docs.cerbos.dev/cerbos/latest/policies/variables.html) for import and local-variable syntax.
 
+## Principal Policy (per-user exceptions)
+
+A principal policy overrides resource policies for one principal ID, such as a break-glass account or a temporary contractor. Put it in `principal_policies/<principal-id>.yaml`.
+
+```yaml
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+principalPolicy:
+  principal: sre-breakglass       # matches P.id exactly
+  version: default
+  rules:
+    - resource: database
+      actions:
+        # The break-glass account reads production data only during an approved incident window.
+        - name: breakglass-reads-during-incident
+          action: read
+          effect: EFFECT_ALLOW
+          condition:
+            match:
+              expr: now() < timestamp(P.attr.incident_window_ends)
+        # Break-glass access never drops data, whatever roles the IdP grants.
+        - name: breakglass-never-drops
+          action: drop
+          effect: EFFECT_DENY
+```
+
+A matching principal-policy DENY overrides a resource-policy ALLOW. A principal-policy ALLOW whose condition is false decides nothing, so the resource policy still applies: a break-glass account past its window that also holds a team role keeps that role's access. Test both sides, and use a lookalike principal ID to show the exception is per user. See [principal policies](https://docs.cerbos.dev/cerbos/latest/policies/principal_policies.html).
+
 ## Role Policy (IdP role-centric ABAC)
 
 Role policies define permissions from the perspective of an IdP role. Unlike resource/principal policies, they use an allowlist model — any resource-action pair not explicitly listed is denied.
