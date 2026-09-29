@@ -21,8 +21,8 @@ Go WASM modules handling custom HTTP endpoints on Cerbos Synapse; translate arbi
 |--------|---------|
 | `handleHTTPRoute` | Handle incoming HTTP request, return authorization result |
 | `handleCerbosResponse` | Map Cerbos response to HTTP response (Cerbos request mode only) |
-| `cerbosInit` | Called once on module load; optional lifecycle hook |
-| `cerbosDeinit` | Called once on module unload; optional lifecycle hook |
+| `cerbosInit` | Optional. Runs once per pooled instance, so several times per module; set up per-instance state |
+| `cerbosDeinit` | Optional. Runs on every instance at graceful shutdown; release per-instance resources |
 
 ## HTTP Request Format
 
@@ -82,7 +82,13 @@ Go WASM modules handling custom HTTP endpoints on Cerbos Synapse; translate arbi
 
 ### Cerbos Request (with callback)
 
-Return only `checkRequest` in a `cerbosMapping`. Cerbos Synapse calls PDP, then invokes `handleCerbosResponse` with:
+Return a top-level `checkRequest`, not wrapped in `cerbosMapping`:
+
+```json
+{ "checkRequest": { "principal": { ... }, "resources": [ ... ] } }
+```
+
+Cerbos Synapse sends it to the PDP (through any configured proxy extensions), then invokes `handleCerbosResponse` with:
 
 ```json
 {
@@ -92,7 +98,7 @@ Return only `checkRequest` in a `cerbosMapping`. Cerbos Synapse calls PDP, then 
 }
 ```
 
-`handleCerbosResponse` must return an HTTP response JSON.
+`handleCerbosResponse` must return a bare HTTP response, `{"status", "headers", "body"}` with a base64 body, not wrapped in `httpResponse`. Echoing the input back fails the request with HTTP 500.
 
 ## Implementation
 
@@ -167,10 +173,23 @@ func cerbosInit() int32 { return 0 }
 //go:wasmexport cerbosDeinit
 func cerbosDeinit() int32 { return 0 }
 
+// Callback mode: turn the PDP decision into the HTTP response.
 //go:wasmexport handleCerbosResponse
 func handleCerbosResponse() int32 {
-    pdk.Output(pdk.Input())
-    return 0
+    effects := gjson.GetBytes(pdk.Input(), "cerbosResponse.results.0.actions").Map()
+    allowed := len(effects) > 0
+    for _, effect := range effects {
+        allowed = allowed && effect.String() == "EFFECT_ALLOW"
+    }
+    status, body := 403, `{"result":"denied"}`
+    if allowed {
+        status, body = 200, `{"result":"allowed"}`
+    }
+    return outputJSON(HTTPResponse{
+        Status:  status,
+        Headers: map[string]HeaderValues{"content-type": {Values: []string{"application/json"}}},
+        Body:    []byte(body),
+    })
 }
 
 //go:wasmexport handleHTTPRoute
@@ -186,6 +205,8 @@ func handleHTTPRoute() int32 {
         return handleHealth()
     case "/ext/check":
         return handleCheck(httpReq)
+    case "/ext/decision":
+        return handleDecision()
     default:
         return outputJSON(Result{
             HTTPResponse: &HTTPResponse{
@@ -264,6 +285,17 @@ func handleCheck(httpReq HTTPRequest) int32 {
     })
 }
 
+// Callback mode: Synapse sends checkRequest to the PDP, then calls handleCerbosResponse.
+func handleDecision() int32 {
+    return outputJSON(map[string]any{"checkRequest": CheckRequest{
+        Principal: Principal{ID: "user-1", Roles: []string{"user"}},
+        Resources: []ResourceEntry{{
+            Resource: Resource{ID: "doc-1", Kind: "document"},
+            Actions:  []string{"view"},
+        }},
+    }})
+}
+
 func main() {}
 ```
 
@@ -282,4 +314,5 @@ extensions:
       routes:
         "/health": ["GET"]
         "/check": ["POST"]
+        "/decision": ["GET"]
 ```

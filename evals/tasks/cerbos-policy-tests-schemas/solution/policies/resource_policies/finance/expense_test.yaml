@@ -1,0 +1,178 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: ExpenseSchemaTest
+description: Expense decisions with shared fixture files.
+tests:
+- name: employee views own expense
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ana_draft
+    actions:
+    - view
+    - edit
+    - approve
+    - delete
+  expected:
+  - principal: employee_ana
+    resource: ana_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: employee cannot view another's expense
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ben_submitted
+    actions:
+    - view
+    - edit
+  expected:
+  - principal: employee_ana
+    resource: ben_submitted
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+- name: manager approves department expense
+  input:
+    principals:
+    - manager_max
+    resources:
+    - ben_submitted
+    actions:
+    - view
+    - approve
+  expected:
+  - principal: manager_max
+    resource: ben_submitted
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+- name: manager cannot approve another department's expense
+  input:
+    principals:
+    - manager_max
+    resources:
+    - ben_submitted_sales
+    actions:
+    - view
+    - approve
+  expected:
+  - principal: manager_max
+    resource: ben_submitted_sales
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+- name: approval limit override
+  input:
+    principals:
+    - manager_max_limit_200
+    resources:
+    - ben_submitted_250
+    actions:
+    - approve
+  expected:
+  - principal: manager_max_limit_200
+    resource: ben_submitted_250
+    actions:
+      approve: EFFECT_DENY
+- name: employee creates an expense
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ana_draft
+    actions:
+    - create
+  expected:
+  - principal: employee_ana
+    resource: ana_draft
+    actions:
+      create: EFFECT_ALLOW
+- name: invalid principal department is rejected
+  input:
+    principals:
+    - employee_ana_bad_department
+    resources:
+    - ana_draft
+    actions:
+    - view
+  expected:
+  - principal: employee_ana_bad_department
+    resource: ana_draft
+    actions:
+      view: EFFECT_DENY
+- name: missing required amount is rejected
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ana_draft_missing_amount
+    actions:
+    - view
+    - edit
+  expected:
+  - principal: employee_ana
+    resource: ana_draft_missing_amount
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+- name: negative amount is rejected
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ana_draft_negative_amount
+    actions:
+    - view
+    - edit
+  expected:
+  - principal: employee_ana
+    resource: ana_draft_negative_amount
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+- name: unknown resource attribute is rejected
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ana_draft_unknown_attr
+    actions:
+    - view
+  expected:
+  - principal: employee_ana
+    resource: ana_draft_unknown_attr
+    actions:
+      view: EFFECT_DENY
+- name: create skips resource validation
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - new_expense
+    actions:
+    - create
+  expected:
+  - principal: employee_ana
+    resource: new_expense
+    actions:
+      create: EFFECT_ALLOW
+- name: create combined with view is still validated
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - new_expense
+    actions:
+    - create
+    - view
+  expected:
+  - principal: employee_ana
+    resource: new_expense
+    actions:
+      create: EFFECT_DENY
+      view: EFFECT_DENY

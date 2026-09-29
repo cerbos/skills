@@ -1,0 +1,3118 @@
+{
+  "principals": {
+    "viewer_eng": {
+      "id": "hidden-viewer-eng",
+      "roles": [
+        "viewer"
+      ],
+      "attr": {
+        "department": "hidden-eng"
+      }
+    },
+    "viewer_sales": {
+      "id": "hidden-viewer-sales",
+      "roles": [
+        "viewer"
+      ],
+      "attr": {
+        "department": "hidden-sales"
+      }
+    },
+    "editor_eng": {
+      "id": "hidden-editor-eng",
+      "roles": [
+        "editor"
+      ],
+      "attr": {
+        "department": "hidden-eng"
+      }
+    },
+    "editor_sales": {
+      "id": "hidden-editor-sales",
+      "roles": [
+        "editor"
+      ],
+      "attr": {
+        "department": "hidden-sales"
+      }
+    },
+    "admin_eng": {
+      "id": "hidden-admin-eng",
+      "roles": [
+        "admin"
+      ],
+      "attr": {
+        "department": "hidden-eng"
+      }
+    },
+    "admin_sales": {
+      "id": "hidden-admin-sales",
+      "roles": [
+        "admin"
+      ],
+      "attr": {
+        "department": "hidden-sales"
+      }
+    },
+    "accountant_eng": {
+      "id": "hidden-accountant-eng",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "department": "hidden-eng"
+      }
+    },
+    "accountant_sales": {
+      "id": "hidden-accountant-sales",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {
+        "department": "hidden-sales"
+      }
+    },
+    "contractor_eng": {
+      "id": "hidden-contractor-eng",
+      "roles": [
+        "contractor"
+      ],
+      "attr": {
+        "department": "hidden-eng"
+      }
+    },
+    "contractor_sales": {
+      "id": "hidden-contractor-sales",
+      "roles": [
+        "contractor"
+      ],
+      "attr": {
+        "department": "hidden-sales"
+      }
+    },
+    "auditor_eng": {
+      "id": "hidden-auditor-eng",
+      "roles": [
+        "auditor"
+      ],
+      "attr": {
+        "department": "hidden-eng"
+      }
+    },
+    "auditor_sales": {
+      "id": "hidden-auditor-sales",
+      "roles": [
+        "auditor"
+      ],
+      "attr": {
+        "department": "hidden-sales"
+      }
+    },
+    "guest_eng": {
+      "id": "hidden-guest-eng",
+      "roles": [
+        "guest"
+      ],
+      "attr": {
+        "department": "hidden-eng"
+      }
+    },
+    "guest_sales": {
+      "id": "hidden-guest-sales",
+      "roles": [
+        "guest"
+      ],
+      "attr": {
+        "department": "hidden-sales"
+      }
+    }
+  },
+  "resources": {
+    "document_base_eng_absent": {
+      "kind": "document",
+      "id": "hidden-document_base_eng_absent",
+      "attr": {
+        "department": "hidden-eng"
+      }
+    },
+    "document_base_eng_true": {
+      "kind": "document",
+      "id": "hidden-document_base_eng_true",
+      "attr": {
+        "department": "hidden-eng",
+        "contractor_editable": true
+      }
+    },
+    "document_base_eng_false": {
+      "kind": "document",
+      "id": "hidden-document_base_eng_false",
+      "attr": {
+        "department": "hidden-eng",
+        "contractor_editable": false
+      }
+    },
+    "invoice_base_eng": {
+      "kind": "invoice",
+      "id": "hidden-invoice_base_eng",
+      "attr": {
+        "department": "hidden-eng"
+      }
+    },
+    "document_base_sales_absent": {
+      "kind": "document",
+      "id": "hidden-document_base_sales_absent",
+      "attr": {
+        "department": "hidden-sales"
+      }
+    },
+    "document_base_sales_true": {
+      "kind": "document",
+      "id": "hidden-document_base_sales_true",
+      "attr": {
+        "department": "hidden-sales",
+        "contractor_editable": true
+      }
+    },
+    "document_base_sales_false": {
+      "kind": "document",
+      "id": "hidden-document_base_sales_false",
+      "attr": {
+        "department": "hidden-sales",
+        "contractor_editable": false
+      }
+    },
+    "invoice_base_sales": {
+      "kind": "invoice",
+      "id": "hidden-invoice_base_sales",
+      "attr": {
+        "department": "hidden-sales"
+      }
+    },
+    "document_acme_eng_absent": {
+      "kind": "document",
+      "id": "hidden-document_acme_eng_absent",
+      "attr": {
+        "department": "hidden-eng"
+      },
+      "scope": "acme"
+    },
+    "document_acme_eng_true": {
+      "kind": "document",
+      "id": "hidden-document_acme_eng_true",
+      "attr": {
+        "department": "hidden-eng",
+        "contractor_editable": true
+      },
+      "scope": "acme"
+    },
+    "document_acme_eng_false": {
+      "kind": "document",
+      "id": "hidden-document_acme_eng_false",
+      "attr": {
+        "department": "hidden-eng",
+        "contractor_editable": false
+      },
+      "scope": "acme"
+    },
+    "invoice_acme_eng": {
+      "kind": "invoice",
+      "id": "hidden-invoice_acme_eng",
+      "attr": {
+        "department": "hidden-eng"
+      },
+      "scope": "acme"
+    },
+    "document_acme_sales_absent": {
+      "kind": "document",
+      "id": "hidden-document_acme_sales_absent",
+      "attr": {
+        "department": "hidden-sales"
+      },
+      "scope": "acme"
+    },
+    "document_acme_sales_true": {
+      "kind": "document",
+      "id": "hidden-document_acme_sales_true",
+      "attr": {
+        "department": "hidden-sales",
+        "contractor_editable": true
+      },
+      "scope": "acme"
+    },
+    "document_acme_sales_false": {
+      "kind": "document",
+      "id": "hidden-document_acme_sales_false",
+      "attr": {
+        "department": "hidden-sales",
+        "contractor_editable": false
+      },
+      "scope": "acme"
+    },
+    "invoice_acme_sales": {
+      "kind": "invoice",
+      "id": "hidden-invoice_acme_sales",
+      "attr": {
+        "department": "hidden-sales"
+      },
+      "scope": "acme"
+    }
+  },
+  "cases": [
+    {
+      "name": "viewer_eng:document_base_eng_absent",
+      "principal": "viewer_eng",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:document_base_eng_true",
+      "principal": "viewer_eng",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:document_base_eng_false",
+      "principal": "viewer_eng",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:invoice_base_eng",
+      "principal": "viewer_eng",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:document_base_sales_absent",
+      "principal": "viewer_eng",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:document_base_sales_true",
+      "principal": "viewer_eng",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:document_base_sales_false",
+      "principal": "viewer_eng",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:invoice_base_sales",
+      "principal": "viewer_eng",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:document_acme_eng_absent",
+      "principal": "viewer_eng",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:document_acme_eng_true",
+      "principal": "viewer_eng",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:document_acme_eng_false",
+      "principal": "viewer_eng",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:invoice_acme_eng",
+      "principal": "viewer_eng",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:document_acme_sales_absent",
+      "principal": "viewer_eng",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:document_acme_sales_true",
+      "principal": "viewer_eng",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:document_acme_sales_false",
+      "principal": "viewer_eng",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eng:invoice_acme_sales",
+      "principal": "viewer_eng",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_base_eng_absent",
+      "principal": "viewer_sales",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_base_eng_true",
+      "principal": "viewer_sales",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_base_eng_false",
+      "principal": "viewer_sales",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:invoice_base_eng",
+      "principal": "viewer_sales",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_base_sales_absent",
+      "principal": "viewer_sales",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_base_sales_true",
+      "principal": "viewer_sales",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_base_sales_false",
+      "principal": "viewer_sales",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:invoice_base_sales",
+      "principal": "viewer_sales",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_acme_eng_absent",
+      "principal": "viewer_sales",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_acme_eng_true",
+      "principal": "viewer_sales",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_acme_eng_false",
+      "principal": "viewer_sales",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:invoice_acme_eng",
+      "principal": "viewer_sales",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_acme_sales_absent",
+      "principal": "viewer_sales",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_acme_sales_true",
+      "principal": "viewer_sales",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:document_acme_sales_false",
+      "principal": "viewer_sales",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_sales:invoice_acme_sales",
+      "principal": "viewer_sales",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_base_eng_absent",
+      "principal": "editor_eng",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_base_eng_true",
+      "principal": "editor_eng",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_base_eng_false",
+      "principal": "editor_eng",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:invoice_base_eng",
+      "principal": "editor_eng",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_base_sales_absent",
+      "principal": "editor_eng",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_base_sales_true",
+      "principal": "editor_eng",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_base_sales_false",
+      "principal": "editor_eng",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:invoice_base_sales",
+      "principal": "editor_eng",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_acme_eng_absent",
+      "principal": "editor_eng",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_acme_eng_true",
+      "principal": "editor_eng",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_acme_eng_false",
+      "principal": "editor_eng",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:invoice_acme_eng",
+      "principal": "editor_eng",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_acme_sales_absent",
+      "principal": "editor_eng",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_acme_sales_true",
+      "principal": "editor_eng",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:document_acme_sales_false",
+      "principal": "editor_eng",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eng:invoice_acme_sales",
+      "principal": "editor_eng",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_base_eng_absent",
+      "principal": "editor_sales",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_base_eng_true",
+      "principal": "editor_sales",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_base_eng_false",
+      "principal": "editor_sales",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:invoice_base_eng",
+      "principal": "editor_sales",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_base_sales_absent",
+      "principal": "editor_sales",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_base_sales_true",
+      "principal": "editor_sales",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_base_sales_false",
+      "principal": "editor_sales",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:invoice_base_sales",
+      "principal": "editor_sales",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_acme_eng_absent",
+      "principal": "editor_sales",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_acme_eng_true",
+      "principal": "editor_sales",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_acme_eng_false",
+      "principal": "editor_sales",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:invoice_acme_eng",
+      "principal": "editor_sales",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_acme_sales_absent",
+      "principal": "editor_sales",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_acme_sales_true",
+      "principal": "editor_sales",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:document_acme_sales_false",
+      "principal": "editor_sales",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_sales:invoice_acme_sales",
+      "principal": "editor_sales",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_base_eng_absent",
+      "principal": "admin_eng",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_base_eng_true",
+      "principal": "admin_eng",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_base_eng_false",
+      "principal": "admin_eng",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:invoice_base_eng",
+      "principal": "admin_eng",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_base_sales_absent",
+      "principal": "admin_eng",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_base_sales_true",
+      "principal": "admin_eng",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_base_sales_false",
+      "principal": "admin_eng",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:invoice_base_sales",
+      "principal": "admin_eng",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_acme_eng_absent",
+      "principal": "admin_eng",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_acme_eng_true",
+      "principal": "admin_eng",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_acme_eng_false",
+      "principal": "admin_eng",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:invoice_acme_eng",
+      "principal": "admin_eng",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_acme_sales_absent",
+      "principal": "admin_eng",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_acme_sales_true",
+      "principal": "admin_eng",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:document_acme_sales_false",
+      "principal": "admin_eng",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eng:invoice_acme_sales",
+      "principal": "admin_eng",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_base_eng_absent",
+      "principal": "admin_sales",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_base_eng_true",
+      "principal": "admin_sales",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_base_eng_false",
+      "principal": "admin_sales",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:invoice_base_eng",
+      "principal": "admin_sales",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_base_sales_absent",
+      "principal": "admin_sales",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_base_sales_true",
+      "principal": "admin_sales",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_base_sales_false",
+      "principal": "admin_sales",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:invoice_base_sales",
+      "principal": "admin_sales",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_acme_eng_absent",
+      "principal": "admin_sales",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_acme_eng_true",
+      "principal": "admin_sales",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_acme_eng_false",
+      "principal": "admin_sales",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:invoice_acme_eng",
+      "principal": "admin_sales",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_acme_sales_absent",
+      "principal": "admin_sales",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_acme_sales_true",
+      "principal": "admin_sales",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:document_acme_sales_false",
+      "principal": "admin_sales",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "share": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_sales:invoice_acme_sales",
+      "principal": "admin_sales",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_base_eng_absent",
+      "principal": "accountant_eng",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_base_eng_true",
+      "principal": "accountant_eng",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_base_eng_false",
+      "principal": "accountant_eng",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:invoice_base_eng",
+      "principal": "accountant_eng",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_base_sales_absent",
+      "principal": "accountant_eng",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_base_sales_true",
+      "principal": "accountant_eng",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_base_sales_false",
+      "principal": "accountant_eng",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:invoice_base_sales",
+      "principal": "accountant_eng",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_acme_eng_absent",
+      "principal": "accountant_eng",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_acme_eng_true",
+      "principal": "accountant_eng",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_acme_eng_false",
+      "principal": "accountant_eng",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:invoice_acme_eng",
+      "principal": "accountant_eng",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_acme_sales_absent",
+      "principal": "accountant_eng",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_acme_sales_true",
+      "principal": "accountant_eng",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:document_acme_sales_false",
+      "principal": "accountant_eng",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_eng:invoice_acme_sales",
+      "principal": "accountant_eng",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_base_eng_absent",
+      "principal": "accountant_sales",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_base_eng_true",
+      "principal": "accountant_sales",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_base_eng_false",
+      "principal": "accountant_sales",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:invoice_base_eng",
+      "principal": "accountant_sales",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_base_sales_absent",
+      "principal": "accountant_sales",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_base_sales_true",
+      "principal": "accountant_sales",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_base_sales_false",
+      "principal": "accountant_sales",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:invoice_base_sales",
+      "principal": "accountant_sales",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_acme_eng_absent",
+      "principal": "accountant_sales",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_acme_eng_true",
+      "principal": "accountant_sales",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_acme_eng_false",
+      "principal": "accountant_sales",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:invoice_acme_eng",
+      "principal": "accountant_sales",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_acme_sales_absent",
+      "principal": "accountant_sales",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_acme_sales_true",
+      "principal": "accountant_sales",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:document_acme_sales_false",
+      "principal": "accountant_sales",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "accountant_sales:invoice_acme_sales",
+      "principal": "accountant_sales",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_base_eng_absent",
+      "principal": "contractor_eng",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_base_eng_true",
+      "principal": "contractor_eng",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_base_eng_false",
+      "principal": "contractor_eng",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:invoice_base_eng",
+      "principal": "contractor_eng",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_base_sales_absent",
+      "principal": "contractor_eng",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_base_sales_true",
+      "principal": "contractor_eng",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_base_sales_false",
+      "principal": "contractor_eng",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:invoice_base_sales",
+      "principal": "contractor_eng",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_acme_eng_absent",
+      "principal": "contractor_eng",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_acme_eng_true",
+      "principal": "contractor_eng",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_acme_eng_false",
+      "principal": "contractor_eng",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:invoice_acme_eng",
+      "principal": "contractor_eng",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_acme_sales_absent",
+      "principal": "contractor_eng",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_acme_sales_true",
+      "principal": "contractor_eng",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:document_acme_sales_false",
+      "principal": "contractor_eng",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eng:invoice_acme_sales",
+      "principal": "contractor_eng",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_base_eng_absent",
+      "principal": "contractor_sales",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_base_eng_true",
+      "principal": "contractor_sales",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_base_eng_false",
+      "principal": "contractor_sales",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:invoice_base_eng",
+      "principal": "contractor_sales",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_base_sales_absent",
+      "principal": "contractor_sales",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_base_sales_true",
+      "principal": "contractor_sales",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_base_sales_false",
+      "principal": "contractor_sales",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:invoice_base_sales",
+      "principal": "contractor_sales",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_acme_eng_absent",
+      "principal": "contractor_sales",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_acme_eng_true",
+      "principal": "contractor_sales",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_acme_eng_false",
+      "principal": "contractor_sales",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:invoice_acme_eng",
+      "principal": "contractor_sales",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_acme_sales_absent",
+      "principal": "contractor_sales",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_acme_sales_true",
+      "principal": "contractor_sales",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:document_acme_sales_false",
+      "principal": "contractor_sales",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_sales:invoice_acme_sales",
+      "principal": "contractor_sales",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_base_eng_absent",
+      "principal": "auditor_eng",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_base_eng_true",
+      "principal": "auditor_eng",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_base_eng_false",
+      "principal": "auditor_eng",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:invoice_base_eng",
+      "principal": "auditor_eng",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_base_sales_absent",
+      "principal": "auditor_eng",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_base_sales_true",
+      "principal": "auditor_eng",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_base_sales_false",
+      "principal": "auditor_eng",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:invoice_base_sales",
+      "principal": "auditor_eng",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_acme_eng_absent",
+      "principal": "auditor_eng",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_acme_eng_true",
+      "principal": "auditor_eng",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_acme_eng_false",
+      "principal": "auditor_eng",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:invoice_acme_eng",
+      "principal": "auditor_eng",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_acme_sales_absent",
+      "principal": "auditor_eng",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_acme_sales_true",
+      "principal": "auditor_eng",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:document_acme_sales_false",
+      "principal": "auditor_eng",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eng:invoice_acme_sales",
+      "principal": "auditor_eng",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_base_eng_absent",
+      "principal": "auditor_sales",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_base_eng_true",
+      "principal": "auditor_sales",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_base_eng_false",
+      "principal": "auditor_sales",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:invoice_base_eng",
+      "principal": "auditor_sales",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_base_sales_absent",
+      "principal": "auditor_sales",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_base_sales_true",
+      "principal": "auditor_sales",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_base_sales_false",
+      "principal": "auditor_sales",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:invoice_base_sales",
+      "principal": "auditor_sales",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_acme_eng_absent",
+      "principal": "auditor_sales",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_acme_eng_true",
+      "principal": "auditor_sales",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_acme_eng_false",
+      "principal": "auditor_sales",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:invoice_acme_eng",
+      "principal": "auditor_sales",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_acme_sales_absent",
+      "principal": "auditor_sales",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_acme_sales_true",
+      "principal": "auditor_sales",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:document_acme_sales_false",
+      "principal": "auditor_sales",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_sales:invoice_acme_sales",
+      "principal": "auditor_sales",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_base_eng_absent",
+      "principal": "guest_eng",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_base_eng_true",
+      "principal": "guest_eng",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_base_eng_false",
+      "principal": "guest_eng",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:invoice_base_eng",
+      "principal": "guest_eng",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_base_sales_absent",
+      "principal": "guest_eng",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_base_sales_true",
+      "principal": "guest_eng",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_base_sales_false",
+      "principal": "guest_eng",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:invoice_base_sales",
+      "principal": "guest_eng",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_acme_eng_absent",
+      "principal": "guest_eng",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_acme_eng_true",
+      "principal": "guest_eng",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_acme_eng_false",
+      "principal": "guest_eng",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:invoice_acme_eng",
+      "principal": "guest_eng",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_acme_sales_absent",
+      "principal": "guest_eng",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_acme_sales_true",
+      "principal": "guest_eng",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:document_acme_sales_false",
+      "principal": "guest_eng",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_eng:invoice_acme_sales",
+      "principal": "guest_eng",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_base_eng_absent",
+      "principal": "guest_sales",
+      "resource": "document_base_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_base_eng_true",
+      "principal": "guest_sales",
+      "resource": "document_base_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_base_eng_false",
+      "principal": "guest_sales",
+      "resource": "document_base_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:invoice_base_eng",
+      "principal": "guest_sales",
+      "resource": "invoice_base_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_base_sales_absent",
+      "principal": "guest_sales",
+      "resource": "document_base_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_base_sales_true",
+      "principal": "guest_sales",
+      "resource": "document_base_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_base_sales_false",
+      "principal": "guest_sales",
+      "resource": "document_base_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:invoice_base_sales",
+      "principal": "guest_sales",
+      "resource": "invoice_base_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_acme_eng_absent",
+      "principal": "guest_sales",
+      "resource": "document_acme_eng_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_acme_eng_true",
+      "principal": "guest_sales",
+      "resource": "document_acme_eng_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_acme_eng_false",
+      "principal": "guest_sales",
+      "resource": "document_acme_eng_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:invoice_acme_eng",
+      "principal": "guest_sales",
+      "resource": "invoice_acme_eng",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_acme_sales_absent",
+      "principal": "guest_sales",
+      "resource": "document_acme_sales_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_acme_sales_true",
+      "principal": "guest_sales",
+      "resource": "document_acme_sales_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:document_acme_sales_false",
+      "principal": "guest_sales",
+      "resource": "document_acme_sales_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "comment": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "share": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "guest_sales:invoice_acme_sales",
+      "principal": "guest_sales",
+      "resource": "invoice_acme_sales",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "void": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "export": "EFFECT_DENY"
+      }
+    }
+  ]
+}

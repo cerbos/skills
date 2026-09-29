@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: invoice
+  version: default
+  rules:
+    - actions: [view]
+      roles: [accountant]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: P.attr.tenant == R.attr.tenant
+    - actions: [approve]
+      roles: [accountant]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: P.attr.tenant == R.attr.tenant && R.attr.owner != P.id && R.attr.status == "pending" && R.attr.amount <= 1000

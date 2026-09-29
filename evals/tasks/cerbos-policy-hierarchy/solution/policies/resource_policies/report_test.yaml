@@ -1,0 +1,786 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: ReportHierarchyTest
+description: Base permissions, Acme narrowing, EU residency and Globex overrides.
+tests:
+- name: 'base: viewer_eu on base_draft'
+  input:
+    principals:
+    - viewer_eu
+    resources:
+    - base_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: viewer_eu
+    resource: base_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'base: viewer_eu on base_published'
+  input:
+    principals:
+    - viewer_eu
+    resources:
+    - base_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: viewer_eu
+    resource: base_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'base: editor_eu on base_draft'
+  input:
+    principals:
+    - editor_eu
+    resources:
+    - base_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_eu
+    resource: base_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'base: editor_eu on base_published'
+  input:
+    principals:
+    - editor_eu
+    resources:
+    - base_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_eu
+    resource: base_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'base: admin_eu on base_draft'
+  input:
+    principals:
+    - admin_eu
+    resources:
+    - base_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: admin_eu
+    resource: base_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: 'base: admin_eu on base_published'
+  input:
+    principals:
+    - admin_eu
+    resources:
+    - base_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: admin_eu
+    resource: base_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: 'base: contractor_eu on base_draft'
+  input:
+    principals:
+    - contractor_eu
+    resources:
+    - base_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: contractor_eu
+    resource: base_draft
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'base: contractor_eu on base_published'
+  input:
+    principals:
+    - contractor_eu
+    resources:
+    - base_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: contractor_eu
+    resource: base_published
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme: viewer_eu on acme_draft'
+  input:
+    principals:
+    - viewer_eu
+    resources:
+    - acme_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: viewer_eu
+    resource: acme_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme: viewer_eu on acme_published'
+  input:
+    principals:
+    - viewer_eu
+    resources:
+    - acme_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: viewer_eu
+    resource: acme_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme: editor_eu on acme_draft'
+  input:
+    principals:
+    - editor_eu
+    resources:
+    - acme_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_eu
+    resource: acme_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'acme: editor_eu on acme_published'
+  input:
+    principals:
+    - editor_eu
+    resources:
+    - acme_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_eu
+    resource: acme_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme: admin_eu on acme_draft'
+  input:
+    principals:
+    - admin_eu
+    resources:
+    - acme_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: admin_eu
+    resource: acme_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: 'acme: admin_eu on acme_published'
+  input:
+    principals:
+    - admin_eu
+    resources:
+    - acme_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: admin_eu
+    resource: acme_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: 'acme: editor_admin_eu on acme_draft'
+  input:
+    principals:
+    - editor_admin_eu
+    resources:
+    - acme_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_admin_eu
+    resource: acme_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: 'acme: editor_admin_eu on acme_published'
+  input:
+    principals:
+    - editor_admin_eu
+    resources:
+    - acme_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_admin_eu
+    resource: acme_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: 'acme: contractor_eu on acme_draft'
+  input:
+    principals:
+    - contractor_eu
+    resources:
+    - acme_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: contractor_eu
+    resource: acme_draft
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme: contractor_eu on acme_published'
+  input:
+    principals:
+    - contractor_eu
+    resources:
+    - acme_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: contractor_eu
+    resource: acme_published
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme.eu: viewer_eu on acme_eu_draft'
+  input:
+    principals:
+    - viewer_eu
+    resources:
+    - acme_eu_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: viewer_eu
+    resource: acme_eu_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme.eu: viewer_eu on acme_eu_published'
+  input:
+    principals:
+    - viewer_eu
+    resources:
+    - acme_eu_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: viewer_eu
+    resource: acme_eu_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme.eu: editor_eu on acme_eu_draft'
+  input:
+    principals:
+    - editor_eu
+    resources:
+    - acme_eu_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_eu
+    resource: acme_eu_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'acme.eu: editor_eu on acme_eu_published'
+  input:
+    principals:
+    - editor_eu
+    resources:
+    - acme_eu_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_eu
+    resource: acme_eu_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme.eu: editor_us on acme_eu_draft'
+  input:
+    principals:
+    - editor_us
+    resources:
+    - acme_eu_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_us
+    resource: acme_eu_draft
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme.eu: editor_us on acme_eu_published'
+  input:
+    principals:
+    - editor_us
+    resources:
+    - acme_eu_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_us
+    resource: acme_eu_published
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme.eu: admin_eu on acme_eu_draft'
+  input:
+    principals:
+    - admin_eu
+    resources:
+    - acme_eu_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: admin_eu
+    resource: acme_eu_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: 'acme.eu: admin_eu on acme_eu_published'
+  input:
+    principals:
+    - admin_eu
+    resources:
+    - acme_eu_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: admin_eu
+    resource: acme_eu_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: 'acme.eu: editor_admin_eu on acme_eu_draft'
+  input:
+    principals:
+    - editor_admin_eu
+    resources:
+    - acme_eu_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_admin_eu
+    resource: acme_eu_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: 'acme.eu: editor_admin_eu on acme_eu_published'
+  input:
+    principals:
+    - editor_admin_eu
+    resources:
+    - acme_eu_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_admin_eu
+    resource: acme_eu_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+- name: 'acme.eu: contractor_eu on acme_eu_draft'
+  input:
+    principals:
+    - contractor_eu
+    resources:
+    - acme_eu_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: contractor_eu
+    resource: acme_eu_draft
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'acme.eu: contractor_eu on acme_eu_published'
+  input:
+    principals:
+    - contractor_eu
+    resources:
+    - acme_eu_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: contractor_eu
+    resource: acme_eu_published
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'globex: viewer_eu on globex_draft'
+  input:
+    principals:
+    - viewer_eu
+    resources:
+    - globex_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: viewer_eu
+    resource: globex_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'globex: viewer_eu on globex_published'
+  input:
+    principals:
+    - viewer_eu
+    resources:
+    - globex_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: viewer_eu
+    resource: globex_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'globex: viewer_eu on globex_unflagged'
+  input:
+    principals:
+    - viewer_eu
+    resources:
+    - globex_unflagged
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: viewer_eu
+    resource: globex_unflagged
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'globex: viewer_eu on globex_hidden'
+  input:
+    principals:
+    - viewer_eu
+    resources:
+    - globex_hidden
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: viewer_eu
+    resource: globex_hidden
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'globex: editor_eu on globex_draft'
+  input:
+    principals:
+    - editor_eu
+    resources:
+    - globex_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_eu
+    resource: globex_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'globex: editor_eu on globex_published'
+  input:
+    principals:
+    - editor_eu
+    resources:
+    - globex_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_eu
+    resource: globex_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'globex: editor_eu on globex_unflagged'
+  input:
+    principals:
+    - editor_eu
+    resources:
+    - globex_unflagged
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_eu
+    resource: globex_unflagged
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'globex: editor_eu on globex_hidden'
+  input:
+    principals:
+    - editor_eu
+    resources:
+    - globex_hidden
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: editor_eu
+    resource: globex_hidden
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'globex: admin_eu on globex_draft'
+  input:
+    principals:
+    - admin_eu
+    resources:
+    - globex_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: admin_eu
+    resource: globex_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'globex: admin_eu on globex_published'
+  input:
+    principals:
+    - admin_eu
+    resources:
+    - globex_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: admin_eu
+    resource: globex_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'globex: admin_eu on globex_unflagged'
+  input:
+    principals:
+    - admin_eu
+    resources:
+    - globex_unflagged
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: admin_eu
+    resource: globex_unflagged
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'globex: admin_eu on globex_hidden'
+  input:
+    principals:
+    - admin_eu
+    resources:
+    - globex_hidden
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: admin_eu
+    resource: globex_hidden
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: 'globex: contractor_eu on globex_draft'
+  input:
+    principals:
+    - contractor_eu
+    resources:
+    - globex_draft
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: contractor_eu
+    resource: globex_draft
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'globex: contractor_eu on globex_published'
+  input:
+    principals:
+    - contractor_eu
+    resources:
+    - globex_published
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: contractor_eu
+    resource: globex_published
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'globex: contractor_eu on globex_unflagged'
+  input:
+    principals:
+    - contractor_eu
+    resources:
+    - globex_unflagged
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: contractor_eu
+    resource: globex_unflagged
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: 'globex: contractor_eu on globex_hidden'
+  input:
+    principals:
+    - contractor_eu
+    resources:
+    - globex_hidden
+    actions:
+    - view
+    - edit
+    - delete
+  expected:
+  - principal: contractor_eu
+    resource: globex_hidden
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY

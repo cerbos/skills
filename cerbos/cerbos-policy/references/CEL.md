@@ -215,7 +215,7 @@ If a derived role checks `has(P.attr.context.case_id)`, every test principal fix
 
 ### 5. DENY rule whose condition errors at runtime
 
-The most dangerous silent failure. A `EFFECT_DENY` condition that touches a missing attribute or mismatched type evaluates to false by default, the deny never fires, and an ALLOW takes over. Tests pass. See [Strict Evaluation](#strict-evaluation-v055) — validate with `--strict-evaluation` to catch it.
+The most dangerous silent failure. A `EFFECT_DENY` condition that touches a missing attribute or mismatched type evaluates to false by default, the deny never fires, and an ALLOW takes over. Tests pass. See [Strict Evaluation](#strict-evaluation-v055) — validate with `--strict-evaluation` to catch it. The same applies to JWT claims: without a token, `request.auxData.jwt` is an empty map, so `request.auxData.jwt.groups` errors. Guard claims with `has()` (`!has(request.auxData.jwt.groups) || !("finance" in request.auxData.jwt.groups)` in a DENY) and test a request with no `auxData`.
 
 ### 6. Regex-identifiable syntax mistakes
 

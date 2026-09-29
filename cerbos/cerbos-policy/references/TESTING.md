@@ -11,7 +11,7 @@ Rule of thumb: reach for the REPL the moment a condition behaves unexpectedly, a
 
 ```bash
 docker run --rm -it -v "$(pwd):/policies" -w /policies \
-  ghcr.io/cerbos/cerbosctl:latest repl
+  ghcr.io/cerbos/cerbosctl:0.55.0 repl
 ```
 
 Mount the policy directory so `:load` can read files. Exit with `:quit`.
@@ -108,7 +108,7 @@ Never stop at the REPL. Every confirmed behaviour belongs in a test file.
 
 ```bash
 docker run --rm -v "$(pwd):/policies" \
-  ghcr.io/cerbos/cerbos:latest compile /policies
+  ghcr.io/cerbos/cerbos:0.55.0 compile /policies
 ```
 
 `compile` runs both static validation and every `*_test.yaml` in the tree. Exit code 0 means policies compile and all tests pass.

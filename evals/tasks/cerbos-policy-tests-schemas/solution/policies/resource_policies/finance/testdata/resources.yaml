@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+resources:
+  ana_draft:
+    kind: expense
+    id: exp-1
+    attr:
+      owner: ana
+      department: finance
+      amount: 50
+      status: draft
+  ben_submitted:
+    kind: expense
+    id: exp-2
+    attr:
+      owner: ben
+      department: finance
+      amount: 150
+      status: submitted
+  ben_submitted_sales:
+    kind: expense
+    id: exp-2
+    attr:
+      owner: ben
+      department: sales
+      amount: 150
+      status: submitted
+  ben_submitted_250:
+    kind: expense
+    id: exp-2
+    attr:
+      owner: ben
+      department: finance
+      amount: 250
+      status: submitted
+  ana_draft_missing_amount:
+    kind: expense
+    id: exp-1
+    attr:
+      owner: ana
+      department: finance
+      status: draft
+  ana_draft_negative_amount:
+    kind: expense
+    id: exp-1
+    attr:
+      owner: ana
+      department: finance
+      amount: -5
+      status: draft
+  ana_draft_unknown_attr:
+    kind: expense
+    id: exp-1
+    attr:
+      owner: ana
+      department: finance
+      amount: 50
+      status: draft
+      tenant: acme
+  new_expense:
+    kind: expense
+    id: exp-new
+    attr:
+      owner: ana

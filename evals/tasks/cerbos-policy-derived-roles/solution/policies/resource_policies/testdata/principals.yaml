@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+principals:
+  owner:
+    id: alice
+    roles:
+    - employee
+    attr:
+      tenant: a
+      department: sales
+  reviewer:
+    id: bob
+    roles:
+    - reviewer
+    attr:
+      tenant: a
+      department: sales
+  overlap:
+    id: alice
+    roles:
+    - employee
+    - reviewer
+    attr:
+      tenant: a
+      department: sales
+  visitor:
+    id: alice
+    roles:
+    - visitor
+    attr:
+      tenant: a
+      department: sales
+  foreign_owner:
+    id: alice
+    roles:
+    - employee
+    attr:
+      tenant: b
+      department: sales
+  foreign_reviewer:
+    id: bob
+    roles:
+    - reviewer
+    attr:
+      tenant: b
+      department: sales
+  nonowner:
+    id: eve
+    roles:
+    - employee
+    attr:
+      tenant: a
+      department: sales
+  wrong_department:
+    id: bob
+    roles:
+    - reviewer
+    attr:
+      tenant: a
+      department: ops
+  spoofed:
+    id: alice
+    roles:
+    - employee_owner
+    - department_reviewer
+    attr:
+      tenant: a
+      department: sales

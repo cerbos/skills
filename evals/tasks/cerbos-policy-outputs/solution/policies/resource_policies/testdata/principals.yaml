@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+principals:
+  clara:
+    id: clara
+    roles:
+    - clerk
+    attr: {}
+  max:
+    id: max
+    roles:
+    - manager
+    attr:
+      approval_limit: 1000

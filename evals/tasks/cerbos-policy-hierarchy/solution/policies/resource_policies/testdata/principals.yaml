@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+principals:
+  viewer_eu:
+    id: vic
+    roles:
+    - viewer
+    attr:
+      region: eu
+  editor_eu:
+    id: eda
+    roles:
+    - editor
+    attr:
+      region: eu
+  editor_us:
+    id: eda
+    roles:
+    - editor
+    attr:
+      region: us
+  admin_eu:
+    id: ada
+    roles:
+    - admin
+    attr:
+      region: eu
+  editor_admin_eu:
+    id: ada
+    roles:
+    - editor
+    - admin
+    attr:
+      region: eu
+  contractor_eu:
+    id: cora
+    roles:
+    - contractor
+    attr:
+      region: eu

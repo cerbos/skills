@@ -56,16 +56,19 @@ struct(
 Define only what you need — Cerbos Synapse skips undefined functions.
 
 ```python
+PROFILES = {
+    "alice": {"department": "engineering", "role": "admin"},
+    "bob": {"department": "marketing", "role": "viewer"},
+}
+
 def augment_check_request(req):
-    attrs = {
-        "alice": {"department": "engineering", "role": "admin"},
-        "bob": {"department": "marketing", "role": "viewer"},
-    }
-    req.principal.attr = attrs.get(req.principal.id, {"department": "unknown", "role": "guest"})
+    profile = PROFILES.get(req.principal.id, {"department": "unknown", "role": "guest"})
+    for k in profile:
+        req.principal.attr[k] = profile[k]   # per-key writes keep caller-sent attributes
     return req
 ```
 
-Already-populated proto list/map fields: mutate in place, no rebuild needed. `roles` always populated for a valid principal, so appending is safe:
+Lists mutate in place too:
 
 ```python
 def augment_check_request(req):
@@ -73,7 +76,7 @@ def augment_check_request(req):
     return req
 ```
 
-In-place writes to an **empty or absent** field (e.g. `principal.attr` not sent) are silently dropped — assign the whole field instead. See `shared/starlark-environment.md`.
+In-place writes persist even when the field arrived empty or absent. See `shared/starlark-environment.md`.
 
 ### Enrichment from Data Source
 
@@ -87,12 +90,8 @@ def augment_check_request(req):
             # Use JSON round-trip to safely extract data fields from proto struct
             # (dir() on proto structs includes builtin methods that can't be converted)
             result = json.decode(json.encode(response.result))
-            # attr is usually empty here; in-place writes to an empty proto map
-            # are not persisted, so build the map and assign it as a whole.
-            attr = dict(req.principal.attr)
             for k in result:
-                attr[k] = result[k]
-            req.principal.attr = attr
+                req.principal.attr[k] = result[k]
     return req
 ```
 
@@ -105,15 +104,17 @@ load("json", "json")
 
 def augment_check_request(req):
     cache_key = "principal:" + req.principal.id
-    cached = cerbos.cache_get(cache_key)
-    if cached != None:
-        req.principal.attr = json.decode(cached)
-        return req
-
-    result = cerbos.data_source_lookup("userProfiles", req.principal.id)
-    if result != None:
-        req.principal.attr = result
-        cerbos.cache_set(cache_key, json.encode(result), time.minute * 5)
+    cached = cerbos.cache_get(cache_key)   # "" on a miss
+    if cached:
+        profile = json.decode(cached)
+    else:
+        response = cerbos.data_source_lookup("userProfile", req.principal.id)
+        if response == None or response.result == None:
+            return req
+        profile = json.decode(json.encode(response.result))
+        cerbos.cache_set(cache_key, json.encode(profile), time.minute * 5)
+    for k in profile:
+        req.principal.attr[k] = profile[k]
     return req
 ```
 

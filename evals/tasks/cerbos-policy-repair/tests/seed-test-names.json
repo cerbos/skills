@@ -1,0 +1,215 @@
+{
+  "employee views but cannot delete": [
+    {
+      "action": "delete",
+      "effect": "EFFECT_DENY",
+      "kind": "document",
+      "ownedByPrincipal": false,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "size_mb": 10
+      },
+      "roles": [
+        "employee"
+      ]
+    },
+    {
+      "action": "view",
+      "effect": "EFFECT_ALLOW",
+      "kind": "document",
+      "ownedByPrincipal": false,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "size_mb": 10
+      },
+      "roles": [
+        "employee"
+      ]
+    }
+  ],
+  "owner edits own document": [
+    {
+      "action": "edit",
+      "effect": "EFFECT_ALLOW",
+      "kind": "document",
+      "ownedByPrincipal": true,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "size_mb": 10
+      },
+      "roles": [
+        "employee"
+      ]
+    },
+    {
+      "action": "edit",
+      "effect": "EFFECT_DENY",
+      "kind": "document",
+      "ownedByPrincipal": false,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "size_mb": 10
+      },
+      "roles": [
+        "employee"
+      ]
+    }
+  ],
+  "employee download size limit": [
+    {
+      "action": "download",
+      "effect": "EFFECT_ALLOW",
+      "kind": "document",
+      "ownedByPrincipal": false,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "size_mb": 25
+      },
+      "roles": [
+        "employee"
+      ]
+    },
+    {
+      "action": "download",
+      "effect": "EFFECT_ALLOW",
+      "kind": "document",
+      "ownedByPrincipal": true,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "size_mb": 10
+      },
+      "roles": [
+        "employee"
+      ]
+    },
+    {
+      "action": "download",
+      "effect": "EFFECT_DENY",
+      "kind": "document",
+      "ownedByPrincipal": false,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "size_mb": 26
+      },
+      "roles": [
+        "employee"
+      ]
+    }
+  ],
+  "manager downloads and deletes large documents": [
+    {
+      "action": "delete",
+      "effect": "EFFECT_ALLOW",
+      "kind": "document",
+      "ownedByPrincipal": false,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "size_mb": 80
+      },
+      "roles": [
+        "manager"
+      ]
+    },
+    {
+      "action": "download",
+      "effect": "EFFECT_ALLOW",
+      "kind": "document",
+      "ownedByPrincipal": false,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "size_mb": 80
+      },
+      "roles": [
+        "manager"
+      ]
+    }
+  ],
+  "contractor works on public documents": [
+    {
+      "action": "download",
+      "effect": "EFFECT_DENY",
+      "kind": "document",
+      "ownedByPrincipal": true,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "classification": "public",
+        "size_mb": 5
+      },
+      "roles": [
+        "contractor"
+      ]
+    },
+    {
+      "action": "edit",
+      "effect": "EFFECT_ALLOW",
+      "kind": "document",
+      "ownedByPrincipal": true,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "classification": "public",
+        "size_mb": 5
+      },
+      "roles": [
+        "contractor"
+      ]
+    },
+    {
+      "action": "view",
+      "effect": "EFFECT_ALLOW",
+      "kind": "document",
+      "ownedByPrincipal": true,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "classification": "public",
+        "size_mb": 5
+      },
+      "roles": [
+        "contractor"
+      ]
+    }
+  ],
+  "contractor blocked from internal documents": [
+    {
+      "action": "edit",
+      "effect": "EFFECT_DENY",
+      "kind": "document",
+      "ownedByPrincipal": true,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "classification": "internal",
+        "size_mb": 5
+      },
+      "roles": [
+        "contractor"
+      ]
+    },
+    {
+      "action": "view",
+      "effect": "EFFECT_DENY",
+      "kind": "document",
+      "ownedByPrincipal": true,
+      "policyVersion": "default",
+      "principalAttr": {},
+      "resourceAttr": {
+        "classification": "internal",
+        "size_mb": 5
+      },
+      "roles": [
+        "contractor"
+      ]
+    }
+  ]
+}

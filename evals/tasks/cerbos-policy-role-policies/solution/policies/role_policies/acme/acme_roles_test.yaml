@@ -1,0 +1,226 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: AcmeRolesTest
+description: Acme custom roles against base policies.
+tests:
+- name: contractor on Acme document
+  input:
+    principals:
+    - contractor
+    resources:
+    - acme_doc
+    actions:
+    - view
+    - comment
+    - edit
+    - delete
+    - share
+  expected:
+  - principal: contractor
+    resource: acme_doc
+    actions:
+      view: EFFECT_ALLOW
+      comment: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      delete: EFFECT_DENY
+      share: EFFECT_DENY
+- name: contractor edits contractor-editable document
+  input:
+    principals:
+    - contractor
+    resources:
+    - acme_doc_editable
+    actions:
+    - edit
+  expected:
+  - principal: contractor
+    resource: acme_doc_editable
+    actions:
+      edit: EFFECT_ALLOW
+- name: contractor cannot edit when flag is false
+  input:
+    principals:
+    - contractor
+    resources:
+    - acme_doc_not_editable
+    actions:
+    - edit
+  expected:
+  - principal: contractor
+    resource: acme_doc_not_editable
+    actions:
+      edit: EFFECT_DENY
+- name: contractor cannot edit another department's editable document
+  input:
+    principals:
+    - contractor
+    resources:
+    - acme_doc_sales_editable
+    actions:
+    - view
+    - edit
+  expected:
+  - principal: contractor
+    resource: acme_doc_sales_editable
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+- name: contractor has no invoice access
+  input:
+    principals:
+    - contractor
+    resources:
+    - acme_invoice
+    actions:
+    - view
+    - approve
+  expected:
+  - principal: contractor
+    resource: acme_invoice
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+- name: contractor has no access outside Acme
+  input:
+    principals:
+    - contractor
+    resources:
+    - base_doc
+    actions:
+    - view
+    - edit
+  expected:
+  - principal: contractor
+    resource: base_doc
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+- name: auditor views Acme documents only
+  input:
+    principals:
+    - auditor
+    resources:
+    - acme_doc
+    actions:
+    - view
+    - edit
+    - comment
+  expected:
+  - principal: auditor
+    resource: acme_doc
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      comment: EFFECT_DENY
+- name: auditor views Acme invoices only
+  input:
+    principals:
+    - auditor
+    resources:
+    - acme_invoice
+    actions:
+    - view
+    - approve
+    - void
+  expected:
+  - principal: auditor
+    resource: acme_invoice
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      void: EFFECT_DENY
+- name: auditor has no access outside Acme
+  input:
+    principals:
+    - auditor
+    resources:
+    - base_invoice
+    actions:
+    - view
+  expected:
+  - principal: auditor
+    resource: base_invoice
+    actions:
+      view: EFFECT_DENY
+- name: Acme editor edits own department
+  input:
+    principals:
+    - editor
+    resources:
+    - acme_doc
+    actions:
+    - view
+    - comment
+    - edit
+    - delete
+  expected:
+  - principal: editor
+    resource: acme_doc
+    actions:
+      view: EFFECT_ALLOW
+      comment: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: Acme editor cannot edit another department
+  input:
+    principals:
+    - editor
+    resources:
+    - acme_doc_sales
+    actions:
+    - view
+    - edit
+  expected:
+  - principal: editor
+    resource: acme_doc_sales
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+- name: editor outside Acme edits any department
+  input:
+    principals:
+    - editor
+    resources:
+    - base_doc_sales
+    actions:
+    - edit
+  expected:
+  - principal: editor
+    resource: base_doc_sales
+    actions:
+      edit: EFFECT_ALLOW
+- name: admin keeps base permissions in Acme
+  input:
+    principals:
+    - admin
+    resources:
+    - acme_doc_sales
+    actions:
+    - view
+    - edit
+    - delete
+    - share
+  expected:
+  - principal: admin
+    resource: acme_doc_sales
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      delete: EFFECT_ALLOW
+      share: EFFECT_ALLOW
+- name: accountant keeps base permissions in Acme
+  input:
+    principals:
+    - accountant
+    resources:
+    - acme_invoice
+    actions:
+    - view
+    - approve
+    - void
+  expected:
+  - principal: accountant
+    resource: acme_invoice
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      void: EFFECT_DENY

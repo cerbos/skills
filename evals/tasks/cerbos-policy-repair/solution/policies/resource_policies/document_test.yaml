@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: DocumentTestSuite
+description: Document access regression tests.
+tests:
+  - name: employee views but cannot delete
+    input:
+      principals: ["eli"]
+      resources: ["erin_notes"]
+      actions: ["view", "delete"]
+    expected:
+      - principal: eli
+        resource: erin_notes
+        actions:
+          view: EFFECT_ALLOW
+          delete: EFFECT_DENY
+
+  - name: owner edits own document
+    input:
+      principals: ["erin", "eli"]
+      resources: ["erin_notes"]
+      actions: ["edit"]
+    expected:
+      - principal: erin
+        resource: erin_notes
+        actions:
+          edit: EFFECT_ALLOW
+      - principal: eli
+        resource: erin_notes
+        actions:
+          edit: EFFECT_DENY
+
+  - name: employee download size limit
+    input:
+      principals: ["erin"]
+      resources: ["erin_notes", "at_limit", "over_limit"]
+      actions: ["download"]
+    expected:
+      - principal: erin
+        resource: erin_notes
+        actions:
+          download: EFFECT_ALLOW
+      - principal: erin
+        resource: at_limit
+        actions:
+          download: EFFECT_ALLOW
+      - principal: erin
+        resource: over_limit
+        actions:
+          download: EFFECT_DENY
+
+  - name: manager downloads and deletes large documents
+    input:
+      principals: ["mia"]
+      resources: ["large_archive"]
+      actions: ["download", "delete"]
+    expected:
+      - principal: mia
+        resource: large_archive
+        actions:
+          download: EFFECT_ALLOW
+          delete: EFFECT_ALLOW
+
+  - name: contractor works on public documents
+    input:
+      principals: ["carl"]
+      resources: ["carl_public"]
+      actions: ["view", "edit", "download"]
+    expected:
+      - principal: carl
+        resource: carl_public
+        actions:
+          view: EFFECT_ALLOW
+          edit: EFFECT_ALLOW
+          download: EFFECT_DENY
+
+  - name: contractor blocked from internal documents
+    input:
+      principals: ["carl"]
+      resources: ["carl_internal"]
+      actions: ["view", "edit"]
+    expected:
+      - principal: carl
+        resource: carl_internal
+        actions:
+          view: EFFECT_DENY
+          edit: EFFECT_DENY
+
+  - name: contractor blocked from unclassified documents
+    input:
+      principals: ["carl", "erin"]
+      resources: ["carl_unclassified"]
+      actions: ["view", "edit"]
+    expected:
+      - principal: carl
+        resource: carl_unclassified
+        actions:
+          view: EFFECT_DENY
+          edit: EFFECT_DENY
+      - principal: erin
+        resource: carl_unclassified
+        actions:
+          view: EFFECT_ALLOW
+          edit: EFFECT_DENY

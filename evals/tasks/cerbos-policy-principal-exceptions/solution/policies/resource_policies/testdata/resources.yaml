@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+resources:
+  billing_ticket:
+    kind: ticket
+    id: t-1
+    attr:
+      team: billing
+  shipping_ticket:
+    kind: ticket
+    id: t-2
+    attr:
+      team: shipping

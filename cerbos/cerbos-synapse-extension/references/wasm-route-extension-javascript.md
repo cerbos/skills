@@ -20,8 +20,8 @@ TypeScript WASM modules handling custom HTTP endpoints on Cerbos Synapse; transl
 
 | Export | Purpose |
 |--------|---------|
-| `cerbosInit` | Called once when the extension is loaded |
-| `cerbosDeinit` | Called once when the extension is unloaded |
+| `cerbosInit` | Optional. Runs once per pooled instance, so several times per module; set up per-instance state |
+| `cerbosDeinit` | Optional. Runs on every instance at graceful shutdown; release per-instance resources |
 | `handleHTTPRoute` | Handle incoming HTTP request, return authorization result |
 | `handleCerbosResponse` | Map Cerbos response to HTTP response (Cerbos request mode only) |
 
@@ -83,7 +83,13 @@ TypeScript WASM modules handling custom HTTP endpoints on Cerbos Synapse; transl
 
 ### Cerbos Request (with callback)
 
-Return only `checkRequest` in a `cerbosMapping`. Cerbos Synapse calls PDP, then invokes `handleCerbosResponse`:
+Return a top-level `checkRequest`, not wrapped in `cerbosMapping`:
+
+```json
+{ "checkRequest": { "principal": { ... }, "resources": [ ... ] } }
+```
+
+Cerbos Synapse sends it to the PDP (through any configured proxy extensions), then invokes `handleCerbosResponse` with:
 
 ```json
 {
@@ -93,7 +99,7 @@ Return only `checkRequest` in a `cerbosMapping`. Cerbos Synapse calls PDP, then 
 }
 ```
 
-`handleCerbosResponse` must return an HTTP response JSON.
+`handleCerbosResponse` must return a bare HTTP response, `{"status", "headers", "body"}` with a base64 body, not wrapped in `httpResponse`. Echoing the input back fails the request with HTTP 500.
 
 ## Implementation
 
@@ -116,6 +122,7 @@ declare module "main" {
 ### src/index.ts
 
 ```ts
+/// <reference path="../node_modules/@extism/js-pdk/dist/index.d.ts" />
 // Copy from shared/typescript-wasm-common.md:
 // - encodeBase64 / decodeBase64 (Runtime Limitations)
 // - cacheGet / cacheSet / cacheSetIfNotExists / cacheDelete,
@@ -175,6 +182,17 @@ export function handleHTTPRoute() {
     return;
   }
 
+  // Callback mode: Synapse sends checkRequest to the PDP, then calls handleCerbosResponse.
+  if (req.path === "/ext/decision") {
+    Host.outputString(JSON.stringify({
+      checkRequest: {
+        principal: { id: "user-1", roles: ["user"] },
+        resources: [{ resource: { id: "doc-1", kind: "document" }, actions: ["view"] }],
+      },
+    }));
+    return;
+  }
+
   if (req.path === "/ext/cache-test") {
     const results: Record<string, unknown> = {};
 
@@ -227,8 +245,16 @@ export function handleHTTPRoute() {
   httpResponse(404, { error: "not found" });
 }
 
+// Callback mode: turn the PDP decision into the HTTP response.
 export function handleCerbosResponse() {
-  Host.outputString(Host.inputString());
+  const { cerbosResponse } = JSON.parse(Host.inputString());
+  const effects = Object.values(cerbosResponse.results?.[0]?.actions ?? {});
+  const allowed = effects.length > 0 && effects.every((e) => e === "EFFECT_ALLOW");
+  Host.outputString(JSON.stringify({
+    status: allowed ? 200 : 403,
+    headers: { "content-type": { values: ["application/json"] } },
+    body: encodeBase64(JSON.stringify({ allowed })),
+  }));
 }
 ```
 
@@ -251,6 +277,7 @@ extensions:
       routes:
         "/health": ["GET"]
         "/check": ["POST"]
+        "/decision": ["GET"]
         "/cache-test": ["POST"]
         "/check-direct": ["POST"]
         "/plan": ["POST"]

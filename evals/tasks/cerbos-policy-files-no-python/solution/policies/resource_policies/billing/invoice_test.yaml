@@ -1,0 +1,71 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: invoice access
+tests:
+- name: reader invoice decisions
+  input:
+    principals:
+    - reader
+    resources:
+    - invoice
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: reader
+    resource: invoice
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: editor invoice decisions
+  input:
+    principals:
+    - editor
+    resources:
+    - invoice
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: editor
+    resource: invoice
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: accountant invoice decisions
+  input:
+    principals:
+    - accountant
+    resources:
+    - invoice
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: accountant
+    resource: invoice
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: visitor invoice decisions
+  input:
+    principals:
+    - visitor
+    resources:
+    - invoice
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: visitor
+    resource: invoice
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY

@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: report
+  version: default
+  scope: globex
+  # Globex manages its own exceptions to the base policy.
+  scopePermissions: SCOPE_PERMISSIONS_OVERRIDE_PARENT
+  rules:
+    # Globex shares selected reports with outside staff.
+    - name: contractors-view-shared
+      actions: [view]
+      roles: [contractor]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: has(R.attr.contractor_visible) && R.attr.contractor_visible == true
+    # Globex retains every report.
+    - name: retain-reports
+      actions: [delete]
+      roles: ["*"]
+      effect: EFFECT_DENY

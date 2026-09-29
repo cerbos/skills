@@ -29,8 +29,8 @@ Export at least one (WASM export names are camelCase):
 | `augmentAuthzenEvaluationResponse` | Modify AuthZEN AccessEvaluation response before returning |
 | `augmentAuthzenEvaluationBatchRequest` | Modify AuthZEN AccessEvaluations (batch) request before PDP |
 | `augmentAuthzenEvaluationBatchResponse` | Modify AuthZEN AccessEvaluations (batch) response before returning |
-| `cerbosInit` | Called once on module load; optional lifecycle hook |
-| `cerbosDeinit` | Called once on module unload; optional lifecycle hook |
+| `cerbosInit` | Optional. Runs once per pooled instance, so several times per module; set up per-instance state |
+| `cerbosDeinit` | Optional. Runs on every instance at graceful shutdown; release per-instance resources |
 
 Each reads JSON input, writes JSON output. Return `0` success, non-zero failure.
 
@@ -42,8 +42,8 @@ Each reads JSON input, writes JSON output. Return `0` success, non-zero failure.
 {
   "principal": { "id": "...", "roles": ["..."], "attr": {} },
   "resources": [{ "resource": { "kind": "...", "id": "...", "attr": {} }, "actions": ["..."] }],
-  "auxData": { "jwt": { "token": "...", "keySetID": "..." } },
-  "requestID": "..."
+  "auxData": { "jwt": { "token": "...", "keySetId": "..." } },
+  "requestId": "..."
 }
 ```
 
@@ -63,10 +63,9 @@ import (
     "github.com/tidwall/sjson"
 )
 
-// Host import declarations (_cacheGet, _cacheSet, _cacheSetIfNotExists,
-// _cacheDelete, _dataSourceLookup) and the cacheGetHelper / cacheSetHelper /
-// cacheSetIfNotExistsHelper / cacheDeleteHelper / dataSourceLookupHelper
-// wrappers come from shared/go-wasm-common.md.
+// Host import declarations (_cacheGet, _cacheSet, _dataSourceLookup) and the
+// cacheGetHelper / cacheSetHelper / dataSourceLookupHelper wrappers come from
+// shared/go-wasm-common.md.
 
 var principals = map[string]map[string]string{
     "alice": {"department": "engineering", "role": "admin"},
@@ -84,7 +83,8 @@ func enrichPrincipal(input []byte) ([]byte, error) {
         }
     }
 
-    if dsAttrs, ok := dataSourceLookupHelper("userProfile", principalID); ok {
+    var dsAttrs map[string]any
+    if dataSourceLookupHelper("userProfile", principalID, &dsAttrs) && dsAttrs != nil {
         attrs = make(map[string]string, len(dsAttrs))
         for k, v := range dsAttrs {
             attrs[k] = fmt.Sprintf("%v", v)
@@ -113,15 +113,15 @@ func mergeAttrs(input []byte, attrs map[string]string) ([]byte, error) {
     return modified, nil
 }
 
+// Runs in every pooled instance: set up per-instance state here.
 //go:wasmexport cerbosInit
 func cerbosInit() int32 {
-    cacheSetIfNotExistsHelper("proxy:initialized", []byte("active"), 0)
     return 0
 }
 
+// Runs on every instance at graceful shutdown: release per-instance resources here.
 //go:wasmexport cerbosDeinit
 func cerbosDeinit() int32 {
-    cacheDeleteHelper("proxy:initialized")
     return 0
 }
 

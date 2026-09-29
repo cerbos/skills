@@ -103,7 +103,17 @@ struct(
 )
 ```
 
-Must return HTTP response struct.
+Return the HTTP response struct itself, not wrapped in `http_response` (a wrapped struct fails the request with HTTP 500):
+
+```python
+def handle_cerbos_response(res):
+    allowed = res.cerbos_response.results[0].actions["view"] == "EFFECT_ALLOW"
+    return struct(
+        status = 200 if allowed else 403,
+        headers = {"content-type": struct(values = ["application/json"])},
+        body = '{"allowed": %s}' % ("true" if allowed else "false"),
+    )
+```
 
 ## Implementation
 
@@ -176,7 +186,7 @@ def handle_http_route(req):
 
 ## Configuration
 
-Routes are served under the `/ext/` prefix.
+Routes are served under the `/ext/` prefix. Pattern syntax, methods and overlap rules: `call-mapper.md` (Route patterns).
 
 ```yaml
 extensions:

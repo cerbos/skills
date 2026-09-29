@@ -1,0 +1,5985 @@
+{
+  "principals": {
+    "viewer_eu": {
+      "id": "hidden-viewer",
+      "roles": [
+        "viewer"
+      ],
+      "attr": {
+        "region": "eu"
+      }
+    },
+    "viewer_us": {
+      "id": "hidden-viewer",
+      "roles": [
+        "viewer"
+      ],
+      "attr": {
+        "region": "us"
+      }
+    },
+    "editor_eu": {
+      "id": "hidden-editor",
+      "roles": [
+        "editor"
+      ],
+      "attr": {
+        "region": "eu"
+      }
+    },
+    "editor_us": {
+      "id": "hidden-editor",
+      "roles": [
+        "editor"
+      ],
+      "attr": {
+        "region": "us"
+      }
+    },
+    "admin_eu": {
+      "id": "hidden-admin",
+      "roles": [
+        "admin"
+      ],
+      "attr": {
+        "region": "eu"
+      }
+    },
+    "admin_us": {
+      "id": "hidden-admin",
+      "roles": [
+        "admin"
+      ],
+      "attr": {
+        "region": "us"
+      }
+    },
+    "contractor_eu": {
+      "id": "hidden-contractor",
+      "roles": [
+        "contractor"
+      ],
+      "attr": {
+        "region": "eu"
+      }
+    },
+    "contractor_us": {
+      "id": "hidden-contractor",
+      "roles": [
+        "contractor"
+      ],
+      "attr": {
+        "region": "us"
+      }
+    },
+    "editor_admin_eu": {
+      "id": "hidden-editor_admin",
+      "roles": [
+        "editor",
+        "admin"
+      ],
+      "attr": {
+        "region": "eu"
+      }
+    },
+    "editor_admin_us": {
+      "id": "hidden-editor_admin",
+      "roles": [
+        "editor",
+        "admin"
+      ],
+      "attr": {
+        "region": "us"
+      }
+    },
+    "viewer_contractor_eu": {
+      "id": "hidden-viewer_contractor",
+      "roles": [
+        "viewer",
+        "contractor"
+      ],
+      "attr": {
+        "region": "eu"
+      }
+    },
+    "viewer_contractor_us": {
+      "id": "hidden-viewer_contractor",
+      "roles": [
+        "viewer",
+        "contractor"
+      ],
+      "attr": {
+        "region": "us"
+      }
+    },
+    "auditor_eu": {
+      "id": "hidden-auditor",
+      "roles": [
+        "auditor"
+      ],
+      "attr": {
+        "region": "eu"
+      }
+    },
+    "auditor_us": {
+      "id": "hidden-auditor",
+      "roles": [
+        "auditor"
+      ],
+      "attr": {
+        "region": "us"
+      }
+    }
+  },
+  "resources": {
+    "base_draft_absent": {
+      "kind": "report",
+      "id": "hidden-base_draft_absent",
+      "attr": {
+        "status": "draft"
+      }
+    },
+    "base_draft_true": {
+      "kind": "report",
+      "id": "hidden-base_draft_true",
+      "attr": {
+        "status": "draft",
+        "contractor_visible": true
+      }
+    },
+    "base_draft_false": {
+      "kind": "report",
+      "id": "hidden-base_draft_false",
+      "attr": {
+        "status": "draft",
+        "contractor_visible": false
+      }
+    },
+    "base_published_absent": {
+      "kind": "report",
+      "id": "hidden-base_published_absent",
+      "attr": {
+        "status": "published"
+      }
+    },
+    "base_published_true": {
+      "kind": "report",
+      "id": "hidden-base_published_true",
+      "attr": {
+        "status": "published",
+        "contractor_visible": true
+      }
+    },
+    "base_published_false": {
+      "kind": "report",
+      "id": "hidden-base_published_false",
+      "attr": {
+        "status": "published",
+        "contractor_visible": false
+      }
+    },
+    "base_archived_absent": {
+      "kind": "report",
+      "id": "hidden-base_archived_absent",
+      "attr": {
+        "status": "archived"
+      }
+    },
+    "base_archived_true": {
+      "kind": "report",
+      "id": "hidden-base_archived_true",
+      "attr": {
+        "status": "archived",
+        "contractor_visible": true
+      }
+    },
+    "base_archived_false": {
+      "kind": "report",
+      "id": "hidden-base_archived_false",
+      "attr": {
+        "status": "archived",
+        "contractor_visible": false
+      }
+    },
+    "acme_draft_absent": {
+      "kind": "report",
+      "id": "hidden-acme_draft_absent",
+      "attr": {
+        "status": "draft"
+      },
+      "scope": "acme"
+    },
+    "acme_draft_true": {
+      "kind": "report",
+      "id": "hidden-acme_draft_true",
+      "attr": {
+        "status": "draft",
+        "contractor_visible": true
+      },
+      "scope": "acme"
+    },
+    "acme_draft_false": {
+      "kind": "report",
+      "id": "hidden-acme_draft_false",
+      "attr": {
+        "status": "draft",
+        "contractor_visible": false
+      },
+      "scope": "acme"
+    },
+    "acme_published_absent": {
+      "kind": "report",
+      "id": "hidden-acme_published_absent",
+      "attr": {
+        "status": "published"
+      },
+      "scope": "acme"
+    },
+    "acme_published_true": {
+      "kind": "report",
+      "id": "hidden-acme_published_true",
+      "attr": {
+        "status": "published",
+        "contractor_visible": true
+      },
+      "scope": "acme"
+    },
+    "acme_published_false": {
+      "kind": "report",
+      "id": "hidden-acme_published_false",
+      "attr": {
+        "status": "published",
+        "contractor_visible": false
+      },
+      "scope": "acme"
+    },
+    "acme_archived_absent": {
+      "kind": "report",
+      "id": "hidden-acme_archived_absent",
+      "attr": {
+        "status": "archived"
+      },
+      "scope": "acme"
+    },
+    "acme_archived_true": {
+      "kind": "report",
+      "id": "hidden-acme_archived_true",
+      "attr": {
+        "status": "archived",
+        "contractor_visible": true
+      },
+      "scope": "acme"
+    },
+    "acme_archived_false": {
+      "kind": "report",
+      "id": "hidden-acme_archived_false",
+      "attr": {
+        "status": "archived",
+        "contractor_visible": false
+      },
+      "scope": "acme"
+    },
+    "acme_eu_draft_absent": {
+      "kind": "report",
+      "id": "hidden-acme_eu_draft_absent",
+      "attr": {
+        "status": "draft"
+      },
+      "scope": "acme.eu"
+    },
+    "acme_eu_draft_true": {
+      "kind": "report",
+      "id": "hidden-acme_eu_draft_true",
+      "attr": {
+        "status": "draft",
+        "contractor_visible": true
+      },
+      "scope": "acme.eu"
+    },
+    "acme_eu_draft_false": {
+      "kind": "report",
+      "id": "hidden-acme_eu_draft_false",
+      "attr": {
+        "status": "draft",
+        "contractor_visible": false
+      },
+      "scope": "acme.eu"
+    },
+    "acme_eu_published_absent": {
+      "kind": "report",
+      "id": "hidden-acme_eu_published_absent",
+      "attr": {
+        "status": "published"
+      },
+      "scope": "acme.eu"
+    },
+    "acme_eu_published_true": {
+      "kind": "report",
+      "id": "hidden-acme_eu_published_true",
+      "attr": {
+        "status": "published",
+        "contractor_visible": true
+      },
+      "scope": "acme.eu"
+    },
+    "acme_eu_published_false": {
+      "kind": "report",
+      "id": "hidden-acme_eu_published_false",
+      "attr": {
+        "status": "published",
+        "contractor_visible": false
+      },
+      "scope": "acme.eu"
+    },
+    "acme_eu_archived_absent": {
+      "kind": "report",
+      "id": "hidden-acme_eu_archived_absent",
+      "attr": {
+        "status": "archived"
+      },
+      "scope": "acme.eu"
+    },
+    "acme_eu_archived_true": {
+      "kind": "report",
+      "id": "hidden-acme_eu_archived_true",
+      "attr": {
+        "status": "archived",
+        "contractor_visible": true
+      },
+      "scope": "acme.eu"
+    },
+    "acme_eu_archived_false": {
+      "kind": "report",
+      "id": "hidden-acme_eu_archived_false",
+      "attr": {
+        "status": "archived",
+        "contractor_visible": false
+      },
+      "scope": "acme.eu"
+    },
+    "globex_draft_absent": {
+      "kind": "report",
+      "id": "hidden-globex_draft_absent",
+      "attr": {
+        "status": "draft"
+      },
+      "scope": "globex"
+    },
+    "globex_draft_true": {
+      "kind": "report",
+      "id": "hidden-globex_draft_true",
+      "attr": {
+        "status": "draft",
+        "contractor_visible": true
+      },
+      "scope": "globex"
+    },
+    "globex_draft_false": {
+      "kind": "report",
+      "id": "hidden-globex_draft_false",
+      "attr": {
+        "status": "draft",
+        "contractor_visible": false
+      },
+      "scope": "globex"
+    },
+    "globex_published_absent": {
+      "kind": "report",
+      "id": "hidden-globex_published_absent",
+      "attr": {
+        "status": "published"
+      },
+      "scope": "globex"
+    },
+    "globex_published_true": {
+      "kind": "report",
+      "id": "hidden-globex_published_true",
+      "attr": {
+        "status": "published",
+        "contractor_visible": true
+      },
+      "scope": "globex"
+    },
+    "globex_published_false": {
+      "kind": "report",
+      "id": "hidden-globex_published_false",
+      "attr": {
+        "status": "published",
+        "contractor_visible": false
+      },
+      "scope": "globex"
+    },
+    "globex_archived_absent": {
+      "kind": "report",
+      "id": "hidden-globex_archived_absent",
+      "attr": {
+        "status": "archived"
+      },
+      "scope": "globex"
+    },
+    "globex_archived_true": {
+      "kind": "report",
+      "id": "hidden-globex_archived_true",
+      "attr": {
+        "status": "archived",
+        "contractor_visible": true
+      },
+      "scope": "globex"
+    },
+    "globex_archived_false": {
+      "kind": "report",
+      "id": "hidden-globex_archived_false",
+      "attr": {
+        "status": "archived",
+        "contractor_visible": false
+      },
+      "scope": "globex"
+    }
+  },
+  "cases": [
+    {
+      "name": "viewer_eu:base_draft_absent",
+      "principal": "viewer_eu",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:base_draft_true",
+      "principal": "viewer_eu",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:base_draft_false",
+      "principal": "viewer_eu",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:base_published_absent",
+      "principal": "viewer_eu",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:base_published_true",
+      "principal": "viewer_eu",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:base_published_false",
+      "principal": "viewer_eu",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:base_archived_absent",
+      "principal": "viewer_eu",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:base_archived_true",
+      "principal": "viewer_eu",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:base_archived_false",
+      "principal": "viewer_eu",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_draft_absent",
+      "principal": "viewer_eu",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_draft_true",
+      "principal": "viewer_eu",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_draft_false",
+      "principal": "viewer_eu",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_published_absent",
+      "principal": "viewer_eu",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_published_true",
+      "principal": "viewer_eu",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_published_false",
+      "principal": "viewer_eu",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_archived_absent",
+      "principal": "viewer_eu",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_archived_true",
+      "principal": "viewer_eu",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_archived_false",
+      "principal": "viewer_eu",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_eu_draft_absent",
+      "principal": "viewer_eu",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_eu_draft_true",
+      "principal": "viewer_eu",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_eu_draft_false",
+      "principal": "viewer_eu",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_eu_published_absent",
+      "principal": "viewer_eu",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_eu_published_true",
+      "principal": "viewer_eu",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_eu_published_false",
+      "principal": "viewer_eu",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_eu_archived_absent",
+      "principal": "viewer_eu",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_eu_archived_true",
+      "principal": "viewer_eu",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:acme_eu_archived_false",
+      "principal": "viewer_eu",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:globex_draft_absent",
+      "principal": "viewer_eu",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:globex_draft_true",
+      "principal": "viewer_eu",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:globex_draft_false",
+      "principal": "viewer_eu",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:globex_published_absent",
+      "principal": "viewer_eu",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:globex_published_true",
+      "principal": "viewer_eu",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:globex_published_false",
+      "principal": "viewer_eu",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:globex_archived_absent",
+      "principal": "viewer_eu",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:globex_archived_true",
+      "principal": "viewer_eu",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_eu:globex_archived_false",
+      "principal": "viewer_eu",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:base_draft_absent",
+      "principal": "viewer_us",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:base_draft_true",
+      "principal": "viewer_us",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:base_draft_false",
+      "principal": "viewer_us",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:base_published_absent",
+      "principal": "viewer_us",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:base_published_true",
+      "principal": "viewer_us",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:base_published_false",
+      "principal": "viewer_us",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:base_archived_absent",
+      "principal": "viewer_us",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:base_archived_true",
+      "principal": "viewer_us",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:base_archived_false",
+      "principal": "viewer_us",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_draft_absent",
+      "principal": "viewer_us",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_draft_true",
+      "principal": "viewer_us",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_draft_false",
+      "principal": "viewer_us",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_published_absent",
+      "principal": "viewer_us",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_published_true",
+      "principal": "viewer_us",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_published_false",
+      "principal": "viewer_us",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_archived_absent",
+      "principal": "viewer_us",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_archived_true",
+      "principal": "viewer_us",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_archived_false",
+      "principal": "viewer_us",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_eu_draft_absent",
+      "principal": "viewer_us",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_eu_draft_true",
+      "principal": "viewer_us",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_eu_draft_false",
+      "principal": "viewer_us",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_eu_published_absent",
+      "principal": "viewer_us",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_eu_published_true",
+      "principal": "viewer_us",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_eu_published_false",
+      "principal": "viewer_us",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_eu_archived_absent",
+      "principal": "viewer_us",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_eu_archived_true",
+      "principal": "viewer_us",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:acme_eu_archived_false",
+      "principal": "viewer_us",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:globex_draft_absent",
+      "principal": "viewer_us",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:globex_draft_true",
+      "principal": "viewer_us",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:globex_draft_false",
+      "principal": "viewer_us",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:globex_published_absent",
+      "principal": "viewer_us",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:globex_published_true",
+      "principal": "viewer_us",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:globex_published_false",
+      "principal": "viewer_us",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:globex_archived_absent",
+      "principal": "viewer_us",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:globex_archived_true",
+      "principal": "viewer_us",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_us:globex_archived_false",
+      "principal": "viewer_us",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:base_draft_absent",
+      "principal": "editor_eu",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:base_draft_true",
+      "principal": "editor_eu",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:base_draft_false",
+      "principal": "editor_eu",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:base_published_absent",
+      "principal": "editor_eu",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:base_published_true",
+      "principal": "editor_eu",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:base_published_false",
+      "principal": "editor_eu",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:base_archived_absent",
+      "principal": "editor_eu",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:base_archived_true",
+      "principal": "editor_eu",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:base_archived_false",
+      "principal": "editor_eu",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_draft_absent",
+      "principal": "editor_eu",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_draft_true",
+      "principal": "editor_eu",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_draft_false",
+      "principal": "editor_eu",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_published_absent",
+      "principal": "editor_eu",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_published_true",
+      "principal": "editor_eu",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_published_false",
+      "principal": "editor_eu",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_archived_absent",
+      "principal": "editor_eu",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_archived_true",
+      "principal": "editor_eu",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_archived_false",
+      "principal": "editor_eu",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_eu_draft_absent",
+      "principal": "editor_eu",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_eu_draft_true",
+      "principal": "editor_eu",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_eu_draft_false",
+      "principal": "editor_eu",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_eu_published_absent",
+      "principal": "editor_eu",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_eu_published_true",
+      "principal": "editor_eu",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_eu_published_false",
+      "principal": "editor_eu",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_eu_archived_absent",
+      "principal": "editor_eu",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_eu_archived_true",
+      "principal": "editor_eu",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:acme_eu_archived_false",
+      "principal": "editor_eu",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:globex_draft_absent",
+      "principal": "editor_eu",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:globex_draft_true",
+      "principal": "editor_eu",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:globex_draft_false",
+      "principal": "editor_eu",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:globex_published_absent",
+      "principal": "editor_eu",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:globex_published_true",
+      "principal": "editor_eu",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:globex_published_false",
+      "principal": "editor_eu",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:globex_archived_absent",
+      "principal": "editor_eu",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:globex_archived_true",
+      "principal": "editor_eu",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_eu:globex_archived_false",
+      "principal": "editor_eu",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:base_draft_absent",
+      "principal": "editor_us",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:base_draft_true",
+      "principal": "editor_us",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:base_draft_false",
+      "principal": "editor_us",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:base_published_absent",
+      "principal": "editor_us",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:base_published_true",
+      "principal": "editor_us",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:base_published_false",
+      "principal": "editor_us",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:base_archived_absent",
+      "principal": "editor_us",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:base_archived_true",
+      "principal": "editor_us",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:base_archived_false",
+      "principal": "editor_us",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_draft_absent",
+      "principal": "editor_us",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_draft_true",
+      "principal": "editor_us",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_draft_false",
+      "principal": "editor_us",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_published_absent",
+      "principal": "editor_us",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_published_true",
+      "principal": "editor_us",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_published_false",
+      "principal": "editor_us",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_archived_absent",
+      "principal": "editor_us",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_archived_true",
+      "principal": "editor_us",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_archived_false",
+      "principal": "editor_us",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_eu_draft_absent",
+      "principal": "editor_us",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_eu_draft_true",
+      "principal": "editor_us",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_eu_draft_false",
+      "principal": "editor_us",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_eu_published_absent",
+      "principal": "editor_us",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_eu_published_true",
+      "principal": "editor_us",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_eu_published_false",
+      "principal": "editor_us",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_eu_archived_absent",
+      "principal": "editor_us",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_eu_archived_true",
+      "principal": "editor_us",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:acme_eu_archived_false",
+      "principal": "editor_us",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:globex_draft_absent",
+      "principal": "editor_us",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:globex_draft_true",
+      "principal": "editor_us",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:globex_draft_false",
+      "principal": "editor_us",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:globex_published_absent",
+      "principal": "editor_us",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:globex_published_true",
+      "principal": "editor_us",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:globex_published_false",
+      "principal": "editor_us",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:globex_archived_absent",
+      "principal": "editor_us",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:globex_archived_true",
+      "principal": "editor_us",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_us:globex_archived_false",
+      "principal": "editor_us",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:base_draft_absent",
+      "principal": "admin_eu",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:base_draft_true",
+      "principal": "admin_eu",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:base_draft_false",
+      "principal": "admin_eu",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:base_published_absent",
+      "principal": "admin_eu",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:base_published_true",
+      "principal": "admin_eu",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:base_published_false",
+      "principal": "admin_eu",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:base_archived_absent",
+      "principal": "admin_eu",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:base_archived_true",
+      "principal": "admin_eu",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:base_archived_false",
+      "principal": "admin_eu",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_draft_absent",
+      "principal": "admin_eu",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_draft_true",
+      "principal": "admin_eu",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_draft_false",
+      "principal": "admin_eu",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_published_absent",
+      "principal": "admin_eu",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_published_true",
+      "principal": "admin_eu",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_published_false",
+      "principal": "admin_eu",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_archived_absent",
+      "principal": "admin_eu",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_archived_true",
+      "principal": "admin_eu",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_archived_false",
+      "principal": "admin_eu",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_eu_draft_absent",
+      "principal": "admin_eu",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_eu_draft_true",
+      "principal": "admin_eu",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_eu_draft_false",
+      "principal": "admin_eu",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_eu_published_absent",
+      "principal": "admin_eu",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_eu_published_true",
+      "principal": "admin_eu",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_eu_published_false",
+      "principal": "admin_eu",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_eu_archived_absent",
+      "principal": "admin_eu",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_eu_archived_true",
+      "principal": "admin_eu",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:acme_eu_archived_false",
+      "principal": "admin_eu",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:globex_draft_absent",
+      "principal": "admin_eu",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:globex_draft_true",
+      "principal": "admin_eu",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:globex_draft_false",
+      "principal": "admin_eu",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:globex_published_absent",
+      "principal": "admin_eu",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:globex_published_true",
+      "principal": "admin_eu",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:globex_published_false",
+      "principal": "admin_eu",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:globex_archived_absent",
+      "principal": "admin_eu",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:globex_archived_true",
+      "principal": "admin_eu",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_eu:globex_archived_false",
+      "principal": "admin_eu",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:base_draft_absent",
+      "principal": "admin_us",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:base_draft_true",
+      "principal": "admin_us",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:base_draft_false",
+      "principal": "admin_us",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:base_published_absent",
+      "principal": "admin_us",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:base_published_true",
+      "principal": "admin_us",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:base_published_false",
+      "principal": "admin_us",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:base_archived_absent",
+      "principal": "admin_us",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:base_archived_true",
+      "principal": "admin_us",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:base_archived_false",
+      "principal": "admin_us",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_draft_absent",
+      "principal": "admin_us",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_draft_true",
+      "principal": "admin_us",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_draft_false",
+      "principal": "admin_us",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_published_absent",
+      "principal": "admin_us",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_published_true",
+      "principal": "admin_us",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_published_false",
+      "principal": "admin_us",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_archived_absent",
+      "principal": "admin_us",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_archived_true",
+      "principal": "admin_us",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_archived_false",
+      "principal": "admin_us",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_eu_draft_absent",
+      "principal": "admin_us",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_eu_draft_true",
+      "principal": "admin_us",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_eu_draft_false",
+      "principal": "admin_us",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_eu_published_absent",
+      "principal": "admin_us",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_eu_published_true",
+      "principal": "admin_us",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_eu_published_false",
+      "principal": "admin_us",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_eu_archived_absent",
+      "principal": "admin_us",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_eu_archived_true",
+      "principal": "admin_us",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:acme_eu_archived_false",
+      "principal": "admin_us",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:globex_draft_absent",
+      "principal": "admin_us",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:globex_draft_true",
+      "principal": "admin_us",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:globex_draft_false",
+      "principal": "admin_us",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:globex_published_absent",
+      "principal": "admin_us",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:globex_published_true",
+      "principal": "admin_us",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:globex_published_false",
+      "principal": "admin_us",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:globex_archived_absent",
+      "principal": "admin_us",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:globex_archived_true",
+      "principal": "admin_us",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "admin_us:globex_archived_false",
+      "principal": "admin_us",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:base_draft_absent",
+      "principal": "contractor_eu",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:base_draft_true",
+      "principal": "contractor_eu",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:base_draft_false",
+      "principal": "contractor_eu",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:base_published_absent",
+      "principal": "contractor_eu",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:base_published_true",
+      "principal": "contractor_eu",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:base_published_false",
+      "principal": "contractor_eu",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:base_archived_absent",
+      "principal": "contractor_eu",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:base_archived_true",
+      "principal": "contractor_eu",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:base_archived_false",
+      "principal": "contractor_eu",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_draft_absent",
+      "principal": "contractor_eu",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_draft_true",
+      "principal": "contractor_eu",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_draft_false",
+      "principal": "contractor_eu",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_published_absent",
+      "principal": "contractor_eu",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_published_true",
+      "principal": "contractor_eu",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_published_false",
+      "principal": "contractor_eu",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_archived_absent",
+      "principal": "contractor_eu",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_archived_true",
+      "principal": "contractor_eu",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_archived_false",
+      "principal": "contractor_eu",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_eu_draft_absent",
+      "principal": "contractor_eu",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_eu_draft_true",
+      "principal": "contractor_eu",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_eu_draft_false",
+      "principal": "contractor_eu",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_eu_published_absent",
+      "principal": "contractor_eu",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_eu_published_true",
+      "principal": "contractor_eu",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_eu_published_false",
+      "principal": "contractor_eu",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_eu_archived_absent",
+      "principal": "contractor_eu",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_eu_archived_true",
+      "principal": "contractor_eu",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:acme_eu_archived_false",
+      "principal": "contractor_eu",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:globex_draft_absent",
+      "principal": "contractor_eu",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:globex_draft_true",
+      "principal": "contractor_eu",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:globex_draft_false",
+      "principal": "contractor_eu",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:globex_published_absent",
+      "principal": "contractor_eu",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:globex_published_true",
+      "principal": "contractor_eu",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:globex_published_false",
+      "principal": "contractor_eu",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:globex_archived_absent",
+      "principal": "contractor_eu",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:globex_archived_true",
+      "principal": "contractor_eu",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_eu:globex_archived_false",
+      "principal": "contractor_eu",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:base_draft_absent",
+      "principal": "contractor_us",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:base_draft_true",
+      "principal": "contractor_us",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:base_draft_false",
+      "principal": "contractor_us",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:base_published_absent",
+      "principal": "contractor_us",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:base_published_true",
+      "principal": "contractor_us",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:base_published_false",
+      "principal": "contractor_us",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:base_archived_absent",
+      "principal": "contractor_us",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:base_archived_true",
+      "principal": "contractor_us",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:base_archived_false",
+      "principal": "contractor_us",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_draft_absent",
+      "principal": "contractor_us",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_draft_true",
+      "principal": "contractor_us",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_draft_false",
+      "principal": "contractor_us",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_published_absent",
+      "principal": "contractor_us",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_published_true",
+      "principal": "contractor_us",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_published_false",
+      "principal": "contractor_us",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_archived_absent",
+      "principal": "contractor_us",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_archived_true",
+      "principal": "contractor_us",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_archived_false",
+      "principal": "contractor_us",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_eu_draft_absent",
+      "principal": "contractor_us",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_eu_draft_true",
+      "principal": "contractor_us",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_eu_draft_false",
+      "principal": "contractor_us",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_eu_published_absent",
+      "principal": "contractor_us",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_eu_published_true",
+      "principal": "contractor_us",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_eu_published_false",
+      "principal": "contractor_us",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_eu_archived_absent",
+      "principal": "contractor_us",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_eu_archived_true",
+      "principal": "contractor_us",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:acme_eu_archived_false",
+      "principal": "contractor_us",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:globex_draft_absent",
+      "principal": "contractor_us",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:globex_draft_true",
+      "principal": "contractor_us",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:globex_draft_false",
+      "principal": "contractor_us",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:globex_published_absent",
+      "principal": "contractor_us",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:globex_published_true",
+      "principal": "contractor_us",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:globex_published_false",
+      "principal": "contractor_us",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:globex_archived_absent",
+      "principal": "contractor_us",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:globex_archived_true",
+      "principal": "contractor_us",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "contractor_us:globex_archived_false",
+      "principal": "contractor_us",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:base_draft_absent",
+      "principal": "editor_admin_eu",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:base_draft_true",
+      "principal": "editor_admin_eu",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:base_draft_false",
+      "principal": "editor_admin_eu",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:base_published_absent",
+      "principal": "editor_admin_eu",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:base_published_true",
+      "principal": "editor_admin_eu",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:base_published_false",
+      "principal": "editor_admin_eu",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:base_archived_absent",
+      "principal": "editor_admin_eu",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:base_archived_true",
+      "principal": "editor_admin_eu",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:base_archived_false",
+      "principal": "editor_admin_eu",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_draft_absent",
+      "principal": "editor_admin_eu",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_draft_true",
+      "principal": "editor_admin_eu",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_draft_false",
+      "principal": "editor_admin_eu",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_published_absent",
+      "principal": "editor_admin_eu",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_published_true",
+      "principal": "editor_admin_eu",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_published_false",
+      "principal": "editor_admin_eu",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_archived_absent",
+      "principal": "editor_admin_eu",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_archived_true",
+      "principal": "editor_admin_eu",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_archived_false",
+      "principal": "editor_admin_eu",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_eu_draft_absent",
+      "principal": "editor_admin_eu",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_eu_draft_true",
+      "principal": "editor_admin_eu",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_eu_draft_false",
+      "principal": "editor_admin_eu",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_eu_published_absent",
+      "principal": "editor_admin_eu",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_eu_published_true",
+      "principal": "editor_admin_eu",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_eu_published_false",
+      "principal": "editor_admin_eu",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_eu_archived_absent",
+      "principal": "editor_admin_eu",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_eu_archived_true",
+      "principal": "editor_admin_eu",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:acme_eu_archived_false",
+      "principal": "editor_admin_eu",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:globex_draft_absent",
+      "principal": "editor_admin_eu",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:globex_draft_true",
+      "principal": "editor_admin_eu",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:globex_draft_false",
+      "principal": "editor_admin_eu",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:globex_published_absent",
+      "principal": "editor_admin_eu",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:globex_published_true",
+      "principal": "editor_admin_eu",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:globex_published_false",
+      "principal": "editor_admin_eu",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:globex_archived_absent",
+      "principal": "editor_admin_eu",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:globex_archived_true",
+      "principal": "editor_admin_eu",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_eu:globex_archived_false",
+      "principal": "editor_admin_eu",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:base_draft_absent",
+      "principal": "editor_admin_us",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:base_draft_true",
+      "principal": "editor_admin_us",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:base_draft_false",
+      "principal": "editor_admin_us",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:base_published_absent",
+      "principal": "editor_admin_us",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:base_published_true",
+      "principal": "editor_admin_us",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:base_published_false",
+      "principal": "editor_admin_us",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:base_archived_absent",
+      "principal": "editor_admin_us",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:base_archived_true",
+      "principal": "editor_admin_us",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:base_archived_false",
+      "principal": "editor_admin_us",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_draft_absent",
+      "principal": "editor_admin_us",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_draft_true",
+      "principal": "editor_admin_us",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_draft_false",
+      "principal": "editor_admin_us",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_published_absent",
+      "principal": "editor_admin_us",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_published_true",
+      "principal": "editor_admin_us",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_published_false",
+      "principal": "editor_admin_us",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_archived_absent",
+      "principal": "editor_admin_us",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_archived_true",
+      "principal": "editor_admin_us",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_archived_false",
+      "principal": "editor_admin_us",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_ALLOW",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_eu_draft_absent",
+      "principal": "editor_admin_us",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_eu_draft_true",
+      "principal": "editor_admin_us",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_eu_draft_false",
+      "principal": "editor_admin_us",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_eu_published_absent",
+      "principal": "editor_admin_us",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_eu_published_true",
+      "principal": "editor_admin_us",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_eu_published_false",
+      "principal": "editor_admin_us",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_eu_archived_absent",
+      "principal": "editor_admin_us",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_eu_archived_true",
+      "principal": "editor_admin_us",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:acme_eu_archived_false",
+      "principal": "editor_admin_us",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:globex_draft_absent",
+      "principal": "editor_admin_us",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:globex_draft_true",
+      "principal": "editor_admin_us",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:globex_draft_false",
+      "principal": "editor_admin_us",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:globex_published_absent",
+      "principal": "editor_admin_us",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:globex_published_true",
+      "principal": "editor_admin_us",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:globex_published_false",
+      "principal": "editor_admin_us",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:globex_archived_absent",
+      "principal": "editor_admin_us",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:globex_archived_true",
+      "principal": "editor_admin_us",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "editor_admin_us:globex_archived_false",
+      "principal": "editor_admin_us",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:base_draft_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:base_draft_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:base_draft_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:base_published_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:base_published_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:base_published_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:base_archived_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:base_archived_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:base_archived_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_draft_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_draft_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_draft_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_published_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_published_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_published_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_archived_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_archived_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_archived_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_eu_draft_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_eu_draft_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_eu_draft_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_eu_published_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_eu_published_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_eu_published_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_eu_archived_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_eu_archived_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:acme_eu_archived_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:globex_draft_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:globex_draft_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:globex_draft_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:globex_published_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:globex_published_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:globex_published_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:globex_archived_absent",
+      "principal": "viewer_contractor_eu",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:globex_archived_true",
+      "principal": "viewer_contractor_eu",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_eu:globex_archived_false",
+      "principal": "viewer_contractor_eu",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:base_draft_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:base_draft_true",
+      "principal": "viewer_contractor_us",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:base_draft_false",
+      "principal": "viewer_contractor_us",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:base_published_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:base_published_true",
+      "principal": "viewer_contractor_us",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:base_published_false",
+      "principal": "viewer_contractor_us",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:base_archived_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:base_archived_true",
+      "principal": "viewer_contractor_us",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:base_archived_false",
+      "principal": "viewer_contractor_us",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_draft_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_draft_true",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_draft_false",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_published_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_published_true",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_published_false",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_archived_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_archived_true",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_archived_false",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_eu_draft_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_eu_draft_true",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_eu_draft_false",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_eu_published_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_eu_published_true",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_eu_published_false",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_eu_archived_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_eu_archived_true",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:acme_eu_archived_false",
+      "principal": "viewer_contractor_us",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:globex_draft_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:globex_draft_true",
+      "principal": "viewer_contractor_us",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:globex_draft_false",
+      "principal": "viewer_contractor_us",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:globex_published_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:globex_published_true",
+      "principal": "viewer_contractor_us",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:globex_published_false",
+      "principal": "viewer_contractor_us",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:globex_archived_absent",
+      "principal": "viewer_contractor_us",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:globex_archived_true",
+      "principal": "viewer_contractor_us",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "viewer_contractor_us:globex_archived_false",
+      "principal": "viewer_contractor_us",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:base_draft_absent",
+      "principal": "auditor_eu",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:base_draft_true",
+      "principal": "auditor_eu",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:base_draft_false",
+      "principal": "auditor_eu",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:base_published_absent",
+      "principal": "auditor_eu",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:base_published_true",
+      "principal": "auditor_eu",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:base_published_false",
+      "principal": "auditor_eu",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:base_archived_absent",
+      "principal": "auditor_eu",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:base_archived_true",
+      "principal": "auditor_eu",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:base_archived_false",
+      "principal": "auditor_eu",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_draft_absent",
+      "principal": "auditor_eu",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_draft_true",
+      "principal": "auditor_eu",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_draft_false",
+      "principal": "auditor_eu",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_published_absent",
+      "principal": "auditor_eu",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_published_true",
+      "principal": "auditor_eu",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_published_false",
+      "principal": "auditor_eu",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_archived_absent",
+      "principal": "auditor_eu",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_archived_true",
+      "principal": "auditor_eu",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_archived_false",
+      "principal": "auditor_eu",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_eu_draft_absent",
+      "principal": "auditor_eu",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_eu_draft_true",
+      "principal": "auditor_eu",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_eu_draft_false",
+      "principal": "auditor_eu",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_eu_published_absent",
+      "principal": "auditor_eu",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_eu_published_true",
+      "principal": "auditor_eu",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_eu_published_false",
+      "principal": "auditor_eu",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_eu_archived_absent",
+      "principal": "auditor_eu",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_eu_archived_true",
+      "principal": "auditor_eu",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:acme_eu_archived_false",
+      "principal": "auditor_eu",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:globex_draft_absent",
+      "principal": "auditor_eu",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:globex_draft_true",
+      "principal": "auditor_eu",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:globex_draft_false",
+      "principal": "auditor_eu",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:globex_published_absent",
+      "principal": "auditor_eu",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:globex_published_true",
+      "principal": "auditor_eu",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:globex_published_false",
+      "principal": "auditor_eu",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:globex_archived_absent",
+      "principal": "auditor_eu",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:globex_archived_true",
+      "principal": "auditor_eu",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_eu:globex_archived_false",
+      "principal": "auditor_eu",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:base_draft_absent",
+      "principal": "auditor_us",
+      "resource": "base_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:base_draft_true",
+      "principal": "auditor_us",
+      "resource": "base_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:base_draft_false",
+      "principal": "auditor_us",
+      "resource": "base_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:base_published_absent",
+      "principal": "auditor_us",
+      "resource": "base_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:base_published_true",
+      "principal": "auditor_us",
+      "resource": "base_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:base_published_false",
+      "principal": "auditor_us",
+      "resource": "base_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:base_archived_absent",
+      "principal": "auditor_us",
+      "resource": "base_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:base_archived_true",
+      "principal": "auditor_us",
+      "resource": "base_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:base_archived_false",
+      "principal": "auditor_us",
+      "resource": "base_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_draft_absent",
+      "principal": "auditor_us",
+      "resource": "acme_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_draft_true",
+      "principal": "auditor_us",
+      "resource": "acme_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_draft_false",
+      "principal": "auditor_us",
+      "resource": "acme_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_published_absent",
+      "principal": "auditor_us",
+      "resource": "acme_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_published_true",
+      "principal": "auditor_us",
+      "resource": "acme_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_published_false",
+      "principal": "auditor_us",
+      "resource": "acme_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_archived_absent",
+      "principal": "auditor_us",
+      "resource": "acme_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_archived_true",
+      "principal": "auditor_us",
+      "resource": "acme_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_archived_false",
+      "principal": "auditor_us",
+      "resource": "acme_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_eu_draft_absent",
+      "principal": "auditor_us",
+      "resource": "acme_eu_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_eu_draft_true",
+      "principal": "auditor_us",
+      "resource": "acme_eu_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_eu_draft_false",
+      "principal": "auditor_us",
+      "resource": "acme_eu_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_eu_published_absent",
+      "principal": "auditor_us",
+      "resource": "acme_eu_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_eu_published_true",
+      "principal": "auditor_us",
+      "resource": "acme_eu_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_eu_published_false",
+      "principal": "auditor_us",
+      "resource": "acme_eu_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_eu_archived_absent",
+      "principal": "auditor_us",
+      "resource": "acme_eu_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_eu_archived_true",
+      "principal": "auditor_us",
+      "resource": "acme_eu_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:acme_eu_archived_false",
+      "principal": "auditor_us",
+      "resource": "acme_eu_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:globex_draft_absent",
+      "principal": "auditor_us",
+      "resource": "globex_draft_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:globex_draft_true",
+      "principal": "auditor_us",
+      "resource": "globex_draft_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:globex_draft_false",
+      "principal": "auditor_us",
+      "resource": "globex_draft_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:globex_published_absent",
+      "principal": "auditor_us",
+      "resource": "globex_published_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:globex_published_true",
+      "principal": "auditor_us",
+      "resource": "globex_published_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:globex_published_false",
+      "principal": "auditor_us",
+      "resource": "globex_published_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:globex_archived_absent",
+      "principal": "auditor_us",
+      "resource": "globex_archived_absent",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:globex_archived_true",
+      "principal": "auditor_us",
+      "resource": "globex_archived_true",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_us:globex_archived_false",
+      "principal": "auditor_us",
+      "resource": "globex_archived_false",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "publish": "EFFECT_DENY"
+      }
+    }
+  ]
+}

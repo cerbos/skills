@@ -1,0 +1,158 @@
+{
+  "expense": {
+    "resource": "expense",
+    "version": "default",
+    "rules": [
+      {
+        "name": "submit-expense",
+        "actions": [
+          "create"
+        ],
+        "roles": [
+          "employee"
+        ],
+        "effect": "EFFECT_ALLOW"
+      },
+      {
+        "name": "view-own-expense",
+        "actions": [
+          "view"
+        ],
+        "roles": [
+          "employee"
+        ],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "expr": "R.attr.owner == P.id"
+          }
+        }
+      },
+      {
+        "name": "edit-own-draft",
+        "actions": [
+          "edit"
+        ],
+        "roles": [
+          "employee"
+        ],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                {
+                  "expr": "R.attr.owner == P.id"
+                },
+                {
+                  "expr": "R.attr.status == \"draft\""
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "view-department-expense",
+        "actions": [
+          "view"
+        ],
+        "roles": [
+          "manager"
+        ],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "expr": "R.attr.department == P.attr.department"
+          }
+        }
+      },
+      {
+        "name": "approve-department-expense",
+        "actions": [
+          "approve"
+        ],
+        "roles": [
+          "manager"
+        ],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                {
+                  "expr": "R.attr.department == P.attr.department"
+                },
+                {
+                  "expr": "R.attr.status == \"submitted\""
+                },
+                {
+                  "expr": "R.attr.owner != P.id"
+                },
+                {
+                  "expr": "R.attr.amount <= (has(P.attr.approval_limit) ? P.attr.approval_limit : 1000)"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "leave_request": {
+    "resource": "leave_request",
+    "version": "default",
+    "rules": [
+      {
+        "name": "request-leave",
+        "actions": [
+          "create"
+        ],
+        "roles": [
+          "employee"
+        ],
+        "effect": "EFFECT_ALLOW"
+      },
+      {
+        "name": "view-own-leave",
+        "actions": [
+          "view"
+        ],
+        "roles": [
+          "employee"
+        ],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "expr": "R.attr.owner == P.id"
+          }
+        }
+      },
+      {
+        "name": "review-department-leave",
+        "actions": [
+          "view",
+          "approve"
+        ],
+        "roles": [
+          "manager"
+        ],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                {
+                  "expr": "R.attr.department == P.attr.department"
+                },
+                {
+                  "expr": "R.attr.owner != P.id"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+}

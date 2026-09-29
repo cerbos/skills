@@ -6,12 +6,12 @@ Common Starlark runtime environment for all Cerbos Synapse extensions.
 
 | Function | Description |
 |----------|-------------|
-| `cerbos.cache_get(key)` | Read from shared cache. Returns `None` if not found. |
+| `cerbos.cache_get(key)` | Read from shared cache. Returns `""` on a miss; guard with `if cached:` before decoding. |
 | `cerbos.cache_set(key, value, expiry?, if_not_exists?)` | Write to shared cache. `expiry` uses `time.minute`, `time.hour`, etc. |
 | `cerbos.cache_delete(key)` | Delete from cache. |
 | `cerbos.check_resources(req)` | Call CheckResources on the PDP. |
 | `cerbos.plan_resources(req)` | Call PlanResources on the PDP. |
-| `cerbos.data_source_lookup(datasource, query, query_parameters?, cache_key?, cache_expiry?, cache_if_not_exists?)` | Query another configured data source. Cache options are flat kwargs (`cache_key`, `cache_expiry`, `cache_if_not_exists`). For ad-hoc caching outside a lookup, use `cerbos.cache_get` / `cerbos.cache_set` directly. |
+| `cerbos.data_source_lookup(datasource, query, query_parameters?, cache_key?, cache_expiry?, cache_if_not_exists?)` | Query another configured data source. Cache options are flat kwargs (`cache_key`, `cache_expiry`, `cache_if_not_exists`); a custom data source only caches if its `lookup` applies them (`starlark-data-source.md`). For ad-hoc caching outside a lookup, use `cerbos.cache_get` / `cerbos.cache_set` directly. |
 
 ## Context Variables
 
@@ -33,7 +33,9 @@ Common Starlark runtime environment for all Cerbos Synapse extensions.
 | `time.time(year?, month?, day?, hour?, minute?, second?, nanosecond?, location?)` | Construct a Time |
 | `time.is_valid_timezone(loc)` | Check tz name validity |
 | `time.minute`, `time.hour`, `time.second`, `time.millisecond`, `time.microsecond`, `time.nanosecond` | Duration constants |
-| `math.floor(x)`, `math.ceil(x)`, `math.round(x)`, `math.fabs(x)`, `math.pow(x,y)`, `math.mod(x,y)`, `math.remainder(x,y)` | Math functions |
+| `math.floor`, `ceil`, `round`, `fabs`, `pow`, `mod`, `remainder`, `sqrt`, `exp`, `log`, `hypot`, trig (`sin`, `cos`, `tan`, `atan2`, ...), `math.pi`, `math.e` | Math functions |
+
+`time` and `math` are predeclared globals; `load()` them and the script fails with `unknown module`.
 
 ## Loadable Modules
 
@@ -41,16 +43,16 @@ Import with `load("module", "module")`:
 
 | Module | Key Functions |
 |--------|--------------|
-| `json` | `decode`, `encode`, `dumps`, `indent`, `path`, `eval`, plus `try_decode` / `try_encode` / `try_dumps` / `try_path` / `try_eval` / `try_indent` (return `(value, err)` tuples) |
-| `http` | `get`, `post`, `put`, `delete`, `patch`, `options`, `call`, `postForm`, `set_timeout`, `get_timeout` |
+| `json` | `decode`, `encode`, `encode_indent`, `dumps`, `indent`, `path`, `eval`, `validate`, `repair`, plus `try_*` variants (return `(value, err)` tuples) |
+| `http` | `get`, `post`, `put`, `delete`, `patch`, `head`, `options`, `call`, `postForm`, `set_timeout`, `get_timeout`, plus `try_*` variants |
 | `oauth` | `client_credentials_client(token_url, client_id, client_secret, scopes?, endpoint_params?, persist_key?)` — returns an HTTP client that attaches a token via OAuth client-credentials flow. Use `persist_key` to share the authenticated client across requests instead of re-authenticating per request. |
 | `re` | `compile`, `match`, `search`, `findall`, `sub`, `split` |
 | `base64` | `encode(src, encoding="standard")`, `decode(src, encoding="standard")` |
 | `hashlib` | `md5`, `sha1`, `sha256`, `sha512` |
-| `csv` | `read_all`, `write_all`, `write_dict` |
+| `csv` | `read_all`, `read_dict`, `write_all`, `write_dict`, plus `try_*` variants |
 | `random` | `uuid`, `random`, `randint`, `randbytes`, `randb32`, `randstr`, `choice`, `choices`, `shuffle`, `uniform` |
 | `stats` | `mean`, `median`, `mode`, `min`, `max`, `sum`, `variance`, `standard_deviation`, `percentile`, `correlation`, `pearson`, `geometric_mean`, `harmonic_mean`, `softmax`, `sigmoid`, `sample`, plus the `population_*`/`sample_*` variants — full descriptive-statistics module |
-| `string` | `find`, `index`, `rfind`, `rindex`, `length`, `substring`, `codepoint`, `reverse`, `escape`/`unescape` (HTML), `quote`/`unquote` (shell) |
+| `string` | `find`, `index`, `rfind`, `rindex`, `length`, `substring`, `codepoint`, `reverse`, `head`/`tail`/`head_lines`/`tail_lines`, `truncate`, `escape`/`unescape` (HTML), `quote`/`unquote` (shell), constants (`ascii_letters`, `digits`, `whitespace`, ...) |
 
 Most modules from [starlet](https://github.com/1set/starlet) — full per-function reference for `base64`, `csv`, `hashlib`, `http`, `json`, `random`, `re`, `stats`, `string` in each module's README at `https://github.com/1set/starlet/blob/master/lib/<module>/README.md`.
 
@@ -103,34 +105,38 @@ File path must have `.star` extension. HTTP URLs must be prefixed with `starlark
 - Cross-request state: `cerbos.cache_set`/`cerbos.cache_get`
 - Structs: created with `struct(key=value)`, accessed with dot notation
 - `context.extension_config`: the YAML `configuration` map
+- Numbers inside `google.protobuf.Value` fields (`attr` values, lookup results, `query_parameters`, policy outputs) read as `float`: `1` arrives as `1.0`. Wrap with `int()` where an integer is needed.
+- Declared proto fields always exist, so `hasattr(req, "principal")` is always true. Test a value such as `req.principal.id != ""` to see whether the caller sent it.
+
+## Manifest (all kinds)
+
+Every extension kind can export an optional `manifest()` describing itself. Synapse serves the manifests of active extensions at `/_cerbos/meta` (JSON) and `/_cerbos/about` (HTML); `server.disableMeta: true` turns both off. Recommended for any extension that ships beyond a prototype:
+
+```python
+def manifest():
+    return struct(
+        api_version = 1,                 # required, always 1
+        name = "principal-enricher",     # required
+        version = "1.0.0",               # required
+        owner = "platform-team",
+        description = "Adds HR attributes to principal.attr.employee",
+    )
+```
+
+Optional `field_mappings` documents which request/response fields the extension changes (`targets`, `operation`, `value`); the full format is in the Synapse docs' extension manifest page.
 
 ## Mutating proto lists and maps
 
-Proto list and map fields (e.g. `principal.roles`, `principal.attr`, `resource.actions`) can be mutated **in place — but only when the field is already populated**:
+Mutate proto list and map fields (`principal.roles`, `principal.attr`, `resource.attr`, response `actions`) in place. Writes persist whether the field was populated, sent empty, or omitted:
 
 ```python
-req.principal.roles.append("auditor")        # roles already has entries → persists
-req.principal.attr["tier"] = "gold"           # attr already has entries → persists
-result.actions["delete"] = "EFFECT_DENY"      # response actions map → persists
+req.principal.roles.append("auditor")
+req.principal.attr["tier"] = "gold"
+req.resources[0].resource.attr["region"] = "eu"
+result.actions["delete"] = "EFFECT_DENY"
 ```
 
-### Caveat: in-place writes to an empty or absent field are silently dropped
-
-A proto list/map field with no entries — omitted from the request, or sent as `[]`/`{}` — is *unset*. Runtime hands the script a detached empty placeholder: `append()` and key assignment appear to succeed but are **not** reflected in the message the PDP evaluates (no error raised). Common case for enrichment, where `principal.attr` usually starts empty.
-
-To populate an empty or absent field, assign the whole value:
-
-```python
-# attr may be empty — build the map and assign it as a whole
-attr = dict(req.principal.attr)   # copy existing entries (empty dict if unset)
-attr["department"] = "engineering"
-req.principal.attr = attr
-
-# or replace a list outright
-req.resources[0].actions = ["view", "edit"]
-```
-
-In-place mutation works for already-populated fields; reassignment is safe when a field might be empty.
+Enrich by assigning individual keys. Assigning a new map (`req.principal.attr = {...}`) replaces every attribute the caller sent.
 
 ## Gotchas
 
@@ -153,6 +159,13 @@ if "GetRowFilter" in res.actions:
     effect = res.actions["GetRowFilter"]
 ```
 
+Removing a key: proto maps have no `.pop()`, and Starlark has no `del`. Rebuild the map without it; the comprehension keeps every other attribute:
+
+```python
+if "department" in req.principal.attr:
+    req.principal.attr = {k: req.principal.attr[k] for k in req.principal.attr if k != "department"}
+```
+
 ### `cerbos.cache_set` only accepts string values
 
 `value` must be string or bytes. Dict or struct → `got dict, want string`. Always JSON-encode before caching:
@@ -164,7 +177,7 @@ cerbos.cache_set(key="k", value=my_dict, expiry=time.second * 30)
 # CORRECT
 cerbos.cache_set(key="k", value=json.encode(my_dict), expiry=time.second * 30)
 cached = cerbos.cache_get(key="k")
-if cached != None and cached != "":
+if cached:                      # a miss returns ""
     my_dict = json.decode(cached)
 ```
 

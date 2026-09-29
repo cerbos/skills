@@ -1,0 +1,9 @@
+[
+  {"name": "alice-own-department", "user": "alice", "tenant": "acme", "document": "eng-acme", "status": 200},
+  {"name": "bob-own-department", "user": "bob", "tenant": "acme", "document": "sales-acme", "status": 200},
+  {"name": "bob-other-department", "user": "bob", "tenant": "acme", "document": "eng-acme", "status": 403},
+  {"name": "alice-other-tenant", "user": "alice", "tenant": "globex", "document": "eng-acme", "status": 403},
+  {"name": "alice-matching-other-tenant", "user": "alice", "tenant": "globex", "document": "eng-globex", "status": 200},
+  {"name": "unknown-user", "user": "carol", "tenant": "acme", "document": "eng-acme", "status": 403},
+  {"name": "unknown-document", "user": "alice", "tenant": "acme", "document": "missing", "status": 404}
+]

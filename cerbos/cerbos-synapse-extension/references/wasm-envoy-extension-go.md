@@ -102,7 +102,7 @@ Cerbos Synapse calls PDP, then invokes `envoyMapCerbosResponse` with:
 }
 ```
 
-Must return an Envoy CheckResponse.
+Must return an Envoy CheckResponse (`{"status": {"code": 0}}` to allow, code `7` with `deniedResponse` to deny). Echoing the input back is not a valid response.
 
 ## Implementation
 
@@ -112,6 +112,8 @@ Must return an Envoy CheckResponse.
 package main
 
 import (
+    "strings"
+
     "github.com/extism/go-pdk"
     "github.com/tidwall/gjson"
 )
@@ -170,18 +172,23 @@ func envoyCheck() int32 {
     method := values[0].String()
     path := values[1].String()
 
-    result := Result{
-        EnvoyCerbosMapping: &EnvoyCerbosMapping{
-            CheckRequest: CheckRequest{
-                Principal: Principal{ID: "user-1", Roles: []string{"user"}},
-                Resources: []ResourceEntry{{
-                    Resource: Resource{
-                        ID: "request", Kind: "http_request",
-                        Attr: map[string]any{"path": path},
-                    },
-                    Actions: []string{method},
-                }},
+    checkReq := CheckRequest{
+        Principal: Principal{ID: "user-1", Roles: []string{"user"}},
+        Resources: []ResourceEntry{{
+            Resource: Resource{
+                ID: "request", Kind: "http_request",
+                Attr: map[string]any{"path": path},
             },
+            Actions: []string{method},
+        }},
+    }
+
+    // Callback mode for /admin: Synapse sends cerbosCheckRequest to the PDP,
+    // then calls envoyMapCerbosResponse.
+    result := Result{CheckRequest: &checkReq}
+    if !strings.HasPrefix(path, "/admin") {
+        result = Result{EnvoyCerbosMapping: &EnvoyCerbosMapping{
+            CheckRequest: checkReq,
             AllowResponse: EnvoyCheckResponse{
                 Status:     Status{Code: 0},
                 OKResponse: map[string]any{"headersToRemove": []string{"internal-header"}},
@@ -190,7 +197,7 @@ func envoyCheck() int32 {
                 Status:         Status{Code: 7},
                 DeniedResponse: map[string]any{"body": "Access denied"},
             },
-        },
+        }}
     }
 
     if err := pdk.OutputJSON(result); err != nil {
@@ -202,9 +209,20 @@ func envoyCheck() int32 {
 
 //go:wasmexport envoyMapCerbosResponse
 func envoyMapCerbosResponse() int32 {
+    effects := gjson.GetBytes(pdk.Input(), "cerbosResponse.results.0.actions").Map()
+    allowed := len(effects) > 0
+    for _, effect := range effects {
+        allowed = allowed && effect.String() == "EFFECT_ALLOW"
+    }
     output := EnvoyCheckResponse{
-        Status:     Status{Code: 0},
-        OKResponse: map[string]any{"headersToRemove": []string{"internal-header"}},
+        Status:         Status{Code: 7},
+        DeniedResponse: map[string]any{"body": "Denied by policy"},
+    }
+    if allowed {
+        output = EnvoyCheckResponse{
+            Status:     Status{Code: 0},
+            OKResponse: map[string]any{"headersToRemove": []string{"internal-header"}},
+        }
     }
     if err := pdk.OutputJSON(output); err != nil {
         pdk.SetError(err)

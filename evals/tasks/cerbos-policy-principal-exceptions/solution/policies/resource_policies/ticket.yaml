@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: ticket
+  version: default
+  rules:
+    # Support staff work their own team's queue.
+    - name: team-work-tickets
+      actions: [view, update]
+      roles: [agent, manager]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: R.attr.team == P.attr.team
+    # Managers resolve their team's tickets, but only from a session whose
+    # token shows multi-factor authentication (RFC 8176 `amr` claim).
+    - name: managers-close-tickets
+      actions: [close]
+      roles: [manager]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.team == P.attr.team
+              - expr: >
+                  has(request.auxData.jwt.amr) && "mfa" in request.auxData.jwt.amr
+    # Reporting staff export ticket data for SLA reports.
+    - name: reporters-export-tickets
+      actions: [export]
+      roles: [reporter]
+      effect: EFFECT_ALLOW

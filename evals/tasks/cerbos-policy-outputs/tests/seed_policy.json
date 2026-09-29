@@ -1,0 +1,47 @@
+{
+  "resource": "payout",
+  "version": "default",
+  "rules": [
+    {
+      "name": "view-payouts",
+      "actions": [
+        "view"
+      ],
+      "roles": [
+        "clerk",
+        "manager"
+      ],
+      "effect": "EFFECT_ALLOW"
+    },
+    {
+      "name": "approve-within-limit",
+      "actions": [
+        "approve"
+      ],
+      "roles": [
+        "manager"
+      ],
+      "effect": "EFFECT_ALLOW",
+      "condition": {
+        "match": {
+          "expr": "R.attr.amount <= P.attr.approval_limit"
+        }
+      }
+    },
+    {
+      "name": "block-frozen-accounts",
+      "actions": [
+        "*"
+      ],
+      "roles": [
+        "*"
+      ],
+      "effect": "EFFECT_DENY",
+      "condition": {
+        "match": {
+          "expr": "has(R.attr.frozen) && R.attr.frozen == true"
+        }
+      }
+    }
+  ]
+}

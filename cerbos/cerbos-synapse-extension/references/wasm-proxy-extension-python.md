@@ -31,8 +31,8 @@ Export at least one (WASM export names are camelCase):
 | `augmentAuthzenEvaluationResponse` | Modify AuthZEN AccessEvaluation response before returning |
 | `augmentAuthzenEvaluationBatchRequest` | Modify AuthZEN AccessEvaluations (batch) request before PDP |
 | `augmentAuthzenEvaluationBatchResponse` | Modify AuthZEN AccessEvaluations (batch) response before returning |
-| `cerbosInit` | Called once on module load; optional lifecycle hook |
-| `cerbosDeinit` | Called once on module unload; optional lifecycle hook |
+| `cerbosInit` | Optional. Runs once per pooled instance, so several times per module; set up per-instance state |
+| `cerbosDeinit` | Optional. Runs on every instance at graceful shutdown; release per-instance resources |
 
 Each function: JSON input via `extism.input_str()`, JSON output via `extism.output_str()`.
 
@@ -44,14 +44,14 @@ Each function: JSON input via `extism.input_str()`, JSON output via `extism.outp
 {
   "principal": { "id": "...", "roles": ["..."], "attr": {} },
   "resources": [{ "resource": { "kind": "...", "id": "...", "attr": {} }, "actions": ["..."] }],
-  "auxData": { "jwt": { "token": "...", "keySetID": "..." } },
-  "requestID": "..."
+  "auxData": { "jwt": { "token": "...", "keySetId": "..." } },
+  "requestId": "..."
 }
 ```
 
 ## Implementation
 
-Kind-specific logic only; host function import declarations (`cacheGet`, `cacheSet`, `cacheSetIfNotExists`, `cacheDelete`, `dataSourceLookup`), memory helpers, and cache helpers (`cache_get`, `cache_set`, `cache_set_if_not_exists`, `cache_delete`) are verbatim from `shared/python-wasm-common.md`.
+Kind-specific logic only; host function import declarations (`cacheGet`, `cacheSet`, `dataSourceLookup`), memory helpers, and cache helpers (`cache_get`, `cache_set`) are verbatim from `shared/python-wasm-common.md`.
 
 ```python
 import json
@@ -123,13 +123,15 @@ def merge_attrs(principal, attrs):
     existing.update(attrs)
     principal["attr"] = existing
 
+# Runs in every pooled instance: set up per-instance state here.
 @extism.plugin_fn
 def cerbosInit():
-    cache_set_if_not_exists("proxy:initialized", b"true", CACHE_TTL_MS)
+    pass
 
+# Runs on every instance at graceful shutdown: release per-instance resources here.
 @extism.plugin_fn
 def cerbosDeinit():
-    cache_delete("proxy:initialized")
+    pass
 
 @extism.plugin_fn
 def augmentCheckRequest():

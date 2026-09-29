@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/AuxData.schema.json
+auxData:
+  mfa_token:
+    jwt:
+      iss: https://idp.example.com
+      sub: mo
+      amr: [pwd, mfa]
+  password_token:
+    jwt:
+      iss: https://idp.example.com
+      sub: mo
+      amr: [pwd]

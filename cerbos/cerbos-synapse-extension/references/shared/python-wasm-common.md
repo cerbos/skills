@@ -10,6 +10,17 @@ Requires `extism-py` CLI to compile Python to WASM. **Pure Python** dependencies
 - Each pool instance has independent memory; no shared state between instances
 - Use cache host functions for cross-instance state
 - Configuration accessible via `extism.config_str(key)`
+- Logging: `extism.log(extism.LogLevel.Debug, "msg")` (`Trace`, `Debug`, `Info`, `Warn`, `Error`) writes to the Synapse log tagged with the extension name; levels below `--log.level` are dropped
+- Outbound HTTP (`extism.Http.request`) is blocked unless the extension's config entry lists the host in `allowedHosts`, next to `extensionURL`. Synapse ignores unknown keys, so a misspelled `allowedHosts` leaves requests blocked (HTTP 500) with no config error:
+
+```yaml
+extensions:
+  routeExtensions:
+    myRoute:
+      extension:
+        extensionURL: /extensions/myext.wasm
+        allowedHosts: ["api.example.com"]
+```
 
 ## Host Functions
 
@@ -26,6 +37,12 @@ Declare imports with `@extism.import_fn("extism:host/user", "funcName")`. All pa
 | `checkResources` | JSON request ptr | JSON response ptr |
 | `planResources` | JSON request ptr | JSON response ptr |
 | `dataSourceLookup` | JSON request ptr | JSON response ptr |
+
+Return values report host errors only, not what happened:
+
+- `cacheGet` returns offset `0` for a missing key. Test the offset; a stored value of any length, including 1 byte, is a hit.
+- `cacheSetIfNotExists` returns `0` whether or not it wrote (an existing key is left unchanged), and `cacheDelete` returns `0` for a missing key. Read the key back when the outcome matters.
+- `dataSourceLookup` for an unknown data source returns `{}` (no `result`) and logs `requested data source … does not exist` on the host.
 
 ### Import Declarations
 
@@ -79,10 +96,10 @@ def _alloc_bytes(data):
     return extism.memory.alloc(data if isinstance(data, bytes) else data.encode())
 
 def _read_bytes(offset):
-    if not offset:
+    if not offset:  # missing key
         return None
     handle = extism.memory.find(offset)
-    if not handle or handle.length <= 1:
+    if not handle:
         return None
     return extism.memory.bytes(handle)
 ```
@@ -226,4 +243,20 @@ build:
 
 clean:
 	rm -f *.wasm
+```
+
+## Manifest (optional)
+
+Since 0.10, exporting `manifest` publishes metadata at `/_cerbos/meta` (JSON) and `/_cerbos/about` (HTML); `server.disableMeta: true` turns both off. Required fields: `apiVersion` (1), `name`, `version`; optional `owner`, `description`, `fieldMappings` (see the Synapse docs' manifest page).
+
+```python
+@extism.plugin_fn
+def manifest():
+    extism.output_str(json.dumps({
+        "apiVersion": 1,
+        "name": "user-enricher",
+        "version": "1.0.0",
+        "owner": "platform-team",
+        "description": "Adds department and role to the principal",
+    }))
 ```

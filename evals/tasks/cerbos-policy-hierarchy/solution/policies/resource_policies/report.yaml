@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: report
+  version: default
+  rules:
+    # Viewers, editors and admins all need to read reports.
+    - name: read-reports
+      actions: [view]
+      roles: [viewer, editor, admin]
+      effect: EFFECT_ALLOW
+    # Editors and admins maintain report content.
+    - name: maintain-reports
+      actions: [edit]
+      roles: [editor, admin]
+      effect: EFFECT_ALLOW
+    # Admins manage the report lifecycle.
+    - name: remove-reports
+      actions: [delete]
+      roles: [admin]
+      effect: EFFECT_ALLOW

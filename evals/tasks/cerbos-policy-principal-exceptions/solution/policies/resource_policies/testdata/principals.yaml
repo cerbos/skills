@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+principals:
+  auditor:
+    id: ext-auditor-7
+    roles: [reporter]
+    attr:
+      engagement_ends: "2026-06-30T00:00:00Z"
+  other_reporter:
+    id: rhea
+    roles: [reporter]
+    attr:
+      engagement_ends: "2026-06-30T00:00:00Z"
+  agent_billing:
+    id: ann
+    roles: [agent]
+    attr:
+      team: billing
+  manager_billing:
+    id: mo
+    roles: [manager]
+    attr:
+      team: billing

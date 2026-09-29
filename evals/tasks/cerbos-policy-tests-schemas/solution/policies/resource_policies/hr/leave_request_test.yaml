@@ -1,0 +1,207 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: LeaveRequestSchemaTest
+description: Leave decisions with inline fixtures.
+principals:
+  employee_ana:
+    id: ana
+    roles:
+    - employee
+    attr:
+      department: hr
+  employee_ana_extra_attr:
+    id: ana
+    roles:
+    - employee
+    attr:
+      department: hr
+      tenant: acme
+  manager_max:
+    id: max
+    roles:
+    - manager
+    attr:
+      department: hr
+resources:
+  ana_leave:
+    kind: leave_request
+    id: leave-1
+    attr:
+      owner: ana
+      department: hr
+      days: 5
+  ben_leave:
+    kind: leave_request
+    id: leave-2
+    attr:
+      owner: ben
+      department: hr
+      days: 5
+  ben_leave_sales:
+    kind: leave_request
+    id: leave-2
+    attr:
+      owner: ben
+      department: sales
+      days: 5
+  ana_leave_missing_days:
+    kind: leave_request
+    id: leave-1
+    attr:
+      owner: ana
+      department: hr
+  ana_leave_31_days:
+    kind: leave_request
+    id: leave-1
+    attr:
+      owner: ana
+      department: hr
+      days: 31
+  ana_leave_unknown_attr:
+    kind: leave_request
+    id: leave-1
+    attr:
+      owner: ana
+      department: hr
+      days: 5
+      reason: holiday
+  new_leave:
+    kind: leave_request
+    id: leave-new
+    attr: {}
+tests:
+- name: employee views own leave
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ana_leave
+    actions:
+    - view
+    - approve
+  expected:
+  - principal: employee_ana
+    resource: ana_leave
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+- name: employee cannot view another's leave
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ben_leave
+    actions:
+    - view
+  expected:
+  - principal: employee_ana
+    resource: ben_leave
+    actions:
+      view: EFFECT_DENY
+- name: manager approves department leave
+  input:
+    principals:
+    - manager_max
+    resources:
+    - ben_leave
+    actions:
+    - view
+    - approve
+  expected:
+  - principal: manager_max
+    resource: ben_leave
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+- name: manager cannot approve another department's leave
+  input:
+    principals:
+    - manager_max
+    resources:
+    - ben_leave_sales
+    actions:
+    - view
+    - approve
+  expected:
+  - principal: manager_max
+    resource: ben_leave_sales
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+- name: employee requests leave
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ana_leave
+    actions:
+    - create
+  expected:
+  - principal: employee_ana
+    resource: ana_leave
+    actions:
+      create: EFFECT_ALLOW
+- name: unknown principal attribute is rejected
+  input:
+    principals:
+    - employee_ana_extra_attr
+    resources:
+    - ana_leave
+    actions:
+    - view
+  expected:
+  - principal: employee_ana_extra_attr
+    resource: ana_leave
+    actions:
+      view: EFFECT_DENY
+- name: missing required days is rejected
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ana_leave_missing_days
+    actions:
+    - view
+  expected:
+  - principal: employee_ana
+    resource: ana_leave_missing_days
+    actions:
+      view: EFFECT_DENY
+- name: too many days is rejected
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ana_leave_31_days
+    actions:
+    - view
+  expected:
+  - principal: employee_ana
+    resource: ana_leave_31_days
+    actions:
+      view: EFFECT_DENY
+- name: unknown resource attribute is rejected
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - ana_leave_unknown_attr
+    actions:
+    - view
+  expected:
+  - principal: employee_ana
+    resource: ana_leave_unknown_attr
+    actions:
+      view: EFFECT_DENY
+- name: create skips resource validation
+  input:
+    principals:
+    - employee_ana
+    resources:
+    - new_leave
+    actions:
+    - create
+  expected:
+  - principal: employee_ana
+    resource: new_leave
+    actions:
+      create: EFFECT_ALLOW

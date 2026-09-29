@@ -1,0 +1,35 @@
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: invoice
+  version: default
+  rules:
+  - name: read_invoices
+    actions:
+    - read
+    roles:
+    - employee
+    - accountant
+    - finance_admin
+    effect: EFFECT_ALLOW
+    condition:
+      match:
+        expr: P.attr.tenant == R.attr.tenant
+  - name: delete_drafts
+    actions:
+    - delete
+    roles:
+    - finance_admin
+    effect: EFFECT_ALLOW
+    condition:
+      match:
+        expr: P.attr.tenant == R.attr.tenant && R.attr.status == "draft"
+  - name: approve_invoices
+    actions:
+    - approve
+    roles:
+    - accountant
+    effect: EFFECT_ALLOW
+    condition:
+      match:
+        expr: P.attr.tenant == R.attr.tenant && R.attr.status == "submitted" && R.attr.owner
+          != P.id && R.attr.amount <= 1000
