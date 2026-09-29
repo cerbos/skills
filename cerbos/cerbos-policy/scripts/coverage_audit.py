@@ -61,6 +61,7 @@ read, such as YAML with anchors, aliases or tags without PyYAML.
 import argparse
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -548,12 +549,27 @@ def load_plan(path):
     return plan
 
 
+def principal_id_matters(policies):
+    """True when any policy reads the principal ID or targets a principal."""
+    for path in policies.rglob("*"):
+        if path.suffix not in {".yaml", ".yml", ".json"} or "testdata" in path.parts:
+            continue
+        if path.name.endswith(("_test.yaml", "_test.yml", "_test.json")):
+            continue
+        text = path.read_text(errors="replace")
+        if re.search(r"\bP\.id\b|\bprincipal\.id\b|principalPolicy", text):
+            return True
+    return False
+
+
 def audit(args):
+    """Return (errors, passes) for the plan against the reports."""
     policies = Path(args.policies)
+    passes = []
     plan = load_plan(args.plan)
     rows = plan.get("rows") or []
     if not rows:
-        return ["plan has no rows"]
+        return ["plan has no rows"], passes
     by_id = {}
     errors = []
     for row in rows:
@@ -571,7 +587,7 @@ def audit(args):
                 errors.append(f"{row['id']}: unknown field path {field!r}; use {FIELDS}")
         by_id[row["id"]] = row
     if errors:
-        return errors
+        return errors, passes
 
     reports = []
     for path in args.report:
@@ -584,6 +600,7 @@ def audit(args):
             errors.append(f"{path}: overall result is {overall}")
         reports.append((path, list(executed(report))))
 
+    id_matters = principal_id_matters(policies)
     cache = {}
     requests = {}
     passed = set()
@@ -627,7 +644,7 @@ def audit(args):
             if "change" in row:
                 errors.append(f"FAIL {line}; `change` needs a `control`")
             else:
-                print(f"PASS {line}")
+                passes.append(f"PASS {line}")
                 passed.add(row["id"])
             continue
         control = by_id.get(control_id)
@@ -645,6 +662,9 @@ def audit(args):
             problems.append(f"control {control_id} uses action {control['action']}")
         diff = differences(requests[control_id], request)
         diff.pop("resource.id", None)
+        if not id_matters and change != "principal.id":
+            # No policy reads the principal ID, so it cannot explain a decision.
+            diff.pop("principal.id", None)
         if set(diff) != {change}:
             detail = ", ".join(f"{k}: {a!r} -> {b!r}" for k, a, b in
                                ((k, *v) for k, v in diff.items())) or "nothing"
@@ -653,7 +673,7 @@ def audit(args):
             errors.append(f"FAIL {line}; " + "; ".join(problems))
         else:
             before, after = diff[change]
-            print(f"PASS {line}; vs {control_id}: {change} {before!r} -> {after!r}")
+            passes.append(f"PASS {line}; vs {control_id}: {change} {before!r} -> {after!r}")
             passed.add(row["id"])
 
     for path in plan.get("paths") or []:
@@ -669,7 +689,7 @@ def audit(args):
             ]
             label = f"path {path.get('id')} ({path.get('kind')}) prerequisite {prerequisite}"
             if isolated:
-                print(f"PASS {label}: {', '.join(isolated)}")
+                passes.append(f"PASS {label}: {', '.join(isolated)}")
             else:
                 errors.append(
                     f"FAIL {label}: no passing isolated row with a control; add a DENY row with this "
@@ -705,9 +725,9 @@ def audit(args):
         versus = "the unscoped base" if others == [ABSENT] else " or ".join(f"`{other}`" for other in others)
         label = f"scope {target} ({kind or 'role policy'}{', role ' + role if role else ''}) vs {versus}"
         if boundary:
-            print(f"PASS {label}: {', '.join(boundary)}")
+            passes.append(f"PASS {label}: {', '.join(boundary)}")
         elif (target, role) in exempt or (origin, role) in exempt:
-            print(f"NOTE {label}: exempted in the plan")
+            passes.append(f"NOTE {label}: exempted in the plan")
         else:
             inherited = f", inherited from `{origin}`," if origin != target else ""
             errors.append(
@@ -716,24 +736,115 @@ def audit(args):
                 f"decided in `{target}`, moved to {versus}, with the opposite effect. If no request can differ because "
                 "the rule only restates its parent, list it in `scopeExemptions` with a reason"
             )
-    return errors
+    if any(role for _, _, role in scoped):
+        union = [
+            row["id"]
+            for row in rows
+            if row["id"] in passed
+            and row["effect"] == "EFFECT_ALLOW"
+            and row.get("change") == "principal.roles"
+            and len(requests[row["id"]]["principal.roles"]) > 1
+            and set(requests[row["control"]]["principal.roles"]) < set(requests[row["id"]]["principal.roles"])
+        ]
+        exemption = (plan.get("roleUnionExemption") or {}).get("reason")
+        if union:
+            passes.append(f"PASS role union: {', '.join(union)}")
+        elif exemption:
+            passes.append("NOTE role union: exempted in the plan")
+        else:
+            errors.append(
+                "FAIL role union: scoped rules apply per role and roles combine, but no passing row shows it; add an "
+                "ALLOW row for a principal holding two roles whose control, the same principal with one of those roles "
+                "removed (`change: principal.roles`), is DENY. If no such request exists, set "
+                "`roleUnionExemption: {\"reason\": ...}` in the plan"
+            )
+    return errors, passes
+
+
+def compile_digest(name, output):
+    """Summarise a `cerbos compile --output=json` result: compile errors and failing tests."""
+    try:
+        report = json.loads(output)
+    except json.JSONDecodeError:
+        return [f"COMPILE {name}: no JSON output: {output.strip()[:400]}"], False
+    if "suites" not in report:
+        lines = []
+        for group in report.values():
+            for entries in (group.values() if isinstance(group, dict) else [group]):
+                for entry in entries if isinstance(entries, list) else [entries]:
+                    if isinstance(entry, dict):
+                        message = entry.get("error") or entry.get("description") or entry.get("message") or entry
+                        lines.append(f"COMPILE {name}: {entry.get('file', '?')}: {message}")
+        return lines or [f"COMPILE {name}: {output.strip()[:400]}"], False
+    lines = []
+    for suite in report["suites"]:
+        for case in suite.get("testCases", []):
+            for principal in case.get("principals", []):
+                for resource in principal.get("resources", []):
+                    for action in resource.get("actions", []):
+                        details = action.get("details", {})
+                        if details.get("result") == "RESULT_PASSED":
+                            continue
+                        failure = details.get("failure") or {}
+                        why = (
+                            f"expected {failure.get('expected')} got {failure.get('actual')}"
+                            if failure else details.get("error") or details.get("result")
+                        )
+                        lines.append(
+                            f"TEST {name}: {suite.get('file')} :: {case.get('name')} :: "
+                            f"{principal.get('name')} / {resource.get('name')} / {action.get('name')}: {why}"
+                        )
+    return lines, True
+
+
+def run_compiles(policies, plan):
+    """Write normal.json and strict.json next to the plan; return (report paths, digest lines, compiled)."""
+    paths, digest, compiled = [], [], True
+    for name, flags in (("normal.json", []), ("strict.json", ["--strict-evaluation"])):
+        path = Path(plan).resolve().parent / name
+        try:
+            result = subprocess.run(
+                ["cerbos", "compile", "--output=json", *flags, policies],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False,
+            )
+        except FileNotFoundError as error:
+            raise Unreadable("`cerbos` is not on PATH; compile with Docker and pass --report instead") from error
+        path.write_text(result.stdout)
+        paths.append(str(path))
+        lines, ok = compile_digest(name, result.stdout)
+        digest += lines
+        compiled = compiled and ok
+    return paths, digest, compiled
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--policies", required=True)
     parser.add_argument("--plan", required=True)
-    parser.add_argument("--report", action="append", required=True)
+    parser.add_argument("--report", action="append", help="a saved `cerbos compile --output=json` report")
+    parser.add_argument(
+        "--run", action="store_true",
+        help="run both compile passes, save normal.json and strict.json next to the plan, and audit them",
+    )
+    args = parser.parse_args()
+    if args.run == bool(args.report):
+        parser.error("pass either --run or at least one --report")
     try:
-        errors = audit(parser.parse_args())
+        if args.run:
+            args.report, digest, compiled = run_compiles(args.policies, args.plan)
+            for line in digest:
+                print(line)
+            if not compiled:
+                print("coverage audit FAILED: fix compilation first")
+                sys.exit(1)
+        errors, passes = audit(args)
     except Unreadable as error:
         print(f"coverage audit could not run: {error}")
         sys.exit(2)
-    for error in errors:
-        print(error)
-    print("coverage audit " + ("FAILED" if errors else "passed"))
+    for line in errors + passes:
+        print(line)
+    print(f"coverage audit {'FAILED' if errors else 'passed'}: {len(errors)} failing, {len(passes)} passing")
     sys.exit(1 if errors else 0)
-
 
 if __name__ == "__main__":
     main()

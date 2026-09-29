@@ -271,7 +271,7 @@ Plan rows separately for each resource policy, including those that import the s
 | Different owner | Present | No | Yes | DENY | `resource.attr.owner` |
 | Different tenant | Present | Yes | No | DENY | `resource.attr.tenant` or `principal.attr.tenant` |
 
-**Fixture keys are unique; principal IDs need not be.** Several principal fixtures may share one `id`. A missing-parent-role variant of owner `alice` is a new key such as `alice_reviewer_only` with `id: alice` and different roles, so the resource's `owner` still matches. Giving the variant a new ID also breaks ownership, so the test no longer shows which prerequisite caused the denial. Likewise, a limit-override principal keeps the default principal's ID and differs only in the override attribute.
+**Fixture keys are unique; principal IDs need not be.** The audit ignores a principal ID difference between a row and its control unless a policy reads `P.id` (or a principal policy exists), but keeping the ID is still the simplest way to leave only the tested field different. Several principal fixtures may share one `id`. A missing-parent-role variant of owner `alice` is a new key such as `alice_reviewer_only` with `id: alice` and different roles, so the resource's `owner` still matches. Giving the variant a new ID also breaks ownership, so the test no longer shows which prerequisite caused the denial. Likewise, a limit-override principal keeps the default principal's ID and differs only in the override attribute.
 
 Keep other grant paths inactive when isolating a denial, then test role combinations separately. A tenant test that also changes the owner cannot establish which boundary caused the denial. The same principle applies to a blocked resource, suspended principal or amount limit: satisfy the other prerequisites so the intended condition determines the result.
 
@@ -308,7 +308,7 @@ python3 <skill-dir>/scripts/coverage_audit.py --policies policies \
   --plan coverage-plan.json --report normal.json --report strict.json
 ```
 
-With Docker, mount the working directory and redirect the container's stdout the same way. Without `python3`, run the audit in Docker from the directory that holds `policies/`, the plan and both reports:
+With the native binary, `--run` in place of the `--report` arguments runs both compile passes, saves the two reports next to the plan, and prints compile errors, failing tests and audit failures before the passes. With Docker, mount the working directory and redirect the container's stdout the same way. Without `python3`, run the audit in Docker from the directory that holds `policies/`, the plan and both reports:
 
 ```bash
 docker run --rm -v "$(pwd):/work" -v "<skill-dir>/scripts:/audit:ro" -w /work python:3.13-slim \
@@ -322,7 +322,8 @@ For each row the audit:
 2. Resolves the fixture keys through the suite's `testdata/` files and inline suite fixtures to actual IDs, roles and attributes. Fixture names are only labels.
 3. For a row with a `control`, requires the control to have the opposite effect and the same action, and the resolved requests to differ at exactly the `change` field (ignoring `resource.id`). It prints that field's before/after values.
 4. For every prerequisite of every declared path, requires a passing row with that `path`, `prerequisite` and a control on a resource of the path's kind.
-5. For every role named by a scoped resource-policy rule or scoped role policy, in that scope and each descendant scope with its own policy, requires a passing row with `change: resource.scope` for a principal with that role, with that scope on one side and a scope from another top-level branch (or the unscoped base when there is none) on the other, unless `scopeExemptions` lists it.
+5. When a bundle has role-specific scoped rules or scoped role policies, requires a passing ALLOW row for a principal with two or more roles whose control has a subset of those roles (`change: principal.roles`) and is DENY, showing the roles combine, unless the plan sets `roleUnionExemption: {"reason": "..."}`.
+6. For every role named by a scoped resource-policy rule or scoped role policy, in that scope and each descendant scope with its own policy, requires a passing row with `change: resource.scope` for a principal with that role, with that scope on one side and a scope from another top-level branch (or the unscoped base when there is none) on the other, unless `scopeExemptions` lists it.
 
 It exits 1 when coverage fails and 2 when it cannot read an input, such as fixture YAML with anchors, aliases or tags on a machine without PyYAML. When it exits 2, or neither `python3` nor Docker is available, perform these checks yourself from the plan, both reports and the fixture files, record each row's result and each control pair's before/after values next to the plan, and state in your final report that the executable audit did not run.
 

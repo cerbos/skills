@@ -1,6 +1,4 @@
-import contextlib
 import importlib.util
-import io
 import json
 import sys
 import tempfile
@@ -190,9 +188,8 @@ class AuditTest(unittest.TestCase):
         report_path = self.root / "normal.json"
         report_path.write_text(json.dumps(report(assertions)))
         args = Namespace(policies=str(self.root / "policies"), plan=str(plan_path), report=[str(report_path)])
-        with contextlib.redirect_stdout(io.StringIO()) as out:
-            errors = module.audit(args)
-        return errors, out.getvalue()
+        errors, passes = module.audit(args)
+        return errors, "\n".join(passes)
 
     def test_passes_with_and_without_pyyaml(self):
         for module in (audit_pyyaml, audit_stdlib):
@@ -240,11 +237,12 @@ class AuditTest(unittest.TestCase):
             "    attr: {owner: alice, tenant: acme, created: 2024-01-01, limit: 1_000, ratio: 0.5,"
             " archived: no, notes: \"first line\\nsecond line\\n\"}\ntests:",
         ))
-        errors, _ = self.run_audit(audit_stdlib)
+        union_exempt = {**PLAN, "roleUnionExemption": {"reason": "single-role bundle"}}
+        errors, _ = self.run_audit(audit_stdlib, union_exempt)
         self.assertEqual(len(errors), 1)
         self.assertIn("FAIL scope emea (document, role employee) vs the unscoped base", errors[0])
 
-        plan = json.loads(json.dumps(PLAN))
+        plan = json.loads(json.dumps(union_exempt))
         plan["rows"].append({"id": "emea-edit", "principal": "alice_employee", "resource": "document_in_emea",
                              "action": "edit", "effect": "EFFECT_DENY", "control": "owner-edit",
                              "change": "resource.scope"})
@@ -253,7 +251,7 @@ class AuditTest(unittest.TestCase):
         self.assertEqual(errors, [])
         self.assertIn("PASS scope emea (document, role employee) vs the unscoped base: emea-edit", out)
 
-        plan = json.loads(json.dumps(PLAN))
+        plan = json.loads(json.dumps(union_exempt))
         plan["scopeExemptions"] = [{"scope": "emea", "role": "employee", "reason": "restates the parent"}]
         errors, out = self.run_audit(audit_stdlib, plan)
         self.assertEqual(errors, [])
@@ -265,12 +263,64 @@ class AuditTest(unittest.TestCase):
                 f"apiVersion: api.cerbos.dev/v1\nresourcePolicy:\n  resource: document\n"
                 f"  version: default\n  scope: {scope}\n  rules: []\n"
             )
-        errors, _ = self.run_audit(audit_stdlib, PLAN)
+        errors, _ = self.run_audit(audit_stdlib, union_exempt)
         self.assertEqual(
             sorted(e.split(":")[0] for e in errors),
             ["FAIL scope emea (document, role employee) vs `apac`",
              "FAIL scope emea.de (document, role employee) vs `apac`"],
         )
+
+    def test_scoped_role_rules_need_a_role_union_row(self):
+        (self.root / "policies" / "emea.yaml").write_text(
+            "apiVersion: api.cerbos.dev/v1\nresourcePolicy:\n  resource: document\n  version: default\n"
+            "  scope: emea\n  rules: []\n"
+        )
+        (self.root / "policies" / "emea_roles.yaml").write_text(
+            "apiVersion: api.cerbos.dev/v1\nrolePolicy:\n  role: employee\n  scope: emea\n"
+            "  rules:\n    - resource: document\n      allowActions: [view]\n"
+        )
+        plan = json.loads(json.dumps(PLAN))
+        plan["scopeExemptions"] = [{"scope": "emea", "role": "employee", "reason": "boundary tested elsewhere"}]
+        errors, _ = self.run_audit(audit_stdlib, plan)
+        self.assertEqual([e.split(":")[0] for e in errors], ["FAIL role union"])
+
+        # alice_both holds employee and reviewer; reviewer alone (alice_reviewer_only) is denied.
+        (self.root / "policies" / "testdata" / "principals.yaml").write_text(
+            PRINCIPALS + "  alice_both:\n    id: alice\n    roles: [employee, reviewer]\n"
+            "    attr: {department: finance, tenant: acme}\n"
+        )
+        plan["rows"].append({"id": "both-edit", "principal": "alice_both", "resource": "document_owned_by_alice",
+                             "action": "edit", "effect": "EFFECT_ALLOW", "control": "missing-parent-role",
+                             "change": "principal.roles"})
+        assertions = ASSERTIONS + [("alice_both", "document_owned_by_alice", "edit", "EFFECT_ALLOW")]
+        errors, out = self.run_audit(audit_stdlib, plan, assertions)
+        self.assertEqual(errors, [])
+        self.assertIn("PASS role union: both-edit", out)
+
+    def test_unread_principal_id_does_not_confound_a_control(self):
+        (self.root / "policies" / "testdata" / "principals.yaml").write_text(
+            PRINCIPALS.replace("  alice_reviewer_only:\n    id: alice", "  alice_reviewer_only:\n    id: someone-else")
+        )
+        errors, out = self.run_audit(audit_stdlib)
+        self.assertEqual(errors, [])
+        (self.root / "policies" / "owner.yaml").write_text("rule: R.attr.owner == P.id\n")
+        errors, _ = self.run_audit(audit_stdlib)
+        self.assertTrue(any("expected only principal.roles to differ" in e for e in errors))
+
+    def test_compile_digest_lists_failures_and_compile_errors(self):
+        failing = {"suites": [{"file": "d_test.yaml", "testCases": [{"name": "t", "principals": [{"name": "u",
+                   "resources": [{"name": "d", "actions": [
+                       {"name": "view", "details": {"result": "RESULT_PASSED", "success": {"effect": "EFFECT_ALLOW"}}},
+                       {"name": "edit", "details": {"result": "RESULT_FAILED",
+                                                    "failure": {"expected": "EFFECT_ALLOW", "actual": "EFFECT_DENY"}}},
+                   ]}]}]}]}], "summary": {"overallResult": "RESULT_FAILED"}}
+        lines, compiled = audit_stdlib.compile_digest("normal.json", json.dumps(failing))
+        self.assertTrue(compiled)
+        self.assertEqual(lines, ["TEST normal.json: d_test.yaml :: t :: u / d / edit: expected EFFECT_ALLOW got EFFECT_DENY"])
+        broken = {"lintErrors": {"load_failures": [{"file": "doc.yaml", "error": "invalid enum value"}]}}
+        lines, compiled = audit_stdlib.compile_digest("normal.json", json.dumps(broken))
+        self.assertFalse(compiled)
+        self.assertEqual(lines, ["COMPILE normal.json: doc.yaml: invalid enum value"])
 
     def test_non_json_plan_is_unreadable(self):
         with self.assertRaises(audit_stdlib.Unreadable):
