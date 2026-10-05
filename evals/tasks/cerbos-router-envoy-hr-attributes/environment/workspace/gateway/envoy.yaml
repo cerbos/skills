@@ -1,0 +1,41 @@
+static_resources:
+  listeners:
+    - name: ingress
+      address:
+        socket_address: { address: 0.0.0.0, port_value: 8443 }
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: ingress
+                route_config:
+                  virtual_hosts:
+                    - name: internal
+                      domains: ["*"]
+                      routes:
+                        - match: { prefix: "/finance/" }
+                          route: { cluster: finance }
+                        - match: { prefix: "/hr/" }
+                          route: { cluster: hr-portal }
+                        - match: { prefix: "/wiki/" }
+                          route: { cluster: wiki }
+                        - match: { prefix: "/deploy/" }
+                          route: { cluster: deploy-api }
+                        # ... about 40 more services
+                http_filters:
+                  - name: envoy.filters.http.jwt_authn
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
+                      providers:
+                        okta:
+                          issuer: https://example.okta.com/oauth2/default
+                          remote_jwks:
+                            http_uri: { uri: https://example.okta.com/oauth2/default/v1/keys, cluster: okta, timeout: 2s }
+                          forward_payload_header: x-jwt-payload
+                      rules:
+                        - match: { prefix: "/" }
+                          requires: { provider_name: okta }
+                  - name: envoy.filters.http.router
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router

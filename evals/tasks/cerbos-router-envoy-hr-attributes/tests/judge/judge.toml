@@ -1,0 +1,39 @@
+[judge]
+judge = "codex"
+model = "openai/gpt-5.6-luna"
+version = "0.157.0"
+timeout = 200
+prompt_template = "prompt.md"
+
+[scoring]
+aggregation = "all-pass"
+
+[[criterion]]
+name = "gateway_enforcement"
+type = "binary"
+description = """The design enforces at the Envoy gateway through Envoy's `ext_authz` filter calling Cerbos Synapse (its Envoy ext_authz integration / Envoy extension), which turns each request (path or prefix, HTTP method, the verified `sub`) into a Cerbos check and returns allow or deny to Envoy — with no changes to the 40 services."""
+
+[[criterion]]
+name = "hr_enrichment_in_synapse"
+type = "binary"
+description = """Employment type (and active status) is fetched from the HR database by a Cerbos Synapse data source (for example the built-in `system://sqldb` SQL data source) or proxy/Envoy extension that adds it to the principal's attributes before the PDP evaluates; AND the document explains that this is needed because the PDP does not fetch data itself."""
+
+[[criterion]]
+name = "rules_in_policy"
+type = "binary"
+description = """The allow/deny rules (per employment type, the `/finance/` and `/hr/` restriction, interns read-only, inactive denied) are written as Cerbos policies that read the enriched principal attribute, with policy tests, and future changes such as restricting `/deploy/` are described as policy changes rather than code or Envoy config changes."""
+
+[[criterion]]
+name = "avoid_list"
+type = "binary"
+description = """The document explicitly tells the team to avoid BOTH (1) looking up the HR database in each service or in per-service/application middleware, and (2) expecting the Cerbos PDP itself to query the HR database (or otherwise load user data)."""
+
+[[criterion]]
+name = "next_steps"
+type = "binary"
+description = """The document gives concrete, ordered next steps that include writing the policy with tests, building/configuring the Synapse data source and Envoy integration (with tests), wiring Envoy's `ext_authz` filter to Synapse, and rolling out per environment; and it names Cerbos Hub (or another stated mechanism) as how policy changes reach the PDP without redeploying."""
+
+[[criterion]]
+name = "no_fabrication"
+type = "binary"
+description = """Every Cerbos component, API and configuration the document names exists and is described consistently with the reference facts. In particular it does not claim the PDP queries Postgres or any database, exposes database tables or SQL functions to CEL, natively loads user attributes, or that a PDP storage driver serves user data; and it invents no product, filter or plugin (e.g. a "Cerbos Envoy plugin" or attribute loader)."""

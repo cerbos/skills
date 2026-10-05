@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: ApiTestSuite
+description: auth.py suspended-account guard.
+principals:
+  active_admin:
+    id: alice
+    roles: ["admin"]
+    attr: {tenant_id: acme, status: active}
+  suspended_admin:
+    id: sal
+    roles: ["admin"]
+    attr: {tenant_id: acme, status: suspended}
+  suspended_manager:
+    id: sid
+    roles: ["manager"]
+    attr: {tenant_id: acme, status: suspended}
+  pending_manager:
+    id: pam
+    roles: ["manager"]
+    attr: {tenant_id: acme, status: pending}
+  no_status_bot:
+    id: billing-bot
+    roles: ["accountant"]
+    attr: {tenant_id: acme}
+resources:
+  write_path:
+    kind: api
+    id: /invoices/inv-100
+tests:
+  - name: auth.load_current_user suspended accounts are read-only
+    input:
+      principals: ["active_admin", "suspended_admin", "suspended_manager", "pending_manager", "no_status_bot"]
+      resources: ["write_path"]
+      actions: ["write"]
+    expected:
+      - {principal: active_admin, resource: write_path, actions: {write: EFFECT_ALLOW}}
+      - {principal: suspended_admin, resource: write_path, actions: {write: EFFECT_DENY}}
+      - {principal: suspended_manager, resource: write_path, actions: {write: EFFECT_DENY}}
+      - {principal: pending_manager, resource: write_path, actions: {write: EFFECT_ALLOW}}
+      - {principal: no_status_bot, resource: write_path, actions: {write: EFFECT_ALLOW}}

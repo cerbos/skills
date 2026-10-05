@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: invoice
+  version: default
+  importDerivedRoles:
+    - billing_roles
+  rules:
+    - name: view-own-account-invoices
+      actions: ["view", "download"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["account_member"]
+    - name: finance-manages-invoices
+      actions: ["view", "download", "refund", "void"]
+      effect: EFFECT_ALLOW
+      roles: ["finance"]
+    - name: no-changes-to-archived-invoices
+      actions: ["refund", "void"]
+      effect: EFFECT_DENY
+      roles: ["finance"]
+      condition:
+        match:
+          expr: has(R.attr.archived) && R.attr.archived == true

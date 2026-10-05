@@ -1,0 +1,8 @@
+{
+  "resources": {
+    "invoice": {
+      "view": {"allowed": "alice views invoice_acc1", "denials": ["bob views invoice_acc1"]},
+      "refund": {"allowed": "fran refunds invoice_acc1", "denials": ["fran refunds invoice_acc1_archived"]}
+    }
+  }
+}

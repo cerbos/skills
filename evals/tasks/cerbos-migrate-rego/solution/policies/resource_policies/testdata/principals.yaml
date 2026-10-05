@@ -1,0 +1,49 @@
+principals:
+  admin:
+    id: ada
+    roles: ["admin"]
+    attr: {department: sales}
+  admin_contractor:
+    id: abe
+    roles: ["admin", "contractor"]
+    attr: {department: sales}
+  employee:
+    id: emma
+    roles: ["employee"]
+    attr: {department: sales}
+  contractor:
+    id: carl
+    roles: ["contractor"]
+    attr: {department: sales}
+  contractor_finance:
+    id: cora
+    roles: ["contractor", "finance"]
+    attr: {department: sales}
+  contractor_manager:
+    id: cole
+    roles: ["contractor", "manager"]
+    attr: {department: sales}
+  manager:
+    id: max
+    roles: ["manager"]
+    attr: {department: sales}
+  director:
+    id: dina
+    roles: ["director"]
+    attr: {department: engineering}
+  manager_director:
+    id: milo
+    roles: ["manager", "director"]
+    attr: {department: sales}
+  finance:
+    id: fay
+    roles: ["finance"]
+    attr: {department: finance}
+  auditor:
+    id: aldo
+    roles: ["auditor"]
+    attr: {department: audit}
+  intern:
+    id: ivy
+    roles: ["intern"]
+    attr: {department: sales}

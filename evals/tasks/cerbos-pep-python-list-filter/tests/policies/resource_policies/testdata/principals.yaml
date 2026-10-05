@@ -1,0 +1,17 @@
+principals:
+  ana:
+    id: ana
+    roles: ["employee"]
+    attr: { department: "sales", region: "emea" }
+  marco:
+    id: marco
+    roles: ["manager"]
+    attr: { department: "sales", region: "emea" }
+  fiona:
+    id: fiona
+    roles: ["finance"]
+    attr: { department: "finance", region: "emea", review_threshold: 1000 }
+  olga:
+    id: olga
+    roles: ["auditor"]
+    attr: { department: "audit", region: "amer" }

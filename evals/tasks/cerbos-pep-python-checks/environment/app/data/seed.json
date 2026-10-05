@@ -1,0 +1,15 @@
+{
+  "users": [
+    {"id": "ana", "name": "Ana Silva", "roles": ["employee"], "department": "sales", "region": "emea"},
+    {"id": "ben", "name": "Ben Okafor", "roles": ["employee"], "department": "engineering", "region": "amer"},
+    {"id": "marco", "name": "Marco Rossi", "roles": ["manager"], "department": "sales", "region": "emea", "approval_limit": 1000},
+    {"id": "fiona", "name": "Fiona Walsh", "roles": ["finance"], "department": "finance", "region": "emea"},
+    {"id": "ines", "name": "Ines Duarte", "roles": ["admin"], "department": "it", "region": "emea"}
+  ],
+  "expenses": [
+    {"id": "exp-1", "employee_id": "ana", "department": "sales", "region": "emea", "amount": 250.0, "status": "submitted", "description": "Client dinner"},
+    {"id": "exp-2", "employee_id": "ana", "department": "sales", "region": "emea", "amount": 4000.0, "status": "submitted", "description": "Trade show booth"},
+    {"id": "exp-3", "employee_id": "ana", "department": "sales", "region": "emea", "amount": 80.0, "status": "draft", "description": "Taxi"},
+    {"id": "exp-4", "employee_id": "ben", "department": "engineering", "region": "amer", "amount": 1200.0, "status": "submitted", "description": "Conference ticket"}
+  ]
+}

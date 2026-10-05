@@ -1,0 +1,16 @@
+name: app
+
+on:
+  pull_request:
+    paths: ["src/**", "package.json"]
+  push:
+    branches: [main]
+    paths: ["src/**", "package.json"]
+
+jobs:
+  test:
+    runs-on: [self-hosted, linux]
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm test

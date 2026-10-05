@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: ExpenseReportTestSuite
+description: Expense report visibility.
+tests:
+  - name: visibility by role
+    input:
+      principals: ["ana", "marco", "fiona", "olga"]
+      resources: ["ana_draft", "ana_big_submitted", "ana_archived"]
+      actions: ["view"]
+    expected:
+      - { principal: ana, resource: ana_draft, actions: { view: EFFECT_ALLOW } }
+      - { principal: ana, resource: ana_big_submitted, actions: { view: EFFECT_ALLOW } }
+      - { principal: ana, resource: ana_archived, actions: { view: EFFECT_DENY } }
+      - { principal: marco, resource: ana_draft, actions: { view: EFFECT_DENY } }
+      - { principal: marco, resource: ana_big_submitted, actions: { view: EFFECT_ALLOW } }
+      - { principal: marco, resource: ana_archived, actions: { view: EFFECT_DENY } }
+      - { principal: fiona, resource: ana_draft, actions: { view: EFFECT_DENY } }
+      - { principal: fiona, resource: ana_big_submitted, actions: { view: EFFECT_ALLOW } }
+      - { principal: fiona, resource: ana_archived, actions: { view: EFFECT_DENY } }
+      - { principal: olga, resource: ana_draft, actions: { view: EFFECT_ALLOW } }
+      - { principal: olga, resource: ana_big_submitted, actions: { view: EFFECT_ALLOW } }
+      - { principal: olga, resource: ana_archived, actions: { view: EFFECT_ALLOW } }

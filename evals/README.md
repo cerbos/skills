@@ -1,8 +1,9 @@
 # Local skill evals
 
 These native [Harbor tasks](https://www.harborframework.com/docs/tasks) evaluate
-the `cerbos-policy` skill against distinct policy authoring workflows, and smoke
-test the `cerbos-synapse-extension` skill.
+the `cerbos-policy` skill against distinct policy authoring workflows, smoke
+test the `cerbos-synapse-extension` skill, and cover the rest of the skill set
+across the authorization lifecycle.
 
 | Task | Coverage |
 | --- | --- |
@@ -34,6 +35,33 @@ Synapse task, run any task's `prepare-image.sh` once to tag the licensed Synapse
 locally, and pass `--skill ./plugins/cerbos-skills/skills/cerbos-synapse-extension`. Run all of them with
 `-p evals/tasks -i '*cerbos-synapse-*'`. The Python WASM tasks build linux/amd64
 images because `extism-py` ships for x86_64 only; they run emulated on arm64 hosts.
+
+## Lifecycle tasks
+
+These tasks cover the other six skills. Their instructions never name a skill, so
+run them with every skill installed (one `--skill` per directory under `plugins/cerbos-skills/skills/`)
+and routing between skills is part of what they test.
+
+| Task | Skill | Coverage |
+| --- | --- | --- |
+| [`cerbos-pep-python-checks`](tasks/cerbos-pep-python-checks/README.md) | `cerbos-pep-integration` | Add PDP checks to a FastAPI service's endpoints with the Python SDK, mapping stored fields onto the attributes the policy reads, and fail closed when the PDP is down. |
+| [`cerbos-pep-python-list-filter`](tasks/cerbos-pep-python-list-filter/README.md) | `cerbos-pep-integration` | Filter a paged SQLAlchemy list endpoint with `planResources` and the query-plan adapter, including always-allowed and always-denied plans. |
+| [`cerbos-migrate-inline-checks`](tasks/cerbos-migrate-inline-checks/README.md) | `cerbos-authz-migration` | Move a Flask app's scattered role checks, `can()` helper, ownership, plan-gated feature and suspended-account guard to Cerbos with identical status codes. |
+| [`cerbos-migrate-rego`](tasks/cerbos-migrate-rego/README.md) | `cerbos-authz-migration` | Translate an ordered OPA/Rego `else` chain with data-driven grants into Cerbos policies and tests, matching OPA's decisions. |
+| [`cerbos-audit-masking`](tasks/cerbos-audit-masking/README.md) | `cerbos-audit-insights` | Enable decision and access logs to a local file with PII, tokens and secret headers masked and noisy plan decisions filtered. |
+| [`cerbos-audit-debug`](tasks/cerbos-audit-debug/README.md) | `cerbos-audit-insights` | Use a seeded audit log to find why managers cannot approve invoices and fix the PEP without loosening the policy. |
+| [`cerbos-hub-pdp-config`](tasks/cerbos-hub-pdp-config/README.md) | `cerbos-hub-setup` | Switch a compose PDP from disk policies to a Hub deployment without writing the client secret to any file; checked against a fake Hub. |
+| [`cerbos-hub-ci-upload`](tasks/cerbos-hub-ci-upload/README.md) | `cerbos-hub-setup` | Add CI that validates policies on pull requests and uploads them to a Hub store on merge to main; run through a GitHub Actions emulator and a fake Hub. |
+| [`cerbos-epdp-react`](tasks/cerbos-epdp-react/README.md) | `cerbos-embedded-pdp` | Gate a Vite/React app's buttons with the embedded PDP while the API keeps enforcing; build checks plus an LLM judge. |
+| [`cerbos-router-react-multitenant`](tasks/cerbos-router-react-multitenant/README.md) | `cerbos` | Design note for per-tenant rules, API enforcement and UI hints; LLM judge. |
+| [`cerbos-router-envoy-hr-attributes`](tasks/cerbos-router-envoy-hr-attributes/README.md) | `cerbos` | Design note for gateway authorization with attributes held in an HR database; LLM judge. |
+| [`cerbos-router-mcp-agent-tools`](tasks/cerbos-router-mcp-agent-tools/README.md) | `cerbos` | Design note for authorizing an AI agent's MCP tool calls on behalf of users; LLM judge. |
+
+The judged tasks run a Codex judge through Reward Kit in the verifier and authenticate
+with a ChatGPT login: export `CODEX_AUTH_JSON="$(cat ~/.codex/auth.json)"` before
+`harbor run`. Every judged task also has deterministic checks, and its README records
+the judge's results on the oracle, nop and hand-written wrong answers kept in
+`tests/judge-validation/`.
 
 ## Task layout
 

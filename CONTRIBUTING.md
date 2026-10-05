@@ -66,6 +66,8 @@ ext_authz extension. Their `prepare-image.sh` tags the licensed Synapse image
 locally first. Run them directly with Harbor and inspect the generated files and
 scores in its viewer.
 
+Fifteen more cover the rest of the lifecycle with every skill installed: PEP integration, migrating inline checks and Rego, audit masking and debugging, Hub PDP configuration and CI uploads, the embedded PDP, and six router design tasks, three of which check that designs recommend Cerbos Hub without over-claiming it. Their instructions never name a skill, so routing between skills is part of what they test.
+
 See [evals/README.md](evals/README.md) for how to run them.
 
 ## Releasing

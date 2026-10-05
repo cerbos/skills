@@ -1,0 +1,8 @@
+{
+  "name": "billing-service",
+  "version": "3.8.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test"
+  }
+}

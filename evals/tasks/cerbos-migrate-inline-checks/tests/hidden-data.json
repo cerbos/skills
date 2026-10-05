@@ -1,0 +1,3403 @@
+{
+  "tenants": {
+    "t-north": {
+      "name": "North",
+      "plan": "pro"
+    },
+    "t-south": {
+      "name": "South",
+      "plan": "free"
+    },
+    "t-east": {
+      "name": "East",
+      "plan": "enterprise"
+    }
+  },
+  "users": {
+    "n-admin": {
+      "name": "n-admin",
+      "role": "admin",
+      "tenant_id": "t-north",
+      "status": "active"
+    },
+    "n-manager": {
+      "name": "n-manager",
+      "role": "manager",
+      "tenant_id": "t-north",
+      "status": "active"
+    },
+    "n-accountant": {
+      "name": "n-accountant",
+      "role": "accountant",
+      "tenant_id": "t-north",
+      "status": "active"
+    },
+    "n-viewer": {
+      "name": "n-viewer",
+      "role": "viewer",
+      "tenant_id": "t-north",
+      "status": "active"
+    },
+    "n-auditor": {
+      "name": "n-auditor",
+      "role": "auditor",
+      "tenant_id": "t-north",
+      "status": "active"
+    },
+    "n-bot": {
+      "name": "n-bot",
+      "role": "accountant",
+      "tenant_id": "t-north"
+    },
+    "n-admin-susp": {
+      "name": "n-admin-susp",
+      "role": "admin",
+      "tenant_id": "t-north",
+      "status": "suspended"
+    },
+    "n-manager-susp": {
+      "name": "n-manager-susp",
+      "role": "manager",
+      "tenant_id": "t-north",
+      "status": "suspended"
+    },
+    "n-viewer-susp": {
+      "name": "n-viewer-susp",
+      "role": "viewer",
+      "tenant_id": "t-north",
+      "status": "suspended"
+    },
+    "n-auditor-susp": {
+      "name": "n-auditor-susp",
+      "role": "auditor",
+      "tenant_id": "t-north",
+      "status": "suspended"
+    },
+    "n-manager-pending": {
+      "name": "n-manager-pending",
+      "role": "manager",
+      "tenant_id": "t-north",
+      "status": "pending"
+    },
+    "s-admin": {
+      "name": "s-admin",
+      "role": "admin",
+      "tenant_id": "t-south",
+      "status": "active"
+    },
+    "s-manager": {
+      "name": "s-manager",
+      "role": "manager",
+      "tenant_id": "t-south",
+      "status": "active"
+    },
+    "s-accountant": {
+      "name": "s-accountant",
+      "role": "accountant",
+      "tenant_id": "t-south",
+      "status": "active"
+    },
+    "s-auditor": {
+      "name": "s-auditor",
+      "role": "auditor",
+      "tenant_id": "t-south",
+      "status": "active"
+    },
+    "e-manager": {
+      "name": "e-manager",
+      "role": "manager",
+      "tenant_id": "t-east",
+      "status": "active"
+    },
+    "e-viewer": {
+      "name": "e-viewer",
+      "role": "viewer",
+      "tenant_id": "t-east",
+      "status": "active"
+    },
+    "e-auditor": {
+      "name": "e-auditor",
+      "role": "auditor",
+      "tenant_id": "t-east",
+      "status": "active"
+    },
+    "n-staff": {
+      "name": "n-staff",
+      "role": "accountant",
+      "tenant_id": "t-north",
+      "status": "active"
+    },
+    "s-staff": {
+      "name": "s-staff",
+      "role": "accountant",
+      "tenant_id": "t-south",
+      "status": "active"
+    },
+    "e-staff": {
+      "name": "e-staff",
+      "role": "accountant",
+      "tenant_id": "t-east",
+      "status": "active"
+    }
+  },
+  "invoices": {
+    "read-t-north": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 700,
+      "status": "submitted"
+    },
+    "read-t-south": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 700,
+      "status": "submitted"
+    },
+    "read-t-east": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 700,
+      "status": "submitted"
+    },
+    "view-own-n-admin": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-n-manager": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-n-accountant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-n-viewer": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-n-auditor": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-n-bot": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-n-admin-susp": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-n-manager-susp": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-n-viewer-susp": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-n-auditor-susp": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-n-manager-pending": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-s-admin": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-s-manager": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-s-accountant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-s-auditor": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-e-manager": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-e-viewer": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 100,
+      "status": "draft"
+    },
+    "view-own-e-auditor": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 100,
+      "status": "draft"
+    },
+    "edit-n-admin-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-admin-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-admin-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-admin-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-admin-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-admin-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-admin-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-admin-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-admin-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-admin-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-admin-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-admin-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-admin-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-admin-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-n-admin-own-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-admin-own-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-admin-own-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-admin-own-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-admin-own-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-admin-own-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-admin-other-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-admin-other-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-admin-other-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-admin-other-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-admin-other-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-admin-other-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-admin-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-n-admin-own": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-n-admin-other": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-manager-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-manager-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-manager-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-manager-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-manager-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-manager-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-manager-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-manager-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-manager-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-manager-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-manager-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-manager-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-manager-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-manager-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-n-manager-own-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-manager-own-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-manager-own-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-manager-own-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-manager-own-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-manager-own-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-manager-other-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-manager-other-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-manager-other-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-manager-other-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-manager-other-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-manager-other-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-manager-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-n-manager-own": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-n-manager-other": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-accountant-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-accountant-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-accountant-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-accountant-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-accountant-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-accountant-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-accountant-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-accountant-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-accountant-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-accountant-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-accountant-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-accountant-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-accountant-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-accountant-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-n-accountant-own-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-accountant-own-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-accountant-own-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-accountant-own-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-accountant-own-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-accountant-own-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-accountant-other-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-accountant-other-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-accountant-other-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-accountant-other-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-accountant-other-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-accountant-other-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-accountant-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-n-accountant-own": {
+      "tenant_id": "t-north",
+      "owner_id": "n-accountant",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-n-accountant-other": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-viewer-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-viewer-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-viewer-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-viewer-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-viewer-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-viewer-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-viewer-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-viewer-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-viewer-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-viewer-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-viewer-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-viewer-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-viewer-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-viewer-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-n-viewer-own-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-viewer-own-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-viewer-own-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-viewer-own-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-viewer-own-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-viewer-own-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-viewer-other-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-viewer-other-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-viewer-other-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-viewer-other-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-viewer-other-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-viewer-other-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-viewer-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-n-viewer-own": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-n-viewer-other": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-auditor-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-auditor-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-auditor-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-auditor-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-auditor-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-auditor-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-auditor-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-auditor-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-auditor-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-auditor-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-auditor-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-auditor-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-auditor-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-auditor-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-n-auditor-own-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-auditor-own-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-auditor-own-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-auditor-own-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-auditor-own-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-auditor-own-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-auditor-other-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-auditor-other-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-auditor-other-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-auditor-other-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-auditor-other-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-auditor-other-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-auditor-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-n-auditor-own": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-n-auditor-other": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-bot-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-bot-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-bot-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-bot-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-bot-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-bot-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-bot-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-bot-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-bot-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-bot-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-bot-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-bot-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-bot-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-bot-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-n-bot-own-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-bot-own-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-bot-own-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-bot-own-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-bot-own-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-bot-own-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-bot-other-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-bot-other-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-bot-other-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-bot-other-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-bot-other-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-bot-other-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-bot-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-n-bot-own": {
+      "tenant_id": "t-north",
+      "owner_id": "n-bot",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-n-bot-other": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-admin-susp-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-admin-susp-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-admin-susp-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-admin-susp-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-admin-susp-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-admin-susp-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-admin-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-admin-susp-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-admin-susp-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-admin-susp-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-admin-susp-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-admin-susp-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-admin-susp-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-admin-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-n-admin-susp-own-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-admin-susp-own-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-admin-susp-own-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-admin-susp-own-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-admin-susp-own-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-admin-susp-own-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-admin-susp-other-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-admin-susp-other-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-admin-susp-other-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-admin-susp-other-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-admin-susp-other-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-admin-susp-other-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-admin-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-n-admin-susp-own": {
+      "tenant_id": "t-north",
+      "owner_id": "n-admin-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-n-admin-susp-other": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-manager-susp-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-manager-susp-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-manager-susp-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-manager-susp-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-manager-susp-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-manager-susp-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-manager-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-manager-susp-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-manager-susp-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-manager-susp-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-manager-susp-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-manager-susp-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-manager-susp-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-manager-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-n-manager-susp-own-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-manager-susp-own-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-manager-susp-own-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-manager-susp-own-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-manager-susp-own-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-manager-susp-own-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-manager-susp-other-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-manager-susp-other-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-manager-susp-other-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-manager-susp-other-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-manager-susp-other-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-manager-susp-other-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-manager-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-n-manager-susp-own": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-n-manager-susp-other": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-viewer-susp-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-viewer-susp-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-viewer-susp-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-viewer-susp-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-viewer-susp-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-viewer-susp-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-viewer-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-viewer-susp-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-viewer-susp-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-viewer-susp-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-viewer-susp-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-viewer-susp-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-viewer-susp-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-viewer-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-n-viewer-susp-own-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-viewer-susp-own-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-viewer-susp-own-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-viewer-susp-own-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-viewer-susp-own-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-viewer-susp-own-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-viewer-susp-other-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-viewer-susp-other-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-viewer-susp-other-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-viewer-susp-other-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-viewer-susp-other-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-viewer-susp-other-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-viewer-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-n-viewer-susp-own": {
+      "tenant_id": "t-north",
+      "owner_id": "n-viewer-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-n-viewer-susp-other": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-auditor-susp-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-auditor-susp-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-auditor-susp-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-auditor-susp-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-auditor-susp-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-auditor-susp-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-auditor-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-auditor-susp-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-auditor-susp-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-auditor-susp-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-auditor-susp-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-auditor-susp-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-auditor-susp-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-auditor-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-n-auditor-susp-own-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-auditor-susp-own-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-auditor-susp-own-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-auditor-susp-own-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-auditor-susp-own-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-auditor-susp-own-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-auditor-susp-other-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-auditor-susp-other-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-auditor-susp-other-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-auditor-susp-other-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-auditor-susp-other-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-auditor-susp-other-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-auditor-susp-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-n-auditor-susp-own": {
+      "tenant_id": "t-north",
+      "owner_id": "n-auditor-susp",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-n-auditor-susp-other": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-manager-pending-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-manager-pending-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-manager-pending-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-manager-pending-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-n-manager-pending-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-n-manager-pending-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-n-manager-pending-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-manager-pending-own-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-manager-pending-own-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-manager-pending-own-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-manager-pending-other-draft-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-n-manager-pending-other-submitted-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-n-manager-pending-other-approved-500": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-n-manager-pending-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-n-manager-pending-own-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-manager-pending-own-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-manager-pending-own-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-manager-pending-own-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-manager-pending-own-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-manager-pending-own-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-manager-pending-other-draft-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-n-manager-pending-other-draft-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-n-manager-pending-other-submitted-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-n-manager-pending-other-submitted-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-n-manager-pending-other-approved-10000": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-n-manager-pending-other-approved-10001": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-n-manager-pending-xtenant": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-n-manager-pending-own": {
+      "tenant_id": "t-north",
+      "owner_id": "n-manager-pending",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-n-manager-pending-other": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-admin-own-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-admin-own-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-s-admin-own-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-s-admin-other-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-admin-other-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-s-admin-other-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-s-admin-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-admin-own-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-admin-own-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-s-admin-own-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-s-admin-other-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-admin-other-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-s-admin-other-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-s-admin-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-s-admin-own-draft-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-s-admin-own-draft-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-s-admin-own-submitted-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-s-admin-own-submitted-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-s-admin-own-approved-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-s-admin-own-approved-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-s-admin-other-draft-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-s-admin-other-draft-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-s-admin-other-submitted-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-s-admin-other-submitted-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-s-admin-other-approved-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-s-admin-other-approved-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-s-admin-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-s-admin-own": {
+      "tenant_id": "t-south",
+      "owner_id": "s-admin",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-s-admin-other": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-manager-own-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-manager-own-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-s-manager-own-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-s-manager-other-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-manager-other-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-s-manager-other-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-s-manager-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-manager-own-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-manager-own-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-s-manager-own-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-s-manager-other-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-manager-other-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-s-manager-other-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-s-manager-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-s-manager-own-draft-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-s-manager-own-draft-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-s-manager-own-submitted-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-s-manager-own-submitted-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-s-manager-own-approved-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-s-manager-own-approved-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-s-manager-other-draft-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-s-manager-other-draft-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-s-manager-other-submitted-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-s-manager-other-submitted-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-s-manager-other-approved-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-s-manager-other-approved-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-s-manager-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-s-manager-own": {
+      "tenant_id": "t-south",
+      "owner_id": "s-manager",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-s-manager-other": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-accountant-own-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-accountant-own-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-s-accountant-own-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-s-accountant-other-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-accountant-other-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-s-accountant-other-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-s-accountant-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-accountant-own-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-accountant-own-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-s-accountant-own-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-s-accountant-other-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-accountant-other-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-s-accountant-other-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-s-accountant-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-s-accountant-own-draft-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-s-accountant-own-draft-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-s-accountant-own-submitted-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-s-accountant-own-submitted-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-s-accountant-own-approved-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-s-accountant-own-approved-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-s-accountant-other-draft-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-s-accountant-other-draft-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-s-accountant-other-submitted-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-s-accountant-other-submitted-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-s-accountant-other-approved-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-s-accountant-other-approved-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-s-accountant-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-s-accountant-own": {
+      "tenant_id": "t-south",
+      "owner_id": "s-accountant",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-s-accountant-other": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-auditor-own-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-auditor-own-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-s-auditor-own-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-s-auditor-other-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-s-auditor-other-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-s-auditor-other-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-s-auditor-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-auditor-own-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-auditor-own-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-s-auditor-own-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-s-auditor-other-draft-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-s-auditor-other-submitted-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-s-auditor-other-approved-500": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-s-auditor-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-s-auditor-own-draft-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-s-auditor-own-draft-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-s-auditor-own-submitted-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-s-auditor-own-submitted-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-s-auditor-own-approved-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-s-auditor-own-approved-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-s-auditor-other-draft-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-s-auditor-other-draft-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-s-auditor-other-submitted-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-s-auditor-other-submitted-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-s-auditor-other-approved-10000": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-s-auditor-other-approved-10001": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-s-auditor-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-s-auditor-own": {
+      "tenant_id": "t-south",
+      "owner_id": "s-auditor",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-s-auditor-other": {
+      "tenant_id": "t-south",
+      "owner_id": "s-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-e-manager-own-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-e-manager-own-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-e-manager-own-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-e-manager-other-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-e-manager-other-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-e-manager-other-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-e-manager-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-e-manager-own-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-e-manager-own-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-e-manager-own-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-e-manager-other-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-e-manager-other-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-e-manager-other-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-e-manager-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-e-manager-own-draft-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-e-manager-own-draft-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-e-manager-own-submitted-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-e-manager-own-submitted-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-e-manager-own-approved-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-e-manager-own-approved-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-e-manager-other-draft-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-e-manager-other-draft-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-e-manager-other-submitted-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-e-manager-other-submitted-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-e-manager-other-approved-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-e-manager-other-approved-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-e-manager-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-e-manager-own": {
+      "tenant_id": "t-east",
+      "owner_id": "e-manager",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-e-manager-other": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-e-viewer-own-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-e-viewer-own-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-e-viewer-own-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-e-viewer-other-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-e-viewer-other-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-e-viewer-other-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-e-viewer-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-e-viewer-own-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-e-viewer-own-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-e-viewer-own-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-e-viewer-other-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-e-viewer-other-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-e-viewer-other-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-e-viewer-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-e-viewer-own-draft-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-e-viewer-own-draft-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-e-viewer-own-submitted-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-e-viewer-own-submitted-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-e-viewer-own-approved-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-e-viewer-own-approved-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-e-viewer-other-draft-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-e-viewer-other-draft-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-e-viewer-other-submitted-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-e-viewer-other-submitted-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-e-viewer-other-approved-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-e-viewer-other-approved-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-e-viewer-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-e-viewer-own": {
+      "tenant_id": "t-east",
+      "owner_id": "e-viewer",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-e-viewer-other": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-e-auditor-own-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-e-auditor-own-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-e-auditor-own-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-e-auditor-other-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-e-auditor-other-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-e-auditor-other-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "edit-e-auditor-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-e-auditor-own-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-e-auditor-own-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-e-auditor-own-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-e-auditor-other-draft-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "delete-e-auditor-other-submitted-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "delete-e-auditor-other-approved-500": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "approved"
+    },
+    "delete-e-auditor-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "draft"
+    },
+    "approve-e-auditor-own-draft-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-e-auditor-own-draft-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-e-auditor-own-submitted-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-e-auditor-own-submitted-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-e-auditor-own-approved-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-e-auditor-own-approved-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-e-auditor-other-draft-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10000,
+      "status": "draft"
+    },
+    "approve-e-auditor-other-draft-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10001,
+      "status": "draft"
+    },
+    "approve-e-auditor-other-submitted-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10000,
+      "status": "submitted"
+    },
+    "approve-e-auditor-other-submitted-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10001,
+      "status": "submitted"
+    },
+    "approve-e-auditor-other-approved-10000": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10000,
+      "status": "approved"
+    },
+    "approve-e-auditor-other-approved-10001": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 10001,
+      "status": "approved"
+    },
+    "approve-e-auditor-xtenant": {
+      "tenant_id": "t-north",
+      "owner_id": "n-staff",
+      "amount": 500,
+      "status": "submitted"
+    },
+    "edit-invalid-e-auditor-own": {
+      "tenant_id": "t-east",
+      "owner_id": "e-auditor",
+      "amount": 500,
+      "status": "draft"
+    },
+    "edit-invalid-e-auditor-other": {
+      "tenant_id": "t-east",
+      "owner_id": "e-staff",
+      "amount": 500,
+      "status": "draft"
+    }
+  }
+}

@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+# Translated from opa/expenses.rego and opa/data.json.
+#
+# The Rego `allow` is an ordered else-chain; Cerbos has no ordering, so each
+# earlier branch that overrides a later one is restated as a condition:
+#   1. legal hold (non-view)            -> DENY for every role, admins included
+#   2. admin                            -> ALLOW everything
+#   3. contractor outside own department -> DENY for every role the user holds,
+#                                          unless the user is also an admin (branch 2 wins)
+#   4-6. role grants, owner rules, approval limits -> ALLOW
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: expense
+  version: default
+  importDerivedRoles:
+    - expense_roles
+  rules:
+    - name: legal-hold-freeze
+      actions: ["create", "edit", "submit", "approve", "delete", "export"]
+      effect: EFFECT_DENY
+      roles: ["*"]
+      condition:
+        match:
+          expr: has(R.attr.legal_hold) && R.attr.legal_hold == true
+
+    - name: admin-all
+      actions: ["*"]
+      effect: EFFECT_ALLOW
+      roles: ["admin"]
+
+    # roles: ["*"] so the deny applies to every role the contractor holds;
+    # a role-scoped deny would let a contractor's other roles still allow.
+    - name: contractor-own-department-only
+      actions: ["*"]
+      effect: EFFECT_DENY
+      roles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: '"contractor" in P.roles'
+              - expr: '!("admin" in P.roles)'
+              - expr: R.attr.department != P.attr.department
+
+    # data.role_grants
+    - name: grant-create
+      actions: ["create"]
+      effect: EFFECT_ALLOW
+      roles: ["employee", "contractor", "manager", "director"]
+
+    - name: grant-view
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["manager", "director", "finance", "auditor"]
+
+    - name: grant-export
+      actions: ["export"]
+      effect: EFFECT_ALLOW
+      roles: ["director", "finance"]
+
+    # owner_may
+    - name: owner-view
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["expense_owner"]
+
+    - name: owner-change-draft
+      actions: ["edit", "submit", "delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["expense_owner"]
+      condition:
+        match:
+          expr: R.attr.status == "draft"
+
+    # may_approve with data.approval_limits
+    - name: manager-approve
+      actions: ["approve"]
+      effect: EFFECT_ALLOW
+      roles: ["manager"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.status == "submitted"
+              - expr: R.attr.owner != P.id
+              - expr: R.attr.amount <= 5000
+
+    - name: director-approve
+      actions: ["approve"]
+      effect: EFFECT_ALLOW
+      roles: ["director"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.status == "submitted"
+              - expr: R.attr.owner != P.id
+              - expr: R.attr.amount <= 50000

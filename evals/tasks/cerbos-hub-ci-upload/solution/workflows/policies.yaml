@@ -1,0 +1,40 @@
+name: policies
+
+on:
+  pull_request:
+    branches: [main]
+    paths: ["policies/**", ".github/workflows/policies.yaml"]
+  push:
+    branches: [main]
+    paths: ["policies/**", ".github/workflows/policies.yaml"]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: [self-hosted, linux]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and test policies
+        run: cerbos compile policies
+      - name: Re-run tests with strict evaluation
+        run: cerbos compile --strict-evaluation policies
+
+  upload:
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, linux]
+    concurrency:
+      group: hub-store-billing-policies
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace the billing-policies store with policies/
+        env:
+          CERBOS_HUB_STORE_ID: S7NQ4KDZ2WXM
+          CERBOS_HUB_CLIENT_ID: ${{ secrets.HUB_POLICIES_CLIENT_ID }}
+          CERBOS_HUB_CLIENT_SECRET: ${{ secrets.HUB_POLICIES_CLIENT_SECRET }}
+        run: >-
+          cerbosctl hub store replace-files policies
+          --message "${{ github.sha }}: policies from main"

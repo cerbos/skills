@@ -1,0 +1,8 @@
+{
+  "name": "ledgerly-web",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "vite", "build": "tsc -b && vite build" },
+  "dependencies": { "react": "19.3.0", "react-dom": "19.3.0", "@tanstack/react-query": "5.90.2" },
+  "devDependencies": { "typescript": "5.9.3", "vite": "8.3.2", "@vitejs/plugin-react": "6.1.2" }
+}

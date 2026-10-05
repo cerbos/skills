@@ -1,0 +1,25 @@
+{
+  "tenants": {
+    "acme": {"name": "Acme Corp", "plan": "pro"},
+    "globex": {"name": "Globex", "plan": "free"}
+  },
+  "users": {
+    "alice": {"name": "Alice", "role": "admin", "tenant_id": "acme", "status": "active"},
+    "mia": {"name": "Mia", "role": "manager", "tenant_id": "acme", "status": "active"},
+    "aaron": {"name": "Aaron", "role": "accountant", "tenant_id": "acme", "status": "active"},
+    "vera": {"name": "Vera", "role": "viewer", "tenant_id": "acme", "status": "active"},
+    "sid": {"name": "Sid", "role": "manager", "tenant_id": "acme", "status": "suspended"},
+    "ext-audit": {"name": "External auditor", "role": "auditor", "tenant_id": "acme", "status": "active"},
+    "billing-bot": {"name": "Billing integration", "role": "accountant", "tenant_id": "acme"},
+    "gary": {"name": "Gary", "role": "manager", "tenant_id": "globex", "status": "active"},
+    "gina": {"name": "Gina", "role": "accountant", "tenant_id": "globex", "status": "active"}
+  },
+  "invoices": {
+    "inv-100": {"tenant_id": "acme", "owner_id": "aaron", "amount": 1200, "status": "draft"},
+    "inv-101": {"tenant_id": "acme", "owner_id": "aaron", "amount": 15000, "status": "submitted"},
+    "inv-102": {"tenant_id": "acme", "owner_id": "mia", "amount": 800, "status": "submitted"},
+    "inv-103": {"tenant_id": "acme", "owner_id": "ext-audit", "amount": 50, "status": "draft"},
+    "inv-104": {"tenant_id": "acme", "owner_id": "aaron", "amount": 9000, "status": "approved"},
+    "inv-200": {"tenant_id": "globex", "owner_id": "gina", "amount": 300, "status": "submitted"}
+  }
+}

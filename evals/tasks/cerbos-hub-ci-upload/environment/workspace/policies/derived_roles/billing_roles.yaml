@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+derivedRoles:
+  name: billing_roles
+  definitions:
+    - name: account_member
+      parentRoles: ["user"]
+      condition:
+        match:
+          expr: R.attr.account_id in P.attr.account_ids

@@ -1,0 +1,15 @@
+server:
+  httpListenAddr: ":3592"
+  grpcListenAddr: ":3593"
+
+storage:
+  driver: disk
+  disk:
+    directory: /workspace/policies
+    watchForChanges: true
+
+audit:
+  enabled: true
+  backend: file
+  file:
+    path: /var/log/cerbos/audit.log

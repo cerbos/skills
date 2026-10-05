@@ -1,0 +1,24 @@
+# Verifier-only variant: members edit any document in their own department and
+# only admins delete. The API must follow whichever policy the PDP serves.
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: document
+  version: default
+  rules:
+    - name: view-documents
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["member", "admin"]
+
+    - name: edit-department-documents
+      actions: ["edit"]
+      effect: EFFECT_ALLOW
+      roles: ["member"]
+      condition:
+        match:
+          expr: request.resource.attr.department == request.principal.attr.department
+
+    - name: admins-manage-documents
+      actions: ["edit", "delete"]
+      effect: EFFECT_ALLOW
+      roles: ["admin"]
