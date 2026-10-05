@@ -22,7 +22,7 @@ function can(principal, action, resource):
     return legacy
 ```
 
-Four properties are non-negotiable:
+During a shadow period, four properties are non-negotiable:
 
 - **The legacy answer is returned** until the flag for that resource kind flips. Shadow mode that changes behaviour is not shadow mode.
 - **Cerbos failures never propagate.** A timeout or a connection error is recorded as `ERROR` and the request proceeds on the legacy answer. During shadow, an unavailable PDP must be invisible to users.
@@ -33,7 +33,18 @@ Where a `can()` helper already exists, this is a one-file change and every calle
 
 `cerbos-pep-integration` ([API](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-api)) owns the SDK call and the request construction.
 
+The shim replaces the guard at the guard's own site. A pre-load middleware guard gets a pre-load shim, so the status codes the shadow diff compares are the ones users see; MAPPING-CODE.md covers guard position.
+
 If the codebase already runs a Scientist-style experiment library, build the shim on it rather than beside it: legacy is the control, Cerbos the candidate, and the publish hook is `record`. The team already trusts that machinery.
+
+## Direct cutover, when the user asks for it
+
+Shadow first is the recommendation; say so once, with the reason. When the user still asks to switch directly with no shadow period, do that:
+
+- **Replace the guard with the PDP decision.** The guard site calls Cerbos and acts on its answer, keeping the guard's position and status codes. A shim that calls Cerbos but still returns the legacy answer is shadow mode under another name, and it ships a migration that has not happened.
+- **Prove parity with tests before switching.** Before the legacy check is removed, write tests over the endpoints — one allow and one deny per inventory row, plus the status code of each refusal (`403` before load, `404`, validation after the allow) — and run them green against the legacy code. Then switch, run the same tests against Cerbos, and run the `cerbos-policy` suites under strict evaluation. Those tests are the evidence a shadow diff would have produced.
+- **Fail closed.** With no legacy fallback, a PDP error is a `5xx`, never an allow.
+- **Keep a lever.** Hub freeze and rollback still apply; delete the legacy code in the same change only if the user accepts that the deployment is the only undo.
 
 ## What to record
 

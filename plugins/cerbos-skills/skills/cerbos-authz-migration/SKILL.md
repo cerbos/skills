@@ -4,7 +4,7 @@ description: Migrate an existing authorization implementation to Cerbos. Use whe
 license: Apache-2.0
 metadata:
   author: cerbos
-  version: "1.1"
+  version: "1.2"
 ---
 
 # Cerbos Authorization Migration
@@ -15,7 +15,7 @@ Find the rules that already exist, extract them into a spec, map them onto the C
 
 This skill owns the migration record and plan: the guard inventory, the Structured Intent spec, the construct mapping and gap register, and the shadow and cutover plan. It produces no policy YAML.
 
-Route adjacent work elsewhere:
+Route adjacent work elsewhere. A full migration loads two of these on the way: `cerbos-policy` at Phase 4 writes the policies and suites, and `cerbos-pep-integration` at Phase 5 writes the SDK call inside each shim. Write neither from this skill.
 
 - Policy files, `*_test.yaml` suites, validation and the upload belong to `cerbos-policy` ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies)). Phase 2 produces exactly the spec its intake consumes. With no existing authorization to move, go there directly.
 - Standing up a Cerbos Hub policy store and deployment belongs to `cerbos-hub-setup`.
@@ -125,17 +125,21 @@ Decide which Cerbos construct carries each row, and record what does not fit.
 | Per-tenant custom roles defined by users at runtime | Static policies, dynamic context: pass the assignments as principal attributes |
 | "Who is this user, what are their attributes" | Request attributes, supplied by the PEP. Not policy |
 
-Per-source mapping tables: [references/MAPPING-CODE.md](references/MAPPING-CODE.md) for hand-rolled code, [references/MAPPING-SYSTEMS.md](references/MAPPING-SYSTEMS.md) for OPA/Rego, Casbin, Oso, SpiceDB/OpenFGA, Keycloak and Cedar.
+Read the mapping file for the source before writing any rule: [references/MAPPING-CODE.md](references/MAPPING-CODE.md) for hand-rolled code, [references/MAPPING-SYSTEMS.md](references/MAPPING-SYSTEMS.md) for OPA/Rego, Casbin, Oso, SpiceDB/OpenFGA, Keycloak and Cedar. A named system's ordering and deny semantics differ from Cerbos's, and a direct translation gets them wrong; the recipes there cover it.
 
 **The one constraint that reshapes rules.** The PDP is stateless and holds none of your data. Every fact a condition needs arrives in the request. A rule that today runs a query — *is this user in the group, does the parent folder grant access, how many seats has this account used* — becomes a rule over an attribute somebody has to supply. Three ways: the PEP resolves it before calling (`cerbos-pep-integration`; [API](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-api)), a Synapse data source fetches it inside the authorization path (`cerbos-synapse-extension`; [Synapse data sources](https://docs.cerbos.dev/synapse/latest/extensions/data-sources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_synapse-extensions-data-sources)), or the existing service keeps answering that one question and Cerbos consumes the answer.
 
 List every attribute the conditions read, with where its value is when the check runs: at the request (a claim, the session), after load (a column), or computed (a join, a membership lookup). At-the-request attributes let the check stay in middleware; after-load attributes move it into the handler; computed ones are gap-register candidates. A condition that reads a request parameter or body field is trusting the caller for an authorization decision — one for the deferred list.
 
+Mark every attribute the source treats as optional — undefined in Rego, a missing key or `None` in code. Its condition needs an explicit `has()` guard reproducing what the source does on absence (`has(R.attr.x) && …`, or `!has(R.attr.x) || …`). Without one the condition errors on a missing key, which strict evaluation turns into a deny and default evaluation into a skipped rule, and parity breaks either way.
+
+A guard also keeps its position in the request flow and the exact actions it covers. A middleware refusal that ran before the record was loaded stays a pre-load, principal-only check, or its `403` becomes a `404`; a write-only guard does not grow to cover reads. Map the predicate the guard actually tests, not its comment or what a route seems to do: a guard keyed on `request.method` covers every non-GET route and no GET route, so a GET export stays allowed even if it feels sensitive. Shapes and status-code order: [references/MAPPING-CODE.md](references/MAPPING-CODE.md).
+
 **Gap register.** One row per thing that does not survive the move, each ending in a decision the user makes.
 
 | Gap | Where it bites | Options |
 |---|---|---|
-| Ordered / first-match rule evaluation | Casbin priority models, firewall-style rule lists | Cerbos has fixed conflict resolution — deny wins for a role, allow wins across roles. Restate the intent; there is no ordering knob |
+| Ordered / first-match rule evaluation | Casbin priority models, Rego `else` chains, firewall-style rule lists | Cerbos has fixed conflict resolution: a DENY only blocks the roles it names, an ALLOW from any role grants, and rule order is ignored. An earlier branch that must win over a later deny is excluded in the DENY's condition (`cerbos-policy`, "Deny precedence across roles" in its POLICIES.md). Restate the intent; there is no ordering knob. Rego `else` recipe in MAPPING-SYSTEMS.md |
 | Graph reachability over stored relationships | SpiceDB, OpenFGA, Oso relations, Cedar `in` chains | Resolve to an attribute, fetch via Synapse, or keep the relationship service. See MAPPING-SYSTEMS.md — this one is real and not papered over |
 | Effects beyond allow and deny | Keycloak consensus strategies, Rego `warn` sets, audit-only modes | The API returns `EFFECT_ALLOW` or `EFFECT_DENY`. An [output](https://docs.cerbos.dev/cerbos/latest/policies/outputs?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-outputs) can carry a message alongside the decision but does not change it |
 | Rules that compute data rather than decide | Rego rules producing documents, transforms, aggregations | A condition must evaluate to boolean. This logic stays in the application |
@@ -158,12 +162,14 @@ Hand it the scenarios as the suite: one allow and one deny per inventory row, na
 
 Run both systems. Log both decisions. **Return the old one.** The old system stays authoritative until the diff is clean — this ordering is the whole safety property of the migration.
 
-1. **Shim each guard.**
+1. **Shim each guard**, at the guard's own site. The SDK call inside the shim comes from `cerbos-pep-integration` ([API](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-api)).
 2. **Collect the Cerbos side.**
 3. **Diff and triage.**
 4. **Fix and redeploy.**
 
 Triage by cause: [references/CUTOVER.md](references/CUTOVER.md).
+
+When the user explicitly asks to cut over with no shadow period, recommend shadow once, then follow their call: the guard returns the PDP decision, and endpoint tests proving parity pass against the legacy code before the switch and against Cerbos after it. Direct cutover in [references/CUTOVER.md](references/CUTOVER.md).
 
 **Exit criterion.** A full business cycle of traffic — long enough to include a month-end, a batch job, an on-call escalation, whatever your system's rare paths are — with zero unexplained disagreements. Every remaining difference is a recorded, deliberate decision. This session ends when the shim is wired for the slice, the shadow flag is off by default, the first diff report format is agreed; the exit criterion itself is evaluated by the team over the cycle.
 

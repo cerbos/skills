@@ -4,6 +4,8 @@ Masks are applied at the PDP before an entry is written to the local buffer, so 
 
 `mask` is a setting of the `hub` audit backend. The `local`, `file` and `kafka` backends have no equivalent; for those, keep data out at the source with `includeMetadataKeys` / `excludeMetadataKeys` (below) or by not putting it in the request.
 
+To write a **masked local file**, run the `hub` backend and pipe it to `file` — see *A masked local file* below.
+
 ## The four sections
 
 ```yaml
@@ -14,7 +16,7 @@ audit:
     storagePath: /var/cerbos/audit
     mask:
       metadata:
-        - x-api-key
+        - "['x-api-key']"
       peer:
         - address
         - forwardedFor
@@ -46,6 +48,8 @@ A supported subset of JSONPath:
 | List index | `inputs[0].principal.id` |
 | List wildcard | `inputs[*].principal.attr.ssn` |
 
+A key containing `-` or another non-identifier character needs the bracket form: `['x-api-key']`. The dot form `x-api-key` stops the PDP at startup with `unexpected character for accessor: -`.
+
 Nesting continues through maps, so `inputs[*].principal.attr.profile.dateOfBirth` reaches a key inside an attribute that holds an object.
 
 **Segments that name a protobuf field must use the lowerCamelCase JSON name**: `forwardedFor`, `auxData`, `filterDebug`, `requestId`, `checkResources`. Segments that name a *map key* — anything below `metadata`, `principal.attr`, `resource.attr` or `auxData.jwt` — are matched literally, exactly as the key appears in the data.
@@ -59,14 +63,18 @@ Deletion, not redaction: a masked field is removed from the entry rather than re
 | To keep out of the audit trail | Mask |
 |---|---|
 | `Authorization` header | Nothing to do — never captured. See *Request metadata* below. |
-| Another secret-bearing header, e.g. `x-api-key` | `metadata: ['x-api-key']`, or better `excludeMetadataKeys` so it applies to every backend |
+| Another secret-bearing header, e.g. `x-api-key` | `metadata: ["['x-api-key']"]`, or better `excludeMetadataKeys` so it applies to every backend |
 | Caller IP addresses | `peer: [address, forwardedFor]` |
 | A PII principal attribute | `checkResources: ['inputs[*].principal.attr.ssn']` and `planResources: ['input.principal.attr.ssn']` — both, since the two call kinds are separate sections |
 | PII nested inside an attribute | `inputs[*].principal.attr.profile.dateOfBirth` |
-| Everything a JWT carried | `checkResources: ['inputs[*].auxData']` |
-| One JWT claim | `checkResources: ['inputs[*].auxData.jwt.email']` |
+| Everything a JWT carried | `checkResources: ['inputs[*].auxData']` and `planResources: ['input.auxData']` |
+| One JWT claim | `checkResources: ['inputs[*].auxData.jwt.email']` and `planResources: ['input.auxData.jwt.email']` |
 | Resource content — document bodies, amounts | `checkResources: ['inputs[*].resource.attr.body']` |
 | Values emitted by policy `output` blocks | `checkResources: ['outputs[*].outputs']` |
+
+The raw token is never recorded; an entry holds only the decoded claims under `auxData.jwt`. "Mask the JWT" therefore means masking those claims.
+
+Every row that names only `checkResources` needs its `input.…` twin under `planResources` when plan calls carry the same data.
 
 `outputs` on its own is the whole `CheckOutput` list: the per-action effects, the effective derived roles and the validation errors as well as the rule outputs. Masking it leaves an entry that no longer records which actions were allowed or denied. Reach one level deeper, as above, when the target is only the values policies emitted.
 
@@ -116,6 +124,14 @@ audit:
 ```
 
 Drive a representative request and read the line. That ordering is also the warning: `pipeOutput` is not a full-fidelity local copy — a SIEM fed from it receives the masked entries too, so anything a downstream system needs must survive the mask. The `hub` backend cannot pipe to itself.
+
+`file` is a sibling of `hub` under `audit`, not nested inside it; `audit.hub.file` stops the PDP at startup with `field file not found in type hub.Conf`.
+
+## A masked local file
+
+The same layout is the only way to get masked entries into a local file: `backend: hub`, the masks under `audit.hub.mask`, `pipeOutput` to `file`, and `audit.file.path` set to the file instead of stdout.
+
+The `hub` backend needs `hub.credentials`. With none, the PDP refuses to start. With placeholder values it starts, serves decisions and writes the piped file, and only logs warnings about failed uploads, which is workable for a PDP that never reaches Hub.
 
 ## Size guard
 

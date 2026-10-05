@@ -42,11 +42,11 @@ audit:
     pipeOutput:
       backend: file    # ...and to stdout as well
       enabled: true
-    file:
-      path: stdout
+  file:                # a sibling of hub, not nested in it
+    path: stdout
 ```
 
-Masks are applied before `pipeOutput`, so a piped copy is redacted the same way the Hub copy is.
+Masks are applied before `pipeOutput`, so a piped copy is redacted the same way the Hub copy is. The same layout with a file path is how to get a masked local file, since only the `hub` backend masks — see [MASKING.md](MASKING.md#a-masked-local-file).
 
 For an interactive session rather than a stream, the `local` backend keeps records in an embedded store for seven days and makes them queryable:
 

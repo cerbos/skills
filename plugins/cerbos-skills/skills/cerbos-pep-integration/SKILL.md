@@ -1,10 +1,10 @@
 ---
 name: cerbos-pep-integration
-description: Call a Cerbos PDP from application code — the policy enforcement point. Use when adding a permission check to a handler, filtering a query or list by permission (`planResources`, ORM adapters), passing JWT claims to the PDP, or choosing an SDK for JavaScript, Go, Python, Java, .NET, Rust, PHP or Ruby. Not for browser-side permission checks, which belong to `cerbos-embedded-pdp`.
+description: Call a Cerbos PDP from application code — the policy enforcement point. Use when adding a permission check to a handler, filtering a query or list by permission (`planResources`, ORM adapters), passing JWT claims to the PDP, authorizing agent or MCP tool calls, or choosing an SDK for JavaScript, Go, Python, Java, .NET, Rust, PHP or Ruby. Not for browser-side permission checks, which belong to `cerbos-embedded-pdp`.
 license: Apache-2.0
 metadata:
   author: cerbos
-  version: "1.1"
+  version: "1.2"
   targetsCerbosVersion: "0.55.0"
 ---
 
@@ -14,7 +14,7 @@ A **PEP** — policy enforcement point — is the code in your application that 
 
 ## Scope
 
-This skill owns the application code that calls a PDP: the SDK client and its connection, `isAllowed`, `checkResource` and `checkResources` checks at the boundary of an operation, the mapping from your user store onto the principal, JWTs passed as `auxData`, and list filtering with `planResources` and query-plan adapters.
+This skill owns the application code that calls a PDP: the SDK client and its connection, `isAllowed`, `checkResource` and `checkResources` checks at the boundary of an operation, the mapping from your user store onto the principal, JWTs passed as `auxData`, list filtering with `planResources` and query-plan adapters, and the checks guarding AI agent and MCP tool calls.
 
 Route adjacent work elsewhere:
 
@@ -91,6 +91,17 @@ Verified adapters: `@cerbos/orm-prisma`, `@cerbos/orm-drizzle`, `@cerbos/orm-mon
 Put the check in the layer that owns the operation — the handler, the service method, the resolver — so one operation has one check in one readable place.
 
 Deny on error. A PDP that is unreachable or past its deadline is an outage; let it surface as a 5xx. Falling through to "allowed" turns an outage into an authorization bypass. Keep the two distinguishable in your own logs as well: an outage that reads as a deny in your telemetry looks exactly like a policy bug, and the check that separates them is whether the PDP recorded the request at all — the `cerbos-audit-insights` skill covers that flow.
+
+## AI agents and MCP tools
+
+An agent calling tools for a user is a PEP like any other, and the MCP server's tool-call handler is where it enforces.
+
+- **The principal is the human user** the agent acts for, taken from the session or the token the MCP client authenticated with. Use neither the agent's service identity, which would let every user borrow its permissions, nor any user ID or role the model filled into the tool arguments. The agent then can do nothing its user could not. Where policy should also narrow what agents may do, pass the agent's identity as a principal attribute.
+- **Tools are a resource**: one kind (say `mcp_tool`, `id` naming the server), one action per tool name. Action names are globs in policy, so a rule on `delete_*` covers every delete tool, including ones added later; say so rather than hedging. Check on every tool call, before the tool runs. A tool that then touches a specific record checks that record as well — the tool check gates the capability, the record check gates the data.
+- **Filtering `list_tools`** with one `checkResource` carrying every tool name as an action keeps denied tools out of the model's view. That is UX; the tool-call check is the enforcement, because a model can call a tool it was never shown.
+- **Fail closed.** A PDP error returns an error result to the agent and the tool does not run.
+
+Retrieval for RAG filters the vector store with a query plan, as for any list: [RAG authorization](https://docs.cerbos.dev/cerbos/latest/recipes/ai/rag-authorization/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-pep-integration_pdp-recipes-ai-rag-authorization).
 
 ## JWT auxiliary data
 

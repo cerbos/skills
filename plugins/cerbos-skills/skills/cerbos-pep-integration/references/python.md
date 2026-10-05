@@ -2,6 +2,8 @@
 
 Source of truth: [`cerbos/cerbos-sdk-python`](https://github.com/cerbos/cerbos-sdk-python). Published on PyPI as `cerbos`. Requires Python 3.10+.
 
+Checked against `cerbos` 0.16.0 and `cerbos-sqlalchemy` 0.4.0. The adapter requires `cerbos>=0.10.4` and documents SQLAlchemy 1.4 and 2.0; 2.1 is outside that list, so pin `sqlalchemy<2.1` when using it.
+
 ## Install
 
 ```bash
@@ -44,6 +46,36 @@ CerbosClient(host, tls_verify=False, playground_instance="", timeout_secs=None,
 
 The client is a context manager holding a channel. In a web app, open it once at startup and inject it, rather than per request.
 
+### Deadlines and failure
+
+There is no deadline by default (`timeout_secs=None`), so a PDP that accepts the connection and then stalls blocks the request indefinitely. Set one. In 0.16.0, `timeout_secs`, `request_retries` and `wait_for_ready` are silently ignored: the SDK's gRPC service config names the service `svc.CerbosService`, which never matches the real `cerbos.svc.v1.CerbosService`. Pass a working service config through `channel_options` instead, which overrides the SDK's:
+
+```python
+import json
+
+SERVICE_CONFIG = json.dumps({"methodConfig": [{
+    "name": [{"service": "cerbos.svc.v1.CerbosService"}],
+    "timeout": "0.5s",
+}]})
+
+client = CerbosClient("cerbos:3593", tls_verify=True,
+                      channel_options={"grpc.service_config": SERVICE_CONFIG})
+```
+
+Leave `waitForReady` off on a request path: with it on, a call made while the PDP is down queues until the PDP returns or the deadline expires, instead of failing fast.
+
+Transport failures raise `grpc.RpcError` (`UNAVAILABLE` when the PDP is down, `DEADLINE_EXCEEDED` past the deadline). Catch it at the check and fail closed — answer 503, never fall through to allowed:
+
+```python
+import grpc
+
+try:
+    allowed = client.is_allowed("view", principal, resource)
+except grpc.RpcError:
+    log.exception("cerbos check failed")
+    raise ServiceUnavailable()
+```
+
 ## Building requests
 
 The gRPC client takes protobuf messages directly:
@@ -65,7 +97,19 @@ resource = engine_pb2.Resource(
 )
 ```
 
-Attribute values are `google.protobuf.Value`, not bare Python objects — `Value(string_value=...)`, `Value(bool_value=...)`, `Value(number_value=...)`, and `Struct`/`ListValue` for nested data. Write one small helper that converts your dicts and use it everywhere; hand-wrapping at each call site is where this SDK gets tedious and wrong.
+Attribute values are `google.protobuf.Value`, not bare Python objects. Convert dicts with one helper and use it everywhere; hand-wrapping `Value(string_value=...)` at each call site is where this SDK gets tedious and wrong:
+
+```python
+from google.protobuf.json_format import ParseDict
+from google.protobuf.struct_pb2 import Value
+
+def to_attr(d: dict) -> dict[str, Value]:
+    return {k: ParseDict(v, Value()) for k, v in d.items()}
+
+resource = engine_pb2.Resource(id=str(doc.id), kind="document", attr=to_attr({"owner": doc.owner_id, "tags": doc.tags}))
+```
+
+`ParseDict` handles nested dicts, lists, `None` and booleans; numbers arrive as doubles, as they would over JSON.
 
 For query plans the resource is a different message: `engine_pb2.PlanResourcesInput.Resource(kind="leave_request")` — no `id`.
 
@@ -115,7 +159,7 @@ query = get_query(plan, Contact, {
 }, [(User, Contact.owner_id == User.id)])
 ```
 
-`get_query(plan, table_or_entity, attr_map, joins=None)` returns a SQLAlchemy `Select` you can keep building on with `.where(...)` and `.with_only_columns(...)`. The fourth argument is required as soon as `attr_map` spans more than one table. Supported operators are `and or not eq ne lt gt le ge in`; `operator_override_fns` swaps an operator's implementation for a dialect-specific one (`{"in": lambda c, v: c == any_(v)}`). Full detail: [SQLAlchemy adapter](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/sqlalchemy?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-pep-integration_pdp-recipes-query-plan-adapters-sqlalchemy).
+`get_query(plan, table_or_entity, attr_map, table_mapping=None, operator_override_fns=None)` returns a SQLAlchemy `Select` you can keep building on with `.where(...)` and `.with_only_columns(...)`. It branches on the plan kind itself — `select(t).where(False)` for `ALWAYS_DENIED`, plain `select(t)` for `ALWAYS_ALLOWED` — and the package exports nothing but `get_query`, so there is no `PlanKind` to import. The fourth argument is required as soon as `attr_map` spans more than one table. Logic, comparison, arithmetic, `in`, `size`, string helpers, timestamps and hierarchy functions translate out of the box; collection operators need an `operator_override_fns` entry, and `matches()` and any other unsupported shape raise rather than widen the query. `operator_override_fns` also swaps an operator for a dialect-specific one (`{"in": lambda c, v: c == any_(v)}`). Full detail: [SQLAlchemy adapter](https://docs.cerbos.dev/cerbos/latest/recipes/query-plan-adapters/sqlalchemy?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-pep-integration_pdp-recipes-query-plan-adapters-sqlalchemy).
 
 ## JWT auxiliary data
 

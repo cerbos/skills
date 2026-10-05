@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires the cerbos CLI or Docker for policy validation
 metadata:
   author: cerbos
-  version: "1.11"
+  version: "1.12"
   targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Glob Grep Task Bash(cerbos compile:*) Bash(cerbos --version) Bash(docker --version)
 ---

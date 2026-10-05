@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires cerbosctl, and Docker or a local Cerbos binary to run a PDP
 metadata:
   author: cerbos
-  version: "1.2"
+  version: "1.3"
   targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Write Edit Bash Glob Grep WebFetch
 ---
@@ -89,7 +89,7 @@ CERBOS_HUB_STORE_ID=... scripts/store-upload ./policies
 CERBOS_HUB_STORE_ID=... scripts/store-status
 ```
 
-Uploads from CI authenticate with the store credential instead, as `CERBOS_HUB_CLIENT_ID` and `CERBOS_HUB_CLIENT_SECRET` in the pipeline's secret store.
+Uploads from CI authenticate with the store credential instead, as `CERBOS_HUB_CLIENT_ID` and `CERBOS_HUB_CLIENT_SECRET` in the pipeline's secret store. Building a pipeline — validation on pull requests, upload on merge, a GitHub Actions example — read [references/CI.md](references/CI.md).
 
 `store-upload` wraps `cerbosctl hub store replace-files`, which makes the store's contents exactly what the directory holds. Point it at the policy directory itself. Anything the store's [file rules](https://docs.cerbos.dev/cerbos-hub/policy-stores-file-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-policy-stores-file-rules) reject is skipped and listed, while a file that parses as a malformed policy fails the upload outright and leaves the store untouched — so a repository root holding other JSON, such as the coverage plan and compile reports `cerbos-policy` keeps beside its policy directory, fails. Keep test suites and `testdata/` in the store — Hub runs them on every build and strips them from the runtime bundle.
 
@@ -136,7 +136,30 @@ storage:
 
 `deploymentID` and the three credential fields each fall back to their `CERBOS_HUB_*` variable when left out of the file, so the file can carry the IDs while the secret stays in the environment. Mount the file and start with `--config=/conf/.cerbos.yaml`; the rest of the PDP configuration is in the [storage reference](https://docs.cerbos.dev/cerbos/latest/configuration/storage?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_pdp-configuration-storage).
 
-**`cacheDir`** persists downloaded bundles so an unchanged bundle is not re-downloaded on restart. Unset, it defaults to a `cerbos-hub` directory under the OS cache directory, which a container throws away on restart — so set it and mount a persistent volume there.
+**`cacheDir`** persists downloaded bundles so an unchanged bundle is not re-downloaded on restart. The directory must already exist — the PDP fails with `failed to stat "<dir>"` otherwise — and be writable, so point it at a mounted volume. Unset, it defaults to a `cerbos-hub` directory under `/.cache` in the image, which the image declares as an anonymous volume: it survives a restart of the same container but is lost with `--rm` or a recreated container.
+
+**`${VAR}` in the config file** is expanded at startup, and an unset variable aborts it with `unknown environment variable`. Leave `clientSecret` out of the file and let the `CERBOS_HUB_CLIENT_SECRET` fallback supply it, rather than writing `${CERBOS_HUB_CLIENT_SECRET}`.
+
+Docker Compose, passing the IDs and secret through from the shell that runs `docker compose up`:
+
+```yaml
+services:
+  cerbos:
+    image: ghcr.io/cerbos/cerbos:0.55.0
+    command: ["server", "--config=/conf/.cerbos.yaml"]
+    ports: ["3592:3592", "3593:3593"]
+    environment:
+      - CERBOS_HUB_DEPLOYMENT_ID
+      - CERBOS_HUB_CLIENT_ID
+      - CERBOS_HUB_CLIENT_SECRET
+    volumes:
+      - ./.cerbos.yaml:/conf/.cerbos.yaml:ro
+      - hub-cache:/var/cerbos/hub
+volumes:
+  hub-cache:
+```
+
+The named volume creates `/var/cerbos/hub`, which satisfies `cacheDir`. The config file is the one above without `clientID`, `clientSecret` and `deploymentID`, which arrive from the environment.
 
 **Network.** Outbound 443 to `api.cerbos.cloud` and `cdn.cerbos.cloud`; proxies and TLS constraints in [references/DIAGNOSE.md](references/DIAGNOSE.md).
 
@@ -179,5 +202,6 @@ Each takes `-h`. `store-upload` passes extra `cerbosctl` flags through after `--
 ## References
 
 - [references/OPERATIONS.md](references/OPERATIONS.md) — pushing changes, build life cycle, rollback and freeze, monitoring connected PDPs, metrics
+- [references/CI.md](references/CI.md) — CI pipeline for a browser-upload store: compile and strict passes on pull requests, `upload-git` on merge, store credential in CI secrets
 - [references/DIAGNOSE.md](references/DIAGNOSE.md) — the workspace issues Hub raises, `cerbosctl` upload errors, PDP connection failures, GitHub sync failures
 - [references/sources.md](references/sources.md) — the Cerbos documentation this guidance is checked against; start here when updating the skill for a new Cerbos release

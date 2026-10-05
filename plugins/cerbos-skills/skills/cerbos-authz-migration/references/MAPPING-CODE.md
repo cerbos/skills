@@ -96,11 +96,18 @@ Middleware fires before the handler loads the order, so it can only test princip
 
 | Source shape | Where the Cerbos call goes |
 |---|---|
-| Guard tests principal facts only | Stays in middleware; send `principal` and a resource with `kind` and `id` |
+| Guard tests principal facts only | Stays in middleware, before the load; send `principal` and a resource with `kind` and `id` |
 | Guard tests resource facts | Moves into the handler, after the load |
-| Guard is coarse, handler has extra `if`s | One Cerbos call in the handler covering all of it — that consolidation is the point of the migration |
+| Guard is coarse, handler has extra `if`s | One Cerbos call in the handler covering all of it — that consolidation is the point of the migration — provided no response changes (below) |
 
 Record the move in the inventory. Relocating a check from middleware to handler is the largest mechanical change most migrations contain, and it is easy to underestimate.
+
+**Position is part of parity.** A guard keeps its place in the request flow, because the place decides the status code. Read the legacy order — typically pre-load guard (`403`), load (`404`), record guard (`403`), validation (`400`, `409`) — and reproduce it:
+
+- A middleware guard that refuses *before* the record is loaded answers `403` even for a missing or other-tenant ID. Folding it into the post-load check turns that `403` into a `404`. Keep it a pre-load, principal-only check: run it before the load, against a resource with no attributes, or give it its own kind for the account or the action (`account` with action `write`) so its rule never needs the record.
+- A validation response still comes only after the Cerbos allow. A caller who may not act gets the `403`, never a `400` or `409` that confirms what the payload would have done.
+
+**Coverage is part of parity too.** A guard covers exactly the routes and methods it is mounted on. "Suspended accounts cannot write", mounted on `POST`, `PUT` and `DELETE`, does not cover a `GET` that exports CSV, so its rule names the write actions only and the export stays allowed. Read the mounting — the router file, the decorator list, the method filter — not the guard's name.
 
 ## The ORM scope or list filter
 

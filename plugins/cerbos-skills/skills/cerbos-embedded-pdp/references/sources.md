@@ -20,5 +20,5 @@ The guidance in this skill is checked against the `@cerbos/embedded-client` rele
 ## SDKs
 
 - [`@cerbos/embedded-client` API reference](https://cerbos.github.io/cerbos-sdk-javascript/modules/_cerbos_embedded-client.html) and [`Options`](https://cerbos.github.io/cerbos-sdk-javascript/interfaces/_cerbos_embedded-client.Options.html): the Checking table in `SKILL.md`; CLIENT.md policy sources, bundle update options, engine options and errors; WASM.md accepted `wasm` shapes.
-- `node_modules/@cerbos/embedded-server/server.wasm` in the installed package: the engine size quoted in `SKILL.md`.
+- `node_modules/@cerbos/embedded-server/lib/server.wasm` in the installed package: the engine size quoted in `SKILL.md`.
 - [`@cerbos/grpc`](https://www.npmjs.com/package/@cerbos/grpc) and [`@cerbos/http`](https://www.npmjs.com/package/@cerbos/http): the service PDP clients named in `SKILL.md`.

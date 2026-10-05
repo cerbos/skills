@@ -4,7 +4,7 @@ description: Cerbos audit logs and Cerbos Hub Insights. Use when enabling audit 
 license: Apache-2.0
 metadata:
   author: cerbos
-  version: "1.1"
+  version: "1.2"
 ---
 
 # Cerbos Audit and Insights
@@ -100,6 +100,8 @@ Callers can attach `requestContext.annotations` to a request — arbitrary key-v
 ## Masking sensitive fields
 
 Masks run at the PDP before an entry reaches the local buffer, so masked values never touch disk and never cross the network perimeter. Hub stores what it is sent — this is the only place the data can be removed.
+
+Only the `hub` backend masks. A masked local file is the `hub` backend piped to `file`, which still needs `hub.credentials` set.
 
 Path syntax, worked examples for headers, tokens and PII, request-metadata handling, the silent failure mode to avoid, and how to verify a mask: [references/MASKING.md](references/MASKING.md).
 

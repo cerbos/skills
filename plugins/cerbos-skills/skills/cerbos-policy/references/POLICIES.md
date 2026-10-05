@@ -33,6 +33,29 @@ resourcePolicy:
       derivedRoles: ["owner"]
 ```
 
+### Deny precedence across roles
+
+Rule order means nothing. Each of the principal's roles is evaluated on its own, a matching DENY beats a matching ALLOW for that role, and an ALLOW from any role grants the action. So:
+
+- A DENY with `roles: [contractor]` does not stop an employee-and-contractor from getting the employee's ALLOW.
+- To veto an action for everyone who holds a role, whatever else they hold, use `roles: ["*"]` and put the role in the condition: `"contractor" in P.roles && ...`.
+- To let something win over that veto (an admin, or an earlier branch of an ordered source such as a Rego `else` chain or a firewall list), exclude it in the DENY's condition: `... && !("admin" in P.roles)`. A separate ALLOW rule never outranks a matching DENY.
+
+Test the overlap: a principal holding both the vetoed role and the role that should win.
+
+### Action wildcards
+
+An action in `actions` or `allowActions` is a glob. `*` matches any run of characters except `:`, so colons are segment separators, not a requirement:
+
+| Pattern | Matches | Does not match |
+|---|---|---|
+| `*` | every action | — |
+| `delete_*` | `delete_ticket` | — |
+| `view:*` | `view:public` | `view:public:draft`, `view` |
+| `b*` | `bx` | `b:x` |
+
+Match one more segment with another `:*` (`view:*:*`). Write one action per name when the set is short; a wildcard silently picks up actions added later.
+
 Always include the `schemas` field:
 
 - `principalSchema.ref`: `cerbos:///principal.json`
@@ -179,7 +202,7 @@ Key characteristics:
 - **Allowlist model**: no `EFFECT_ALLOW`/`EFFECT_DENY` — `allowActions` is the exhaustive permitted list
 - **Implicit deny**: any action not in `allowActions` is denied
 - **Parent inheritance**: child roles can only NARROW parent permissions (strict subset)
-- **Wildcards**: both `resource` and `allowActions` support wildcards (`view:*`)
+- **Wildcards**: both `resource` and `allowActions` support wildcards (`view:*`); see *Action wildcards* above for how `*` treats `:`
 - **Conditions**: optional CEL expressions per rule entry
 - **`allowActions` must be non-empty**: `allowActions: []` is a validation error
 - **Never grants beyond resource policies**: an allowed action also needs a grant from the resource-policy chain for the role, or for its `parentRoles`. A custom role with no `parentRoles` that map to resource-policy roles gets nothing. A resource policy is always required, but no scoped resource policy is needed; the chain falls through to the base policy.

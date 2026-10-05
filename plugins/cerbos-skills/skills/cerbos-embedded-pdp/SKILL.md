@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Cerbos Hub
 metadata:
   author: cerbos
-  version: "1.1"
+  version: "1.2"
   targetsEmbeddedClientVersion: "0.8.1"
 ---
 
@@ -39,7 +39,7 @@ The browser runtime belongs to the user, who can edit the JavaScript. A passing 
 
 Server-side rendering is the third shape: check on the server with a service PDP, send the results down as props, and the browser loads no bundle at all.
 
-Budget for the engine: `server.wasm` is roughly 19 MB uncompressed — `ls -l node_modules/@cerbos/embedded-server/server.wasm` for the installed size. The browser caches it after the first load and policy edits never change it, but it is the reason an ePDP suits an application shell rather than a landing page.
+Budget for the engine: `server.wasm` is roughly 19 MB uncompressed — `ls -l node_modules/@cerbos/embedded-server/lib/server.wasm` (the `./server.wasm` package export resolves there) for the installed size. The browser caches it after the first load and policy edits never change it, but it is the reason an ePDP suits an application shell rather than a landing page.
 
 ## Setting one up
 
@@ -75,6 +75,8 @@ The download starts on construction and the first check waits for it, so constru
 Rendering a list uses `planResources` once and filters against the returned condition, rather than `isAllowed` per row: [filtering resources](https://docs.cerbos.dev/cerbos/latest/recipes/filtering-resources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_pdp-recipes-filtering-resources).
 
 React components get the client through `CerbosProvider` and the `useIsAllowed` / `useCheckResource` / `useCheckResources` hooks from `@cerbos/react`, which re-render when a bundle update activates → [references/CLIENT.md](references/CLIENT.md).
+
+A control gated by a check renders only once that check has resolved to allowed: render nothing while it is loading or has errored, and drop earlier results when the user or the record changes, so a stale or failed check never leaves a button showing. The hooks give you `isLoading` and `error` for this; hand-written checks must do the same.
 
 ## References
 
