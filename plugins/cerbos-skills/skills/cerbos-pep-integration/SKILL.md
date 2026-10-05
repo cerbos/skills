@@ -4,13 +4,26 @@ description: Call a Cerbos PDP from application code — the policy enforcement 
 license: Apache-2.0
 metadata:
   author: cerbos
-  version: "1.0"
+  version: "1.1"
   targetsCerbosVersion: "0.55.0"
 ---
 
 # Cerbos PEP Integration
 
 A **PEP** — policy enforcement point — is the code in your application that calls a PDP and acts on the answer. Policies decide nothing until a PEP asks.
+
+## Scope
+
+This skill owns the application code that calls a PDP: the SDK client and its connection, `isAllowed`, `checkResource` and `checkResources` checks at the boundary of an operation, the mapping from your user store onto the principal, JWTs passed as `auxData`, and list filtering with `planResources` and query-plan adapters.
+
+Route adjacent work elsewhere:
+
+- Browser-side checks that show, hide, enable or disable UI belong to `cerbos-embedded-pdp`; the server-side check that binds stays here.
+- Writing or changing the policies themselves ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-pep-integration_pdp-policies)) belongs to `cerbos-policy`.
+- Standing up Cerbos Hub and getting policies to a PDP belong to `cerbos-hub-setup`.
+- Synapse extensions and their configuration belong to `cerbos-synapse-extension`; code that calls Synapse stays here.
+- Audit logs, including telling a PDP outage from a deny, belong to `cerbos-audit-insights`.
+- Moving checks out of existing code or another authorization system belongs to `cerbos-authz-migration`.
 
 ## The PDP is stateless
 
@@ -113,5 +126,4 @@ docker run --rm -p 3592:3592 -p 3593:3593 \
 | [references/api-shapes.md](references/api-shapes.md) | The wire request and response, required fields, batch limits, the condition AST, `auxData`, curl and grpcurl. Ground truth when an SDK's naming is ambiguous. |
 | [references/query-plan.md](references/query-plan.md) | Filtering any list or query. Adapters, mappers, operator coverage per store, and how to write your own. |
 | `references/<language>.md` | Install, connect, the four calls, and the query-plan adapter for one language. See the table above. |
-
-Writing or changing the policies themselves is the **`cerbos-policy`** skill ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-pep-integration_pdp-policies)). Getting them to a PDP is **`cerbos-hub-setup`**. Browser-side evaluation is **`cerbos-embedded-pdp`**.
+| [references/sources.md](references/sources.md) | The Cerbos documentation this guidance is checked against; start here when updating the skill for a new Cerbos release. |

@@ -4,14 +4,24 @@ description: Migrate an existing authorization implementation to Cerbos. Use whe
 license: Apache-2.0
 metadata:
   author: cerbos
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Cerbos Authorization Migration
 
 Find the rules that already exist, extract them into a spec, map them onto the Cerbos model, and cut over behind a shadow period.
 
-This skill produces a **spec and a cutover plan**, not policy YAML. Generation, tests and validation belong to `cerbos-policy` ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies)), and Phase 2 produces exactly the spec its intake consumes.
+## Scope
+
+This skill owns the migration record and plan: the guard inventory, the Structured Intent spec, the construct mapping and gap register, and the shadow and cutover plan. It produces no policy YAML.
+
+Route adjacent work elsewhere:
+
+- Policy files, `*_test.yaml` suites, validation and the upload belong to `cerbos-policy` ([Policies](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies)). Phase 2 produces exactly the spec its intake consumes. With no existing authorization to move, go there directly.
+- Standing up a Cerbos Hub policy store and deployment belongs to `cerbos-hub-setup`.
+- The SDK call in each shim, attributes the PEP resolves before calling, and query plan adapter wiring belong to `cerbos-pep-integration`.
+- Attributes fetched inside the authorization path by a Synapse data source belong to `cerbos-synapse-extension`.
+- Querying the audit log and Insights during shadow and after each flip belongs to `cerbos-audit-insights`.
 
 
 ## What the move buys
@@ -176,3 +186,4 @@ When the last guard is gone, report the coverage: rows migrated, rows on the gap
 | [references/MAPPING-CODE.md](references/MAPPING-CODE.md) | Phase 3, hand-rolled source. Inline checks, `can()` helpers, middleware, ORM scopes, permission tables, feature flags |
 | [references/MAPPING-SYSTEMS.md](references/MAPPING-SYSTEMS.md) | Phase 3, named source. OPA/Rego, Casbin, Oso, SpiceDB/OpenFGA, Keycloak authorization services, AWS Cedar |
 | [references/CUTOVER.md](references/CUTOVER.md) | Phases 5-6. Shim shape, correlation, diff report, rollout stages, rollback drill |
+| [references/sources.md](references/sources.md) | The Cerbos documentation this guidance is checked against; start here when updating the skill for a new release |

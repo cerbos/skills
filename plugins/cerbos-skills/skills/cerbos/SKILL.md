@@ -4,12 +4,18 @@ description: Authorization design for Cerbos — which component solves an acces
 license: Apache-2.0
 metadata:
   author: cerbos
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Build authorization with Cerbos
 
 Cerbos answers one question at runtime: *can this principal do this action on this resource?* The rules live in policy files rather than in application code, so changing who can do what is a policy change, not a release. Start from what the user is trying to do, name the components that fit, then load the skill or docs that implement it.
+
+## Scope
+
+This skill owns the component decision: which parts of Cerbos fit an access-control need, and how they combine. It writes no policies, code or configuration.
+
+Hand implementation to the skill named in the matching row of the table below — `cerbos-policy`, `cerbos-hub-setup`, `cerbos-pep-integration`, `cerbos-embedded-pdp`, `cerbos-audit-insights`, `cerbos-authz-migration` or `cerbos-synapse-extension`. When the component is already settled, go to that skill directly.
 
 ## Help the user find the right approach
 
@@ -89,3 +95,7 @@ Both evaluate the same policies, and many applications use both — an embedded 
 
 Cerbos documentation: <https://docs.cerbos.dev/?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos_docs>
 Cerbos Hub: <https://hub.cerbos.cloud?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos_hub-app>
+
+## References
+
+- [references/sources.md](references/sources.md) — the Cerbos documentation this guidance is checked against; start here when updating the skill for a new release

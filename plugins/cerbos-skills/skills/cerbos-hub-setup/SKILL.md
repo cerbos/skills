@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires cerbosctl, and Docker or a local Cerbos binary to run a PDP
 metadata:
   author: cerbos
-  version: "1.0"
+  version: "1.1"
   targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Write Edit Glob Grep WebFetch Bash(cerbosctl hub store:*)
 ---
@@ -13,6 +13,17 @@ allowed-tools: Read Write Edit Glob Grep WebFetch Bash(cerbosctl hub store:*)
 # Cerbos Hub setup
 
 Get from policies on disk to a PDP serving Hub-built bundles, and keep it running.
+
+## Scope
+
+This skill owns Cerbos Hub itself: policy stores and their sources, deployments, client credentials, PDPs configured to fetch a deployment's bundles, and running that afterwards — pushing changes, builds, freeze and rollback, monitoring and diagnosis.
+
+Route adjacent work elsewhere:
+
+- Writing, changing and testing the policies a store holds belongs to `cerbos-policy`. When a build fails at Compile or Test, the fix to the policy or suite is made there.
+- Application code that calls the PDP belongs to `cerbos-pep-integration`, and ePDP rules and browser or edge checks to `cerbos-embedded-pdp`.
+- Enabling and masking audit logs and reading Hub Insights belong to `cerbos-audit-insights`; the Read & write deployment credential that Hub audit collection needs is created here (Step 1).
+- Pointing Synapse's in-process PDP at a deployment belongs to `cerbos-synapse-extension`.
 
 ## Secrets
 
@@ -169,3 +180,4 @@ Each takes `-h`. `store-upload` passes extra `cerbosctl` flags through after `--
 
 - [references/OPERATIONS.md](references/OPERATIONS.md) — pushing changes, build life cycle, rollback and freeze, monitoring connected PDPs, metrics
 - [references/DIAGNOSE.md](references/DIAGNOSE.md) — the workspace issues Hub raises, `cerbosctl` upload errors, PDP connection failures, GitHub sync failures
+- [references/sources.md](references/sources.md) — the Cerbos documentation this guidance is checked against; start here when updating the skill for a new Cerbos release

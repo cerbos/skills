@@ -4,7 +4,7 @@ description: Cerbos audit logs and Cerbos Hub Insights. Use when enabling audit 
 license: Apache-2.0
 metadata:
   author: cerbos
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Cerbos Audit and Insights
@@ -19,6 +19,17 @@ A Cerbos PDP records every API call it serves and every decision it makes. Where
 | `hub` | Local buffer on the PDP, streamed to Cerbos Hub | Hub console — audit log search, Insights, exports | Yes |
 
 Aggregation across instances, fleet-wide search and the Insights dashboards are **Cerbos Hub** capabilities. A standalone PDP writes a complete audit trail through the other three backends; what it has no answer for is collecting and querying that trail across every instance. Full backend reference: [audit configuration](https://docs.cerbos.dev/cerbos/latest/configuration/audit?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-audit-insights_pdp-configuration-audit).
+
+## Scope
+
+This skill owns audit and decision logging: the `audit` configuration block and its backends, decision log filters, masks, and reading entries back through `cerbosctl`, the Hub audit log, Insights, usage and exports.
+
+Route adjacent work elsewhere:
+
+- Why a policy evaluates the way it does, and changing the rule an entry points at, belong to `cerbos-policy`; this skill finds the entry, that one fixes the rule.
+- A PEP that never calls the PDP, swallows errors into a deny, or sends the wrong attributes belongs to `cerbos-pep-integration`.
+- A PDP that will not connect to Cerbos Hub, or does not appear under **Decision points**, belongs to `cerbos-hub-setup`.
+- A Synapse extension that should have supplied a missing attribute belongs to `cerbos-synapse-extension`; what Synapse adds to an entry stays here.
 
 ## Enabling collection
 
@@ -117,3 +128,4 @@ Synapse adds `cerbos.dev/synapse/*` annotations plus any configured instance ann
 
 - [references/MASKING.md](references/MASKING.md) — removing sensitive fields at the PDP: sections, path syntax, examples, metadata keys, verification, what Synapse adds to an entry
 - [references/READING.md](references/READING.md) — audit log search, single-decision investigation, Insights, usage, exports, retention and compliance answers
+- [references/sources.md](references/sources.md) — the Cerbos documentation this guidance is checked against; start here when updating the skill for a new release

@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Cerbos Hub
 metadata:
   author: cerbos
-  version: "1.0"
+  version: "1.1"
   targetsEmbeddedClientVersion: "0.8.1"
 ---
 
@@ -14,6 +14,16 @@ metadata:
 An embedded PDP (ePDP) evaluates Cerbos policies in-process inside a WebAssembly module, with no network call per check. `@cerbos/embedded-client` downloads a policy bundle from Cerbos Hub and holds it in memory; `@cerbos/embedded-server` supplies the WASM engine that evaluates it. The engine carries no policies and changes only when that package is upgraded.
 
 The ePDP is a **Cerbos Hub** capability. Bundles are built and served by Hub, from an **ePDP rule** on a [deployment](https://docs.cerbos.dev/cerbos-hub/deployments?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_hub-deployments), so the policies have to reach a Hub policy store first ([Hub getting started](https://docs.cerbos.dev/cerbos-hub/getting-started?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_hub-getting-started)). Where there is no Hub account, every check is a network call to a [service PDP](https://docs.cerbos.dev/cerbos-hub/decision-points?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_hub-decision-points).
+
+## Scope
+
+This skill owns the embedded PDP: ePDP rules on a Hub deployment and the bundle filtering they apply, `@cerbos/embedded-client` wiring, loading the WASM module per bundler and runtime, and the checks a browser, React Native app, edge worker or serverless handler makes against the bundle.
+
+Route adjacent work elsewhere:
+
+- Server-side enforcement — API routes, server actions, middleware, resolvers and RPC handlers calling a service PDP — belongs to `cerbos-pep-integration`, including the service PDP check behind every endpoint a browser ePDP renders for.
+- The policies a bundle carries, and getting them into a Hub policy store, belong to `cerbos-policy`. Filtering which of them reach a client stays here (`references/RULES.md`).
+- Standing up Cerbos Hub, its deployments and client credentials belongs to `cerbos-hub-setup`; creating ePDP rules on a deployment stays here.
 
 ## Where the check runs decides what answers it
 
@@ -73,5 +83,6 @@ React components get the client through `CerbosProvider` and the `useIsAllowed` 
 | [references/RULES.md](references/RULES.md) | Creating or changing the Hub rule: policy filtering by resource, action, scope, role, version; authentication; IP allowlists |
 | [references/CLIENT.md](references/CLIENT.md) | Wiring the client: options and defaults, credentials, dynamic scopes, bundle updates, error handling, React, limits |
 | [references/WASM.md](references/WASM.md) | Vite, Webpack, Rspack, Next.js/Turbopack, Node.js, Cloudflare Workers, URL, precompiled |
+| [references/sources.md](references/sources.md) | The Cerbos documentation this guidance is checked against; start here when updating the skill for a new release |
 
 Canonical documentation: [Embedded PDPs](https://docs.cerbos.dev/cerbos-hub/deployments-epdp-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-embedded-pdp_hub-deployments-epdp-rules) and the [`@cerbos/embedded-client` API reference](https://cerbos.github.io/cerbos-sdk-javascript/modules/_cerbos_embedded-client.html).
