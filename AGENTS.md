@@ -23,7 +23,7 @@ When a user describes an access-control problem — in their words, not Cerbos's
 
 Each skill's own `description` is the source of truth for when it fires; this table is the index. The README table is the human-facing one.
 
-A description states both when the skill should trigger **and when it should not**, naming the neighbouring skill that owns the adjacent case. Hosts cap the skills list they show a model — 2% of the context window, or 8,000 characters when that is unknown — and truncate descriptions past it, so front-load the trigger words. `scripts/validate-skills` reports the footprint.
+A description states both when the skill should trigger **and when it should not**, naming the neighbouring skill that owns the adjacent case. Hosts cap the skills list they show a model — 2% of the context window, or 8,000 characters when that is unknown — and truncate descriptions past it, so front-load the trigger words. `scripts/validate_skills.py` fails past the budget and warns on any description over 600 characters.
 
 ## Working in this repository
 
@@ -42,8 +42,9 @@ Run `scripts/fix-links` after adding links rather than writing the parameters by
 Before opening a pull request:
 
 ```bash
-scripts/validate-skills          # structure, frontmatter, description budgets, relative links
-scripts/validate-skills --links  # also resolves every external URL
+scripts/fix-links                                     # add UTM tags to Cerbos links
+uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py --base origin/main          # structure, frontmatter, budgets, links, pinned images, version bumps
+uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py --base origin/main --links  # also resolves every external URL
 ```
 
-CI runs the same checks on every pull request.
+CI runs the same checks on every pull request, and requires a `metadata.version` bump whenever a skill's files change. Each skill's `references/sources.md` lists the documentation its guidance is checked against; recheck it when moving a skill to a new release.

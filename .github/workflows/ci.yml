@@ -30,8 +30,16 @@ jobs:
         env:
           BASE_REF: ${{ github.base_ref }}
         run: |
-          args=()
+          args=(--links)
           if [ -n "$BASE_REF" ]; then
-            args=(--base "$(git merge-base "origin/$BASE_REF" HEAD)")
+            args+=(--base "$(git merge-base "origin/$BASE_REF" HEAD)")
           fi
           uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py "${args[@]}"
+
+      - name: Outbound Cerbos links carry UTM tags
+        run: python3 scripts/fix-links --check
+
+      - name: Helper scripts parse
+        run: |
+          find plugins/cerbos-skills/skills -type f -perm -u+x -print0 \
+            | xargs -0 -r -I{} sh -c 'head -1 "{}" | grep -q bash && bash -n "{}" && echo "ok {}" || true'

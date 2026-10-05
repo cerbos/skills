@@ -36,7 +36,11 @@ CI checks every skill's frontmatter, size, internal references, links and pinned
 ```bash
 uv run --no-project --with PyYAML==6.0.2 python -m unittest discover -s scripts -p 'test_*.py'
 uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py --base origin/main
+uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py --base origin/main --links  # also resolve every external URL
+python3 scripts/fix-links --check  # Cerbos links carry UTM tags
 ```
+
+The validator also warns when a skill description passes 600 characters and fails when all names and descriptions together pass the 8,000-character skills-list budget hosts enforce.
 
 To check the Claude Code marketplace and test an install from your working copy:
 

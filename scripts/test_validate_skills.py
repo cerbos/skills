@@ -95,6 +95,23 @@ class ValidateSkillsTest(unittest.TestCase):
         self.write("SKILL.md", SKILL.replace(":0.55.0", ":latest"))
         self.assertIn("ghcr.io/cerbos/cerbos:latest", "\n".join(self.errors()))
 
+    def test_long_description_warns_without_failing(self):
+        self.write("SKILL.md", SKILL.replace("Demo skill for validator tests.", "x" * 700))
+        warnings = []
+        self.assertEqual(validator.validate(warnings=warnings)[1], [])
+        self.assertIn("budget 600", "\n".join(warnings))
+
+    def test_skills_list_budget(self):
+        with patch.object(validator, "SKILLS_LIST_BUDGET", 10):
+            self.assertIn("skills-list budget", "\n".join(self.errors()))
+
+    def test_links_resolve_prose_urls_only(self):
+        self.write("references/alpha.md", "# Alpha\n\n[Docs](https://docs.cerbos.dev/x) `https://code.example/y` https://localhost/z\n")
+        with patch.object(validator, "fetch", return_value=404) as fetch:
+            errors = validator.validate(links=True)[1]
+        fetch.assert_called_once_with("https://docs.cerbos.dev/x")
+        self.assertEqual(errors, ["https://docs.cerbos.dev/x: resolves to 404"])
+
     def test_version_bump_required_for_changed_skill(self):
         def git(*args):
             subprocess.run(["git", *args], cwd=self.root, check=True, capture_output=True)
