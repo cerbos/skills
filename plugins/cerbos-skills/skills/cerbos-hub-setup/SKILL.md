@@ -5,9 +5,9 @@ license: Apache-2.0
 compatibility: Requires cerbosctl, and Docker or a local Cerbos binary to run a PDP
 metadata:
   author: cerbos
-  version: "1.1"
+  version: "1.2"
   targetsCerbosVersion: "0.55.0"
-allowed-tools: Read Write Edit Glob Grep WebFetch Bash(cerbosctl hub store:*)
+allowed-tools: Read Write Edit Bash Glob Grep WebFetch
 ---
 
 # Cerbos Hub setup
