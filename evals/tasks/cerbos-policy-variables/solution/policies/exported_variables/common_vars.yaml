@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+exportVariables:
+  name: billing_common
+  definitions:
+    same_tenant: P.attr.tenant == R.attr.tenant
+    active: 'has(P.attr.suspended) ? !P.attr.suspended : true'
+    eligible: V.same_tenant && V.active

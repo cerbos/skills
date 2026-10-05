@@ -1,0 +1,234 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: PayoutOutputsTest
+description: Payout effects and audit outputs.
+tests:
+- name: manager approves within limit
+  input:
+    principals:
+    - max
+    resources:
+    - small
+    actions:
+    - view
+    - approve
+  expected:
+  - principal: max
+    resource: small
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+    outputs:
+    - action: approve
+      expected:
+      - src: resource.payout.vdefault#approve-within-limit
+        val:
+          event: payout_approved
+          payout: po-1
+          approver: max
+- name: manager approves at the limit
+  input:
+    principals:
+    - max
+    resources:
+    - at_limit
+    actions:
+    - approve
+  expected:
+  - principal: max
+    resource: at_limit
+    actions:
+      approve: EFFECT_ALLOW
+    outputs:
+    - action: approve
+      expected:
+      - src: resource.payout.vdefault#approve-within-limit
+        val:
+          event: payout_approved
+          payout: po-2
+          approver: max
+- name: over-limit approval explains the denial
+  input:
+    principals:
+    - max
+    resources:
+    - over_limit
+    actions:
+    - approve
+  expected:
+  - principal: max
+    resource: over_limit
+    actions:
+      approve: EFFECT_DENY
+    outputs:
+    - action: approve
+      expected:
+      - src: resource.payout.vdefault#approve-within-limit
+        val:
+          reason: over_limit
+          amount: 1001
+          limit: 1000
+- name: frozen account blocks an approvable payout
+  input:
+    principals:
+    - max
+    resources:
+    - frozen_small
+    actions:
+    - view
+    - approve
+  expected:
+  - principal: max
+    resource: frozen_small
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+    outputs:
+    - action: view
+      expected:
+      - src: resource.payout.vdefault#block-frozen-accounts
+        val:
+          reason: account_frozen
+          account: acct-7
+    - action: approve
+      expected:
+      - src: resource.payout.vdefault#approve-within-limit
+        val:
+          event: payout_approved
+          payout: po-4
+          approver: max
+      - src: resource.payout.vdefault#block-frozen-accounts
+        val:
+          reason: account_frozen
+          account: acct-7
+- name: explicitly unfrozen payout is approvable
+  input:
+    principals:
+    - max
+    resources:
+    - not_frozen
+    actions:
+    - approve
+  expected:
+  - principal: max
+    resource: not_frozen
+    actions:
+      approve: EFFECT_ALLOW
+    outputs:
+    - action: approve
+      expected:
+      - src: resource.payout.vdefault#approve-within-limit
+        val:
+          event: payout_approved
+          payout: po-7
+          approver: max
+- name: clerk flags at 10000 with normal priority
+  input:
+    principals:
+    - clara
+    resources:
+    - at_10000
+    actions:
+    - flag
+    - approve
+  expected:
+  - principal: clara
+    resource: at_10000
+    actions:
+      flag: EFFECT_ALLOW
+      approve: EFFECT_DENY
+    outputs:
+    - action: flag
+      expected:
+      - src: resource.payout.vdefault#flag-payouts
+        val:
+          event: payout_flagged
+          by: clara
+          priority: normal
+- name: clerk flags above 10000 with high priority
+  input:
+    principals:
+    - clara
+    resources:
+    - above_10000
+    actions:
+    - flag
+  expected:
+  - principal: clara
+    resource: above_10000
+    actions:
+      flag: EFFECT_ALLOW
+    outputs:
+    - action: flag
+      expected:
+      - src: resource.payout.vdefault#flag-payouts
+        val:
+          event: payout_flagged
+          by: clara
+          priority: high
+- name: manager flags at 10000 with normal priority
+  input:
+    principals:
+    - max
+    resources:
+    - at_10000
+    actions:
+    - flag
+  expected:
+  - principal: max
+    resource: at_10000
+    actions:
+      flag: EFFECT_ALLOW
+    outputs:
+    - action: flag
+      expected:
+      - src: resource.payout.vdefault#flag-payouts
+        val:
+          event: payout_flagged
+          by: max
+          priority: normal
+- name: manager flags above 10000 with high priority
+  input:
+    principals:
+    - max
+    resources:
+    - above_10000
+    actions:
+    - flag
+  expected:
+  - principal: max
+    resource: above_10000
+    actions:
+      flag: EFFECT_ALLOW
+    outputs:
+    - action: flag
+      expected:
+      - src: resource.payout.vdefault#flag-payouts
+        val:
+          event: payout_flagged
+          by: max
+          priority: high
+- name: frozen account blocks flagging
+  input:
+    principals:
+    - clara
+    resources:
+    - frozen_small
+    actions:
+    - flag
+  expected:
+  - principal: clara
+    resource: frozen_small
+    actions:
+      flag: EFFECT_DENY
+    outputs:
+    - action: flag
+      expected:
+      - src: resource.payout.vdefault#flag-payouts
+        val:
+          event: payout_flagged
+          by: clara
+          priority: normal
+      - src: resource.payout.vdefault#block-frozen-accounts
+        val:
+          reason: account_frozen
+          account: acct-7

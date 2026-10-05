@@ -1,0 +1,48 @@
+{
+  "resource": "ticket",
+  "version": "default",
+  "rules": [
+    {
+      "name": "team-work-tickets",
+      "actions": [
+        "view",
+        "update"
+      ],
+      "roles": [
+        "agent",
+        "manager"
+      ],
+      "effect": "EFFECT_ALLOW",
+      "condition": {
+        "match": {
+          "expr": "R.attr.team == P.attr.team"
+        }
+      }
+    },
+    {
+      "name": "managers-close-tickets",
+      "actions": [
+        "close"
+      ],
+      "roles": [
+        "manager"
+      ],
+      "effect": "EFFECT_ALLOW",
+      "condition": {
+        "match": {
+          "expr": "R.attr.team == P.attr.team"
+        }
+      }
+    },
+    {
+      "name": "reporters-export-tickets",
+      "actions": [
+        "export"
+      ],
+      "roles": [
+        "reporter"
+      ],
+      "effect": "EFFECT_ALLOW"
+    }
+  ]
+}

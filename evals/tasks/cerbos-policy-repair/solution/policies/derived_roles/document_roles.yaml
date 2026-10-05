@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+derivedRoles:
+  name: document_roles
+  definitions:
+    - name: document_owner
+      parentRoles: ["employee", "contractor"]
+      condition:
+        match:
+          expr: R.attr.owner == P.id

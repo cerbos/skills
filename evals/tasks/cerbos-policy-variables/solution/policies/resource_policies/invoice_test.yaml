@@ -1,0 +1,274 @@
+name: invoice variable behavior
+tests:
+- name: invoice_defaults
+  input:
+    principals:
+    - invoice_defaults
+    resources:
+    - invoice_defaults
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_defaults
+    resource: invoice_defaults
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: invoice_boundary
+  input:
+    principals:
+    - invoice_boundary
+    resources:
+    - invoice_boundary
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_boundary
+    resource: invoice_boundary
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: invoice_over
+  input:
+    principals:
+    - invoice_over
+    resources:
+    - invoice_over
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_over
+    resource: invoice_over
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: invoice_other_tenant
+  input:
+    principals:
+    - invoice_other_tenant
+    resources:
+    - invoice_other_tenant
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_other_tenant
+    resource: invoice_other_tenant
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: invoice_own
+  input:
+    principals:
+    - invoice_own
+    resources:
+    - invoice_own
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_own
+    resource: invoice_own
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: invoice_paid
+  input:
+    principals:
+    - invoice_paid
+    resources:
+    - invoice_paid
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_paid
+    resource: invoice_paid
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: invoice_blocked
+  input:
+    principals:
+    - invoice_blocked
+    resources:
+    - invoice_blocked
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_blocked
+    resource: invoice_blocked
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: invoice_not_blocked
+  input:
+    principals:
+    - invoice_not_blocked
+    resources:
+    - invoice_not_blocked
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_not_blocked
+    resource: invoice_not_blocked
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: invoice_suspended
+  input:
+    principals:
+    - invoice_suspended
+    resources:
+    - invoice_suspended
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_suspended
+    resource: invoice_suspended
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: invoice_outsider
+  input:
+    principals:
+    - invoice_outsider
+    resources:
+    - invoice_outsider
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_outsider
+    resource: invoice_outsider
+    actions:
+      view: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: invoice_override_low
+  input:
+    principals:
+    - invoice_override_low
+    resources:
+    - invoice_override_low
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_override_low
+    resource: invoice_override_low
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: invoice_override_exact
+  input:
+    principals:
+    - invoice_override_exact
+    resources:
+    - invoice_override_exact
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_override_exact
+    resource: invoice_override_exact
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: invoice_override_high
+  input:
+    principals:
+    - invoice_override_high
+    resources:
+    - invoice_override_high
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_override_high
+    resource: invoice_override_high
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: invoice_override_high_over
+  input:
+    principals:
+    - invoice_override_high_over
+    resources:
+    - invoice_override_high_over
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_override_high_over
+    resource: invoice_override_high_over
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: invoice_zero_limit
+  input:
+    principals:
+    - invoice_zero_limit
+    resources:
+    - invoice_zero_limit
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_zero_limit
+    resource: invoice_zero_limit
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: invoice_zero_amount
+  input:
+    principals:
+    - invoice_zero_amount
+    resources:
+    - invoice_zero_amount
+    actions:
+    - view
+    - approve
+    - delete
+  expected:
+  - principal: invoice_zero_amount
+    resource: invoice_zero_amount
+    actions:
+      view: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY

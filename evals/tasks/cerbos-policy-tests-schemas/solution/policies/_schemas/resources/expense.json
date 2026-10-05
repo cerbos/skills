@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "owner": {
+      "type": "string"
+    },
+    "department": {
+      "type": "string",
+      "enum": [
+        "finance",
+        "hr",
+        "sales"
+      ]
+    },
+    "amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "submitted",
+        "approved"
+      ]
+    }
+  },
+  "required": [
+    "owner",
+    "department",
+    "amount",
+    "status"
+  ],
+  "additionalProperties": false
+}

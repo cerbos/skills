@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: expense
+  version: default
+  variables:
+    import: [billing_common]
+    local:
+      approval_limit: 'has(P.attr.approval_limit) ? P.attr.approval_limit : 250'
+  rules:
+    - actions: [view]
+      roles: [accountant]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: V.eligible
+    - actions: [approve]
+      roles: [accountant]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          all:
+            of:
+              - expr: V.eligible
+              - expr: R.attr.owner != P.id
+              - expr: R.attr.status == "pending"
+              - expr: 'has(R.attr.blocked) ? !R.attr.blocked : true'
+              - expr: R.attr.amount <= V.approval_limit

@@ -1,0 +1,134 @@
+{
+  "principals": {
+    "reader": {
+      "id": "reader-1",
+      "roles": [
+        "reader"
+      ],
+      "attr": {}
+    },
+    "editor": {
+      "id": "editor-1",
+      "roles": [
+        "editor"
+      ],
+      "attr": {}
+    },
+    "accountant": {
+      "id": "accountant-1",
+      "roles": [
+        "accountant"
+      ],
+      "attr": {}
+    },
+    "visitor": {
+      "id": "visitor-1",
+      "roles": [
+        "visitor"
+      ],
+      "attr": {}
+    }
+  },
+  "resources": {
+    "document": {
+      "id": "document-1",
+      "kind": "document",
+      "attr": {}
+    },
+    "invoice": {
+      "id": "invoice-1",
+      "kind": "invoice",
+      "attr": {}
+    }
+  },
+  "cases": [
+    {
+      "name": "document reader explicit permissions and default deny",
+      "principal": "reader",
+      "resource": "document",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "approve": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "document editor explicit permissions and default deny",
+      "principal": "editor",
+      "resource": "document",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "edit": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "approve": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "document accountant explicit permissions and default deny",
+      "principal": "accountant",
+      "resource": "document",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "approve": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "document visitor explicit permissions and default deny",
+      "principal": "visitor",
+      "resource": "document",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "edit": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "approve": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice reader explicit permissions and default deny",
+      "principal": "reader",
+      "resource": "invoice",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "edit": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice editor explicit permissions and default deny",
+      "principal": "editor",
+      "resource": "invoice",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "edit": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice accountant explicit permissions and default deny",
+      "principal": "accountant",
+      "resource": "invoice",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "approve": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY",
+        "edit": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "invoice visitor explicit permissions and default deny",
+      "principal": "visitor",
+      "resource": "invoice",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "approve": "EFFECT_DENY",
+        "delete": "EFFECT_DENY",
+        "edit": "EFFECT_DENY"
+      }
+    }
+  ]
+}

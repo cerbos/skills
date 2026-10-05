@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: document
+  version: default
+  rules:
+    # Viewers read documents.
+    - name: read-documents
+      actions: [view]
+      roles: [viewer, editor, admin]
+      effect: EFFECT_ALLOW
+    # Editors maintain and discuss documents.
+    - name: maintain-documents
+      actions: [edit, comment]
+      roles: [editor, admin]
+      effect: EFFECT_ALLOW
+    # Admins manage document lifecycle and sharing.
+    - name: manage-documents
+      actions: [delete, share]
+      roles: [admin]
+      effect: EFFECT_ALLOW

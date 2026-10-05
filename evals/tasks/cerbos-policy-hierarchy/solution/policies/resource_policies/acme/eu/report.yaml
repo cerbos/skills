@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: report
+  version: default
+  scope: acme.eu
+  scopePermissions: SCOPE_PERMISSIONS_REQUIRE_PARENTAL_CONSENT_FOR_ALLOWS
+  rules:
+    # EU data residency: only EU principals may act on acme.eu reports.
+    - name: eu-residency
+      actions: ["*"]
+      roles: ["*"]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: P.attr.region == "eu"

@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+principals:
+  employee_ana:
+    id: ana
+    roles:
+    - employee
+    attr:
+      department: finance
+  employee_ana_bad_department:
+    id: ana
+    roles:
+    - employee
+    attr:
+      department: legal
+  manager_max:
+    id: max
+    roles:
+    - manager
+    attr:
+      department: finance
+  manager_max_limit_200:
+    id: max
+    roles:
+    - manager
+    attr:
+      department: finance
+      approval_limit: 200

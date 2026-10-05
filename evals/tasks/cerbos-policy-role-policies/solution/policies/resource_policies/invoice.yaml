@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: invoice
+  version: default
+  rules:
+    # Accountants review and approve invoices.
+    - name: process-invoices
+      actions: [view, approve]
+      roles: [accountant, admin]
+      effect: EFFECT_ALLOW
+    # Admins cancel invoices.
+    - name: void-invoices
+      actions: [void]
+      roles: [admin]
+      effect: EFFECT_ALLOW

@@ -19,14 +19,14 @@ Declarative YAML mappings: HTTP requests → Cerbos calls, responses formatted v
 
 ## Configuration Location
 
-Add to the Synapse `config.yaml` under `extensions`.
+Add to the Synapse `config.yaml` under `extensions`. Any `routeExtensions.<name>` entry with a `mapping:` block is a call mapper; the name is yours to choose.
 
 ## Basic HTTP Route Mapping
 
 ```yaml
 extensions:
   routeExtensions:
-    builtinRouteExtension:
+    documentCheck:
       routes:
         "/api/check": ["POST"]
       mapping:
@@ -48,7 +48,23 @@ extensions:
           body: 'json.encode({"allowed": check.allow})'
 ```
 
-Routes are served under `/ext/` (`/ext/api/check` above). Path patterns are global and match in the order written — first match wins — so declare specific patterns before overlapping wildcards; the same pattern under two extensions is a startup error.
+Routes are served under `/ext/` (`/ext/api/check` above). Mapping CEL sees the method, headers and body but not the path, so carry resource IDs in a header or the body; when the ID lives in the URL path, write a Starlark or WASM route extension, which receives `path`.
+
+## Route patterns
+
+These rules apply to every route extension (call mapper, Starlark, WASM). Patterns use [gorilla/mux](https://github.com/gorilla/mux) syntax:
+
+| Pattern | Matches |
+|---------|---------|
+| `/orders/status` | That exact path only, no subpaths (`/ext/orders/status/` is a 404) |
+| `/orders/{version}` | One segment: `/ext/orders/v1`, not `/ext/orders/v1/billing` |
+| `/orders/{id:[0-9]+}` | One segment matching the inline Go regex |
+| `/orders/{rest:.*}` | Any depth, including `/`: `/ext/orders/v1/billing/invoices` |
+
+- Use `{name:.*}` for a multi-segment wildcard; `{name...}` matches only one segment.
+- The map value lists allowed methods; an empty list `[]` allows all methods.
+- Matched path variables are not passed to the extension. Code-based extensions read `path` (which keeps the `/ext/` prefix) instead.
+- All route extensions share one router and registration order is not guaranteed, so give each extension non-overlapping patterns (for example one disjoint prefix per team, with `"/orders": []` plus `"/orders/{path:.*}": []`). The same pattern under two extensions is a startup error.
 
 ## Envoy External Authorization
 
@@ -73,5 +89,5 @@ extensions:
 
 ## Reference
 
-- CEL request/response variables (`request.header`, `request.body.json`, `check.allow`, `check.outputs`, ...), string/JSON/base64/collection functions, and common patterns (JWT claim extraction, method→action mapping, path-based resource IDs): `shared/call-mapper-cel-reference.md`
+- Mapping fields, CEL request/response variables (`request.header`, `request.body.json`, `check.allow`, `check.outputs`, ...), string/JSON/base64/collection functions, and common patterns (JWT claim extraction, method→action mapping): `shared/call-mapper-cel-reference.md`
 - Full configuration examples (REST API with JWT verification, Envoy ext_authz with output-driven headers, output-driven status/body): `shared/call-mapper-examples.md`

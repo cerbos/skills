@@ -1,0 +1,941 @@
+{
+  "principals": {
+    "auditor_active": {
+      "id": "ext-auditor-7",
+      "roles": [
+        "reporter"
+      ],
+      "attr": {
+        "engagement_ends": "2099-12-31T00:00:00Z"
+      }
+    },
+    "auditor_expired": {
+      "id": "ext-auditor-7",
+      "roles": [
+        "reporter"
+      ],
+      "attr": {
+        "engagement_ends": "2001-01-01T00:00:00Z"
+      }
+    },
+    "lookalike_auditor": {
+      "id": "ext-auditor-8",
+      "roles": [
+        "reporter"
+      ],
+      "attr": {
+        "engagement_ends": "2099-12-31T00:00:00Z"
+      }
+    },
+    "reporter": {
+      "id": "hidden-reporter",
+      "roles": [
+        "reporter"
+      ],
+      "attr": {}
+    },
+    "agent_billing": {
+      "id": "hidden-agent",
+      "roles": [
+        "agent"
+      ],
+      "attr": {
+        "team": "billing"
+      }
+    },
+    "manager_billing": {
+      "id": "hidden-mgr",
+      "roles": [
+        "manager"
+      ],
+      "attr": {
+        "team": "billing"
+      }
+    },
+    "manager_shipping": {
+      "id": "hidden-mgr2",
+      "roles": [
+        "manager"
+      ],
+      "attr": {
+        "team": "shipping"
+      }
+    },
+    "customer": {
+      "id": "hidden-customer",
+      "roles": [
+        "customer"
+      ],
+      "attr": {}
+    }
+  },
+  "resources": {
+    "ticket_billing": {
+      "kind": "ticket",
+      "id": "hidden-billing",
+      "attr": {
+        "team": "billing"
+      }
+    },
+    "ticket_shipping": {
+      "kind": "ticket",
+      "id": "hidden-shipping",
+      "attr": {
+        "team": "shipping"
+      }
+    }
+  },
+  "tokens": {
+    "no_token": null,
+    "mfa": {
+      "iss": "https://idp.example.com",
+      "amr": [
+        "pwd",
+        "mfa"
+      ]
+    },
+    "password_only": {
+      "iss": "https://idp.example.com",
+      "amr": [
+        "pwd"
+      ]
+    },
+    "no_amr_claim": {
+      "iss": "https://idp.example.com"
+    }
+  },
+  "cases": [
+    {
+      "name": "auditor_active ticket_billing no_token",
+      "principal": "auditor_active",
+      "resource": "ticket_billing",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_active ticket_billing mfa",
+      "principal": "auditor_active",
+      "resource": "ticket_billing",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_active ticket_billing password_only",
+      "principal": "auditor_active",
+      "resource": "ticket_billing",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_active ticket_billing no_amr_claim",
+      "principal": "auditor_active",
+      "resource": "ticket_billing",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_active ticket_shipping no_token",
+      "principal": "auditor_active",
+      "resource": "ticket_shipping",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_active ticket_shipping mfa",
+      "principal": "auditor_active",
+      "resource": "ticket_shipping",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_active ticket_shipping password_only",
+      "principal": "auditor_active",
+      "resource": "ticket_shipping",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_active ticket_shipping no_amr_claim",
+      "principal": "auditor_active",
+      "resource": "ticket_shipping",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_expired ticket_billing no_token",
+      "principal": "auditor_expired",
+      "resource": "ticket_billing",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_expired ticket_billing mfa",
+      "principal": "auditor_expired",
+      "resource": "ticket_billing",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_expired ticket_billing password_only",
+      "principal": "auditor_expired",
+      "resource": "ticket_billing",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_expired ticket_billing no_amr_claim",
+      "principal": "auditor_expired",
+      "resource": "ticket_billing",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_expired ticket_shipping no_token",
+      "principal": "auditor_expired",
+      "resource": "ticket_shipping",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_expired ticket_shipping mfa",
+      "principal": "auditor_expired",
+      "resource": "ticket_shipping",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_expired ticket_shipping password_only",
+      "principal": "auditor_expired",
+      "resource": "ticket_shipping",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "auditor_expired ticket_shipping no_amr_claim",
+      "principal": "auditor_expired",
+      "resource": "ticket_shipping",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "lookalike_auditor ticket_billing no_token",
+      "principal": "lookalike_auditor",
+      "resource": "ticket_billing",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "lookalike_auditor ticket_billing mfa",
+      "principal": "lookalike_auditor",
+      "resource": "ticket_billing",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "lookalike_auditor ticket_billing password_only",
+      "principal": "lookalike_auditor",
+      "resource": "ticket_billing",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "lookalike_auditor ticket_billing no_amr_claim",
+      "principal": "lookalike_auditor",
+      "resource": "ticket_billing",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "lookalike_auditor ticket_shipping no_token",
+      "principal": "lookalike_auditor",
+      "resource": "ticket_shipping",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "lookalike_auditor ticket_shipping mfa",
+      "principal": "lookalike_auditor",
+      "resource": "ticket_shipping",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "lookalike_auditor ticket_shipping password_only",
+      "principal": "lookalike_auditor",
+      "resource": "ticket_shipping",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "lookalike_auditor ticket_shipping no_amr_claim",
+      "principal": "lookalike_auditor",
+      "resource": "ticket_shipping",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reporter ticket_billing no_token",
+      "principal": "reporter",
+      "resource": "ticket_billing",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reporter ticket_billing mfa",
+      "principal": "reporter",
+      "resource": "ticket_billing",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reporter ticket_billing password_only",
+      "principal": "reporter",
+      "resource": "ticket_billing",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reporter ticket_billing no_amr_claim",
+      "principal": "reporter",
+      "resource": "ticket_billing",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reporter ticket_shipping no_token",
+      "principal": "reporter",
+      "resource": "ticket_shipping",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reporter ticket_shipping mfa",
+      "principal": "reporter",
+      "resource": "ticket_shipping",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reporter ticket_shipping password_only",
+      "principal": "reporter",
+      "resource": "ticket_shipping",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "reporter ticket_shipping no_amr_claim",
+      "principal": "reporter",
+      "resource": "ticket_shipping",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_ALLOW",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "agent_billing ticket_billing no_token",
+      "principal": "agent_billing",
+      "resource": "ticket_billing",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "agent_billing ticket_billing mfa",
+      "principal": "agent_billing",
+      "resource": "ticket_billing",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "agent_billing ticket_billing password_only",
+      "principal": "agent_billing",
+      "resource": "ticket_billing",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "agent_billing ticket_billing no_amr_claim",
+      "principal": "agent_billing",
+      "resource": "ticket_billing",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "agent_billing ticket_shipping no_token",
+      "principal": "agent_billing",
+      "resource": "ticket_shipping",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "agent_billing ticket_shipping mfa",
+      "principal": "agent_billing",
+      "resource": "ticket_shipping",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "agent_billing ticket_shipping password_only",
+      "principal": "agent_billing",
+      "resource": "ticket_shipping",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "agent_billing ticket_shipping no_amr_claim",
+      "principal": "agent_billing",
+      "resource": "ticket_shipping",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_billing ticket_billing no_token",
+      "principal": "manager_billing",
+      "resource": "ticket_billing",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_billing ticket_billing mfa",
+      "principal": "manager_billing",
+      "resource": "ticket_billing",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_billing ticket_billing password_only",
+      "principal": "manager_billing",
+      "resource": "ticket_billing",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_billing ticket_billing no_amr_claim",
+      "principal": "manager_billing",
+      "resource": "ticket_billing",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_billing ticket_shipping no_token",
+      "principal": "manager_billing",
+      "resource": "ticket_shipping",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_billing ticket_shipping mfa",
+      "principal": "manager_billing",
+      "resource": "ticket_shipping",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_billing ticket_shipping password_only",
+      "principal": "manager_billing",
+      "resource": "ticket_shipping",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_billing ticket_shipping no_amr_claim",
+      "principal": "manager_billing",
+      "resource": "ticket_shipping",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_shipping ticket_billing no_token",
+      "principal": "manager_shipping",
+      "resource": "ticket_billing",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_shipping ticket_billing mfa",
+      "principal": "manager_shipping",
+      "resource": "ticket_billing",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_shipping ticket_billing password_only",
+      "principal": "manager_shipping",
+      "resource": "ticket_billing",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_shipping ticket_billing no_amr_claim",
+      "principal": "manager_shipping",
+      "resource": "ticket_billing",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_shipping ticket_shipping no_token",
+      "principal": "manager_shipping",
+      "resource": "ticket_shipping",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_shipping ticket_shipping mfa",
+      "principal": "manager_shipping",
+      "resource": "ticket_shipping",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_ALLOW",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_shipping ticket_shipping password_only",
+      "principal": "manager_shipping",
+      "resource": "ticket_shipping",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "manager_shipping ticket_shipping no_amr_claim",
+      "principal": "manager_shipping",
+      "resource": "ticket_shipping",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_ALLOW",
+        "update": "EFFECT_ALLOW",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "customer ticket_billing no_token",
+      "principal": "customer",
+      "resource": "ticket_billing",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "customer ticket_billing mfa",
+      "principal": "customer",
+      "resource": "ticket_billing",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "customer ticket_billing password_only",
+      "principal": "customer",
+      "resource": "ticket_billing",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "customer ticket_billing no_amr_claim",
+      "principal": "customer",
+      "resource": "ticket_billing",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "customer ticket_shipping no_token",
+      "principal": "customer",
+      "resource": "ticket_shipping",
+      "token": "no_token",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "customer ticket_shipping mfa",
+      "principal": "customer",
+      "resource": "ticket_shipping",
+      "token": "mfa",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "customer ticket_shipping password_only",
+      "principal": "customer",
+      "resource": "ticket_shipping",
+      "token": "password_only",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    },
+    {
+      "name": "customer ticket_shipping no_amr_claim",
+      "principal": "customer",
+      "resource": "ticket_shipping",
+      "token": "no_amr_claim",
+      "expected": {
+        "view": "EFFECT_DENY",
+        "update": "EFFECT_DENY",
+        "close": "EFFECT_DENY",
+        "export": "EFFECT_DENY",
+        "delete": "EFFECT_DENY"
+      }
+    }
+  ]
+}

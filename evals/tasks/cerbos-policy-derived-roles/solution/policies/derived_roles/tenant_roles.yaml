@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+derivedRoles:
+  name: tenant_roles
+  definitions:
+    - name: employee_owner
+      parentRoles: [employee]
+      condition:
+        match:
+          expr: P.attr.tenant == R.attr.tenant && P.id == R.attr.owner
+    - name: department_reviewer
+      parentRoles: [reviewer]
+      condition:
+        match:
+          expr: P.attr.tenant == R.attr.tenant && P.attr.department == R.attr.department

@@ -1,0 +1,14 @@
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: audit_log
+  version: default
+  rules:
+  - name: auditor_read
+    actions:
+    - read
+    roles:
+    - auditor
+    effect: EFFECT_ALLOW
+    condition:
+      match:
+        expr: P.attr.tenant == R.attr.tenant

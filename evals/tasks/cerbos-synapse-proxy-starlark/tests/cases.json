@@ -1,0 +1,10 @@
+[
+  {"name": "alice-enriched", "principal": "alice", "attr": {"tenant": "acme"}, "document": {"department": "engineering", "tenant": "acme"}, "expected": "EFFECT_ALLOW"},
+  {"name": "bob-enriched", "principal": "bob", "attr": {"tenant": "acme"}, "document": {"department": "sales", "tenant": "acme"}, "expected": "EFFECT_ALLOW"},
+  {"name": "bob-other-department", "principal": "bob", "attr": {"tenant": "acme"}, "document": {"department": "engineering", "tenant": "acme"}, "expected": "EFFECT_DENY"},
+  {"name": "alice-other-tenant", "principal": "alice", "attr": {"tenant": "globex"}, "document": {"department": "engineering", "tenant": "acme"}, "expected": "EFFECT_DENY"},
+  {"name": "alice-other-tenant-matching", "principal": "alice", "attr": {"tenant": "globex"}, "document": {"department": "engineering", "tenant": "globex"}, "expected": "EFFECT_ALLOW"},
+  {"name": "unknown-principal", "principal": "carol", "attr": {"tenant": "acme"}, "document": {"department": "engineering", "tenant": "acme"}, "expected": "EFFECT_DENY"},
+  {"name": "unknown-principal-claims-department", "principal": "carol", "attr": {"tenant": "acme", "department": "engineering"}, "document": {"department": "engineering", "tenant": "acme"}, "expected": "EFFECT_DENY"},
+  {"name": "directory-overrides-claim", "principal": "bob", "attr": {"tenant": "acme", "department": "engineering"}, "document": {"department": "engineering", "tenant": "acme"}, "expected": "EFFECT_DENY"}
+]

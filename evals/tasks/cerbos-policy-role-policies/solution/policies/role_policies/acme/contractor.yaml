@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+# Contractors help with Acme documents; edits need an explicit contractor flag.
+apiVersion: api.cerbos.dev/v1
+rolePolicy:
+  role: contractor
+  scope: acme
+  parentRoles: [editor]
+  rules:
+    - resource: document
+      allowActions: [view, comment]
+    - resource: document
+      allowActions: [edit]
+      condition:
+        match:
+          expr: has(R.attr.contractor_editable) && R.attr.contractor_editable == true

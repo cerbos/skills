@@ -1,0 +1,13 @@
+{
+  "name": "enrich-principal",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "build": "node esbuild.js && extism-js dist/index.js -i src/index.d.ts -o ../enrich_principal.wasm"
+  },
+  "devDependencies": {
+    "@extism/js-pdk": "1.1.1",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2"
+  }
+}

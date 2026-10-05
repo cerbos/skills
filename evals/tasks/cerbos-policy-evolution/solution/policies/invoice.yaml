@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+# Raise routine approval limits while retaining tenant and separation-of-duties checks.
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: invoice
+  version: default
+  rules:
+  - name: read_invoices
+    actions:
+    - read
+    roles:
+    - employee
+    - accountant
+    - finance_admin
+    effect: EFFECT_ALLOW
+    condition:
+      match:
+        expr: P.attr.tenant == R.attr.tenant
+  - name: delete_drafts
+    actions:
+    - delete
+    roles:
+    - finance_admin
+    effect: EFFECT_ALLOW
+    condition:
+      match:
+        expr: P.attr.tenant == R.attr.tenant && R.attr.status == "draft"
+  # Accountants handle routine submitted invoices up to the approved limit.
+  - name: accountant_approval
+    actions:
+    - approve
+    roles:
+    - accountant
+    effect: EFFECT_ALLOW
+    condition:
+      match:
+        expr: P.attr.tenant == R.attr.tenant && R.attr.status == "submitted" && R.attr.owner
+          != P.id && (!has(R.attr.on_hold) || !R.attr.on_hold) && R.attr.amount <=
+          5000
+  # Finance admins handle larger invoices, subject to the same review safeguards.
+  - name: admin_approval
+    actions:
+    - approve
+    roles:
+    - finance_admin
+    effect: EFFECT_ALLOW
+    condition:
+      match:
+        expr: P.attr.tenant == R.attr.tenant && R.attr.status == "submitted" && R.attr.owner
+          != P.id && (!has(R.attr.on_hold) || !R.attr.on_hold)

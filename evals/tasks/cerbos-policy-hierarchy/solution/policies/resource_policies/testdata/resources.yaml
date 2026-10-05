@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+resources:
+  base_draft:
+    kind: report
+    id: base-draft
+    attr:
+      status: draft
+      contractor_visible: true
+  base_published:
+    kind: report
+    id: base-published
+    attr:
+      status: published
+      contractor_visible: true
+  acme_draft:
+    kind: report
+    id: acme-draft
+    attr:
+      status: draft
+      contractor_visible: true
+    scope: acme
+  acme_published:
+    kind: report
+    id: acme-published
+    attr:
+      status: published
+      contractor_visible: true
+    scope: acme
+  acme_eu_draft:
+    kind: report
+    id: acme_eu-draft
+    attr:
+      status: draft
+      contractor_visible: true
+    scope: acme.eu
+  acme_eu_published:
+    kind: report
+    id: acme_eu-published
+    attr:
+      status: published
+      contractor_visible: true
+    scope: acme.eu
+  globex_draft:
+    kind: report
+    id: globex-draft
+    attr:
+      status: draft
+      contractor_visible: true
+    scope: globex
+  globex_published:
+    kind: report
+    id: globex-published
+    attr:
+      status: published
+      contractor_visible: true
+    scope: globex
+  globex_unflagged:
+    kind: report
+    id: globex-published
+    scope: globex
+    attr:
+      status: published
+  globex_hidden:
+    kind: report
+    id: globex-published
+    scope: globex
+    attr:
+      status: published
+      contractor_visible: false

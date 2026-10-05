@@ -1,0 +1,32 @@
+# Sources
+
+The guidance in this skill is checked against the Synapse release named by `targetsSynapseVersion` in `SKILL.md`. Synapse ships from a licensed distribution repository, so behaviour is confirmed against the image itself as well as the public docs. When moving to a new release, update `targetsSynapseVersion` and the pinned `synapse/synapse:<version>` tags in `references/shared/`, then recheck each source below.
+
+Finding the current release: the registry does not list tags, so pull the image's `latest` tag and run it with `--version`. The public docs are built from `https://download.cerbos.dev/synapse/docs.tgz`; its last-modified date shows when they last changed.
+
+## Documentation
+
+| Page | Backs |
+|---|---|
+| [Synapse overview](https://docs.cerbos.dev/synapse/latest/) and [quickstart](https://docs.cerbos.dev/synapse/latest/quickstart.html) | `shared/run-and-test.md` layout, `config.yaml`, compose; the `/config/config.yaml` test-config path |
+| [Running in a container](https://docs.cerbos.dev/synapse/latest/install/container.html) | `SYNAPSE_CONFIG` and the built-in Docker healthcheck in `shared/run-and-test.md` |
+| [Configuration](https://docs.cerbos.dev/synapse/latest/configuration/reference.html) | `config.yaml` keys, the `cache` backend in `shared/patterns-and-gotchas.md` |
+| [Health probes](https://docs.cerbos.dev/synapse/latest/configuration/operations.html) | `/_cerbos/*` endpoints (its `HEAD`/`405` statement predates 0.10; the image is authoritative) |
+| [Extensions](https://docs.cerbos.dev/synapse/latest/extensions/index.html) | Extension kinds and runtimes in `SKILL.md` |
+| [Extension manifest](https://docs.cerbos.dev/synapse/latest/extensions/manifest.html) | `manifest` export, `/_cerbos/meta`, `server.disableMeta` |
+| [Proxy extensions](https://docs.cerbos.dev/synapse/latest/extensions/proxy-extensions.html) | `*-proxy-extension*.md` hook names and chaining |
+| [Route extensions](https://docs.cerbos.dev/synapse/latest/extensions/route-extensions.html) | `*-route-extension*.md`, route matching in `shared/patterns-and-gotchas.md`, call mapper CEL |
+| [Envoy extension](https://docs.cerbos.dev/synapse/latest/extensions/envoy-extension.html) | `*-envoy-extension*.md`, `envoyExternalAuthz` |
+| [Data sources](https://docs.cerbos.dev/synapse/latest/extensions/data-sources.html) | `*-data-source*.md`, `system://sqldb` in `shared/system-extensions.md` |
+| [Starlark development](https://docs.cerbos.dev/synapse/latest/extensions/starlark-development.html) | `starlark-*.md`, `shared/starlark-environment.md` |
+| [WASM development](https://docs.cerbos.dev/synapse/latest/extensions/wasm-development.html) | `wasm-*.md`, lifecycle and callback mode in `shared/patterns-and-gotchas.md` |
+| [Testing custom extensions](https://docs.cerbos.dev/synapse/latest/extensions/testing.html) | `shared/testing-framework.md` |
+| [Claude Code](https://docs.cerbos.dev/synapse/latest/usecases/claude.html) and [Aperture](https://docs.cerbos.dev/synapse/latest/usecases/aperture.html) | `system://claude` and `system://aperture` in `shared/system-extensions.md` |
+| [Cerbos conditions](https://docs.cerbos.dev/cerbos/latest/policies/conditions.html) | CEL semantics shared with `shared/call-mapper-cel-reference.md` |
+
+## Image and SDKs
+
+- `synapse --help` for every subcommand, checked against 0.10.2: subcommands and flags in `SKILL.md`, `shared/run-and-test.md` and `shared/testing-framework.md`.
+- The 0.10.2 image, run locally: the `SYNAPSE_CONFIG` healthcheck, `/_cerbos/*` methods, `/_cerbos/meta`, the `/synapse starlark repl` path, `synapse test` with the shared config and `stderr` audit, `context` helpers, and the Starlark host environment in `shared/starlark-environment.md`. Where the docs and the image disagree, the skill follows the image.
+- [1set/starlet](https://github.com/1set/starlet): Starlark modules listed in `shared/starlark-environment.md`.
+- [extism/go-pdk](https://github.com/extism/go-pdk), [extism/js-pdk](https://github.com/extism/js-pdk) and [extism/python-pdk](https://github.com/extism/python-pdk): host imports and build pipelines in the `shared/*-wasm-common.md` files.

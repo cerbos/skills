@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+resources:
+  expense:
+    id: expense-1
+    kind: expense
+    attr:
+      tenant: a
+      department: sales
+      owner: alice
+  document:
+    id: document-1
+    kind: document
+    attr:
+      tenant: a
+      department: sales
+      owner: alice

@@ -20,8 +20,8 @@ TypeScript WASM modules implementing custom data source lookups; supply attribut
 
 | Export | Purpose |
 |--------|---------|
-| `cerbosInit` | Called once when the extension is loaded |
-| `cerbosDeinit` | Called once when the extension is unloaded |
+| `cerbosInit` | Optional. Runs once per pooled instance, so several times per module; set up per-instance state |
+| `cerbosDeinit` | Optional. Runs on every instance at graceful shutdown; release per-instance resources |
 | `lookup` | Handle data source lookup request, return result |
 
 ## Lookup Request Format
@@ -69,14 +69,14 @@ declare module "main" {
 }
 
 // Plus the `extism:host` declaration from shared/typescript-wasm-common.md —
-// this module uses the cache functions only (cacheGet, cacheSet,
-// cacheSetIfNotExists, cacheDelete).
+// this module uses cacheGet and cacheSetIfNotExists.
 ```
 
 ### src/index.ts
 
 ```ts
-// cacheGet / cacheSetIfNotExists / cacheDelete wrappers:
+/// <reference path="../node_modules/@extism/js-pdk/dist/index.d.ts" />
+// cacheGet / cacheSetIfNotExists wrappers:
 // copy from shared/typescript-wasm-common.md (Host Function Wrappers).
 
 interface LookupRequest {
@@ -95,13 +95,15 @@ const profiles: Record<string, UserProfile> = {
   bob: { department: "marketing", role: "viewer", clearance: "public" },
 };
 
+// Per-instance state, set by cerbosInit in every pooled instance.
+let defaultClearance: string | null = null;
+
 export function cerbosInit() {
-  cacheSetIfNotExists("datasource:initialized", "true", 300000);
+  defaultClearance = Config.get("defaultClearance");
 }
 
-export function cerbosDeinit() {
-  cacheDelete("datasource:initialized");
-}
+// Release per-instance resources here.
+export function cerbosDeinit() {}
 
 export function lookup() {
   const req: LookupRequest = JSON.parse(Host.inputString());
@@ -116,7 +118,6 @@ export function lookup() {
   let profile: UserProfile | undefined = profiles[req.query];
 
   if (!profile) {
-    const defaultClearance = Config.get("defaultClearance");
     if (!defaultClearance) {
       Host.outputString(JSON.stringify({ result: null }));
       return;

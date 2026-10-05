@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+principalPolicy:
+  principal: ext-auditor-7
+  version: default
+  rules:
+    - resource: ticket
+      actions:
+        # The external audit firm reviews every team's tickets, only while
+        # its engagement is active.
+        - name: auditor-views-during-engagement
+          action: view
+          effect: EFFECT_ALLOW
+          condition:
+            match:
+              expr: now() < timestamp(P.attr.engagement_ends)
+        # Audit contracts forbid bulk data removal, whatever roles the IdP grants.
+        - name: auditor-never-exports
+          action: export
+          effect: EFFECT_DENY

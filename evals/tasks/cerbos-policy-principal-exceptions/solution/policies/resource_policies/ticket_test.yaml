@@ -1,0 +1,109 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: TicketExceptionsTest
+description: Team access, the external auditor's engagement window, and MFA for closing.
+tests:
+  - name: auditor views any team during the engagement
+    options:
+      now: "2026-06-29T23:59:59Z"
+    input:
+      principals: [auditor, other_reporter]
+      resources: [billing_ticket, shipping_ticket]
+      actions: [view, update, close]
+    expected:
+      - principal: auditor
+        resources: [billing_ticket, shipping_ticket]
+        actions:
+          view: EFFECT_ALLOW
+          update: EFFECT_DENY
+          close: EFFECT_DENY
+      - principal: other_reporter
+        resources: [billing_ticket, shipping_ticket]
+        actions:
+          view: EFFECT_DENY
+          update: EFFECT_DENY
+          close: EFFECT_DENY
+  - name: auditor loses access when the engagement ends
+    options:
+      now: "2026-06-30T00:00:00Z"
+    input:
+      principals: [auditor]
+      resources: [billing_ticket, shipping_ticket]
+      actions: [view]
+    expected:
+      - principal: auditor
+        resources: [billing_ticket, shipping_ticket]
+        actions:
+          view: EFFECT_DENY
+  - name: auditor never exports even though reporters may
+    options:
+      now: "2026-06-01T00:00:00Z"
+    input:
+      principals: [auditor, other_reporter]
+      resources: [billing_ticket]
+      actions: [export]
+    expected:
+      - principal: auditor
+        resource: billing_ticket
+        actions:
+          export: EFFECT_DENY
+      - principal: other_reporter
+        resource: billing_ticket
+        actions:
+          export: EFFECT_ALLOW
+  - name: agents work only their own team's tickets
+    input:
+      principals: [agent_billing]
+      resources: [billing_ticket, shipping_ticket]
+      actions: [view, update, close, export]
+    expected:
+      - principal: agent_billing
+        resource: billing_ticket
+        actions:
+          view: EFFECT_ALLOW
+          update: EFFECT_ALLOW
+          close: EFFECT_DENY
+          export: EFFECT_DENY
+      - principal: agent_billing
+        resource: shipping_ticket
+        actions:
+          view: EFFECT_DENY
+          update: EFFECT_DENY
+          close: EFFECT_DENY
+          export: EFFECT_DENY
+  - name: manager closes with an MFA session
+    input:
+      principals: [manager_billing]
+      resources: [billing_ticket, shipping_ticket]
+      actions: [close]
+      auxData: mfa_token
+    expected:
+      - principal: manager_billing
+        resource: billing_ticket
+        actions:
+          close: EFFECT_ALLOW
+      - principal: manager_billing
+        resource: shipping_ticket
+        actions:
+          close: EFFECT_DENY
+  - name: manager cannot close with a password-only session
+    input:
+      principals: [manager_billing]
+      resources: [billing_ticket]
+      actions: [view, close]
+      auxData: password_token
+    expected:
+      - principal: manager_billing
+        resource: billing_ticket
+        actions:
+          view: EFFECT_ALLOW
+          close: EFFECT_DENY
+  - name: manager cannot close without a token
+    input:
+      principals: [manager_billing]
+      resources: [billing_ticket]
+      actions: [close]
+    expected:
+      - principal: manager_billing
+        resource: billing_ticket
+        actions:
+          close: EFFECT_DENY

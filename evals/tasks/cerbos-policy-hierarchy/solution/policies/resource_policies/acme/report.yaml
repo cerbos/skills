@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: report
+  version: default
+  scope: acme
+  # Acme levels may only narrow what their parent allows.
+  scopePermissions: SCOPE_PERMISSIONS_REQUIRE_PARENTAL_CONSENT_FOR_ALLOWS
+  rules:
+    # Published Acme work stays stable: editors change drafts only.
+    - name: editors-edit-drafts
+      actions: [edit]
+      roles: [editor]
+      effect: EFFECT_ALLOW
+      condition:
+        match:
+          expr: R.attr.status == "draft"

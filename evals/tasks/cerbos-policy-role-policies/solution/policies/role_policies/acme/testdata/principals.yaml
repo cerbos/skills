@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+principals:
+  contractor:
+    id: cara
+    roles:
+    - contractor
+    attr:
+      department: eng
+  auditor:
+    id: aud
+    roles:
+    - auditor
+    attr:
+      department: eng
+  editor:
+    id: eve
+    roles:
+    - editor
+    attr:
+      department: eng
+  admin:
+    id: ada
+    roles:
+    - admin
+    attr:
+      department: eng
+  accountant:
+    id: acc
+    roles:
+    - accountant
+    attr:
+      department: eng

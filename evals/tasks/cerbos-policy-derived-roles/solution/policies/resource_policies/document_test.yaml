@@ -1,0 +1,174 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: document relationships
+tests:
+- name: owner
+  input:
+    principals:
+    - owner
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - approve
+    - delete
+  expected:
+  - principal: owner
+    resource: document
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: reviewer
+  input:
+    principals:
+    - reviewer
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - approve
+    - delete
+  expected:
+  - principal: reviewer
+    resource: document
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_DENY
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: overlap
+  input:
+    principals:
+    - overlap
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - approve
+    - delete
+  expected:
+  - principal: overlap
+    resource: document
+    actions:
+      view: EFFECT_ALLOW
+      edit: EFFECT_ALLOW
+      approve: EFFECT_ALLOW
+      delete: EFFECT_DENY
+- name: visitor
+  input:
+    principals:
+    - visitor
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - approve
+    - delete
+  expected:
+  - principal: visitor
+    resource: document
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: foreign_owner
+  input:
+    principals:
+    - foreign_owner
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - approve
+    - delete
+  expected:
+  - principal: foreign_owner
+    resource: document
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: foreign_reviewer
+  input:
+    principals:
+    - foreign_reviewer
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - approve
+    - delete
+  expected:
+  - principal: foreign_reviewer
+    resource: document
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: nonowner
+  input:
+    principals:
+    - nonowner
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - approve
+    - delete
+  expected:
+  - principal: nonowner
+    resource: document
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: wrong_department
+  input:
+    principals:
+    - wrong_department
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - approve
+    - delete
+  expected:
+  - principal: wrong_department
+    resource: document
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY
+- name: spoofed
+  input:
+    principals:
+    - spoofed
+    resources:
+    - document
+    actions:
+    - view
+    - edit
+    - approve
+    - delete
+  expected:
+  - principal: spoofed
+    resource: document
+    actions:
+      view: EFFECT_DENY
+      edit: EFFECT_DENY
+      approve: EFFECT_DENY
+      delete: EFFECT_DENY

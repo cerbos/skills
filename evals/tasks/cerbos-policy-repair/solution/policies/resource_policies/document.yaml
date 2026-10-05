@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: document
+  version: default
+  importDerivedRoles:
+    - document_roles
+  rules:
+    - name: view-documents
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["employee", "contractor", "manager"]
+
+    - name: edit-own-documents
+      actions: ["edit"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["document_owner"]
+
+    - name: download-within-limit
+      actions: ["download"]
+      effect: EFFECT_ALLOW
+      roles: ["employee"]
+      condition:
+        match:
+          expr: R.attr.size_mb <= 25
+
+    - name: download-any-size
+      actions: ["download"]
+      effect: EFFECT_ALLOW
+      roles: ["manager"]
+
+    - name: delete-documents
+      actions: ["delete"]
+      effect: EFFECT_ALLOW
+      roles: ["manager"]
+
+    - name: deny-contractor-non-public
+      actions: ["*"]
+      effect: EFFECT_DENY
+      roles: ["contractor"]
+      condition:
+        match:
+          expr: '!has(R.attr.classification) || R.attr.classification != "public"'
