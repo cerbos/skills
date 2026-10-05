@@ -8,9 +8,9 @@ VERSION defaults to the latest GitHub release (for example 0.56.0). The script:
 
 1. Resolves the multi-arch image digest for ghcr.io/cerbos/cerbos:VERSION.
 2. Repins every task Dockerfile, updates the version named in task instructions,
-   task READMEs, the skill's targetsCerbosVersion and the cerbos/cerbosctl image
-   tags in the skill's Markdown, and bumps each task's patch version and the
-   skill's minor version. Feature minimums such as "0.55+" in the skill
+   task READMEs, each pinned skill's targetsCerbosVersion and the cerbos/cerbosctl image
+   tags in its Markdown, and bumps each task's patch version and each
+   changed skill's minor version. Feature minimums such as "0.55+" in the skill
    references are left alone.
 3. Runs the verifier regression tests, then Harbor's oracle (expected reward 1) and
    nop (expected reward 0) agents on every task. The oracle run is the real check:
@@ -40,7 +40,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TASKS = ROOT / "evals" / "tasks"
-SKILL = ROOT / "plugins" / "cerbos-skills" / "skills" / "cerbos-policy" / "SKILL.md"
+# Every skill that pins a Cerbos release moves with it.
+SKILLS = sorted(
+    p for p in (ROOT / "plugins" / "cerbos-skills" / "skills").glob("*/SKILL.md")
+    if "targetsCerbosVersion:" in p.read_text()
+)
 IMAGE = "ghcr.io/cerbos/cerbos"
 HARBOR = ["uvx", "--from", "harbor==0.23.0", "harbor"]
 # Only the policy tasks run on the Cerbos PDP; Synapse tasks follow Synapse releases.
@@ -107,21 +111,22 @@ def planned_edits(old, new, digest):
         if changed:
             # A new runtime changes the task, so its version moves too.
             edits[task / "task.toml"] = bump_patch((task / "task.toml").read_text())
-    skill = SKILL.read_text()
-    edits[SKILL] = re.sub(
-        r'(targetsCerbosVersion:\s*)"[^"]*"', rf'\g<1>"{new}"', skill, count=1
-    )
     # Tags only: prose such as "requires v0.55.0 or later" keeps its version.
     tag = re.compile(rf"({re.escape(IMAGE)}(?:ctl)?):{re.escape(old)}(?![\d.])")
-    for path in sorted(SKILL.parent.rglob("*.md")):
-        edits[path] = tag.sub(rf"\g<1>:{new}", edits.get(path, path.read_text()))
-    if edits[SKILL] != skill:
-        # CI requires a skill version bump whenever the skill's files change.
-        edits[SKILL] = re.sub(
-            r'(\n  version:\s*)"(\d+)\.(\d+)"',
-            lambda m: f'{m.group(1)}"{m.group(2)}.{int(m.group(3)) + 1}"',
-            edits[SKILL], count=1,
+    for skill_path in SKILLS:
+        skill = skill_path.read_text()
+        edits[skill_path] = re.sub(
+            r'(targetsCerbosVersion:\s*)"[^"]*"', rf'\g<1>"{new}"', skill, count=1
         )
+        for path in sorted(skill_path.parent.rglob("*.md")):
+            edits[path] = tag.sub(rf"\g<1>:{new}", edits.get(path, path.read_text()))
+        if edits[skill_path] != skill:
+            # CI requires a skill version bump whenever the skill's files change.
+            edits[skill_path] = re.sub(
+                r'(\n  version:\s*)"(\d+)\.(\d+)"',
+                lambda m: f'{m.group(1)}"{m.group(2)}.{int(m.group(3)) + 1}"',
+                edits[skill_path], count=1,
+            )
     return {path: text for path, text in edits.items() if text != path.read_text()}
 
 

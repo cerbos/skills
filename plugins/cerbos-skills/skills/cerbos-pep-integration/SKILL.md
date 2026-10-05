@@ -5,6 +5,7 @@ license: Apache-2.0
 metadata:
   author: cerbos
   version: "1.0"
+  targetsCerbosVersion: "0.55.0"
 ---
 
 # Cerbos PEP Integration
@@ -97,7 +98,7 @@ A local PDP over a policy directory is enough to develop against:
 ```bash
 docker run --rm -p 3592:3592 -p 3593:3593 \
   -v "$(pwd)/policies:/policies" \
-  ghcr.io/cerbos/cerbos:latest server
+  ghcr.io/cerbos/cerbos:0.55.0 server
 ```
 
 - Ports: **3593 gRPC**, **3592 HTTP**. Prefer gRPC from a server; several SDKs offer nothing else.

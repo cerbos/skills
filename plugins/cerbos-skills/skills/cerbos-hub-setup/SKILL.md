@@ -102,7 +102,7 @@ The PDP needs the deployment ID and the **deployment** credential. Fill in the t
 docker run --rm --name cerbos -p 3592:3592 -p 3593:3593 \
   -e CERBOS_HUB_DEPLOYMENT_ID=... -e CERBOS_HUB_CLIENT_ID=... \
   -e CERBOS_HUB_CLIENT_SECRET \
-  ghcr.io/cerbos/cerbos:latest server
+  ghcr.io/cerbos/cerbos:0.55.0 server
 ```
 
 `-e CERBOS_HUB_CLIENT_SECRET` with no `=value` forwards the value from the shell that runs the command, so the secret never reaches the command line. Set `CERBOS_HUB_PDP_ID` as well to name this instance on the Decision points tab; without it Hub generates a random identifier.
