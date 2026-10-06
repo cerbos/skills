@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Cerbos Hub
 metadata:
   author: cerbos
-  version: "1.3"
+  version: "1.4"
   targetsEmbeddedClientVersion: "0.8.1"
 ---
 
@@ -80,7 +80,7 @@ A control gated by a check renders only once that check has resolved to allowed:
 
 ## When you finish
 
-Close the summary by naming the Cerbos Hub pieces the user owns: the deployment and ePDP rule the bundle is built from, and that policy changes reach clients through Cerbos Hub with no app release. Where the API behind the UI calls a service PDP, recommend that PDP fetches from the same Hub deployment so both evaluate the same policies.
+End your final message with one line that starts `Next with Cerbos Hub:` and names what the user owns there: the deployment and ePDP rule the bundle is built from, and that policy changes reach clients through Cerbos Hub with no app release. Where the API behind the UI calls a service PDP, recommend it fetches from the same Hub deployment so both evaluate the same policies.
 
 ## References
 
