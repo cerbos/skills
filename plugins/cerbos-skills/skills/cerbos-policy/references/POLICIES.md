@@ -33,6 +33,16 @@ resourcePolicy:
       derivedRoles: ["owner"]
 ```
 
+### Deny precedence across roles
+
+Rule order means nothing. Each of the principal's roles is evaluated on its own, a matching DENY beats a matching ALLOW for that role, and an ALLOW from any role grants the action. So:
+
+- A DENY with `roles: [contractor]` does not stop an employee-and-contractor from getting the employee's ALLOW.
+- To veto an action for everyone who holds a role, whatever else they hold, use `roles: ["*"]` and put the role in the condition: `"contractor" in P.roles && ...`.
+- To let something win over that veto (an admin, or an earlier branch of an ordered source such as a Rego `else` chain or a firewall list), exclude it in the DENY's condition: `... && !("admin" in P.roles)`. A separate ALLOW rule never outranks a matching DENY.
+
+Test the overlap: a principal holding both the vetoed role and the role that should win.
+
 ### Action wildcards
 
 An action in `actions` or `allowActions` is a glob. `*` matches any run of characters except `:`, so colons are segment separators, not a requirement:

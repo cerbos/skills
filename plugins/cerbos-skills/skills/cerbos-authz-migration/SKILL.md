@@ -133,6 +133,8 @@ List every attribute the conditions read, with where its value is when the check
 
 Mark every attribute the source treats as optional — undefined in Rego, a missing key or `None` in code. Its condition needs an explicit `has()` guard reproducing what the source does on absence (`has(R.attr.x) && …`, or `!has(R.attr.x) || …`). Without one the condition errors on a missing key, which strict evaluation turns into a deny and default evaluation into a skipped rule, and parity breaks either way.
 
+A check that tests no role applies to every role, including roles the code never names: an ownership check `doc.author_id == user.id` lets a `reviewer` edit its own document too. Map it to `roles: ["*"]` (or a derived role with `parentRoles: ["*"]`), never to the roles you happened to see; listing them silently denies everyone else. The same holds for an admin short-circuit or a deny written without a role test. Test a principal whose role appears nowhere in the code.
+
 A guard also keeps its position in the request flow and the exact actions it covers. A middleware refusal that ran before the record was loaded stays a pre-load, principal-only check, or its `403` becomes a `404`; a write-only guard does not grow to cover reads. Shapes and status-code order: [references/MAPPING-CODE.md](references/MAPPING-CODE.md).
 
 **Gap register.** One row per thing that does not survive the move, each ending in a decision the user makes.
