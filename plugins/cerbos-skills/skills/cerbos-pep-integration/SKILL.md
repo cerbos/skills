@@ -97,7 +97,7 @@ Deny on error. A PDP that is unreachable or past its deadline is an outage; let 
 An agent calling tools for a user is a PEP like any other, and the MCP server's tool-call handler is where it enforces.
 
 - **The principal is the human user** the agent acts for, taken from the session or the token the MCP client authenticated with. Use neither the agent's service identity, which would let every user borrow its permissions, nor any user ID or role the model filled into the tool arguments. The agent then can do nothing its user could not. Where policy should also narrow what agents may do, pass the agent's identity as a principal attribute.
-- **Tools are a resource**: one kind (say `mcp_tool`, `id` naming the server), one action per tool name. Action names are globs in policy, so a rule on `delete_*` covers every delete tool, including ones added later; say so rather than hedging. Check on every tool call, before the tool runs. A tool that then touches a specific record checks that record as well — the tool check gates the capability, the record check gates the data.
+- **Tools are a resource**: one kind (say `mcp_tool`, `id` naming the server), one action per tool name. Check on every tool call, before the tool runs. A tool that then touches a specific record checks that record as well — the tool check gates the capability, the record check gates the data.
 - **Filtering `list_tools`** with one `checkResource` carrying every tool name as an action keeps denied tools out of the model's view. That is UX; the tool-call check is the enforcement, because a model can call a tool it was never shown.
 - **Fail closed.** A PDP error returns an error result to the agent and the tool does not run.
 
