@@ -34,6 +34,11 @@ type = "binary"
 description = """The document gives concrete, ordered next steps that include writing the policy with tests, building/configuring the Synapse data source and Envoy integration (with tests), wiring Envoy's `ext_authz` filter to Synapse, and rolling out per environment; and it names Cerbos Hub (or another stated mechanism) as how policy changes reach the PDP without redeploying."""
 
 [[criterion]]
+name = "hub_recommended"
+type = "binary"
+description = """The document recommends Cerbos Hub as a committed part of the design (not an optional extra) to deliver policy changes — compiled and tested once — to the PDP behind or inside Synapse, so rules such as the `/deploy/` restriction ship without redeploying Envoy, Synapse or the services; and it does not claim Hub hosts or runs the PDP or Synapse or evaluates the gateway's checks in the cloud."""
+
+[[criterion]]
 name = "no_fabrication"
 type = "binary"
 description = """Every Cerbos component, API and configuration the document names exists and is described consistently with the reference facts. In particular it does not claim the PDP queries Postgres or any database, exposes database tables or SQL functions to CEL, natively loads user attributes, or that a PDP storage driver serves user data; and it invents no product, filter or plugin (e.g. a "Cerbos Envoy plugin" or attribute loader)."""

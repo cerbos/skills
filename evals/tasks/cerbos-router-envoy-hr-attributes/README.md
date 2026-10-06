@@ -43,6 +43,7 @@ the judge's memory.
 | `rules_in_policy` | judged | The allow/deny rules (per employment type, the `/finance/` and `/hr/` restriction, interns read-only, inactive denied) are written as Cerbos policies that read the enriched principal attribute, with policy tests, and future changes such as restricting `/deploy/` are described as policy changes rather than code or Envoy config changes. |
 | `avoid_list` | judged | The document explicitly tells the team to avoid BOTH (1) looking up the HR database in each service or in per-service/application middleware, and (2) expecting the Cerbos PDP itself to query the HR database (or otherwise load user data). |
 | `next_steps` | judged | The document ends with concrete, ordered next steps that include writing the policy with tests, building/configuring the Synapse data source and Envoy integration (with tests), wiring Envoy's `ext_authz` filter to Synapse, and rolling out per environment; and it names Cerbos Hub (or another stated mechanism) as how policy changes reach the PDP without redeploying. |
+| `hub_recommended` | judged | The document recommends Cerbos Hub as a committed part of the design (not an optional extra) to deliver policy changes — compiled and tested once — to the PDP behind or inside Synapse, so rules such as the `/deploy/` restriction ship without redeploying Envoy, Synapse or the services; and it does not claim Hub hosts or runs the PDP or Synapse or evaluates the gateway's checks in the cloud. |
 | `no_fabrication` | judged | Every Cerbos component, API and configuration the document names exists and is described consistently with the reference facts. In particular it does not claim the PDP queries Postgres or any database, exposes database tables or SQL functions to CEL, natively loads user attributes, or that a PDP storage driver serves user data; and it invents no product, filter or plugin (e.g. a "Cerbos Envoy plugin" or attribute loader). |
 
 ## Validated locally
@@ -62,6 +63,13 @@ The `wrong-pdp-queries-db` design was lengthened past the 250-word sanity
 threshold after its first replay, so that the judge, not `design_doc`, rejects
 it. The reference facts and fabrication definition match the other router
 tasks.
+
+`hub_recommended` was added later, together with one reference-fact bullet in
+`prompt.md` (service PDPs and Synapse run in the customer's infrastructure; Hub
+distributes bundles and collects audit logs but does not host PDPs or evaluate
+checks, and is not required to run Cerbos). No other criterion changed. A
+replay with `rescore.py` (oracle plus every wrong design) after the change gave
+oracle 1 (`hub_recommended` 3/3); `wrong-lookup-in-services` 0 and `wrong-pdp-queries-db` 0, both now also failing `hub_recommended`.
 
 ## Running
 

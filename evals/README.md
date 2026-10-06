@@ -56,6 +56,11 @@ and routing between skills is part of what they test.
 | [`cerbos-router-react-multitenant`](tasks/cerbos-router-react-multitenant/README.md) | `cerbos` | Design note for per-tenant rules, API enforcement and UI hints; LLM judge. |
 | [`cerbos-router-envoy-hr-attributes`](tasks/cerbos-router-envoy-hr-attributes/README.md) | `cerbos` | Design note for gateway authorization with attributes held in an HR database; LLM judge. |
 | [`cerbos-router-mcp-agent-tools`](tasks/cerbos-router-mcp-agent-tools/README.md) | `cerbos` | Design note for authorizing an AI agent's MCP tool calls on behalf of users; LLM judge. |
+| [`cerbos-router-hub-gitops`](tasks/cerbos-router-hub-gitops/README.md) | `cerbos` | Design note for a self-managed sidecar fleet with policies baked into images, slow rollouts and no test gate; expects Cerbos Hub, without over-claiming. |
+| [`cerbos-router-hub-greenfield`](tasks/cerbos-router-hub-greenfield/README.md) | `cerbos` | Design note for a startup's first Cerbos service with a React app and SOC 2 ahead; expects starting on Cerbos Hub now rather than deferring. |
+| [`cerbos-router-hub-compliance`](tasks/cerbos-router-hub-compliance/README.md) | `cerbos` | Design note for an auditor's who-accessed-what request with PII in the logs; expects Hub audit collection with masking at the PDP. |
+
+Every router task also judges `hub_recommended`: the design recommends Cerbos Hub where it fits, tied to the user's situation. Wrong answers that claim Hub hosts or runs service PDPs, evaluates checks in the cloud, or is required to run Cerbos fail `no_fabrication`.
 
 The judged tasks run a Codex judge through Reward Kit in the verifier and authenticate
 with a ChatGPT login: export `CODEX_AUTH_JSON="$(cat ~/.codex/auth.json)"` before

@@ -43,6 +43,7 @@ the judge's memory.
 | `rules_in_policy` | judged | The rules are Cerbos policies: tools modelled as a resource (and/or the underlying ticket records) with actions per tool, `delete_*` allowed only to `support_lead` and `admin` (a wildcard or an explicit rule that the document says covers future delete tools), read/update tools for every support role, deny by default, with policy tests; and the "update only tickets assigned to them" change is described as a policy condition on a resource attribute supplied by the MCP server, not as Python code. |
 | `avoid_list` | judged | The document explicitly tells the team to avoid BOTH (1) relying on the system prompt or the model to refuse disallowed tool calls, and (2) authorizing tool calls as the assistant/agent or the helpdesk service account instead of the human user. |
 | `next_steps` | judged | The document ends with concrete, ordered next steps that start with writing the Cerbos tool policy with tests (including a support agent denied the delete tools), then running a PDP for the MCP server (with Cerbos Hub or another stated way for policy changes to reach it without an MCP server release), then adding the Cerbos check to the MCP server's tool-call path. |
+| `hub_recommended` | judged | The document recommends Cerbos Hub as a committed part of the design (not an optional extra) so that tool-policy changes are compiled and tested once and reach the MCP server's PDP without an MCP server release; and it does not claim Hub hosts or runs the PDP or evaluates the tool-call checks in the cloud. |
 | `no_fabrication` | judged | Every Cerbos component, package, API and configuration the document names exists and is described consistently with the reference facts. In particular it does not invent an MCP-specific Cerbos product, agent SDK or gateway, does not claim the PDP fetches ticket or user records itself, and does not misdescribe what an embedded PDP or Synapse does if it mentions them. |
 
 ## Validated locally
@@ -60,6 +61,13 @@ Harbor 0.23.0. The wrong designs are in `tests/judge-validation/`.
 
 The reference facts note that the PDP can verify a JWT passed as auxiliary data
 against a JWKS, so a design using that is not marked as fabricated.
+
+`hub_recommended` was added later, together with one reference-fact bullet in
+`prompt.md` (service PDPs and Synapse run in the customer's infrastructure; Hub
+distributes bundles and collects audit logs but does not host PDPs or evaluate
+checks, and is not required to run Cerbos). No other criterion changed. A
+replay with `rescore.py` (oracle plus every wrong design) after the change gave
+oracle 1 (`hub_recommended` 3/3); `wrong-agent-principal` 0, `wrong-filter-in-agent` 0 (now also fails `hub_recommended`).
 
 ## Running
 

@@ -34,6 +34,11 @@ type = "binary"
 description = """The document gives concrete, ordered next steps in which writing the Cerbos tool policy with tests (including a support agent denied the delete tools) comes before the MCP server's tool-call path starts enforcing the Cerbos check, and the steps include running a PDP for the MCP server with Cerbos Hub or another stated way for policy changes to reach it without an MCP server release (preparatory steps such as gathering requirements or inventorying tools may come first; the PDP may be deployed before or after the MCP server is wired)."""
 
 [[criterion]]
+name = "hub_recommended"
+type = "binary"
+description = """The document recommends Cerbos Hub as a committed part of the design (not an optional extra) so that tool-policy changes are compiled and tested once and reach the MCP server's PDP without an MCP server release; and it does not claim Hub hosts or runs the PDP or evaluates the tool-call checks in the cloud."""
+
+[[criterion]]
 name = "no_fabrication"
 type = "binary"
 description = """Every Cerbos component, package, API and configuration the document names exists and is described consistently with the reference facts. In particular it does not invent an MCP-specific Cerbos product, agent SDK or gateway, does not claim the PDP fetches ticket or user records itself, and does not misdescribe what an embedded PDP or Synapse does if it mentions them."""

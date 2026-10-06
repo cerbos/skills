@@ -34,6 +34,11 @@ type = "binary"
 description = """The document gives concrete, ordered next steps in which writing the Cerbos policies (including per-tenant scopes) with policy tests comes before wiring the API's server-side PDP checks, which comes before the UI permission checks (preparatory steps such as gathering requirements or inventorying endpoints may come first); and somewhere in the document it names Cerbos Hub as how policy changes reach the PDPs across the three environments."""
 
 [[criterion]]
+name = "hub_recommended"
+type = "binary"
+description = """The document recommends Cerbos Hub as a committed part of the design (not an optional extra): Hub builds and tests the policies once and pushes them to the service PDPs in each of the three environments (for example a deployment per environment) so policy and tenant-rule changes ship without an application release, and/or Hub serves the embedded PDP bundle for the React app; and it does not claim Hub hosts or runs the PDPs or evaluates the API's checks in the cloud."""
+
+[[criterion]]
 name = "no_fabrication"
 type = "binary"
 description = """Every Cerbos component, package, API and configuration the document names exists and is described consistently with the reference facts. In particular it does not: invent products, packages or features (e.g. a tenant manager, a React guard library, attribute drivers); claim the PDP loads users, invoices or tenant data from a database or IdP; claim an embedded PDP works without Cerbos Hub; or put Hub client credentials in browser code or `VITE_` variables."""

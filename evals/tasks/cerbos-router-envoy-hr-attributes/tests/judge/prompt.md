@@ -34,6 +34,17 @@ Reference facts about Cerbos for this grading:
 - Cerbos Hub mirrors policies from git into a policy store, compiles them and
   runs their tests on every change, and pushes signed bundles to the PDPs of
   each deployment (including Synapse's embedded PDP).
+- Service PDPs (and Synapse) always run in the customer's own
+  infrastructure, including when managed by Cerbos Hub: Hub builds, tests and
+  distributes policy bundles (and collects audit logs), but it does not host or
+  run the PDPs and does not evaluate authorization checks in the cloud. Hub is
+  not required to run Cerbos; the open-source PDP also runs standalone.
+- Real audit settings and Hub audit features, which are not fabrication:
+  `audit.enabled`, `audit.accessLogsEnabled` and `audit.decisionLogsEnabled`
+  (both default to true once audit is enabled), decision-log filters such as
+  `ignoreAllowAll`, access entries that record the policy source, and Hub
+  audit-log filters by time range, PDP ID, policy source, principal, resource
+  kind, action and decision.
 - `cerbos`, `cerbos-policy`, `cerbos-hub-setup`, `cerbos-pep-integration`,
   `cerbos-embedded-pdp`, `cerbos-synapse-extension`, `cerbos-audit-insights`
   and `cerbos-authz-migration` are Cerbos agent skills (implementation guides

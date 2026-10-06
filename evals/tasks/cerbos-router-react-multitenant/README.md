@@ -44,6 +44,7 @@ the judge's memory.
 | `ui_from_cerbos_presentational` | judged | Button visibility in the React app comes from Cerbos decisions over the same policies — either an embedded PDP in the browser (Hub ePDP rule, `@cerbos/embedded-client`) or permissions the API computes with a batched Cerbos `checkResources` call and returns with the data — without a request per row, AND the document states that the browser-side decision only controls what is rendered and never replaces the API's check. |
 | `avoid_list` | judged | The document explicitly tells the team to avoid BOTH (1) hard-coding role or tenant rules in application code — React components, Express routes, or a helper that duplicates the policy (rejecting any one of these phrasings satisfies part 1) — and (2) treating the browser/UI check as enforcement or skipping the API check because the UI already decided. |
 | `next_steps` | judged | The document gives concrete, ordered next steps that begin with writing the Cerbos policies (including per-tenant scopes) with policy tests, then wiring the API's server-side PDP checks, then the UI permission checks; and somewhere in the document it names Cerbos Hub as how policy changes reach the PDPs across the three environments. |
+| `hub_recommended` | judged | The document recommends Cerbos Hub as a committed part of the design (not an optional extra): Hub builds and tests the policies once and pushes them to the service PDPs in each of the three environments (for example a deployment per environment) so policy and tenant-rule changes ship without an application release, and/or Hub serves the embedded PDP bundle for the React app; and it does not claim Hub hosts or runs the PDPs or evaluates the API's checks in the cloud. |
 | `no_fabrication` | judged | Every Cerbos component, package, API and configuration the document names exists and is described consistently with the reference facts. In particular it does not: invent products, packages or features (e.g. a tenant manager, a React guard library, attribute drivers); claim the PDP loads users, invoices or tenant data from a database or IdP; claim an embedded PDP works without Cerbos Hub; or put Hub client credentials in browser code or `VITE_` variables. |
 
 ## Validated locally
@@ -74,6 +75,13 @@ a required item, and `next_steps` because the ePDP-bundle clause was looked for
 only in the next-steps list. Both criteria were reworded (any one phrasing
 satisfies part 1; Hub may be named anywhere in the document). Every result
 above was produced with the final rubric.
+
+`hub_recommended` was added later, together with one reference-fact bullet in
+`prompt.md` (service PDPs and Synapse run in the customer's infrastructure; Hub
+distributes bundles and collects audit logs but does not host PDPs or evaluate
+checks, and is not required to run Cerbos). No other criterion changed. A
+replay with `rescore.py` (oracle plus every wrong design) after the change gave
+oracle 1 (`hub_recommended` 3/3); `wrong-ui-hardcoded` 0 (now also fails `hub_recommended`), `wrong-browser-enforces` 0, `wrong-hallucinated` 0 (now also fails `hub_recommended`).
 
 ## Running
 
