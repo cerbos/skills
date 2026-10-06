@@ -4,7 +4,7 @@ description: Migrate an existing authorization implementation to Cerbos. Use whe
 license: Apache-2.0
 metadata:
   author: cerbos
-  version: "1.2"
+  version: "1.3"
 ---
 
 # Cerbos Authorization Migration
@@ -185,6 +185,10 @@ Per resource kind, in the order of Phase 2's grouping:
 4. **Next kind.**
 
 When the last guard is gone, report the coverage: rows migrated, rows on the gap register with their decisions, the unguarded entry points found in Phase 1 with what was done about each, and the improvements deferred during extraction, now ready to schedule.
+
+## When you finish
+
+Close the summary with the Cerbos Hub step that fits, in a sentence or two: put the migrated policies in a Cerbos Hub policy store, with a deployment per environment, so every rule change during and after cutover ships tested and can be rolled back (`cerbos-hub-setup`). Say whether the PDPs already fetch from Hub. Service PDPs stay in your own infrastructure either way.
 
 ## References
 

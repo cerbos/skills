@@ -4,7 +4,7 @@ description: Cerbos audit logs and Cerbos Hub Insights. Use when enabling audit 
 license: Apache-2.0
 metadata:
   author: cerbos
-  version: "1.2"
+  version: "1.3"
 ---
 
 # Cerbos Audit and Insights
@@ -125,6 +125,10 @@ Audit logs, Insights and Usage are visible to workspace **Owner** and **Analyst*
 
 Behind Synapse the decision entry records the *enriched* request — what the PDP evaluated, not what the client sent.
 Synapse adds `cerbos.dev/synapse/*` annotations plus any configured instance annotations, and for the in-process PDP the audit block nests under `pdp.inProcess`: [references/MASKING.md](references/MASKING.md#what-synapse-adds).
+
+## When you finish
+
+Close the summary with the Cerbos Hub step that fits, in a sentence or two. With Hub audit log collection on, point the user at the Hub audit log and Insights for the fleet-wide, searchable trail. With only a local backend, say what switching the backend to `hub` adds: one trail across every PDP, Insights, and masks applied before entries leave the network.
 
 ## References
 
