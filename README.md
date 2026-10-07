@@ -35,7 +35,7 @@ npx skills add cerbos/skills -g
 
 ### Plugin marketplaces
 
-This repository is also a plugin marketplace. Each agent reads its own manifest, and every manifest installs the same `cerbos-skills` plugin from the `skills/` directory.
+This repository is also a plugin marketplace. Each agent reads its own manifest, and every manifest installs the same `cerbos-skills` plugin from the [`plugins/cerbos-skills/`](plugins/cerbos-skills) directory.
 
 #### Claude Code
 
@@ -72,11 +72,14 @@ On a Teams or Enterprise plan, an admin adds the repository as a team marketplac
 2. Under **Team Marketplaces**, click **Add Marketplace**, choose **Import from Repo**, and paste `https://github.com/cerbos/skills`.
 3. Developers open **Customize** in the Cursor sidebar, find `cerbos-skills`, and click **Install**.
 
-To install it for yourself, clone the repository into Cursor's local plugin directory and reload the window (**Developer: Reload Window**):
+To install it for yourself, copy the plugin into Cursor's local plugin directory and reload the window (**Developer: Reload Window**):
 
 ```bash
-git clone https://github.com/cerbos/skills ~/.cursor/plugins/local/cerbos-skills
+git clone --depth 1 https://github.com/cerbos/skills /tmp/cerbos-skills
+cp -R /tmp/cerbos-skills/plugins/cerbos-skills ~/.cursor/plugins/local/cerbos-skills
 ```
+
+To pick up a new release, repeat both steps after removing `~/.cursor/plugins/local/cerbos-skills` and `/tmp/cerbos-skills`.
 
 #### Gemini CLI
 
@@ -88,7 +91,7 @@ Run `/skills list` in a session to confirm the skills loaded. To pick up a new r
 
 ### Manual Installation
 
-Copy the skill directories from `skills/` to your agent's skills directory.
+Copy the skill directories from [`plugins/cerbos-skills/skills/`](plugins/cerbos-skills/skills) to your agent's skills directory.
 
 ## Available Skills
 
@@ -111,4 +114,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to change a skill, run the checks
 
 ## License
 
-Apache-2.0
+Apache-2.0. See [LICENSE](LICENSE).

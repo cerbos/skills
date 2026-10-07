@@ -46,7 +46,7 @@ From the repository root with Docker running:
 uvx --from harbor==0.23.0 harbor run --jobs-dir evals/jobs -p evals/tasks/cerbos-policy-evolution -a oracle
 uvx --from harbor==0.23.0 harbor run --jobs-dir evals/jobs -p evals/tasks/cerbos-policy-evolution -a nop
 uvx --from harbor==0.23.0 harbor run --jobs-dir evals/jobs -p evals/tasks/cerbos-policy-evolution \
-  --skill ./skills/cerbos-policy -a codex -m openai/gpt-5.6-luna --agent-kwarg version=0.154.0
+  --skill ./plugins/cerbos-skills/skills/cerbos-policy -a codex -m openai/gpt-5.6-luna --agent-kwarg version=0.154.0
 ```
 
 The oracle should receive `reward: 1`; nop retains a compilable bundle but fails changed decisions and expanded test coverage. The model run requires credentials. To compare skill and no-skill attempts, repeat the same Harbor command without `--skill`, keeping the model, agent version and attempt count fixed.

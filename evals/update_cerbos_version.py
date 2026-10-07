@@ -40,7 +40,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TASKS = ROOT / "evals" / "tasks"
-SKILL = ROOT / "skills" / "cerbos-policy" / "SKILL.md"
+SKILL = ROOT / "plugins" / "cerbos-skills" / "skills" / "cerbos-policy" / "SKILL.md"
 IMAGE = "ghcr.io/cerbos/cerbos"
 HARBOR = ["uvx", "--from", "harbor==0.23.0", "harbor"]
 # Only the policy tasks run on the Cerbos PDP; Synapse tasks follow Synapse releases.
@@ -198,7 +198,7 @@ def main():
             env["CODEX_FORCE_AUTH_JSON"] = "1"
         job, rewards = harbor_job(
             f"cerbos-{new}-live-{stamp}",
-            ["--skill", "./skills/cerbos-policy", "-a", "codex", "--agent-kwarg", "version=0.154.0",
+            ["--skill", "./plugins/cerbos-skills/skills/cerbos-policy", "-a", "codex", "--agent-kwarg", "version=0.154.0",
              "-m", "openai/gpt-5.6-luna", "-n", "4", "--agent-setup-timeout-multiplier", "4"],
             env=env,
         )

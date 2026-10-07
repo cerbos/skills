@@ -4,18 +4,19 @@ This guide is for people changing the skills in this repository. To install and 
 
 ## Layout
 
-- `skills/<name>/` holds each skill: its `SKILL.md` and the reference files and scripts it points to. This is the directory every install method reads.
-- The plugin and marketplace manifests at the repository root publish `skills/` as the `cerbos-skills` plugin for each agent:
+- `plugins/cerbos-skills/` is the published plugin, and the only directory agents install. It holds the plugin manifests, `README.md` (the Claude plugin directory listing), `LICENSE`, `assets/icon.svg`, and `skills/`. Keep everything else out of it.
+- `plugins/cerbos-skills/skills/<name>/` holds each skill: its `SKILL.md` and the reference files and scripts it points to.
+- The marketplace manifests at the repository root point each agent at `plugins/cerbos-skills/`:
 
-  | File | Agent |
-  |------|-------|
-  | `.claude-plugin/marketplace.json`, `.claude-plugin/plugin.json` | Claude Code |
-  | `.agents/plugins/marketplace.json`, `.codex-plugin/plugin.json` | Codex |
-  | `.github/plugin/marketplace.json` | GitHub Copilot CLI |
-  | `.cursor-plugin/marketplace.json`, `.cursor-plugin/plugin.json` | Cursor |
-  | `gemini-extension.json` | Gemini CLI |
+  | Marketplace | Plugin manifest in `plugins/cerbos-skills/` | Agent |
+  |-------------|---------------------------------------------|-------|
+  | `.claude-plugin/marketplace.json` | `.claude-plugin/plugin.json` | Claude Code |
+  | `.agents/plugins/marketplace.json` | `.codex-plugin/plugin.json` | Codex |
+  | `.github/plugin/marketplace.json` | `.claude-plugin/plugin.json` | GitHub Copilot CLI |
+  | `.cursor-plugin/marketplace.json` | `.cursor-plugin/plugin.json` | Cursor |
 
-- `evals/` holds the Harbor evals, and `scripts/` holds the validator and its tests.
+- Gemini CLI installs the whole repository and reads skills from `skills/` at its root, so `gemini-extension.json` stays at the root and `skills` is a symlink to `plugins/cerbos-skills/skills`.
+- `evals/` holds the Harbor evals, and `scripts/` holds the validator and its tests. Neither is published.
 - `.agents/skills/` and `.claude/skills/` are skills for working on this repository, such as writing Harbor tasks. They are not published.
 
 ## Changing a skill
@@ -65,12 +66,12 @@ See [evals/README.md](evals/README.md) for how to run them.
 
 To publish a new plugin version, set the same `version` in every file below. The validator fails if they disagree.
 
-- `.claude-plugin/plugin.json`
+- `plugins/cerbos-skills/.claude-plugin/plugin.json`
+- `plugins/cerbos-skills/.codex-plugin/plugin.json`
+- `plugins/cerbos-skills/.cursor-plugin/plugin.json`
 - `.claude-plugin/marketplace.json` (`metadata.version` and the plugin entry)
 - `.github/plugin/marketplace.json` (`metadata.version` and the plugin entry)
-- `.codex-plugin/plugin.json`
-- `.cursor-plugin/plugin.json`
 - `.cursor-plugin/marketplace.json` (`metadata.version` and the plugin entry)
 - `gemini-extension.json`
 
-Agents compare this version to decide whether an installed plugin needs updating, so bump it for every release that changes `skills/`.
+Agents compare this version to decide whether an installed plugin needs updating, so bump it for every release that changes `plugins/cerbos-skills/`.

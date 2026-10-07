@@ -1,4 +1,4 @@
-"""Check every skill under skills/ against the repository's structural rules.
+"""Check every skill under plugins/cerbos-skills/skills/ against the repository's structural rules.
 
 Run from anywhere with:
 
@@ -17,7 +17,8 @@ Checks:
 6. With --base, every skill whose files changed since REF has a higher
    `metadata.version` than it had at REF.
 7. The plugin and marketplace manifests for each agent (Claude Code, Codex,
-   Cursor, Copilot, Gemini) parse as JSON and agree on plugin name and version.
+   Cursor, Copilot, Gemini) parse as JSON and agree on plugin name and version,
+   and every marketplace installs the plugin from PLUGIN_DIR.
 
 Exits 1 and names each offending file when any check fails.
 """
@@ -34,13 +35,19 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-SKILLS = ROOT / "skills"
-DOCS = [ROOT / "README.md", ROOT / "CONTRIBUTING.md", ROOT / "evals" / "README.md"]
 PLUGIN = "cerbos-skills"
+PLUGIN_DIR = f"plugins/{PLUGIN}"
+SKILLS = ROOT / PLUGIN_DIR / "skills"
+DOCS = [
+    ROOT / "README.md",
+    ROOT / "CONTRIBUTING.md",
+    ROOT / PLUGIN_DIR / "README.md",
+    ROOT / "evals" / "README.md",
+]
 PLUGIN_MANIFESTS = [
-    ".claude-plugin/plugin.json",
-    ".codex-plugin/plugin.json",
-    ".cursor-plugin/plugin.json",
+    f"{PLUGIN_DIR}/.claude-plugin/plugin.json",
+    f"{PLUGIN_DIR}/.codex-plugin/plugin.json",
+    f"{PLUGIN_DIR}/.cursor-plugin/plugin.json",
     "gemini-extension.json",
 ]
 MARKETPLACES = [
@@ -224,6 +231,11 @@ def check_manifests(errors):
         if not entries:
             errors.append(f"{name}: no '{PLUGIN}' plugin entry")
         for entry in entries:
+            source = entry.get("source")
+            if isinstance(source, dict):
+                source = source.get("path")
+            if Path(str(source)) != Path(PLUGIN_DIR):
+                errors.append(f"{name}: '{PLUGIN}' source must be './{PLUGIN_DIR}', found {source!r}")
             if "version" in entry:
                 versions[name] = entry["version"]
     if len(set(versions.values())) > 1:

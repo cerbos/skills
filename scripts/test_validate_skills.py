@@ -115,7 +115,7 @@ class ManifestsTest(unittest.TestCase):
         for name in validator.PLUGIN_MANIFESTS:
             self.write(name, {"name": "cerbos-skills", "version": "1.0.0"})
         for name in validator.MARKETPLACES:
-            self.write(name, {"plugins": [{"name": "cerbos-skills"}]})
+            self.write(name, {"plugins": [{"name": "cerbos-skills", "source": "./plugins/cerbos-skills"}]})
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -135,11 +135,13 @@ class ManifestsTest(unittest.TestCase):
         self.assertEqual(self.errors(), [])
 
     def test_version_mismatch(self):
-        self.write(".codex-plugin/plugin.json", {"name": "cerbos-skills", "version": "1.1.0"})
-        self.write(".claude-plugin/marketplace.json", {"plugins": [{"name": "cerbos-skills", "version": "0.9.0"}]})
+        self.write("plugins/cerbos-skills/.codex-plugin/plugin.json", {"name": "cerbos-skills", "version": "1.1.0"})
+        self.write(".claude-plugin/marketplace.json", {
+            "plugins": [{"name": "cerbos-skills", "source": "./plugins/cerbos-skills", "version": "0.9.0"}],
+        })
         errors = "\n".join(self.errors())
         self.assertIn("plugin versions disagree", errors)
-        self.assertIn(".codex-plugin/plugin.json=1.1.0", errors)
+        self.assertIn("plugins/cerbos-skills/.codex-plugin/plugin.json=1.1.0", errors)
 
     def test_missing_entry_and_wrong_name(self):
         self.write(".agents/plugins/marketplace.json", {"plugins": []})
@@ -147,6 +149,14 @@ class ManifestsTest(unittest.TestCase):
         errors = "\n".join(self.errors())
         self.assertIn(".agents/plugins/marketplace.json: no 'cerbos-skills' plugin entry", errors)
         self.assertIn("gemini-extension.json: name must be", errors)
+
+    def test_marketplace_source_outside_plugin_dir(self):
+        self.write(".github/plugin/marketplace.json", {"plugins": [{"name": "cerbos-skills", "source": "./"}]})
+        self.write(".agents/plugins/marketplace.json", {
+            "plugins": [{"name": "cerbos-skills", "source": {"source": "local", "path": "./plugins/cerbos-skills"}}],
+        })
+        errors = self.errors()
+        self.assertEqual(errors, [".github/plugin/marketplace.json: 'cerbos-skills' source must be './plugins/cerbos-skills', found './'"])
 
 
 if __name__ == "__main__":
