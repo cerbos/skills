@@ -35,15 +35,58 @@ npx skills add cerbos/skills -g
 
 ### Plugin marketplaces
 
-This repository is also a plugin marketplace. Each agent reads its own manifest, and every manifest points at the same `skills/` directory:
+This repository is also a plugin marketplace. Each agent reads its own manifest, and every manifest installs the same `cerbos-skills` plugin from the `skills/` directory.
 
-| Agent | Manifest | Install |
-|-------|----------|---------|
-| Claude Code | `.claude-plugin/` | `claude plugin marketplace add cerbos/skills` then `claude plugin install cerbos-skills@cerbos-skills` |
-| Codex | `.agents/plugins/marketplace.json`, `.codex-plugin/plugin.json` | `codex plugin marketplace add cerbos/skills` then `codex plugin add cerbos-skills@cerbos-skills` |
-| GitHub Copilot CLI | `.github/plugin/marketplace.json` | `copilot plugin marketplace add cerbos/skills` then `copilot plugin install cerbos-skills@cerbos-skills` |
-| Cursor | `.cursor-plugin/` | Add `cerbos/skills` as a team marketplace, or install from the Cursor marketplace once listed |
-| Gemini CLI | `gemini-extension.json` | `gemini extensions install https://github.com/cerbos/skills` |
+#### Claude Code
+
+```bash
+claude plugin marketplace add cerbos/skills
+claude plugin install cerbos-skills@cerbos-skills
+```
+
+Inside a session, `/plugin` opens the same marketplace browser. To pick up a new release, run `claude plugin marketplace update cerbos-skills`.
+
+#### Codex
+
+```bash
+codex plugin marketplace add cerbos/skills
+codex plugin add cerbos-skills@cerbos-skills
+```
+
+You can also open `/plugins` in a Codex session and install from the `cerbos-skills` marketplace. To pick up a new release, run `codex plugin marketplace upgrade cerbos-skills`.
+
+#### GitHub Copilot CLI
+
+```bash
+copilot plugin marketplace add cerbos/skills
+copilot plugin install cerbos-skills@cerbos-skills
+```
+
+To pick up a new release, run `copilot plugin update cerbos-skills`.
+
+#### Cursor
+
+On a Teams or Enterprise plan, an admin adds the repository as a team marketplace:
+
+1. Open the Cursor dashboard and go to **Plugins & MCPs**.
+2. Under **Team Marketplaces**, click **Add Marketplace**, choose **Import from Repo**, and paste `https://github.com/cerbos/skills`.
+3. Developers open **Customize** in the Cursor sidebar, find `cerbos-skills`, and click **Install**.
+
+To install it for yourself, clone the repository into Cursor's local plugin directory and reload the window (**Developer: Reload Window**):
+
+```bash
+git clone https://github.com/cerbos/skills ~/.cursor/plugins/local/cerbos-skills
+```
+
+#### Gemini CLI
+
+```bash
+gemini extensions install https://github.com/cerbos/skills
+```
+
+Run `/skills list` in a session to confirm the skills loaded. To pick up a new release, run `gemini extensions update cerbos-skills`.
+
+#### Releasing
 
 When you release a change, set the same `version` in every manifest; the validator fails if they disagree.
 
