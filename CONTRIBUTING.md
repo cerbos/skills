@@ -45,17 +45,19 @@ claude plugin install cerbos-skills@cerbos-skills
 
 ## Evals
 
-[Eight Harbor evals](evals/README.md) test `cerbos-policy` locally in Docker:
+[Eleven Harbor evals](evals/README.md) test `cerbos-policy` locally in Docker:
 generating policies, evolving existing policies, using shared derived roles,
 managing exported and local variables, building scoped policy hierarchies,
 adding attribute schemas with shared and inline test fixtures, defining custom
-roles with role policies, and adding policy outputs. Checks cover generated files,
+roles with role policies, adding policy outputs, repairing a broken policy bundle,
+and adding principal policy exceptions with time and JWT conditions. One more
+repeats policy generation in a sandbox without Python. Checks cover generated files,
 native compilation and real PDP decisions. Nine smoke evals check that
 `cerbos-synapse-extension` can build, wire and test Synapse extensions: proxy and
 route extensions in Starlark and in Go, JS/TS and Python WASM, plus a Starlark Envoy
 ext_authz extension. Their `prepare-image.sh` tags the licensed Synapse image
-locally first. Run
-them directly with Harbor and inspect the generated files and scores in its viewer.
+locally first. Run them directly with Harbor and inspect the generated files and
+scores in its viewer.
 
 See [evals/README.md](evals/README.md) for how to run them.
 
