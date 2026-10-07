@@ -1,6 +1,6 @@
 {
   "name": "cerbos-skills",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Agent skills for Cerbos authorization: generate and test RBAC/ABAC policies, and build Synapse extensions",
   "author": {
     "name": "Cerbos",
@@ -30,6 +30,8 @@
       "Write"
     ],
     "websiteURL": "https://cerbos.dev",
-    "brandColor": "#FFB224"
+    "brandColor": "#FFB224",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/icon.svg"
   }
 }

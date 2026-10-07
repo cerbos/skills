@@ -1,6 +1,6 @@
 {
   "name": "cerbos-skills",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Agent skills for Cerbos authorization: generate and test RBAC/ABAC policies, and build Synapse extensions",
   "author": {
     "name": "Cerbos"
@@ -17,5 +17,6 @@
     "policy",
     "synapse"
   ],
+  "logo": "assets/icon.svg",
   "skills": "./skills/"
 }
