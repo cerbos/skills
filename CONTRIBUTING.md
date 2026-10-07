@@ -27,6 +27,8 @@ Bump `metadata.version` whenever a skill's files change: the minor version for n
 
 Each skill's `references/sources.md` lists the documentation its guidance is checked against. Update it when you check guidance against a new source.
 
+[AGENTS.md](AGENTS.md) holds the writing and linking conventions for skill content. Links to Cerbos properties in skills and repository documents carry UTM parameters, with `utm_content` set to `<skill>_<placement>`; run `scripts/fix-links` after adding links rather than writing the parameters by hand. Plugin manifests and the plugin's listing README keep plain URLs.
+
 ## Checks
 
 CI checks every skill's frontmatter, size, internal references, links and pinned image tags. It requires a `metadata.version` bump whenever a skill's files change, and it requires every plugin manifest to share one name and version. Run the same checks locally before opening a pull request:

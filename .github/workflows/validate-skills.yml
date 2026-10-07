@@ -1,0 +1,36 @@
+name: Validate skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Validate skill structure, frontmatter and links
+        run: scripts/validate-skills --links
+
+      - name: Check outbound Cerbos links carry .md and UTM tags
+        run: scripts/fix-links --check
+
+      - name: Validate plugin manifests
+        run: |
+          for f in .claude-plugin/marketplace.json \
+                   .github/plugin/marketplace.json \
+                   .cursor-plugin/marketplace.json \
+                   .agents/plugins/marketplace.json \
+                   plugins/cerbos-skills/.claude-plugin/plugin.json \
+                   plugins/cerbos-skills/.codex-plugin/plugin.json \
+                   plugins/cerbos-skills/.cursor-plugin/plugin.json \
+                   gemini-extension.json; do
+            python3 -m json.tool "$f" > /dev/null && echo "ok $f"
+          done
+
+      - name: Check helper scripts parse
+        run: |
+          find plugins/cerbos-skills/skills -type f -perm -u+x -print0 \
+            | xargs -0 -r -I{} sh -c 'head -1 "{}" | grep -q bash && bash -n "{}" && echo "ok {}" || true'

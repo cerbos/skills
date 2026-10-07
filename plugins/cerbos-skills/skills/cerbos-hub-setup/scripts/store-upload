@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# Replace a Cerbos Hub policy store's contents with a local directory.
+# Credentials are read from the environment and handed to cerbosctl untouched.
+set -euo pipefail
+
+usage() {
+  cat <<'EOT'
+Usage: store-upload <dir> [-- <extra cerbosctl flags>]
+
+Runs `cerbosctl hub store replace-files <dir>`, making the store's contents
+exactly what <dir> holds. Files the store rejects are skipped and listed.
+
+Environment:
+  CERBOS_HUB_STORE_ID       required
+  CERBOS_HUB_CLIENT_ID      store credential, read & write
+  CERBOS_HUB_CLIENT_SECRET  store credential, read & write
+Leave both credential variables unset to use the login saved by scripts/hub-login.
+
+Extra flags are passed through, e.g.:
+  store-upload ./policies -- --version-must-eq 41 --message "add refund rules"
+Exit code 6 means the --version-must-eq condition was not satisfied.
+EOT
+}
+
+if [[ $# -eq 0 ]]; then
+  usage >&2
+  exit 1
+fi
+case "$1" in
+  -h | --help)
+    usage
+    exit 0
+    ;;
+esac
+
+dir="$1"
+shift
+if [[ "${1:-}" == "--" ]]; then shift; fi
+
+if [[ ! -d "$dir" ]]; then
+  echo "Not a directory: $dir" >&2
+  exit 1
+fi
+
+if ! command -v cerbosctl >/dev/null 2>&1; then
+  echo "cerbosctl not found on PATH. Run scripts/check-prereqs for install options." >&2
+  exit 1
+fi
+
+if [[ -z "${CERBOS_HUB_STORE_ID:-}" ]]; then
+  echo "CERBOS_HUB_STORE_ID is not set. Export the store ID from the store's detail page in Cerbos Hub." >&2
+  exit 1
+fi
+
+id_set=0
+secret_set=0
+[[ -n "${CERBOS_HUB_CLIENT_ID:-}" ]] && id_set=1
+[[ -n "${CERBOS_HUB_CLIENT_SECRET:-}" ]] && secret_set=1
+
+if [[ "$id_set" -ne "$secret_set" ]]; then
+  if [[ "$id_set" -eq 0 ]]; then
+    echo "CERBOS_HUB_CLIENT_ID is not set. Export both credential variables, or unset CERBOS_HUB_CLIENT_SECRET to use the saved login." >&2
+  else
+    echo "CERBOS_HUB_CLIENT_SECRET is not set. Export both credential variables, or unset CERBOS_HUB_CLIENT_ID to use the saved login." >&2
+  fi
+  exit 1
+fi
+
+if [[ "$id_set" -eq 0 ]]; then
+  echo "No credential variables set; using the login saved in the OS keyring."
+fi
+
+echo "Replacing store $CERBOS_HUB_STORE_ID with the contents of $dir"
+exec cerbosctl hub store replace-files "$dir" "$@"
