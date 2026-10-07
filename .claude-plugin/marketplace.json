@@ -6,16 +6,16 @@
   },
   "metadata": {
     "description": "Agent skills for Cerbos authorization: generate and test RBAC/ABAC policies, and build Synapse extensions",
-    "version": "1.3.0"
+    "version": "1.3.1"
   },
   "plugins": [
     {
       "name": "cerbos-skills",
       "source": "./",
       "description": "Agent skills for Cerbos authorization: generate and test RBAC/ABAC policies, and build Synapse extensions",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "category": "security",
-      "homepage": "https://github.com/cerbos/skills",
+      "homepage": "https://www.cerbos.dev",
       "license": "Apache-2.0",
       "keywords": [
         "cerbos",
