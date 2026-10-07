@@ -1,9 +1,9 @@
 {
   "name": "cerbos-skills",
   "displayName": "Cerbos: Authorization Policies (RBAC/ABAC)",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Agent skills for Cerbos authorization: generate and test RBAC/ABAC policies, and build Synapse extensions",
-  "icon": "./assets/icon.svg",
+  "icon": "./assets/icon.png",
   "author": {
     "name": "Cerbos",
     "url": "https://cerbos.dev"

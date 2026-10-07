@@ -4,7 +4,7 @@ This guide is for people changing the skills in this repository. To install and 
 
 ## Layout
 
-- `plugins/cerbos-skills/` is the published plugin, and the only directory agents install. It holds the plugin manifests, `README.md` (the Claude plugin directory listing), `LICENSE`, `assets/icon.svg`, and `skills/`. Keep everything else out of it.
+- `plugins/cerbos-skills/` is the published plugin, and the only directory agents install. It holds the plugin manifests, `README.md` (the Claude plugin directory listing), `LICENSE`, `assets/icon.png` (Claude directory listing), `assets/icon.svg` (Codex and Cursor), and `skills/`. Keep everything else out of it.
 - `plugins/cerbos-skills/skills/<name>/` holds each skill: its `SKILL.md` and the reference files and scripts it points to.
 - The marketplace manifests at the repository root point each agent at `plugins/cerbos-skills/`:
 
