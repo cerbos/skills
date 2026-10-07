@@ -86,10 +86,6 @@ gemini extensions install https://github.com/cerbos/skills
 
 Run `/skills list` in a session to confirm the skills loaded. To pick up a new release, run `gemini extensions update cerbos-skills`.
 
-#### Releasing
-
-When you release a change, set the same `version` in every manifest; the validator fails if they disagree.
-
 ### Manual Installation
 
 Copy the skill directories from `skills/` to your agent's skills directory.
@@ -103,29 +99,9 @@ Copy the skill directories from `skills/` to your agent's skills directory.
 | `cerbos-policy` | Generate Cerbos authorization policies from requirements (RBAC/ABAC, derived roles, resource permissions) |
 | `cerbos-synapse-extension` | Build, scaffold, test, and debug Cerbos Synapse extensions — call mappers, data sources, proxy/route/Envoy ext_authz extensions in YAML/CEL, Starlark, or WASM (Go, TypeScript, Python) |
 
-## Evals
+## Contributing
 
-[Eight Harbor evals](evals/README.md) test `cerbos-policy` locally in Docker:
-generating policies, evolving existing policies, using shared derived roles,
-managing exported and local variables, building scoped policy hierarchies,
-adding attribute schemas with shared and inline test fixtures, defining custom
-roles with role policies, and adding policy outputs. Checks cover generated files,
-native compilation and real PDP decisions. Nine smoke evals check that
-`cerbos-synapse-extension` can build, wire and test Synapse extensions: proxy and
-route extensions in Starlark and in Go, JS/TS and Python WASM, plus a Starlark Envoy
-ext_authz extension. Their `prepare-image.sh` tags the licensed Synapse image
-locally first. Run
-them directly with Harbor and inspect the generated files and scores in its viewer.
-
-## Development
-
-CI checks every skill's frontmatter, size, internal references, links and pinned image tags, and requires a `metadata.version` bump whenever a skill's files change. Run the same check locally before opening a pull request:
-
-```bash
-uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py --base origin/main
-```
-
-Each skill's `references/sources.md` lists the documentation its guidance is checked against.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to change a skill, run the checks and evals, and release a new version.
 
 ## References
 

@@ -35,7 +35,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS = ROOT / "skills"
-DOCS = [ROOT / "README.md", ROOT / "evals" / "README.md"]
+DOCS = [ROOT / "README.md", ROOT / "CONTRIBUTING.md", ROOT / "evals" / "README.md"]
 PLUGIN = "cerbos-skills"
 PLUGIN_MANIFESTS = [
     ".claude-plugin/plugin.json",
