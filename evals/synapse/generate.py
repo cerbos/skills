@@ -425,7 +425,7 @@ From the repository root, with Docker running and `prepare-image.sh` run once:
 uvx --from harbor==0.23.0 harbor run --jobs-dir evals/jobs -p evals/tasks/{name} -a oracle
 uvx --from harbor==0.23.0 harbor run --jobs-dir evals/jobs -p evals/tasks/{name} -a nop
 uvx --from harbor==0.23.0 harbor run --jobs-dir evals/jobs -p evals/tasks/{name} \\
-  --skill ./cerbos/cerbos-synapse-extension -a codex -m openai/gpt-5.6-luna --agent-kwarg version=0.154.0
+  --skill ./skills/cerbos-synapse-extension -a codex -m openai/gpt-5.6-luna --agent-kwarg version=0.154.0
 ```
 
 Oracle scores 1 and nop scores 0. Other Synapse tasks: {siblings}.

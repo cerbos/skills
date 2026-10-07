@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 import yaml
 
-SCRIPT = Path(__file__).resolve().parent.parent / "cerbos" / "cerbos-policy" / "scripts" / "coverage_audit.py"
+SCRIPT = Path(__file__).resolve().parent.parent / "skills" / "cerbos-policy" / "scripts" / "coverage_audit.py"
 
 
 def load_audit(with_pyyaml):

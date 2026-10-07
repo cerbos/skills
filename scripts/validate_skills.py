@@ -1,4 +1,4 @@
-"""Check every skill under cerbos/ against the repository's structural rules.
+"""Check every skill under skills/ against the repository's structural rules.
 
 Run from anywhere with:
 
@@ -16,12 +16,15 @@ Checks:
 5. Container images in skill content use a pinned tag, not `latest`.
 6. With --base, every skill whose files changed since REF has a higher
    `metadata.version` than it had at REF.
+7. The plugin and marketplace manifests for each agent (Claude Code, Codex,
+   Cursor, Copilot, Gemini) parse as JSON and agree on plugin name and version.
 
 Exits 1 and names each offending file when any check fails.
 """
 
 import argparse
 import itertools
+import json
 import os
 import re
 import subprocess
@@ -31,8 +34,21 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-SKILLS = ROOT / "cerbos"
-DOCS = [ROOT / "README.md", ROOT / "evals" / "README.md"]
+SKILLS = ROOT / "skills"
+DOCS = [ROOT / "README.md", ROOT / "CONTRIBUTING.md", ROOT / "evals" / "README.md"]
+PLUGIN = "cerbos-skills"
+PLUGIN_MANIFESTS = [
+    ".claude-plugin/plugin.json",
+    ".codex-plugin/plugin.json",
+    ".cursor-plugin/plugin.json",
+    "gemini-extension.json",
+]
+MARKETPLACES = [
+    ".claude-plugin/marketplace.json",
+    ".github/plugin/marketplace.json",
+    ".cursor-plugin/marketplace.json",
+    ".agents/plugins/marketplace.json",
+]
 MAX_SKILL_LINES = 500
 FIELDS = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
 NAME = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
@@ -181,6 +197,40 @@ def check_version_bump(skill, base, errors):
         pass  # Reported by check_frontmatter.
 
 
+def check_manifests(errors):
+    versions = {}
+
+    def load(name):
+        try:
+            return json.loads((ROOT / name).read_text())
+        except FileNotFoundError:
+            errors.append(f"{name}: missing")
+        except json.JSONDecodeError as exc:
+            errors.append(f"{name}: invalid JSON: {exc}")
+        return None
+
+    for name in PLUGIN_MANIFESTS:
+        manifest = load(name)
+        if manifest is None:
+            continue
+        if manifest.get("name") != PLUGIN:
+            errors.append(f"{name}: name must be '{PLUGIN}'")
+        versions[name] = manifest.get("version")
+    for name in MARKETPLACES:
+        marketplace = load(name)
+        if marketplace is None:
+            continue
+        entries = [p for p in marketplace.get("plugins", []) if p.get("name") == PLUGIN]
+        if not entries:
+            errors.append(f"{name}: no '{PLUGIN}' plugin entry")
+        for entry in entries:
+            if "version" in entry:
+                versions[name] = entry["version"]
+    if len(set(versions.values())) > 1:
+        listed = ", ".join(f"{name}={version}" for name, version in versions.items())
+        errors.append(f"plugin versions disagree; set one version everywhere: {listed}")
+
+
 def rel(path):
     return path.relative_to(ROOT).as_posix()
 
@@ -201,6 +251,7 @@ def validate(base=None):
     for path in DOCS:
         if path.exists():
             check_links(path, errors)
+    check_manifests(errors)
     return skills, errors
 
 
