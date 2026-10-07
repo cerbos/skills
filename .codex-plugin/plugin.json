@@ -20,7 +20,7 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Cerbos",
+    "displayName": "Cerbos: Authorization Policies (RBAC/ABAC)",
     "shortDescription": "Write and test Cerbos authorization policies and Synapse extensions",
     "longDescription": "Agent skills for Cerbos authorization: generate and test RBAC/ABAC policies, and build Synapse extensions.",
     "developerName": "Cerbos",
