@@ -1,0 +1,13 @@
+principals:
+  ana:
+    id: ana
+    roles: ["employee"]
+    attr: { department: "sales", region: "emea" }
+  marco:
+    id: marco
+    roles: ["manager"]
+    attr: { department: "sales", region: "emea", approval_limit: 1000 }
+  fiona:
+    id: fiona
+    roles: ["finance"]
+    attr: { department: "finance", region: "emea" }

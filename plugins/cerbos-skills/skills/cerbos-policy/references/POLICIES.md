@@ -33,12 +33,35 @@ resourcePolicy:
       derivedRoles: ["owner"]
 ```
 
+### Deny precedence across roles
+
+Rule order means nothing. Each of the principal's roles is evaluated on its own, a matching DENY beats a matching ALLOW for that role, and an ALLOW from any role grants the action. So:
+
+- A DENY with `roles: [contractor]` does not stop an employee-and-contractor from getting the employee's ALLOW.
+- To veto an action for everyone who holds a role, whatever else they hold, use `roles: ["*"]` and put the role in the condition: `"contractor" in P.roles && ...`.
+- To let something win over that veto (an admin, or an earlier branch of an ordered source such as a Rego `else` chain or a firewall list), exclude it in the DENY's condition: `... && !("admin" in P.roles)`. A separate ALLOW rule never outranks a matching DENY.
+
+Test the overlap: a principal holding both the vetoed role and the role that should win.
+
+### Action wildcards
+
+An action in `actions` or `allowActions` is a glob. `*` matches any run of characters except `:`, so colons are segment separators, not a requirement:
+
+| Pattern | Matches | Does not match |
+|---|---|---|
+| `*` | every action | — |
+| `delete_*` | `delete_ticket` | — |
+| `view:*` | `view:public` | `view:public:draft`, `view` |
+| `b*` | `bx` | `b:x` |
+
+Match one more segment with another `:*` (`view:*:*`). Write one action per name when the set is short; a wildcard silently picks up actions added later.
+
 Always include the `schemas` field:
 
 - `principalSchema.ref`: `cerbos:///principal.json`
 - `resourceSchema.ref`: `cerbos:///resources/{resource_name}.json` (must match the resource name)
 
-These JSON schemas validate `P.attr` and `R.attr`. Put attribute properties at the schema root. For example, `P.attr: {tenant: "northwind"}` is validated by `{"type": "object", "properties": {"tenant": {"type": "string"}}, "required": ["tenant"]}`. The request envelope fields (`id`, `roles`, `kind`, `attr`) belong to the API request, outside the attribute schema. See [attribute schemas](https://docs.cerbos.dev/cerbos/latest/policies/schemas.html).
+These JSON schemas validate `P.attr` and `R.attr`. Put attribute properties at the schema root. For example, `P.attr: {tenant: "northwind"}` is validated by `{"type": "object", "properties": {"tenant": {"type": "string"}}, "required": ["tenant"]}`. The request envelope fields (`id`, `roles`, `kind`, `attr`) belong to the API request, outside the attribute schema. See [attribute schemas](https://docs.cerbos.dev/cerbos/latest/policies/schemas.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-policies-schemas-html).
 
 ### Schema enforcement
 
@@ -51,7 +74,7 @@ Schemas use JSON Schema draft 2020-12. Enforcement is PDP configuration (`schema
 
 ## Rule Outputs
 
-A rule's `output` block returns values in CheckResources responses, such as audit events or denial reasons. It is supported on resource, principal and role policy rules. See [outputs](https://docs.cerbos.dev/cerbos/latest/policies/outputs.html).
+A rule's `output` block returns values in CheckResources responses, such as audit events or denial reasons. It is supported on resource, principal and role policy rules. See [outputs](https://docs.cerbos.dev/cerbos/latest/policies/outputs.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-policies-outputs-html).
 
 ```yaml
     - name: publish-reviewed-articles
@@ -93,7 +116,7 @@ derivedRoles:
           expr: R.attr.owner == P.id
 ```
 
-Import the definition set with `resourcePolicy.importDerivedRoles`, then select a definition with the rule's `derivedRoles` field, as in the resource policy above. The rule's `roles` field matches caller-supplied base roles. Keep those base roles in principal fixtures; Cerbos computes derived roles from `parentRoles` and the condition. See [derived roles](https://docs.cerbos.dev/cerbos/latest/policies/derived_roles.html).
+Import the definition set with `resourcePolicy.importDerivedRoles`, then select a definition with the rule's `derivedRoles` field, as in the resource policy above. The rule's `roles` field matches caller-supplied base roles. Keep those base roles in principal fixtures; Cerbos computes derived roles from `parentRoles` and the condition. See [derived roles](https://docs.cerbos.dev/cerbos/latest/policies/derived_roles.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-policies-derived-roles-html).
 
 ## Exported Variables
 
@@ -117,7 +140,7 @@ Keep a single-use condition inline. Use `variables.local` for expressions reused
 3. Inspect the complete contents of every retained exported set. If a policy needs one helper from a broad set, split the set by concern and update affected consumers. Keep shared definitions needed by other policies.
 4. Check that the resource and principal attributes needed by those expressions exist in the consuming policy's input contract. Import relationship-specific helpers only for resources to which the confirmed relationship rule applies.
 
-Imported sets are not free abstractions: concise source files do not guarantee a small compiled bundle. Keep dependencies minimal even if compilation succeeds. See the [Cerbos variable documentation](https://docs.cerbos.dev/cerbos/latest/policies/variables.html) for import and local-variable syntax.
+Imported sets are not free abstractions: concise source files do not guarantee a small compiled bundle. Keep dependencies minimal even if compilation succeeds. See the [Cerbos variable documentation](https://docs.cerbos.dev/cerbos/latest/policies/variables.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-policies-variables-html) for import and local-variable syntax.
 
 ## Principal Policy (per-user exceptions)
 
@@ -145,7 +168,7 @@ principalPolicy:
           effect: EFFECT_DENY
 ```
 
-A matching principal-policy DENY overrides a resource-policy ALLOW. A principal-policy ALLOW whose condition is false decides nothing, so the resource policy still applies: a break-glass account past its window that also holds a team role keeps that role's access. Test both sides, and use a lookalike principal ID to show the exception is per user. See [principal policies](https://docs.cerbos.dev/cerbos/latest/policies/principal_policies.html).
+A matching principal-policy DENY overrides a resource-policy ALLOW. A principal-policy ALLOW whose condition is false decides nothing, so the resource policy still applies: a break-glass account past its window that also holds a team role keeps that role's access. Test both sides, and use a lookalike principal ID to show the exception is per user. See [principal policies](https://docs.cerbos.dev/cerbos/latest/policies/principal_policies.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-policies-principal-policies-html).
 
 ## Role Policy (IdP role-centric ABAC)
 
@@ -179,7 +202,7 @@ Key characteristics:
 - **Allowlist model**: no `EFFECT_ALLOW`/`EFFECT_DENY` — `allowActions` is the exhaustive permitted list
 - **Implicit deny**: any action not in `allowActions` is denied
 - **Parent inheritance**: child roles can only NARROW parent permissions (strict subset)
-- **Wildcards**: both `resource` and `allowActions` support wildcards (`view:*`)
+- **Wildcards**: both `resource` and `allowActions` support wildcards (`view:*`); see *Action wildcards* above for how `*` treats `:`
 - **Conditions**: optional CEL expressions per rule entry
 - **`allowActions` must be non-empty**: `allowActions: []` is a validation error
 - **Never grants beyond resource policies**: an allowed action also needs a grant from the resource-policy chain for the role, or for its `parentRoles`. A custom role with no `parentRoles` that map to resource-policy roles gets nothing. A resource policy is always required, but no scoped resource policy is needed; the chain falls through to the base policy.
@@ -191,7 +214,7 @@ Key characteristics:
 
 ## Scoped Resource Policies (policy hierarchy)
 
-A resource policy with `scope: "emea.de"` applies to requests whose resource (or principal, for principal policies) has that scope. Cerbos evaluates the chain from most to least specific: `emea.de`, `emea`, then the unscoped base policy. Every ancestor in the chain must exist, including the base policy, or compilation fails. Without `lenientScopeSearch` (engine config), a request for a scope with no policy of its own is denied. Imports (derived roles, variables) are not inherited: each scoped policy imports what its own rules use. See [scoped policies](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies.html).
+A resource policy with `scope: "emea.de"` applies to requests whose resource (or principal, for principal policies) has that scope. Cerbos evaluates the chain from most to least specific: `emea.de`, `emea`, then the unscoped base policy. Every ancestor in the chain must exist, including the base policy, or compilation fails. Without `lenientScopeSearch` (engine config), a request for a scope with no policy of its own is denied. Imports (derived roles, variables) are not inherited: each scoped policy imports what its own rules use. See [scoped policies](https://docs.cerbos.dev/cerbos/latest/policies/scoped_policies.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-policies-scoped-policies-html).
 
 `scopePermissions` decides what a scoped policy may do relative to its parents, and must match for all policies in the same scope:
 

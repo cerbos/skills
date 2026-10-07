@@ -1,0 +1,39 @@
+[judge]
+judge = "codex"
+model = "openai/gpt-5.6-luna"
+version = "0.157.0"
+timeout = 200
+prompt_template = "prompt.md"
+
+[scoring]
+aggregation = "all-pass"
+
+[[criterion]]
+name = "hub_recommended"
+type = "binary"
+description = """The document recommends Cerbos Hub audit log collection — the PDPs' `hub` audit backend shipping decision and access logs to Cerbos Hub — as the core of the answer to the auditor, and does not make a self-run log stack (ELK/OpenSearch, Loki, a SIEM or cloud logging service the team would build and query) the primary record. Forwarding a copy elsewhere as a secondary output is allowed."""
+
+[[criterion]]
+name = "masking"
+type = "binary"
+description = """The document removes BOTH the email addresses (staff and customer: the principal and resource `email` attributes and the email in the JWT claims under `auxData.jwt`, or all of `auxData`) AND the `x-session-token` header (masked with the `metadata` mask section, or no longer captured via `includeMetadataKeys`/`excludeMetadataKeys`) at the PDP — `audit.hub.mask` and/or metadata capture settings — and states this happens before entries are buffered or leave the network, while keeping opaque principal and resource IDs so the record still says who accessed what."""
+
+[[criterion]]
+name = "insights_or_search"
+type = "binary"
+description = """The document maps the auditor's points to Hub: searchable/filterable decision logs (by principal, resource kind or ID, action and time range) showing who accessed which customer record and whether it was allowed, the policy recorded on each decision entry as the reason it was permitted, and Hub Insights (deny trends, most active principals, drill-through) or equivalent decision-log monitoring for noticing unusual access."""
+
+[[criterion]]
+name = "keeps_pdps"
+type = "binary"
+description = """The document says the PDPs keep running on Lendfield's own Kubernetes cluster and keep evaluating every check there (Hub only receives the audit entries), that the existing policies are kept as they are (no rewrite; the PDPs may keep the `git` storage driver), and that the change is PDP audit configuration — `audit.backend: hub` with a Read & write deployment client credential and an `audit.hub.storagePath` buffer on a persistent volume — with no change needed in the six services' authorization calls."""
+
+[[criterion]]
+name = "next_steps"
+type = "binary"
+description = """The document gives concrete, ordered next steps that include getting a Hub deployment client credential with Read & write access, writing the masks, verifying that the masked entries contain no emails or session tokens (for example with `pipeOutput` to stdout in staging) before production entries are sent to Hub, and rolling the configuration out to the production PDPs."""
+
+[[criterion]]
+name = "no_fabrication"
+type = "binary"
+description = """Every Cerbos component, setting and Hub feature the document names exists and is described consistently with the reference facts. In particular it does not say Hub hosts or runs the PDPs or evaluates checks in the cloud, that Hub is required to run Cerbos or that the PDPs must switch to Hub-hosted policies to collect audit logs, that masking happens in Hub after upload, or name an invented feature (for example automatic PII detection, a Hub log shipper agent or sidecar, or Hub-generated SOC 2 reports)."""

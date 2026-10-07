@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+# Migrated from app/permissions.py, app/handlers.py and app/flags.py.
+# Principal attributes: tenant_id, plan (the tenant's plan), status (optional).
+# Resource attributes: tenant_id, owner_id, amount, status.
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: invoice
+  version: default
+  importDerivedRoles:
+    - invoice_roles
+  rules:
+    # handlers._load_invoice: invoices of other tenants are never accessible.
+    # The service still answers 404 for these before calling Cerbos.
+    - name: deny-other-tenants
+      actions: ["*"]
+      effect: EFFECT_DENY
+      roles: ["*"]
+      condition:
+        match:
+          expr: R.attr.tenant_id != P.attr.tenant_id
+
+    # permissions.can: admins short-circuit to True for view/edit/delete.
+    # handlers.create_invoice/approve_invoice: admins may create and approve.
+    - name: admin-manage
+      actions: ["view", "edit", "delete", "create", "approve"]
+      effect: EFFECT_ALLOW
+      roles: ["admin"]
+
+    # permissions.can view branch.
+    - name: staff-view
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["manager", "accountant", "viewer"]
+
+    # handlers.create_invoice role check.
+    - name: staff-create
+      actions: ["create"]
+      effect: EFFECT_ALLOW
+      roles: ["manager", "accountant"]
+
+    # permissions.can edit branch: managers edit any draft.
+    - name: manager-edit-drafts
+      actions: ["edit"]
+      effect: EFFECT_ALLOW
+      roles: ["manager"]
+      condition:
+        match:
+          expr: R.attr.status == "draft"
+
+    # permissions.can edit/delete branches: owners (any role) edit or delete their own drafts.
+    - name: owner-edit-delete-drafts
+      actions: ["edit", "delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["invoice_owner"]
+      condition:
+        match:
+          expr: R.attr.status == "draft"
+
+    # handlers.approve_invoice: managers approve up to 10000.
+    - name: manager-approve
+      actions: ["approve"]
+      effect: EFFECT_ALLOW
+      roles: ["manager"]
+      condition:
+        match:
+          expr: R.attr.amount <= 10000
+
+    # handlers.approve_invoice: nobody, admins included, approves their own invoice.
+    - name: deny-self-approval
+      actions: ["approve"]
+      effect: EFFECT_DENY
+      roles: ["*"]
+      condition:
+        match:
+          expr: R.attr.owner_id == P.id
+
+    # flags.csv_export: export is a paid-plan entitlement, for every role but viewer.
+    - name: export-on-paid-plans
+      actions: ["export"]
+      effect: EFFECT_ALLOW
+      roles: ["*"]
+      condition:
+        match:
+          expr: P.attr.plan in ["pro", "enterprise"]
+
+    # handlers.export_invoice: viewers never export.
+    - name: deny-viewer-export
+      actions: ["export"]
+      effect: EFFECT_DENY
+      roles: ["viewer"]

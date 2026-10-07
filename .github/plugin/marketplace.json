@@ -5,15 +5,15 @@
     "url": "https://cerbos.dev"
   },
   "metadata": {
-    "description": "Agent skills for Cerbos authorization: generate and test RBAC/ABAC policies, and build Synapse extensions",
-    "version": "1.4.1"
+    "description": "Agent skills for Cerbos authorization: author and test policies, distribute them through Cerbos Hub, and enforce them in applications, gateways and AI agents",
+    "version": "2.0.0"
   },
   "plugins": [
     {
       "name": "cerbos-skills",
       "source": "./plugins/cerbos-skills",
-      "description": "Agent skills for Cerbos authorization: generate and test RBAC/ABAC policies, and build Synapse extensions",
-      "version": "1.4.1",
+      "description": "Agent skills for Cerbos authorization: author and test policies, distribute them through Cerbos Hub, and enforce them in applications, gateways and AI agents",
+      "version": "2.0.0",
       "category": "security",
       "homepage": "https://www.cerbos.dev",
       "license": "Apache-2.0",
@@ -24,7 +24,10 @@
         "rbac",
         "abac",
         "policy",
-        "synapse"
+        "synapse",
+        "cerbos-hub",
+        "policy-enforcement",
+        "mcp"
       ]
     }
   ]

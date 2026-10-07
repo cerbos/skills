@@ -2,7 +2,7 @@
 
 Run from anywhere with:
 
-    uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py [--base REF]
+    uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py [--base REF] [--links]
 
 Checks:
 
@@ -19,17 +19,26 @@ Checks:
 7. The plugin and marketplace manifests for each agent (Claude Code, Codex,
    Cursor, Copilot, Gemini) parse as JSON and agree on plugin name and version,
    and every marketplace installs the plugin from PLUGIN_DIR.
+8. The names and descriptions of all skills together fit the skills-list
+   budget hosts enforce; a description over DESCRIPTION_BUDGET is a warning.
+9. With --links, every external URL in skill prose resolves. Off by default so
+   the check runs offline; CI turns it on.
 
-Exits 1 and names each offending file when any check fails.
+Exits 1 and names each offending file when any check fails. Warnings are
+printed but do not fail the run.
 """
 
 import argparse
+import concurrent.futures
 import itertools
 import json
 import os
 import re
 import subprocess
 import sys
+import time
+import urllib.error
+import urllib.request
 from pathlib import Path
 
 import yaml
@@ -57,12 +66,22 @@ MARKETPLACES = [
     ".agents/plugins/marketplace.json",
 ]
 MAX_SKILL_LINES = 500
+# A description loads on every turn; past this it is doing the body's job.
+DESCRIPTION_BUDGET = 600
+# Hosts cap the skills list they show a model at 2% of the context window, or
+# 8,000 characters when that is unknown, and truncate descriptions past it.
+SKILLS_LIST_BUDGET = 8000
 FIELDS = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
 NAME = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 FENCE = re.compile(r"^(```|~~~).*?^\1", re.MULTILINE | re.DOTALL)
 LINK = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
 HEADING = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$", re.MULTILINE)
 BRACES = re.compile(r"[\w./-]*\{[^{}\s]+\}[\w./-]*")
+URL = re.compile(r"https?://[^\s<>\"'\)\]`]+")
+INLINE_CODE = re.compile(r"`[^`\n]+`")
+# Placeholder hosts and unsubstituted values illustrate a shape; nobody opens them.
+PLACEHOLDERS = ("localhost", "127.0.0.1", "0.0.0.0", "example.com", "example.org",
+                "example.net", "my-bucket", "your-org", "...", "<", "YOUR_", "{", "$")
 LATEST = re.compile(r"(?<![\w./-])(?:[\w.-]+/)+[\w.-]+:latest\b")
 
 
@@ -78,7 +97,7 @@ def version_key(value):
     return tuple(int(part) for part in str(value).split("."))
 
 
-def check_frontmatter(skill, errors):
+def check_frontmatter(skill, errors, warnings):
     path = skill / "SKILL.md"
     meta = frontmatter(path)
     if meta is None:
@@ -92,6 +111,8 @@ def check_frontmatter(skill, errors):
     description = str(meta.get("description") or "").strip()
     if not description or len(description) > 1024:
         errors.append(f"{rel(path)}: description must be 1-1024 characters, found {len(description)}")
+    elif len(description) > DESCRIPTION_BUDGET:
+        warnings.append(f"{rel(path)}: description is {len(description)} characters (budget {DESCRIPTION_BUDGET}); trim it, it loads every turn")
     if len(str(meta.get("compatibility") or "")) > 500:
         errors.append(f"{rel(path)}: compatibility exceeds 500 characters")
     version = (meta.get("metadata") or {}).get("version")
@@ -177,6 +198,49 @@ def check_image_tags(skill, errors):
             errors.append(f"{rel(path)}: image '{image}' uses the latest tag; pin the release the skill targets")
 
 
+def check_skills_list(skills, errors):
+    total = 0
+    for skill in skills:
+        meta = frontmatter(skill / "SKILL.md") or {}
+        total += len(skill.name) + len(str(meta.get("description") or "").strip())
+    if total > SKILLS_LIST_BUDGET:
+        errors.append(f"skill names and descriptions total {total} characters, over the {SKILLS_LIST_BUDGET} skills-list budget")
+    return total
+
+
+def prose_urls(path):
+    prose = INLINE_CODE.sub("", FENCE.sub("", path.read_text()))
+    return {
+        url.rstrip(".,;:") for url in URL.findall(prose)
+        if not any(marker in url for marker in PLACEHOLDERS)
+    }
+
+
+def fetch(url):
+    # A connection failure is often transient, so retry it with backoff; a
+    # definite HTTP status is taken at face value.
+    last = "unknown"
+    for attempt in range(3):
+        request = urllib.request.Request(url, method="HEAD", headers={"User-Agent": "cerbos-skills-validate"})
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                return response.status
+        except urllib.error.HTTPError as error:
+            return 200 if error.code in (403, 405) else error.code  # HEAD refused; the page is fine
+        except Exception as error:  # noqa: BLE001 - transient; retry
+            last = type(error).__name__
+            if attempt < 2:
+                time.sleep(2 * (attempt + 1))
+    return last
+
+
+def check_urls(urls, errors):
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+        for url, status in zip(sorted(urls), pool.map(fetch, sorted(urls))):
+            if status != 200:
+                errors.append(f"{url}: resolves to {status}")
+
+
 def git(*args):
     return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
 
@@ -247,31 +311,41 @@ def rel(path):
     return path.relative_to(ROOT).as_posix()
 
 
-def validate(base=None):
+def validate(base=None, links=False, warnings=None):
     errors = []
+    warnings = [] if warnings is None else warnings
+    urls = set()
     skills = sorted(p.parent for p in SKILLS.glob("*/SKILL.md"))
     if not skills:
         errors.append(f"no skills found under {rel(SKILLS)}")
     for skill in skills:
-        check_frontmatter(skill, errors)
+        check_frontmatter(skill, errors, warnings)
         check_reachable(skill, errors)
         check_image_tags(skill, errors)
         for path in sorted(skill.rglob("*.md")):
             check_links(path, errors)
+            urls |= prose_urls(path)
         if base:
             check_version_bump(skill, base, errors)
     for path in DOCS:
         if path.exists():
             check_links(path, errors)
     check_manifests(errors)
+    check_skills_list(skills, errors)
+    if links:
+        check_urls(urls, errors)
     return skills, errors
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--base", help="git ref to compare skill versions against, e.g. the PR merge base")
+    parser.add_argument("--links", action="store_true", help="also resolve every external URL in skill prose")
     args = parser.parse_args()
-    skills, errors = validate(args.base)
+    warnings = []
+    skills, errors = validate(args.base, args.links, warnings)
+    for warning in warnings:
+        print(f"WARN  {warning}", file=sys.stderr)
     for error in errors:
         print(f"ERROR {error}", file=sys.stderr)
     if errors:

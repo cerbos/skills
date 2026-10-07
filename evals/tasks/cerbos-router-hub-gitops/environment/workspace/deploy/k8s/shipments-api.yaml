@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipments-api
+spec:
+  replicas: 12   # prod; dev and staging run 2
+  selector:
+    matchLabels: { app: shipments-api }
+  template:
+    metadata:
+      labels: { app: shipments-api }
+    spec:
+      containers:
+        - name: api
+          image: registry.freightline.io/shipments-api:${GIT_SHA}
+          env:
+            - name: CERBOS_ADDR
+              value: localhost:3593
+        - name: cerbos
+          image: registry.freightline.io/shipments-pdp:${GIT_SHA}
+          ports:
+            - containerPort: 3593

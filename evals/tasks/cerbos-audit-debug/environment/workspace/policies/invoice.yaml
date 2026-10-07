@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: invoice
+  version: default
+  rules:
+    - name: view-own
+      actions: [view]
+      effect: EFFECT_ALLOW
+      roles: [employee]
+      condition:
+        match:
+          expr: R.attr.owner == P.id
+
+    - name: view-all
+      actions: [view]
+      effect: EFFECT_ALLOW
+      roles: [manager, finance_admin]
+
+    # Segregation of duties: a manager approves submitted invoices in the cost
+    # centres they manage, up to their approval limit, and never their own.
+    - name: approve-managed
+      actions: [approve]
+      effect: EFFECT_ALLOW
+      roles: [manager]
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.status == "submitted"
+              - expr: R.attr.cost_center in P.attr.managed_cost_centers
+              - expr: R.attr.amount <= P.attr.approval_limit
+              - expr: R.attr.owner != P.id

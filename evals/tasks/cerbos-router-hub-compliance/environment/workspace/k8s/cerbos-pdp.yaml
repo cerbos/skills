@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cerbos-config
+  namespace: authz
+data:
+  config.yaml: |
+    server:
+      httpListenAddr: ":3592"
+      grpcListenAddr: ":3593"
+    auxData:
+      jwt:
+        keySets:
+          - id: auth0
+            remote:
+              url: https://lendfield.eu.auth0.com/.well-known/jwks.json
+    storage:
+      driver: git
+      git:
+        protocol: https
+        url: https://github.com/lendfield/authz-policies.git
+        branch: main
+        subDir: policies
+        checkoutDir: /tmp/cerbos/policies
+        updatePollInterval: 60s
+        https:
+          username: cerbos-bot
+          password: ${GIT_TOKEN}
+    audit:
+      enabled: true
+      accessLogsEnabled: true
+      decisionLogsEnabled: true
+      includeMetadataKeys: ["x-session-token", "x-request-id"]
+      backend: file
+      file:
+        path: stdout
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cerbos
+  namespace: authz
+spec:
+  replicas: 4
+  selector:
+    matchLabels: { app: cerbos }
+  template:
+    metadata:
+      labels: { app: cerbos }
+    spec:
+      containers:
+        - name: cerbos
+          image: ghcr.io/cerbos/cerbos:0.55.0
+          args: ["server", "--config=/config/config.yaml"]
+          env:
+            - name: GIT_TOKEN
+              valueFrom: { secretKeyRef: { name: cerbos-git, key: token } }
+          volumeMounts:
+            - { name: config, mountPath: /config }
+      volumes:
+        - name: config
+          configMap: { name: cerbos-config }

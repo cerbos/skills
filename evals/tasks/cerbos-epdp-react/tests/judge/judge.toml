@@ -1,0 +1,29 @@
+[judge]
+judge = "codex"
+model = "openai/gpt-5.6-luna"
+version = "0.157.0"
+timeout = 200
+prompt_template = "prompt.md"
+
+[scoring]
+aggregation = "all-pass"
+
+[[criterion]]
+name = "epdp_client"
+type = "binary"
+description = """The browser code creates an `Embedded` client from `@cerbos/embedded-client` whose `policies` option names the ePDP rule ID `B7XK2M9QPL4R` (not the deployment ID), and whose `wasm` option is the Vite `?init` import of `@cerbos/embedded-server/server.wasm`. Exactly one client is shared by the app: it is constructed at module scope (or otherwise once for the app's lifetime), not inside a component body, hook, event handler, or per check."""
+
+[[criterion]]
+name = "buttons_gated"
+type = "binary"
+description = """For every document row, the Edit button renders only when a Cerbos check through that embedded client allows action `edit`, and the Delete button only when it allows action `delete`. The check's resource has kind `document`, that document's `id`, and at least its `owner` and `status` attributes; the principal carries the signed-in user's `id` and `roles`. While the check is loading, or when it errors, neither button renders. Buttons gated by hard-coded role or ownership comparisons in React, or checks whose result is ignored, fail this criterion."""
+
+[[criterion]]
+name = "api_enforcement_kept"
+type = "binary"
+description = """The Express API still authorizes `PUT /api/documents/:id` and `DELETE /api/documents/:id` by calling the service PDP (`@cerbos/http` or `@cerbos/grpc` against `CERBOS_URL`) before it mutates the document, and returns an error without mutating when denied. No route accepts a permission decision supplied by the browser (a header, body flag, or the browser's ePDP result) in place of that check, and the API does not switch to the embedded PDP."""
+
+[[criterion]]
+name = "no_client_secrets"
+type = "binary"
+description = """No browser-reachable code or configuration — `app/src/`, `app/index.html`, `app/vite.config.*`, or any `app/.env*` file — contains or reads the Cerbos Hub client ID or client secret, or any other secret. The browser's `Embedded` client passes no `credentials`, and no `VITE_`-prefixed variable carries a Hub credential."""

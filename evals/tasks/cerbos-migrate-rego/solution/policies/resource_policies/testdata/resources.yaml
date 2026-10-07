@@ -1,0 +1,49 @@
+resources:
+  emma_draft:
+    kind: expense
+    id: e-draft
+    attr: {owner: emma, department: sales, amount: 120, status: draft}
+  emma_submitted:
+    kind: expense
+    id: e-submitted
+    attr: {owner: emma, department: sales, amount: 4000, status: submitted}
+  emma_at_manager_limit:
+    kind: expense
+    id: e-5000
+    attr: {owner: emma, department: sales, amount: 5000, status: submitted}
+  emma_over_manager_limit:
+    kind: expense
+    id: e-5001
+    attr: {owner: emma, department: sales, amount: 5001, status: submitted}
+  emma_at_director_limit:
+    kind: expense
+    id: e-50000
+    attr: {owner: emma, department: sales, amount: 50000, status: submitted}
+  emma_over_director_limit:
+    kind: expense
+    id: e-50001
+    attr: {owner: emma, department: sales, amount: 50001, status: submitted}
+  max_submitted:
+    kind: expense
+    id: e-max
+    attr: {owner: max, department: sales, amount: 300, status: submitted}
+  emma_held:
+    kind: expense
+    id: e-held
+    attr: {owner: emma, department: sales, amount: 120, status: draft, legal_hold: true}
+  emma_not_held:
+    kind: expense
+    id: e-not-held
+    attr: {owner: emma, department: sales, amount: 120, status: draft, legal_hold: false}
+  engineering_submitted:
+    kind: expense
+    id: e-eng
+    attr: {owner: erin, department: engineering, amount: 900, status: submitted}
+  carl_engineering_draft:
+    kind: expense
+    id: e-carl-eng
+    attr: {owner: carl, department: engineering, amount: 50, status: draft}
+  carl_sales_draft:
+    kind: expense
+    id: e-carl-sales
+    attr: {owner: carl, department: sales, amount: 50, status: draft}

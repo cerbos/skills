@@ -1,0 +1,13 @@
+resources:
+  ana_draft:
+    id: "1"
+    kind: expense_report
+    attr: { owner: "ana", department: "sales", region: "emea", amount: 80, status: "draft", archived: false }
+  ana_big_submitted:
+    id: "2"
+    kind: expense_report
+    attr: { owner: "ana", department: "sales", region: "emea", amount: 4000, status: "submitted", archived: false }
+  ana_archived:
+    id: "3"
+    kind: expense_report
+    attr: { owner: "ana", department: "sales", region: "emea", amount: 4000, status: "approved", archived: true }

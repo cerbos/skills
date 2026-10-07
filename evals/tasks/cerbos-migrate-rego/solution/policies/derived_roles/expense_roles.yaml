@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+derivedRoles:
+  name: expense_roles
+  definitions:
+    # expenses.rego owner_may: input.resource.owner == input.user.id, any role.
+    - name: expense_owner
+      parentRoles: ["*"]
+      condition:
+        match:
+          expr: R.attr.owner == P.id

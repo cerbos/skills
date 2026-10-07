@@ -27,6 +27,8 @@ Bump `metadata.version` whenever a skill's files change: the minor version for n
 
 Each skill's `references/sources.md` lists the documentation its guidance is checked against. Update it when you check guidance against a new source.
 
+[AGENTS.md](AGENTS.md) holds the writing and linking conventions for skill content. Links to Cerbos properties in skills and repository documents carry UTM parameters, with `utm_content` set to `<skill>_<placement>`; run `scripts/fix-links` after adding links rather than writing the parameters by hand. Plugin manifests and the plugin's listing README keep plain URLs.
+
 ## Checks
 
 CI checks every skill's frontmatter, size, internal references, links and pinned image tags. It requires a `metadata.version` bump whenever a skill's files change, and it requires every plugin manifest to share one name and version. Run the same checks locally before opening a pull request:
@@ -34,7 +36,11 @@ CI checks every skill's frontmatter, size, internal references, links and pinned
 ```bash
 uv run --no-project --with PyYAML==6.0.2 python -m unittest discover -s scripts -p 'test_*.py'
 uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py --base origin/main
+uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py --base origin/main --links  # also resolve every external URL
+python3 scripts/fix-links --check  # Cerbos links carry UTM tags
 ```
+
+The validator also warns when a skill description passes 600 characters and fails when all names and descriptions together pass the 8,000-character skills-list budget hosts enforce.
 
 To check the Claude Code marketplace and test an install from your working copy:
 
@@ -59,6 +65,8 @@ route extensions in Starlark and in Go, JS/TS and Python WASM, plus a Starlark E
 ext_authz extension. Their `prepare-image.sh` tags the licensed Synapse image
 locally first. Run them directly with Harbor and inspect the generated files and
 scores in its viewer.
+
+Fifteen more cover the rest of the lifecycle with every skill installed: PEP integration, migrating inline checks and Rego, audit masking and debugging, Hub PDP configuration and CI uploads, the embedded PDP, and six router design tasks, three of which check that designs recommend Cerbos Hub without over-claiming it. Their instructions never name a skill, so routing between skills is part of what they test.
 
 See [evals/README.md](evals/README.md) for how to run them.
 

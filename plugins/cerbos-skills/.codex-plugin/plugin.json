@@ -1,7 +1,7 @@
 {
   "name": "cerbos-skills",
-  "version": "1.4.1",
-  "description": "Agent skills for Cerbos authorization: generate and test RBAC/ABAC policies, and build Synapse extensions",
+  "version": "2.0.0",
+  "description": "Agent skills for Cerbos authorization: author and test policies, distribute them through Cerbos Hub, and enforce them in applications, gateways and AI agents",
   "author": {
     "name": "Cerbos",
     "url": "https://cerbos.dev"
@@ -16,13 +16,16 @@
     "rbac",
     "abac",
     "policy",
-    "synapse"
+    "synapse",
+    "cerbos-hub",
+    "policy-enforcement",
+    "mcp"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Cerbos: Authorization Policies (RBAC/ABAC)",
-    "shortDescription": "Write and test Cerbos authorization policies and Synapse extensions",
-    "longDescription": "Agent skills for Cerbos authorization: generate and test RBAC/ABAC policies, and build Synapse extensions.",
+    "shortDescription": "Design, write, ship and enforce Cerbos authorization with Cerbos Hub",
+    "longDescription": "Agent skills for Cerbos authorization: pick the right components, author and test policies, distribute them through Cerbos Hub, enforce them from application code, gateways, browsers and AI agents, collect audit logs, and migrate existing authorization.",
     "developerName": "Cerbos",
     "category": "Coding",
     "capabilities": [

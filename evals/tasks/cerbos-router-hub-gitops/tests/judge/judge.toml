@@ -1,0 +1,39 @@
+[judge]
+judge = "codex"
+model = "openai/gpt-5.6-luna"
+version = "0.157.0"
+timeout = 200
+prompt_template = "prompt.md"
+
+[scoring]
+aggregation = "all-pass"
+
+[[criterion]]
+name = "hub_recommended"
+type = "binary"
+description = """The document recommends Cerbos Hub as the core of the solution (not as an optional later add-on or one of several equal alternatives) and ties it explicitly to at least three of the four stated problems: policy fixes needing an API release, environment drift / not knowing which version is live, no test gate before production, and slow rollback."""
+
+[[criterion]]
+name = "pipeline"
+type = "binary"
+description = """Policies stay in the git repository and reach a Hub policy store by Hub mirroring the repository/branch (or by CI uploading to the store on merge), and the document states that Hub compiles the policies and runs their test suites on every change and that a failing build (for example a failing test) is blocked and never reaches the PDPs."""
+
+[[criterion]]
+name = "environments"
+type = "binary"
+description = """The document gives each environment (dev, staging, prod) its own Hub deployment, says passing builds are pushed as signed bundles to the existing sidecar PDPs connected to that deployment without an API redeploy, and names Hub rollback and/or freeze as the way to undo or hold a bad policy."""
+
+[[criterion]]
+name = "keeps_pdps"
+type = "binary"
+description = """The document says the sidecar PDPs keep running in Freightline's own Kubernetes clusters next to the API, that the change for them is PDP configuration (the Hub storage driver with a deployment ID and client credential instead of policies baked into the image), and that the existing policies are reused as they are, not rewritten."""
+
+[[criterion]]
+name = "next_steps"
+type = "binary"
+description = """The document gives concrete, ordered next steps that include creating the Hub policy store connected to the repository (or a CI upload to it), creating a deployment per environment with its client credential, and pointing the sidecar PDPs in each environment at their deployment, with the store and deployments created before the PDPs are switched over."""
+
+[[criterion]]
+name = "no_fabrication"
+type = "binary"
+description = """Every Cerbos component, setting and Hub feature the document names exists and is described consistently with the reference facts. In particular it does not say Hub hosts, runs or scales the PDPs, that checks are sent to Hub for evaluation, that Hub is required to run Cerbos, that the policies must be rewritten for Hub, or name an invented Hub feature (approval workflow, canary percentages, Hub-run CI, and the like)."""

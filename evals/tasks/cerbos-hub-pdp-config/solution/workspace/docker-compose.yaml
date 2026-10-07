@@ -1,0 +1,31 @@
+name: orders
+
+services:
+  orders-api:
+    image: ghcr.io/acme/orders-api:2.14.3
+    ports:
+      - "8080:8080"
+    environment:
+      CERBOS_ADDRESS: cerbos:3593
+      DATABASE_URL: postgres://orders@db:5432/orders
+    depends_on:
+      - cerbos
+
+  cerbos:
+    image: ghcr.io/cerbos/cerbos:0.55.0
+    command: ["server", "--config=/config/config.yaml"]
+    ports:
+      - "3592:3592"
+      - "3593:3593"
+    environment:
+      # Supplied by `op run`; never written to a file.
+      CERBOS_HUB_CLIENT_SECRET: ${CERBOS_HUB_CLIENT_SECRET:?run via op run so the Hub client secret is set}
+    volumes:
+      - ./config.yaml:/config/config.yaml:ro
+      - audit-logs:/var/log/cerbos
+      - hub-cache:/var/cerbos/hub
+    restart: unless-stopped
+
+volumes:
+  audit-logs:
+  hub-cache:
