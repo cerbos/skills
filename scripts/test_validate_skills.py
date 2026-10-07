@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import subprocess
 import tempfile
 import textwrap
@@ -33,7 +34,7 @@ class ValidateSkillsTest(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name)
-        self.skill = self.root / "cerbos" / "demo"
+        self.skill = self.root / "skills" / "demo"
         self.write("SKILL.md", SKILL)
         self.write("references/guide.md", "# Guide\n\nSee [setup](../SKILL.md#setup) and `nested/deep.md`.\n")
         self.write("references/nested/deep.md", "# Deep\n")
@@ -41,8 +42,9 @@ class ValidateSkillsTest(unittest.TestCase):
         self.write("references/beta.md", "# Beta\n")
         patches = [
             patch.object(validator, "ROOT", self.root),
-            patch.object(validator, "SKILLS", self.root / "cerbos"),
+            patch.object(validator, "SKILLS", self.root / "skills"),
             patch.object(validator, "DOCS", []),
+            patch.object(validator, "check_manifests", lambda errors: None),
         ]
         for p in patches:
             p.start()
@@ -80,7 +82,7 @@ class ValidateSkillsTest(unittest.TestCase):
         self.write("references/orphan.md", "# Orphan\n")
         self.assertEqual(
             self.errors(),
-            ["cerbos/demo/references/orphan.md: not referenced from SKILL.md or any file it references"],
+            ["skills/demo/references/orphan.md: not referenced from SKILL.md or any file it references"],
         )
 
     def test_broken_link_and_anchor(self):
@@ -104,6 +106,47 @@ class ValidateSkillsTest(unittest.TestCase):
         self.assertIn("not above 1.0", "\n".join(self.errors(base="HEAD")))
         self.write("SKILL.md", SKILL.replace('"1.0"', '"1.1"'))
         self.assertEqual(self.errors(base="HEAD"), [])
+
+
+class ManifestsTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        for name in validator.PLUGIN_MANIFESTS:
+            self.write(name, {"name": "cerbos-skills", "version": "1.0.0"})
+        for name in validator.MARKETPLACES:
+            self.write(name, {"plugins": [{"name": "cerbos-skills"}]})
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def write(self, name, data):
+        path = self.root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(data))
+
+    def errors(self):
+        errors = []
+        with patch.object(validator, "ROOT", self.root):
+            validator.check_manifests(errors)
+        return errors
+
+    def test_consistent_manifests_pass(self):
+        self.assertEqual(self.errors(), [])
+
+    def test_version_mismatch(self):
+        self.write(".codex-plugin/plugin.json", {"name": "cerbos-skills", "version": "1.1.0"})
+        self.write(".claude-plugin/marketplace.json", {"plugins": [{"name": "cerbos-skills", "version": "0.9.0"}]})
+        errors = "\n".join(self.errors())
+        self.assertIn("plugin versions disagree", errors)
+        self.assertIn(".codex-plugin/plugin.json=1.1.0", errors)
+
+    def test_missing_entry_and_wrong_name(self):
+        self.write(".agents/plugins/marketplace.json", {"plugins": []})
+        self.write("gemini-extension.json", {"name": "other", "version": "1.0.0"})
+        errors = "\n".join(self.errors())
+        self.assertIn(".agents/plugins/marketplace.json: no 'cerbos-skills' plugin entry", errors)
+        self.assertIn("gemini-extension.json: name must be", errors)
 
 
 if __name__ == "__main__":

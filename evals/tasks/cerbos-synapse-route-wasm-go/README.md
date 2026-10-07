@@ -43,7 +43,7 @@ From the repository root, with Docker running and `prepare-image.sh` run once:
 uvx --from harbor==0.23.0 harbor run --jobs-dir evals/jobs -p evals/tasks/cerbos-synapse-route-wasm-go -a oracle
 uvx --from harbor==0.23.0 harbor run --jobs-dir evals/jobs -p evals/tasks/cerbos-synapse-route-wasm-go -a nop
 uvx --from harbor==0.23.0 harbor run --jobs-dir evals/jobs -p evals/tasks/cerbos-synapse-route-wasm-go \
-  --skill ./cerbos/cerbos-synapse-extension -a codex -m openai/gpt-5.6-luna --agent-kwarg version=0.154.0
+  --skill ./skills/cerbos-synapse-extension -a codex -m openai/gpt-5.6-luna --agent-kwarg version=0.154.0
 ```
 
 Oracle scores 1 and nop scores 0. Other Synapse tasks: [`cerbos-synapse-proxy-starlark`](../cerbos-synapse-proxy-starlark/README.md), [`cerbos-synapse-proxy-wasm-go`](../cerbos-synapse-proxy-wasm-go/README.md), [`cerbos-synapse-proxy-wasm-js`](../cerbos-synapse-proxy-wasm-js/README.md), [`cerbos-synapse-proxy-wasm-python`](../cerbos-synapse-proxy-wasm-python/README.md), [`cerbos-synapse-route-starlark`](../cerbos-synapse-route-starlark/README.md), [`cerbos-synapse-route-wasm-js`](../cerbos-synapse-route-wasm-js/README.md), [`cerbos-synapse-route-wasm-python`](../cerbos-synapse-route-wasm-python/README.md), [`cerbos-synapse-envoy-starlark`](../cerbos-synapse-envoy-starlark/README.md).

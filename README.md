@@ -33,18 +33,23 @@ npx skills add cerbos/skills -a cursor -a claude-code
 npx skills add cerbos/skills -g
 ```
 
-### Claude Code Marketplace
+### Plugin marketplaces
 
-If you prefer to use Claude Code directly:
+This repository is also a plugin marketplace. Each agent reads its own manifest, and every manifest points at the same `skills/` directory:
 
-```bash
-claude plugin marketplace add cerbos/skills
-claude plugin install cerbos-skills@cerbos-skills
-```
+| Agent | Manifest | Install |
+|-------|----------|---------|
+| Claude Code | `.claude-plugin/` | `claude plugin marketplace add cerbos/skills` then `claude plugin install cerbos-skills@cerbos-skills` |
+| Codex | `.agents/plugins/marketplace.json`, `.codex-plugin/plugin.json` | `codex plugin marketplace add cerbos/skills` then `codex plugin add cerbos-skills@cerbos-skills` |
+| GitHub Copilot CLI | `.github/plugin/marketplace.json` | `copilot plugin marketplace add cerbos/skills` then `copilot plugin install cerbos-skills@cerbos-skills` |
+| Cursor | `.cursor-plugin/` | Add `cerbos/skills` as a team marketplace, or install from the Cursor marketplace once listed |
+| Gemini CLI | `gemini-extension.json` | `gemini extensions install https://github.com/cerbos/skills` |
+
+When you release a change, set the same `version` in every manifest; the validator fails if they disagree.
 
 ### Manual Installation
 
-Copy the `SKILL.md` files from `cerbos/` to your agent's skills directory.
+Copy the skill directories from `skills/` to your agent's skills directory.
 
 ## Available Skills
 
