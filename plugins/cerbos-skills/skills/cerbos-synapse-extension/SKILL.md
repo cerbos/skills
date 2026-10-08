@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Cerbos Synapse, run from its licensed distribution image
 metadata:
   author: cerbos
-  version: "1.3"
+  version: "1.4"
   targetsSynapseVersion: "0.10.2"
 ---
 

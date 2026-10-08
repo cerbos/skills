@@ -23,11 +23,60 @@ Patterns recurring across runtimes. Per-implementation references show exact cod
 **Manifest (0.10+).** Any extension may export `manifest`, which Synapse lists at `/_cerbos/meta` (JSON) and `/_cerbos/about` (HTML). Optional but recommended. Required fields: API version `1`, `name`, `version`; optional `owner`, `description`, `fieldMappings`.
 
 ```python
-def manifest():   # Starlark; a dict also works
+def manifest():   # Starlark
     return struct(api_version = 1, name = "enrich-principal", version = "1.0.0", owner = "team-authz")
 ```
 
 WASM exports a `manifest` function that outputs the same fields as JSON, camelCase (`apiVersion`, `fieldMappings`).
+
+**Field mappings.** `fieldMappings` documents what the extension changes in PDP traffic; it is metadata for `/_cerbos/meta` and `/_cerbos/about` only, and Synapse does not enforce it. Each entry has:
+
+| Field | Shape |
+|-------|-------|
+| `targets` | Map of field path (`principal.attr.department`, `resource.kind`) → target: `TARGET_{CHECK,PLAN}_RESOURCES_{REQUEST,RESPONSE}`, `TARGET_AUTHZEN_EVALUATION[_BATCH]_{REQUEST,RESPONSE}`, or `TARGET_ALL`. One mapping may name several paths. |
+| `operation` | `OPERATION_ADD`, `OPERATION_REMOVE`, `OPERATION_OVERWRITE`, `OPERATION_APPEND` |
+| `value` | Exactly one of `staticValue` (any JSON value) or `computedValue` (`sources`: list of where the value comes from, e.g. `"metadata.request_id"`; optional `description`) |
+| `description` | Optional free text |
+| `jsonSchema` | Optional JSON Schema object for the field |
+| `metadata` | Optional string → string map |
+
+WASM, JSON output:
+
+```json
+{
+  "targets": {"principal.attr.department": "TARGET_CHECK_RESOURCES_REQUEST"},
+  "description": "Department from the HR data source",
+  "operation": "OPERATION_ADD",
+  "value": {"computedValue": {"sources": ["hr.department"]}},
+  "jsonSchema": {"type": "string"}
+}
+```
+
+Starlark spells every key in snake_case (`field_mappings`, `static_value`, `computed_value`, `json_schema`); camelCase is rejected (`attribute apiVersion not found in cerbos.tainaron.metadata.v1.Manifest`). Build each mapping and `value` with `struct(...)`, and wrap `json_schema` in `struct(fields = {...})`, since it is a `google.protobuf.Struct`. A plain dict there fails (`attribute type not found in google.protobuf.Struct`), and a dict-built manifest fails on its `field_mappings` list:
+
+```python
+def manifest():
+    return struct(
+        api_version = 1, name = "enrich-principal", version = "1.0.0",
+        field_mappings = [
+            struct(
+                targets = {"principal.attr.department": "TARGET_CHECK_RESOURCES_REQUEST"},
+                description = "Department from the HR data source",
+                operation = "OPERATION_ADD",
+                value = struct(computed_value = struct(sources = ["hr.department"])),
+                json_schema = struct(fields = {"type": "string"}),
+            ),
+            struct(
+                targets = {"resource.attr.tenant": "TARGET_CHECK_RESOURCES_REQUEST"},
+                operation = "OPERATION_OVERWRITE",
+                value = struct(static_value = "acme"),
+                metadata = {"team": "authz"},
+            ),
+        ],
+    )
+```
+
+**A broken manifest fails silently.** Synapse builds the manifest when `/_cerbos/meta` or `/_cerbos/about` is requested, not when the extension loads. If the conversion fails, the extension stays listed with no `manifest` field, and the error appears only as a `WARN` log line (`Failed to get manifest`). After adding or changing a manifest, check that `curl -s localhost:3594/_cerbos/meta` includes it.
 
 ## Gotchas (real-world breakage)
 

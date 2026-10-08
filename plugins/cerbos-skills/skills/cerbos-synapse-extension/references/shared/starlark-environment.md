@@ -123,7 +123,7 @@ def manifest():
     )
 ```
 
-Optional `field_mappings` documents which request/response fields the extension changes (`targets`, `operation`, `value`); the full format is in the Synapse docs' extension manifest page.
+Optional `field_mappings` documents which request/response fields the extension changes (`targets`, `operation`, `value`). Keys are snake_case, and each mapping must be a `struct`, as must `json_schema` (`struct(fields = {...})`). For the format and an example, see *Field mappings* in `patterns-and-gotchas.md`. Synapse builds the manifest only when `/_cerbos/meta` is requested, so a mistake there shows up only as a `WARN` log line.
 
 ## Mutating proto lists and maps
 
