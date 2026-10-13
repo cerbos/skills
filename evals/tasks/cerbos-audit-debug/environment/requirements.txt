@@ -28,7 +28,7 @@ protobuf==7.36.2
 protoc-gen-openapiv2==0.0.1
 pydantic==2.13.5
 pydantic_core==2.46.5
-PyJWT==2.10.1
+PyJWT==2.15.0
 PyYAML==6.0.2
 requests-toolbelt==1.0.0
 requests==2.34.2
