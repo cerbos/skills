@@ -27,8 +27,13 @@ case "${1:-}" in
   *) usage >&2 && exit 1 ;;
 esac
 
-if ! command -v cerbosctl >/dev/null 2>&1; then
-  echo "cerbosctl not found on PATH. Run scripts/check-prereqs for install options." >&2
+# Fall back to the npm package when cerbosctl is not installed.
+if command -v cerbosctl >/dev/null 2>&1; then
+  cerbosctl=(cerbosctl)
+elif command -v npx >/dev/null 2>&1; then
+  cerbosctl=(npx -y cerbosctl)
+else
+  echo "cerbosctl not found on PATH, and npx is not available to run it. Run scripts/check-prereqs for install options." >&2
   exit 1
 fi
 
@@ -40,10 +45,10 @@ if [[ "$mode" == "client" ]]; then
     fi
   done
   echo "Logging in with client credentials from the environment."
-  exec cerbosctl hub auth
+  exec "${cerbosctl[@]}" hub auth
 fi
 
 # cerbosctl falls back to the device flow only when neither credential variable
 # is populated, so unset them for this invocation alone.
 echo "Starting the device-code flow. Open the URL cerbosctl prints and approve the device."
-exec env -u CERBOS_HUB_CLIENT_ID -u CERBOS_HUB_CLIENT_SECRET cerbosctl hub auth
+exec env -u CERBOS_HUB_CLIENT_ID -u CERBOS_HUB_CLIENT_SECRET "${cerbosctl[@]}" hub auth

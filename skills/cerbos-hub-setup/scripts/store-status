@@ -32,8 +32,13 @@ case "${1:-}" in
     ;;
 esac
 
-if ! command -v cerbosctl >/dev/null 2>&1; then
-  echo "cerbosctl not found on PATH. Run scripts/check-prereqs for install options." >&2
+# Fall back to the npm package when cerbosctl is not installed.
+if command -v cerbosctl >/dev/null 2>&1; then
+  cerbosctl=(cerbosctl)
+elif command -v npx >/dev/null 2>&1; then
+  cerbosctl=(npx -y cerbosctl)
+else
+  echo "cerbosctl not found on PATH, and npx is not available to run it. Run scripts/check-prereqs for install options." >&2
   exit 1
 fi
 
@@ -42,7 +47,7 @@ if [[ -z "${CERBOS_HUB_STORE_ID:-}" ]]; then
   exit 1
 fi
 
-out="$(cerbosctl hub store list-files -o json)"
+out="$("${cerbosctl[@]}" hub store list-files -o json)"
 
 if [[ "$raw" -eq 1 ]]; then
   printf '%s\n' "$out"

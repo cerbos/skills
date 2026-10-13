@@ -14,7 +14,7 @@ Hub continuously checks the workspace and surfaces problems in an issues bar acr
 
 ## `cerbosctl` upload errors
 
-`cerbosctl hub store` exits 2 on a command error, 6 when a `--version-must-eq` condition was not satisfied, and 1 when a download found nothing.
+`cerbosctl hub store` exits 2 on a command error, 6 when a `--version-must-eq` condition was not satisfied, and 1 when a download found nothing. Run through the npm package (`npx cerbosctl`, or the fallback in `scripts/`), every failure exits 1 behind a Node stack trace, so read the `cerbosctl: error:` line rather than the exit code.
 
 | Message | Cause |
 |---|---|

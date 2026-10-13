@@ -2,7 +2,7 @@
 
 Two layers of testing:
 
-1. **`cerbosctl repl`** — interactive CEL evaluation. Use this when debugging a single condition, exploring attribute shapes, or figuring out why a rule isn't matching.
+1. **`cerbos repl`** — interactive CEL evaluation. Use this when debugging a single condition, exploring attribute shapes, or figuring out why a rule isn't matching.
 2. **`*_test.yaml` suites** — declarative regression tests compiled and run by `cerbos compile`. Every REPL finding should be codified here.
 
 Rule of thumb: reach for the REPL the moment a condition behaves unexpectedly, and let what it shows drive the edit.
@@ -11,12 +11,12 @@ Rule of thumb: reach for the REPL the moment a condition behaves unexpectedly, a
 
 ```bash
 docker run --rm -it -v "$(pwd):/policies" -w /policies \
-  ghcr.io/cerbos/cerbosctl:0.55.0 repl
+  ghcr.io/cerbos/cerbos:0.55.0 repl
 ```
 
 Mount the policy directory so `:load` can read files. Exit with `:quit`.
 
-Native install (if `cerbosctl` is on PATH): `cerbosctl repl`.
+Native install (if `cerbos` is on PATH): `cerbos repl`. The REPL ships in the `cerbos` binary, not `cerbosctl`.
 
 ## REPL Primitives
 

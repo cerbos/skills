@@ -18,11 +18,11 @@ The guidance in this skill is checked against the Cerbos release named by `targe
 | [Conditions](https://docs.cerbos.dev/cerbos/latest/policies/conditions.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-policies-conditions-html) | CEL.md objects, functions and condition nesting |
 | [Compile and test](https://docs.cerbos.dev/cerbos/latest/policies/compile.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-policies-compile-html) | TEST-SUITES.md suite and fixture format; `compile --output=json` and `--strict-evaluation` in SKILL.md |
 | [Best practices](https://docs.cerbos.dev/cerbos/latest/policies/best_practices.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-policies-best-practices-html) | Policy layout and naming in SKILL.md |
-| [`cerbos` CLI](https://docs.cerbos.dev/cerbos/latest/cli/cerbos.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-cli-cerbos-html) | `cerbos compile` flags |
-| [`cerbosctl` CLI](https://docs.cerbos.dev/cerbos/latest/cli/cerbosctl.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-cli-cerbosctl-html) | TESTING.md REPL usage |
+| [`cerbos` CLI](https://docs.cerbos.dev/cerbos/latest/cli/cerbos.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-cli-cerbos-html) | `cerbos compile` flags; `cerbos repl` usage in TESTING.md |
+| [`cerbosctl` CLI](https://docs.cerbos.dev/cerbos/latest/cli/cerbosctl.html?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-cli-cerbosctl-html) | `cerbosctl hub store` commands in HUB.md |
 
 ## Schemas and tools
 
 - `https://api.cerbos.dev/latest/cerbos/policy/v1/*.schema.json`: the `yaml-language-server` headers in POLICIES.md and TEST-SUITES.md.
-- `cerbos compile --help` and `cerbosctl repl` in the pinned `ghcr.io/cerbos/cerbos` and `ghcr.io/cerbos/cerbosctl` images: flags and REPL behaviour.
+- `cerbos compile --help` and `cerbos repl` in the pinned `ghcr.io/cerbos/cerbos` image: flags and REPL behaviour.
 - The eval tasks under `evals/tasks/` pin the same release by digest and exercise this guidance against a real PDP.

@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires the cerbos CLI or Docker for policy validation
 metadata:
   author: cerbos
-  version: "1.14"
+  version: "1.15"
   targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Glob Grep Task Bash(cerbos compile:*) Bash(cerbos --version) Bash(docker --version)
 ---
@@ -206,7 +206,7 @@ Read the current policy files before editing, change only the files the request 
 - [references/POLICIES.md](references/POLICIES.md) — Policy types and design patterns
 - [references/CEL.md](references/CEL.md) — CEL objects, function catalogue, condition nesting, strict evaluation, pitfalls, error fix table
 - [references/TEST-SUITES.md](references/TEST-SUITES.md) — `*_test.yaml` schema and fixture files
-- [references/TESTING.md](references/TESTING.md) — `cerbosctl repl` usage and debugging recipes
+- [references/TESTING.md](references/TESTING.md) — `cerbos repl` usage and debugging recipes
 - [references/HUB.md](references/HUB.md) — Cerbos Hub store setup, upload commands, file rules, and connecting a PDP
 - [scripts/coverage_audit.py](scripts/coverage_audit.py) — checks the coverage plan against native compile reports (Python 3 standard library)
 - [references/sources.md](references/sources.md) — the Cerbos documentation this guidance is checked against; start here when updating the skill for a new Cerbos release
