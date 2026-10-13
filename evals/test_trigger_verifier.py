@@ -81,6 +81,25 @@ class ParseTest(unittest.TestCase):
         ]
         self.assertEqual(run.claude_loaded(events, SKILLS), ["cerbos", "cerbos-policy"])
 
+    def test_refused_skill_call_is_not_a_load(self):
+        events = [
+            {"type": "assistant", "message": {"content": [
+                {"type": "tool_use", "id": "a", "name": "Skill", "input": {"skill": "cerbos-skills:cerbos"}},
+                {"type": "tool_use", "id": "b", "name": "Skill", "input": {"skill": "cerbos-skills:cerbos-policy"}},
+            ]}},
+            {"type": "user", "message": {"content": [
+                {"type": "tool_result", "tool_use_id": "a", "content": "Launching skill"},
+                {"type": "tool_result", "tool_use_id": "b", "is_error": True,
+                 "content": "Execute skill: cerbos-skills:cerbos-policy"},
+            ]}},
+        ]
+        self.assertEqual(run.claude_loaded(events, SKILLS), ["cerbos"])
+        self.assertEqual(run.refused_skills(events), ["cerbos-policy"])
+
+    def test_claude_command_approves_skill_loads(self):
+        cmd = run.Claude(type("Args", (), {"max_turns": 5, "model": None})()).command("hi")
+        self.assertEqual(cmd[cmd.index("--allowedTools") + 1], "Skill")
+
     def test_codex_reads_skill_files_from_shell_commands(self):
         events = [
             {"type": "item.started", "item": {"type": "command_execution",

@@ -124,20 +124,7 @@ ALLOWED = ["Skill", "Bash(ls:*)", "Bash(cat:*)", "Bash(find:*)", "Bash(npm insta
            "Bash(cerbos:*)", "Bash(docker --version)"]
 
 
-def refused_skills(events: list[dict]) -> list[str]:
-    """Skills the agent tried to load but was refused, which would void the run."""
-    calls, refused = {}, []
-    for e in events:
-        message = e.get("message")
-        content = message.get("content") if isinstance(message, dict) else None
-        if not isinstance(content, list):
-            continue
-        for c in content:
-            if c.get("type") == "tool_use" and c.get("name") == "Skill":
-                calls[c.get("id")] = str(c.get("input", {}).get("skill", "")).split(":")[-1]
-            elif c.get("type") == "tool_result" and c.get("is_error") and c.get("tool_use_id") in calls:
-                refused.append(calls[c["tool_use_id"]])
-    return refused
+refused_skills = run.refused_skills
 
 
 class Agent(run.Claude):
