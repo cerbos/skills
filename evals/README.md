@@ -3,7 +3,8 @@
 These native [Harbor tasks](https://www.harborframework.com/docs/tasks) evaluate
 the `cerbos-policy` skill against distinct policy authoring workflows, smoke
 test the `cerbos-synapse-extension` skill, and cover the rest of the skill set
-across the authorization lifecycle.
+across the authorization lifecycle. A separate [skill trigger eval](#skill-trigger-eval)
+measures whether agents load the right skill in the first place.
 
 | Task | Coverage |
 | --- | --- |
@@ -67,6 +68,86 @@ with a ChatGPT login: export `CODEX_AUTH_JSON="$(cat ~/.codex/auth.json)"` befor
 `harbor run`. Every judged task also has deterministic checks, and its README records
 the judge's results on the oracle, nop and hand-written wrong answers kept in
 `tests/judge-validation/`.
+
+## Skill trigger eval
+
+The Harbor tasks measure what a skill produces once it is loaded. The trigger eval
+measures whether it loads at all: [`triggers/prompts.jsonl`](triggers/prompts.jsonl)
+holds 82 requests written in a user's own words, most of which never mention Cerbos.
+Each is labelled with the skill that should load (`expect`, or `null` for none),
+skills that are also fine to load (`also_ok`, usually the `cerbos` router before the
+implementation skill or the reverse), and near-miss skills that should not (`near`).
+Eight or nine prompts target each skill, and 16 are unrelated requests that sit close
+to one, such as Auth0 token lifetimes, Rego admission policies or a privacy policy page.
+
+[`triggers/run.py`](triggers/run.py) sends each prompt to an agent in a fresh, empty
+directory with the plugin installed from this checkout, and records every Cerbos
+skill loaded, in order:
+
+- **Claude Code** loads the plugin with `--plugin-dir` and ignores user settings, so
+  your own plugins and MCP servers do not compete. Tools are limited to
+  `Skill,Read,Glob,Grep` with `--max-turns 8`. A skill counts as loaded when the
+  `Skill` tool is called or its `SKILL.md` is read.
+- **Codex** installs the plugin into a throwaway `CODEX_HOME` from a temporary local
+  marketplace (the repository's Codex marketplace points at GitHub, so it would test
+  the published skills). It runs `codex exec` read-only with web search off. A skill
+  counts as loaded when a shell command reads its `SKILL.md`. Plugins enabled on your
+  OpenAI account still appear.
+
+Every prompt calls a real model, so CI does not run this; it runs only the scoring
+unit tests in `test_trigger_verifier.py`. Claude Code needs a logged-in `claude` or
+`ANTHROPIC_API_KEY`; Codex uses `~/.codex/auth.json`, or `OPENAI_API_KEY` when set.
+
+```bash
+python3 evals/triggers/run.py run --agent claude --model sonnet --repeats 2
+python3 evals/triggers/run.py run --agent codex --repeats 2
+```
+
+Use `--only '<regex>'` on prompt ids for a quick subset, `--jobs` for concurrency and
+`--job-name` to name the output. Results land in the ignored
+`evals/jobs/triggers/<job>/`: `results.jsonl` (one line per run), `raw/` (each
+transcript), `score.json` and `report.md`. Re-score a finished job after editing
+labels with `python3 evals/triggers/run.py report evals/jobs/triggers/<job>`.
+
+The report gives, per skill:
+
+- **Recall**: the expected skill loaded at some point.
+- **First pick**: it was the first Cerbos skill loaded.
+- **Precision**: of the runs where it loaded, the share where it was expected or `also_ok`.
+- **Near-miss fired**: how often it loaded on prompts that list it under `near`.
+
+It also gives a confusion matrix of expected skill against first skill loaded, and lists
+every miss. When judging a description change, rerun with the same agent version, model
+and repeat count, and compare against the baseline below. With two repeats a skill has
+16 or 18 runs, so a swing of one or two runs is noise.
+
+### Baseline
+
+Recorded on 2026-10-13 against the skills at `ffb3f4c`, two repeats of all 82 prompts.
+Full reports, with the confusion matrix and every miss:
+[Claude Code](triggers/baseline/claude-sonnet.md) and [Codex](triggers/baseline/codex.md).
+
+| | Claude Code 2.1.296, Sonnet 5.5 | Codex 0.160.1, default model |
+| --- | --- | --- |
+| Expected skill loaded | 91% (120/132) | 100% (132/132) |
+| Expected skill loaded first | 91% | 96% |
+| Cerbos skill loaded on an unrelated prompt | 0% (0/32) | 0% (0/32) |
+| Lowest recall | `cerbos-authz-migration`, `cerbos-embedded-pdp`: 75% | none below 100% |
+| Lowest precision | 100% everywhere | `cerbos-pep-integration`: 92% |
+| Cost | $9.27 | ChatGPT login |
+
+Claude Code is the weaker trigger. Most of its misses are requests to change code
+that is not there (`epdp-hide-delete`, `epdp-vue-menu`, `migrate-drifted-tables`,
+`hub-compose-switch`): it searches the empty workspace, finds nothing and asks for the
+project before choosing a skill. That is partly an artefact of the empty workspace,
+but it also shows that the description alone did not make the skill the first move.
+It answered `policy-explain-derived-role` from its own knowledge, and loaded only
+the `cerbos` router for `migrate-is-admin-mess`.
+
+Codex loads a skill for every Cerbos prompt but sometimes picks a neighbour first:
+`cerbos-pep-integration` before `cerbos-embedded-pdp` for `epdp-lambda`, and the
+router before `cerbos-embedded-pdp` or `cerbos-hub-setup` on a few others.
+Neither agent loaded a Cerbos skill on any of the 16 unrelated prompts.
 
 ## Task layout
 
