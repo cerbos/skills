@@ -1,0 +1,1 @@
+{"id": "expense-approval-limit", "workspace": "express-expenses", "action": "approve", "literals": ["5000"], "roles": ["manager"], "prompt": "Managers can approve expenses for their own team, up to $5,000. Add that."}

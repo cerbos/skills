@@ -73,11 +73,11 @@ the judge's results on the oracle, nop and hand-written wrong answers kept in
 
 The Harbor tasks measure what a skill produces once it is loaded. The trigger eval
 measures whether it loads at all: [`triggers/prompts.jsonl`](triggers/prompts.jsonl)
-holds 82 requests written in a user's own words, most of which never mention Cerbos.
+holds 83 requests written in a user's own words, most of which never mention Cerbos.
 Each is labelled with the skill that should load (`expect`, or `null` for none),
 skills that are also fine to load (`also_ok`, usually the `cerbos` router before the
 implementation skill or the reverse), and near-miss skills that should not (`near`).
-Eight or nine prompts target each skill, and 16 are unrelated requests that sit close
+Eight to ten prompts target each skill, and 16 are unrelated requests that sit close
 to one, such as Auth0 token lifetimes, Rego admission policies or a privacy policy page.
 
 A prompt that asks to change existing code can name a `workspace`: a stub project in
@@ -168,6 +168,53 @@ labels allow, on six runs, two of them on the workspace prompts. It also loaded
 unrelated load, the router on `none-postgres-role` (no workspace), happened once in
 two repeats, so it is likely noise. Neither agent loaded a Cerbos skill on the
 unrelated prompts that share the React stub.
+
+### Outcome check
+
+Loading the right skill is not the end of it: an agent can load `cerbos` or
+`cerbos-policy` and still write the rule straight into the handler, offering Cerbos
+"if more rules like this are coming". [`triggers/outcomes.py`](triggers/outcomes.py)
+runs the cases in [`triggers/outcomes.jsonl`](triggers/outcomes.jsonl) with Claude Code
+until it finishes, then grades the workspace it leaves behind. A run passes when a
+Cerbos resource policy names the action and carries the rule's limit, application code
+calls the PDP through a Cerbos SDK, and no application source (test scripts aside)
+repeats the limit or compares a role name itself.
+
+The agent gets write tools with edits accepted, skill loads approved, and the shell
+commands a developer would approve without a second look (`ls`, `cat`, `find`,
+`npm install`, `npm view`, `cerbos`). Anything else, such as starting the server, is
+refused. Skills that declare `allowed-tools`, such as `cerbos-policy`, ask before they
+load, and under `claude -p` an unanswered prompt is a refusal; a run with a refused
+skill load is reported as an error rather than graded.
+
+```bash
+python3 evals/triggers/outcomes.py run --model opus --repeats 10
+python3 evals/triggers/outcomes.py run --model opus --repeats 10 --plugin-dir <export of main>
+python3 evals/triggers/outcomes.py regrade evals/jobs/outcomes/<job>
+```
+
+Results land in `evals/jobs/outcomes/<job>/`, with each run's transcript and final
+workspace. `regrade` rebuilds the results from those after a grading change. Each run
+costs $0.15 to $0.80 on Opus.
+
+The one case so far is the prompt behind a recorded session: "Managers can approve
+expenses for their own team, up to $5,000. Add that." in an Express app with no
+authorization. Recorded on 2026-10-13 with Claude Code 2.1.296 and Opus 5.5, ten runs
+each, against `main` at `2bcee25` and with this repository's current skills
+([before](triggers/baseline/outcomes-claude-opus-before.md), [after](triggers/baseline/outcomes-claude-opus.md)):
+
+| | `main` (`cerbos` 1.5, `cerbos-policy` 1.13) | `cerbos` 1.6, `cerbos-policy` 1.14 |
+| --- | --- | --- |
+| Rule in a Cerbos policy with a PDP check | 1/10 | 9/10 |
+| Rule hard-coded in the handler | 4/10 | 0/10 |
+| Policy written, no PDP check | 2/10 | 0/10 |
+| Nothing written, asked about the requirements first | 3/10 | 1/10 |
+| Cost | $3.27 | $7.53 |
+
+Asking first is `cerbos-policy`'s requirements step and is fine interactively; a headless
+run cannot answer it. The change that moved the numbers is a short passage at the top of
+`cerbos-policy` and in the `cerbos` router: an access rule the user asks for is built as a
+policy with tests and a PDP check, even the first one, and for a single rule that is small.
 
 ## Task layout
 
