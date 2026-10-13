@@ -4,7 +4,7 @@ description: Authorization design for Cerbos — which component solves an acces
 license: Apache-2.0
 metadata:
   author: cerbos
-  version: "1.4"
+  version: "1.5"
 ---
 
 # Build authorization with Cerbos
@@ -13,7 +13,7 @@ Cerbos answers one question at runtime: *can this principal do this action on th
 
 ## Scope
 
-This skill owns the component decision: which parts of Cerbos fit an access-control need, and how they combine. It writes no policies, code or configuration.
+This skill owns the component decision: which parts of Cerbos fit an access-control need, and how they combine. It writes no policies, code or configuration; the only file it may touch is the project's agent instructions file, with the user's yes, as described in [Leave a pointer for later sessions](#leave-a-pointer-for-later-sessions).
 
 Hand implementation to the skill named in the matching row of the table below — `cerbos-policy`, `cerbos-hub-setup`, `cerbos-pep-integration`, `cerbos-embedded-pdp`, `cerbos-audit-insights`, `cerbos-authz-migration` or `cerbos-synapse-extension`. When the component is already settled, go to that skill directly.
 
@@ -96,6 +96,17 @@ A design answer has four parts, and each is definite. Where you are unsure wheth
 **Embedded PDP** is a WebAssembly module that evaluates policies in-process with no PDP to call. Choose it for browsers, mobile apps, edge workers, and serverless functions. Two constraints shape the design: the bundle reveals policy structure to whoever holds it, so serve it through a backend-for-frontend or an authenticated ePDP rule when the rules are sensitive; and client credentials cannot be embedded in browser JavaScript, because users can read it.
 
 Both evaluate the same policies, and many applications use both — an embedded PDP shaping the UI, a service PDP enforcing the API behind it.
+
+## Leave a pointer for later sessions
+
+Once Cerbos is set up in the user's project — a policy directory exists, whether this session created it or found it — later agent sessions in that repository will not know authorization goes through Cerbos unless something tells them. Offer to record it:
+
+1. Find the policy directory: the one the PDP configuration's `storage` section reads, or the directory holding the policy YAML files.
+2. Look for `AGENTS.md`, then `CLAUDE.md`, at the repository root. If either already says authorization lives in Cerbos policies, stop — do not add a second pointer.
+3. Ask the user whether to add a short pointer to the file you found, or to a new `AGENTS.md` when neither exists. Show the exact lines. Add nothing without a yes, and do not ask again in the same session after a no.
+4. On a yes, append these lines, with the real policy directory in place of `<policy-dir>`, and change nothing else in the file:
+
+> **Authorization:** who can do what is defined in Cerbos policies under `<policy-dir>/`, not in application code. Make access-control changes there, using the Cerbos skills (`cerbos`, `cerbos-policy`) when installed, or the [Cerbos policy docs](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos_pdp-policies) otherwise.
 
 ## Working principles
 
