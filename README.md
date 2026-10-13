@@ -69,7 +69,7 @@ npx skills add cerbos/skills -g
 
 ### Plugin marketplaces
 
-This repository is also a plugin marketplace whose one plugin, `cerbos-skills`, is the repository itself. Claude Code and GitHub Copilot CLI read [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json), Codex reads [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json), and Cursor and Gemini CLI read the plugin manifest at the root.
+This repository is also a plugin marketplace whose one plugin, `cerbos-skills`, is the repository itself. Claude Code, Claude Cowork and GitHub Copilot CLI read [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json), and Codex reads [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json). Cursor, Gemini CLI and Grok install the repository directly and read the plugin manifest at its root.
 
 #### Claude Code
 
@@ -121,6 +121,28 @@ gemini extensions install https://github.com/cerbos/skills
 ```
 
 Run `/skills list` in a session to confirm the skills loaded. To pick up a new release, run `gemini extensions update cerbos-skills`.
+
+#### Grok
+
+```bash
+grok plugin install cerbos/skills --trust
+```
+
+Grok reads the plugin from [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json).
+
+#### Claude Cowork
+
+1. Open **Settings** > **Plugins**, click **Add** > **Add marketplace**, enter `cerbos/skills`, and click **Sync**.
+2. Click **Browse**, select `cerbos-skills`, and install it. Cowork keeps the plugin in sync with this repository.
+
+### Developing locally
+
+Load a checkout as a plugin without installing it:
+
+```bash
+git clone https://github.com/cerbos/skills cerbos-skills
+claude --plugin-dir ./cerbos-skills
+```
 
 ### Manual Installation
 

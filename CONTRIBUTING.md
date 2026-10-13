@@ -4,16 +4,16 @@ This guide is for people changing the skills in this repository. To install and 
 
 ## Layout
 
-- The repository root is the published plugin. Each agent reads its own plugin manifest there: `.claude-plugin/plugin.json` (Claude Code and GitHub Copilot CLI), `.codex-plugin/plugin.json` (Codex), `.cursor-plugin/plugin.json` (Cursor) and `gemini-extension.json` (Gemini CLI). `assets/icon.png` is the Claude directory listing icon and `assets/icon.svg` the Codex and Cursor one. `README.md` is the plugin's listing.
+- The repository root is the published plugin. Each agent reads its own plugin manifest there: `.claude-plugin/plugin.json` (Claude Code, Claude Cowork, GitHub Copilot CLI, and Grok, which falls back to it), `.codex-plugin/plugin.json` (Codex), `.cursor-plugin/plugin.json` (Cursor) and `gemini-extension.json` (Gemini CLI). `assets/icon.png` is the Claude directory listing icon and `assets/icon.svg` the Codex and Cursor one. `README.md` is the plugin's listing.
 - `skills/<name>/` holds each skill: its `SKILL.md` and the reference files and scripts it points to. Every plugin manifest reads skills from `skills/`.
 - Two marketplace manifests list that one plugin:
 
   | Marketplace | Plugin source | Read by |
   |-------------|---------------|---------|
-  | `.claude-plugin/marketplace.json` | `./`, the repository root | Claude Code, GitHub Copilot CLI |
+  | `.claude-plugin/marketplace.json` | `./`, the repository root | Claude Code, Claude Cowork, GitHub Copilot CLI |
   | `.agents/plugins/marketplace.json` | `https://github.com/cerbos/skills.git` | Codex |
 
-  Cursor has no marketplace manifest: a team marketplace imported from this repository reads `.cursor-plugin/plugin.json` at the root as a single plugin.
+  Cursor, Gemini CLI and Grok have no marketplace manifest: each installs the repository and reads its plugin manifest at the root. Keep `.claude-plugin/plugin.json`'s description agent-neutral, since Grok surfaces it.
 - Installing the plugin copies the whole repository, `evals/` and `scripts/` included, but agents load only `skills/` and the manifests.
 - `evals/` holds the Harbor evals, and `scripts/` holds the validator and its tests. Neither is loaded as part of the plugin.
 - `.agents/skills/` and `.claude/skills/` are skills for working on this repository, such as writing Harbor tasks. They are not published.
