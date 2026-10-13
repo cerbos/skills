@@ -80,9 +80,17 @@ implementation skill or the reverse), and near-miss skills that should not (`nea
 Eight or nine prompts target each skill, and 16 are unrelated requests that sit close
 to one, such as Auth0 token lifetimes, Rego admission policies or a privacy policy page.
 
-[`triggers/run.py`](triggers/run.py) sends each prompt to an agent in a fresh, empty
-directory with the plugin installed from this checkout, and records every Cerbos
-skill loaded, in order:
+A prompt that asks to change existing code can name a `workspace`: a stub project in
+[`triggers/workspaces/`](triggers/workspaces/), such as a React app with a delete button
+or three services with their own permission tables. Without one, an agent searches an
+empty folder, finds nothing and asks for the project before choosing a skill, which
+says nothing about the description. Stubs are a few files each and carry no Cerbos
+hints beyond what the prompt itself says. Unrelated prompts that ask for code changes
+in the same kind of project, such as `none-lazy-admin`, use the same stubs.
+
+[`triggers/run.py`](triggers/run.py) sends each prompt to an agent in a fresh directory,
+holding a copy of the prompt's workspace if it has one, with the plugin installed from
+this checkout, and records every Cerbos skill loaded, in order:
 
 - **Claude Code** loads the plugin with `--plugin-dir` and ignores user settings, so
   your own plugins and MCP servers do not compete. Tools are limited to
@@ -123,31 +131,43 @@ and repeat count, and compare against the baseline below. With two repeats a ski
 
 ### Baseline
 
-Recorded on 2026-10-13 against the skills at `ffb3f4c`, two repeats of all 82 prompts.
-Full reports, with the confusion matrix and every miss:
-[Claude Code](triggers/baseline/claude-sonnet.md) and [Codex](triggers/baseline/codex.md).
+Recorded on 2026-10-13, two repeats of all 82 prompts, with seven prompts running in a
+stub workspace, against the same skills at `ffb3f4c`. Full reports, with the
+confusion matrix and every miss: [Claude Code](triggers/baseline/claude-sonnet.md) and
+[Codex](triggers/baseline/codex.md). The earlier run, with every prompt in an empty
+folder, is kept for comparison:
+[Claude Code](triggers/baseline/claude-sonnet-empty-workspace.md) and
+[Codex](triggers/baseline/codex-empty-workspace.md).
 
 | | Claude Code 2.1.296, Sonnet 5.5 | Codex 0.160.1, default model |
 | --- | --- | --- |
-| Expected skill loaded | 91% (120/132) | 100% (132/132) |
-| Expected skill loaded first | 91% | 96% |
-| Cerbos skill loaded on an unrelated prompt | 0% (0/32) | 0% (0/32) |
-| Lowest recall | `cerbos-authz-migration`, `cerbos-embedded-pdp`: 75% | none below 100% |
-| Lowest precision | 100% everywhere | `cerbos-pep-integration`: 92% |
-| Cost | $9.27 | ChatGPT login |
+| Expected skill loaded | 94% (124/132), was 91% (120/132) | 100% (132/132), was 100% |
+| Expected skill loaded first | 94%, was 91% | 93% (123/132), was 96% |
+| Cerbos skill loaded on an unrelated prompt | 0% (0/32), was 0% | 3% (1/32), was 0% |
+| Lowest recall | `cerbos-embedded-pdp`: 75%, unchanged; `cerbos-authz-migration` rose from 75% to 88% | none below 100% |
+| Lowest first pick | `cerbos-embedded-pdp`: 75% | `cerbos-embedded-pdp`: 56%, was 75% |
+| Lowest precision | 100% everywhere | `cerbos`: 92%, `cerbos-pep-integration`: 96% |
+| Cost | $9.72, was $9.27 | ChatGPT login |
 
-Claude Code is the weaker trigger. Most of its misses are requests to change code
-that is not there (`epdp-hide-delete`, `epdp-vue-menu`, `migrate-drifted-tables`,
-`hub-compose-switch`): it searches the empty workspace, finds nothing and asks for the
-project before choosing a skill. That is partly an artefact of the empty workspace,
-but it also shows that the description alone did not make the skill the first move.
-It answered `policy-explain-derived-role` from its own knowledge, and loaded only
-the `cerbos` router for `migrate-is-admin-mess`.
+The workspaces separate Claude Code's empty-folder misses from real description
+misses. With a project to read, it now loads the expected skill for
+`migrate-drifted-tables` and `hub-compose-switch`, and `audit-wrong-allow` (no
+workspace) also recovered. `epdp-hide-delete` and `epdp-vue-menu` still miss in both
+repeats, now for a different reason: Claude Code reads the stub, finds plain role
+checks and no authorization library, and writes a role check into the component or
+offers options, without loading a skill. That is a real
+`cerbos-embedded-pdp` description miss, or a sign that these two prompts should not
+expect a Cerbos skill when the project has no Cerbos in it. As before, it answered
+`policy-explain-derived-role` from its own knowledge and loaded only the `cerbos`
+router for `migrate-is-admin-mess`.
 
-Codex loads a skill for every Cerbos prompt but sometimes picks a neighbour first:
-`cerbos-pep-integration` before `cerbos-embedded-pdp` for `epdp-lambda`, and the
-router before `cerbos-embedded-pdp` or `cerbos-hub-setup` on a few others.
-Neither agent loaded a Cerbos skill on any of the 16 unrelated prompts.
+Codex still loads the expected skill for every Cerbos prompt. Its lower first-pick
+rate comes from loading the `cerbos` router before `cerbos-embedded-pdp`, which the
+labels allow, on six runs, two of them on the workspace prompts. It also loaded
+`cerbos-pep-integration` before `cerbos-embedded-pdp` once on `epdp-lambda`. Its one
+unrelated load, the router on `none-postgres-role` (no workspace), happened once in
+two repeats, so it is likely noise. Neither agent loaded a Cerbos skill on the
+unrelated prompts that share the React stub.
 
 ## Task layout
 
