@@ -76,8 +76,42 @@ def _ordered(names, skills):
     return out
 
 
+def _skill_name(args: dict) -> str:
+    return str(args.get("skill", "")).split(":")[-1].lstrip("/")
+
+
+def refused_skill_calls(events: list[dict]) -> dict[str, str]:
+    """Skill tool calls whose result was an error, by tool_use id.
+
+    A skill that declares `allowed-tools`, such as cerbos-policy, asks before it
+    loads. Under -p nobody answers, the call comes back as an error, and the
+    skill never reaches the model, so the call alone is not a load.
+    """
+    calls, refused = {}, {}
+    for e in events:
+        message = e.get("message")
+        content = message.get("content") if isinstance(message, dict) else None
+        if not isinstance(content, list):
+            continue
+        for c in content:
+            if c.get("type") == "tool_use" and c.get("name") == "Skill":
+                calls[c.get("id")] = _skill_name(c.get("input", {}))
+            elif c.get("type") == "tool_result" and c.get("is_error") and c.get("tool_use_id") in calls:
+                refused[c["tool_use_id"]] = calls[c["tool_use_id"]]
+    return refused
+
+
+def refused_skills(events: list[dict]) -> list[str]:
+    """Skills the agent tried to load but was refused."""
+    return list(refused_skill_calls(events).values())
+
+
 def claude_loaded(events: list[dict], skills: list[str]) -> list[str]:
-    """Skills loaded through the Skill tool, or by reading a SKILL.md directly."""
+    """Skills loaded through the Skill tool, or by reading a SKILL.md directly.
+
+    A Skill call that was refused does not count: the skill never loaded.
+    """
+    refused = refused_skill_calls(events)
     names = []
     for e in events:
         if e.get("type") != "assistant":
@@ -87,7 +121,8 @@ def claude_loaded(events: list[dict], skills: list[str]) -> list[str]:
                 continue
             args = c.get("input", {})
             if c.get("name") == "Skill":
-                names.append(str(args.get("skill", "")).split(":")[-1].lstrip("/"))
+                if c.get("id") not in refused:
+                    names.append(_skill_name(args))
             elif c.get("name") == "Read":
                 names += SKILL_MD.findall(str(args.get("file_path", "")))
     return _ordered(names, skills)
@@ -140,6 +175,10 @@ class Claude:
             "--max-turns", str(self.args.max_turns),
             # Read-only tools: enough to load a skill and its references, nothing that changes the machine.
             "--tools", "Skill,Read,Glob,Grep",
+            # Skills that declare `allowed-tools` ask before they load. An interactive user says
+            # yes; under -p the question goes unanswered and the load is refused, which would
+            # measure the permission prompt rather than whether the skill was chosen.
+            "--allowedTools", "Skill",
         ]
         if self.args.model:
             cmd += ["--model", self.args.model]
@@ -253,6 +292,11 @@ def run_one(agent, prompt: dict, rep: int, raw_dir: Path, skills: list[str], tim
     events = parse_jsonl(out)
     if not events and not error:
         error = "no events"
+    refused = refused_skills(events)
+    if refused and not error:
+        # The harness should approve every skill load, so a refusal means the run measured
+        # a permission prompt; exclude it rather than score it.
+        error = f"skill load refused: {', '.join(refused)}"
     return {
         "id": prompt["id"], "rep": rep, "expect": prompt["expect"], "workspace": prompt.get("workspace"),
         "also_ok": prompt["also_ok"], "near": prompt["near"],

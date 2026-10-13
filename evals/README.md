@@ -94,8 +94,12 @@ this checkout, and records every Cerbos skill loaded, in order:
 
 - **Claude Code** loads the plugin with `--plugin-dir` and ignores user settings, so
   your own plugins and MCP servers do not compete. Tools are limited to
-  `Skill,Read,Glob,Grep` with `--max-turns 8`. A skill counts as loaded when the
-  `Skill` tool is called or its `SKILL.md` is read.
+  `Skill,Read,Glob,Grep` with `--max-turns 8`. Skill loads are approved with
+  `--allowedTools Skill`: `cerbos-policy` and `cerbos-hub-setup` declare
+  `allowed-tools`, so Claude Code asks before loading them, and under `-p` that
+  question goes unanswered and the load is refused. A skill counts as loaded when the
+  `Skill` tool is called and not refused, or its `SKILL.md` is read. A run that still
+  sees a refused load is reported as an error and excluded.
 - **Codex** installs the plugin into a throwaway `CODEX_HOME` from a temporary local
   marketplace (the repository's Codex marketplace points at GitHub, so it would test
   the published skills). It runs `codex exec` read-only with web search off. A skill
@@ -131,8 +135,10 @@ and repeat count, and compare against the baseline below. With two repeats a ski
 
 ### Baseline
 
-Recorded on 2026-10-13, two repeats of all 82 prompts, with seven prompts running in a
-stub workspace, against the same skills at `ffb3f4c`. Full reports, with the
+Recorded on 2026-10-13, two repeats of every prompt, with the prompts that name one
+running in a stub workspace. Codex ran the 82 prompts against the skills at `ffb3f4c`.
+Claude Code was re-run on the 83 prompts at `abc6b7c`, after `router-approval-limit`
+was added and once the harness approved skill loads. Full reports, with the
 confusion matrix and every miss: [Claude Code](triggers/baseline/claude-sonnet.md) and
 [Codex](triggers/baseline/codex.md). The earlier run, with every prompt in an empty
 folder, is kept for comparison:
@@ -141,13 +147,21 @@ folder, is kept for comparison:
 
 | | Claude Code 2.1.296, Sonnet 5.5 | Codex 0.160.1, default model |
 | --- | --- | --- |
-| Expected skill loaded | 94% (124/132), was 91% (120/132) | 100% (132/132), was 100% |
-| Expected skill loaded first | 94%, was 91% | 93% (123/132), was 96% |
+| Expected skill loaded | 92% (124/134), was 94% (124/132) | 100% (132/132), was 100% |
+| Expected skill loaded first | 92%, was 94% | 93% (123/132), was 96% |
 | Cerbos skill loaded on an unrelated prompt | 0% (0/32), was 0% | 3% (1/32), was 0% |
 | Lowest recall | `cerbos-embedded-pdp`: 75%, unchanged; `cerbos-authz-migration` rose from 75% to 88% | none below 100% |
 | Lowest first pick | `cerbos-embedded-pdp`: 75% | `cerbos-embedded-pdp`: 56%, was 75% |
 | Lowest precision | 100% everywhere | `cerbos`: 92%, `cerbos-pep-integration`: 96% |
-| Cost | $9.72, was $9.27 | ChatGPT login |
+| Cost | $11.26, was $9.72 | ChatGPT login |
+
+The previous Claude Code baseline counted a refused `Skill` call as a load. Every
+`cerbos-policy` and `cerbos-hub-setup` load in it, 32 of 164 runs, was refused by the
+unanswered permission prompt, so those skills were chosen but never reached the
+model. Re-scored and re-run with loads approved, both skills' recall is unchanged
+(89% and 100%): the choice was measured correctly, but everything after it was not.
+The overall dip to 92% comes from the new `router-approval-limit` prompt, where Claude
+Code loaded `cerbos-policy` without the router in one repeat and nothing in the other.
 
 The workspaces separate Claude Code's empty-folder misses from real description
 misses. With a project to read, it now loads the expected skill for
