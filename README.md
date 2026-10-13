@@ -34,6 +34,17 @@ Start with `cerbos`. It maps a described need onto the right component and hands
 
 The open-source PDP runs standalone with no account and no licence. [Cerbos Hub](https://docs.cerbos.dev/cerbos-hub/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=readme_hub) adds the managed pipeline, fleet-wide push distribution, embedded PDPs and audit aggregation on top of it; switching is a configuration change, not a policy rewrite.
 
+## What the plugin runs
+
+The plugin contains skills only. It has no hooks, MCP servers, or background processes, and it sends no data anywhere itself. The skills tell the agent to run these commands in your project, and the agent asks before running anything not listed under `allowed-tools`:
+
+- **`cerbos-policy`** compiles and tests policies with the `cerbos` CLI, or with the `ghcr.io/cerbos/cerbos` container image when the CLI isn't installed. It checks test coverage with a bundled Python script, `skills/cerbos-policy/scripts/coverage_audit.py`, which reads local files only. It pre-approves `cerbos compile`, `cerbos --version`, and `docker --version`.
+- **`cerbos-synapse-extension`** runs Synapse from its licensed distribution image with Docker Compose, builds WASM extensions with Go, npm, or `extism-py`, and sends test requests to the local Synapse instance with `curl`. It pre-approves nothing.
+- **`cerbos-pep-integration`** adds SDK calls to your application code and may install a Cerbos SDK with your package manager. It runs a local PDP with the `cerbos` CLI or the `ghcr.io/cerbos/cerbos` image to try checks against. It pre-approves nothing.
+- **`cerbos-hub-setup`** runs `cerbosctl` against Cerbos Hub and ships five helper scripts under `skills/cerbos-hub-setup/scripts/` that check prerequisites, log in with the device-code flow, upload to and inspect a policy store, and verify a PDP's connection. They read credentials from the environment and never print them; uploads send your policy files to your own Hub policy store. It pre-approves `Bash`, because setting up a PDP runs Docker or a local `cerbos` binary as well as `cerbosctl` and these scripts.
+- **`cerbos-embedded-pdp`** adds `@cerbos/embedded-client` to your web or serverless project and configures your bundler to load its WebAssembly module. It pre-approves nothing.
+- **`cerbos-audit-insights`**, **`cerbos-authz-migration`** and **`cerbos`** edit configuration and code in your project and run local `cerbos` and `cerbosctl` commands to check the result. They pre-approve nothing.
+
 ## Installation
 
 ```bash
@@ -58,7 +69,7 @@ npx skills add cerbos/skills -g
 
 ### Plugin marketplaces
 
-This repository is also a plugin marketplace. Each agent reads its own manifest, and every manifest installs the same `cerbos-skills` plugin from the [`plugins/cerbos-skills/`](plugins/cerbos-skills) directory.
+This repository is also a plugin marketplace whose one plugin, `cerbos-skills`, is the repository itself. Claude Code and GitHub Copilot CLI read [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json), Codex reads [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json), and Cursor and Gemini CLI read the plugin manifest at the root.
 
 #### Claude Code
 
@@ -95,14 +106,13 @@ On a Teams or Enterprise plan, an admin adds the repository as a team marketplac
 2. Under **Team Marketplaces**, click **Add Marketplace**, choose **Import from Repo**, and paste `https://github.com/cerbos/skills`.
 3. Developers open **Customize** in the Cursor sidebar, find `cerbos-skills`, and click **Install**.
 
-To install it for yourself, copy the plugin into Cursor's local plugin directory and reload the window (**Developer: Reload Window**):
+To install it for yourself, clone the repository into Cursor's local plugin directory and reload the window (**Developer: Reload Window**):
 
 ```bash
-git clone --depth 1 https://github.com/cerbos/skills /tmp/cerbos-skills
-cp -R /tmp/cerbos-skills/plugins/cerbos-skills ~/.cursor/plugins/local/cerbos-skills
+git clone --depth 1 https://github.com/cerbos/skills ~/.cursor/plugins/local/cerbos-skills
 ```
 
-To pick up a new release, repeat both steps after removing `~/.cursor/plugins/local/cerbos-skills` and `/tmp/cerbos-skills`.
+To pick up a new release, run `git -C ~/.cursor/plugins/local/cerbos-skills pull` and reload the window.
 
 #### Gemini CLI
 
@@ -114,7 +124,7 @@ Run `/skills list` in a session to confirm the skills loaded. To pick up a new r
 
 ### Manual Installation
 
-Copy the skill directories from [`plugins/cerbos-skills/skills/`](plugins/cerbos-skills/skills) to your agent's skills directory.
+Copy the skill directories from [`skills/`](skills) to your agent's skills directory.
 
 | Agent | Skill directory |
 |-------|-----------------|

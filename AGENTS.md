@@ -27,7 +27,7 @@ A description states both when the skill should trigger **and when it should not
 
 ## Working in this repository
 
-Skills live in `plugins/cerbos-skills/skills/<skill-name>/SKILL.md`, with deeper material under `references/` and executable helpers under `scripts/`. Every plugin manifest reads that directory, so a new skill directory needs no plugin registration — add a row to the table above and to the README. [CONTRIBUTING.md](CONTRIBUTING.md) covers the repository layout, checks and releases.
+Skills live in `skills/<skill-name>/SKILL.md`, with deeper material under `references/` and executable helpers under `scripts/`. Every plugin manifest reads that directory, so a new skill directory needs no plugin registration — add a row to the table above and to the README. [CONTRIBUTING.md](CONTRIBUTING.md) covers the repository layout, checks and releases.
 
 Skills link to canonical docs rather than caching configuration that goes stale. Cache what an agent cannot find by looking: the gotcha no config confesses, the reason behind a choice. Leave flag lists to `--help`.
 

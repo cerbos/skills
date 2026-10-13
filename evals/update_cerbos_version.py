@@ -42,7 +42,7 @@ ROOT = Path(__file__).resolve().parent.parent
 TASKS = ROOT / "evals" / "tasks"
 # Every skill that pins a Cerbos release moves with it.
 SKILLS = sorted(
-    p for p in (ROOT / "plugins" / "cerbos-skills" / "skills").glob("*/SKILL.md")
+    p for p in (ROOT / "skills").glob("*/SKILL.md")
     if "targetsCerbosVersion:" in p.read_text()
 )
 IMAGE = "ghcr.io/cerbos/cerbos"
@@ -203,7 +203,7 @@ def main():
             env["CODEX_FORCE_AUTH_JSON"] = "1"
         job, rewards = harbor_job(
             f"cerbos-{new}-live-{stamp}",
-            ["--skill", "./plugins/cerbos-skills/skills/cerbos-policy", "-a", "codex", "--agent-kwarg", "version=0.154.0",
+            ["--skill", "./skills/cerbos-policy", "-a", "codex", "--agent-kwarg", "version=0.154.0",
              "-m", "openai/gpt-5.6-luna", "-n", "4", "--agent-setup-timeout-multiplier", "4"],
             env=env,
         )

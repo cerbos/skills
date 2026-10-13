@@ -131,8 +131,10 @@ class ManifestsTest(unittest.TestCase):
         self.root = Path(self.tmp.name)
         for name in validator.PLUGIN_MANIFESTS:
             self.write(name, {"name": "cerbos-skills", "version": "1.0.0"})
-        for name in validator.MARKETPLACES:
-            self.write(name, {"plugins": [{"name": "cerbos-skills", "source": "./plugins/cerbos-skills"}]})
+        self.write(".claude-plugin/marketplace.json", {"plugins": [{"name": "cerbos-skills", "source": "./"}]})
+        self.write(".agents/plugins/marketplace.json", {"plugins": [{
+            "name": "cerbos-skills", "source": {"source": "url", "url": "https://github.com/cerbos/skills.git"},
+        }]})
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -152,13 +154,13 @@ class ManifestsTest(unittest.TestCase):
         self.assertEqual(self.errors(), [])
 
     def test_version_mismatch(self):
-        self.write("plugins/cerbos-skills/.codex-plugin/plugin.json", {"name": "cerbos-skills", "version": "1.1.0"})
+        self.write(".codex-plugin/plugin.json", {"name": "cerbos-skills", "version": "1.1.0"})
         self.write(".claude-plugin/marketplace.json", {
-            "plugins": [{"name": "cerbos-skills", "source": "./plugins/cerbos-skills", "version": "0.9.0"}],
+            "plugins": [{"name": "cerbos-skills", "source": "./", "version": "0.9.0"}],
         })
         errors = "\n".join(self.errors())
         self.assertIn("plugin versions disagree", errors)
-        self.assertIn("plugins/cerbos-skills/.codex-plugin/plugin.json=1.1.0", errors)
+        self.assertIn(".codex-plugin/plugin.json=1.1.0", errors)
 
     def test_missing_entry_and_wrong_name(self):
         self.write(".agents/plugins/marketplace.json", {"plugins": []})
@@ -167,13 +169,15 @@ class ManifestsTest(unittest.TestCase):
         self.assertIn(".agents/plugins/marketplace.json: no 'cerbos-skills' plugin entry", errors)
         self.assertIn("gemini-extension.json: name must be", errors)
 
-    def test_marketplace_source_outside_plugin_dir(self):
-        self.write(".github/plugin/marketplace.json", {"plugins": [{"name": "cerbos-skills", "source": "./"}]})
+    def test_marketplace_source_not_repository_root(self):
+        self.write(".claude-plugin/marketplace.json", {"plugins": [{"name": "cerbos-skills", "source": "./plugins/cerbos-skills"}]})
         self.write(".agents/plugins/marketplace.json", {
-            "plugins": [{"name": "cerbos-skills", "source": {"source": "local", "path": "./plugins/cerbos-skills"}}],
+            "plugins": [{"name": "cerbos-skills", "source": {"source": "local", "path": "./"}}],
         })
-        errors = self.errors()
-        self.assertEqual(errors, [".github/plugin/marketplace.json: 'cerbos-skills' source must be './plugins/cerbos-skills', found './'"])
+        self.assertEqual(self.errors(), [
+            ".claude-plugin/marketplace.json: 'cerbos-skills' source must be './', found './plugins/cerbos-skills'",
+            ".agents/plugins/marketplace.json: 'cerbos-skills' source must be 'https://github.com/cerbos/skills.git', found './'",
+        ])
 
 
 if __name__ == "__main__":

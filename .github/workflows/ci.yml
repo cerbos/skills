@@ -41,5 +41,5 @@ jobs:
 
       - name: Helper scripts parse
         run: |
-          find plugins/cerbos-skills/skills -type f -perm -u+x -print0 \
+          find skills -type f -perm -u+x -print0 \
             | xargs -0 -r -I{} sh -c 'head -1 "{}" | grep -q bash && bash -n "{}" && echo "ok {}" || true'

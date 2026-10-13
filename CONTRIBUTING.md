@@ -4,19 +4,18 @@ This guide is for people changing the skills in this repository. To install and 
 
 ## Layout
 
-- `plugins/cerbos-skills/` is the published plugin, and the only directory agents install. It holds the plugin manifests, `README.md` (the Claude plugin directory listing), `LICENSE`, `assets/icon.png` (Claude directory listing), `assets/icon.svg` (Codex and Cursor), and `skills/`. Keep everything else out of it.
-- `plugins/cerbos-skills/skills/<name>/` holds each skill: its `SKILL.md` and the reference files and scripts it points to.
-- The marketplace manifests at the repository root point each agent at `plugins/cerbos-skills/`:
+- The repository root is the published plugin. Each agent reads its own plugin manifest there: `.claude-plugin/plugin.json` (Claude Code and GitHub Copilot CLI), `.codex-plugin/plugin.json` (Codex), `.cursor-plugin/plugin.json` (Cursor) and `gemini-extension.json` (Gemini CLI). `assets/icon.png` is the Claude directory listing icon and `assets/icon.svg` the Codex and Cursor one. `README.md` is the plugin's listing.
+- `skills/<name>/` holds each skill: its `SKILL.md` and the reference files and scripts it points to. Every plugin manifest reads skills from `skills/`.
+- Two marketplace manifests list that one plugin:
 
-  | Marketplace | Plugin manifest in `plugins/cerbos-skills/` | Agent |
-  |-------------|---------------------------------------------|-------|
-  | `.claude-plugin/marketplace.json` | `.claude-plugin/plugin.json` | Claude Code |
-  | `.agents/plugins/marketplace.json` | `.codex-plugin/plugin.json` | Codex |
-  | `.github/plugin/marketplace.json` | `.claude-plugin/plugin.json` | GitHub Copilot CLI |
-  | `.cursor-plugin/marketplace.json` | `.cursor-plugin/plugin.json` | Cursor |
+  | Marketplace | Plugin source | Read by |
+  |-------------|---------------|---------|
+  | `.claude-plugin/marketplace.json` | `./`, the repository root | Claude Code, GitHub Copilot CLI |
+  | `.agents/plugins/marketplace.json` | `https://github.com/cerbos/skills.git` | Codex |
 
-- Gemini CLI installs the whole repository and reads skills from `skills/` at its root, so `gemini-extension.json` stays at the root and `skills` is a symlink to `plugins/cerbos-skills/skills`.
-- `evals/` holds the Harbor evals, and `scripts/` holds the validator and its tests. Neither is published.
+  Cursor has no marketplace manifest: a team marketplace imported from this repository reads `.cursor-plugin/plugin.json` at the root as a single plugin.
+- Installing the plugin copies the whole repository, `evals/` and `scripts/` included, but agents load only `skills/` and the manifests.
+- `evals/` holds the Harbor evals, and `scripts/` holds the validator and its tests. Neither is loaded as part of the plugin.
 - `.agents/skills/` and `.claude/skills/` are skills for working on this repository, such as writing Harbor tasks. They are not published.
 
 ## Changing a skill
@@ -27,7 +26,7 @@ Bump `metadata.version` whenever a skill's files change: the minor version for n
 
 Each skill's `references/sources.md` lists the documentation its guidance is checked against. Update it when you check guidance against a new source.
 
-[AGENTS.md](AGENTS.md) holds the writing and linking conventions for skill content. Links to Cerbos properties in skills and repository documents carry UTM parameters, with `utm_content` set to `<skill>_<placement>`; run `scripts/fix-links` after adding links rather than writing the parameters by hand. Plugin manifests and the plugin's listing README keep plain URLs.
+[AGENTS.md](AGENTS.md) holds the writing and linking conventions for skill content. Links to Cerbos properties in skills and repository documents carry UTM parameters, with `utm_content` set to `<skill>_<placement>`; run `scripts/fix-links` after adding links rather than writing the parameters by hand. Plugin manifests keep plain URLs.
 
 ## Checks
 
@@ -74,12 +73,10 @@ See [evals/README.md](evals/README.md) for how to run them.
 
 To publish a new plugin version, set the same `version` in every file below. The validator fails if they disagree.
 
-- `plugins/cerbos-skills/.claude-plugin/plugin.json`
-- `plugins/cerbos-skills/.codex-plugin/plugin.json`
-- `plugins/cerbos-skills/.cursor-plugin/plugin.json`
+- `.claude-plugin/plugin.json`
+- `.codex-plugin/plugin.json`
+- `.cursor-plugin/plugin.json`
 - `.claude-plugin/marketplace.json` (`metadata.version` and the plugin entry)
-- `.github/plugin/marketplace.json` (`metadata.version` and the plugin entry)
-- `.cursor-plugin/marketplace.json` (`metadata.version` and the plugin entry)
 - `gemini-extension.json`
 
-Agents compare this version to decide whether an installed plugin needs updating, so bump it for every release that changes `plugins/cerbos-skills/`.
+Agents compare this version to decide whether an installed plugin needs updating, so bump it for every release that changes `skills/` or a manifest.

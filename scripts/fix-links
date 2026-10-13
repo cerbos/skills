@@ -29,12 +29,11 @@ from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
 
 ROOT = Path(__file__).resolve().parent.parent
-SKILLS_DIR = ROOT / "plugins" / "cerbos-skills" / "skills"
+SKILLS_DIR = ROOT / "skills"
 
 # Repository documents are tagged too, so a click from the README is
 # attributable. They have no skill name, so the first half of utm_content
-# names the surface instead. Plugin manifests and the plugin's listing README
-# keep plain URLs.
+# names the surface instead. Plugin manifests keep plain URLs.
 SURFACES = {
     "README.md": "readme",
     "AGENTS.md": "agents-md",

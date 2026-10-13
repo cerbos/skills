@@ -32,14 +32,14 @@ with a `synapse test` suite, and is checked against real Synapse decisions:
 The task folders are generated: edit the sources in [`synapse/`](synapse/generate.py)
 and run `python3 evals/synapse/generate.py`; CI fails when they drift. Before running a
 Synapse task, run any task's `prepare-image.sh` once to tag the licensed Synapse image
-locally, and pass `--skill ./plugins/cerbos-skills/skills/cerbos-synapse-extension`. Run all of them with
+locally, and pass `--skill ./skills/cerbos-synapse-extension`. Run all of them with
 `-p evals/tasks -i '*cerbos-synapse-*'`. The Python WASM tasks build linux/amd64
 images because `extism-py` ships for x86_64 only; they run emulated on arm64 hosts.
 
 ## Lifecycle tasks
 
 These tasks cover the other six skills. Their instructions never name a skill, so
-run them with every skill installed (one `--skill` per directory under `plugins/cerbos-skills/skills/`)
+run them with every skill installed (one `--skill` per directory under `skills/`)
 and routing between skills is part of what they test.
 
 | Task | Skill | Coverage |
@@ -112,7 +112,7 @@ Evaluate the skill with model credentials configured:
 ```bash
 uvx --from harbor==0.23.0 harbor run \
   -p evals/tasks/cerbos-policy-files \
-  --skill ./plugins/cerbos-skills/skills/cerbos-policy \
+  --skill ./skills/cerbos-policy \
   -a codex --agent-kwarg version=0.154.0 -m openai/gpt-5.6-luna \
   --jobs-dir evals/jobs --job-name policy-live
 ```

@@ -1,4 +1,4 @@
-"""Check every skill under plugins/cerbos-skills/skills/ against the repository's structural rules.
+"""Check every skill under skills/ against the repository's structural rules.
 
 Run from anywhere with:
 
@@ -17,8 +17,8 @@ Checks:
 6. With --base, every skill whose files changed since REF has a higher
    `metadata.version` than it had at REF.
 7. The plugin and marketplace manifests for each agent (Claude Code, Codex,
-   Cursor, Copilot, Gemini) parse as JSON and agree on plugin name and version,
-   and every marketplace installs the plugin from PLUGIN_DIR.
+   Cursor, Gemini) parse as JSON and agree on plugin name and version, and
+   every marketplace installs the plugin from the repository root.
 8. The names and descriptions of all skills together fit the skills-list
    budget hosts enforce; a description over DESCRIPTION_BUDGET is a warning.
 9. With --links, every external URL in skill prose resolves. Off by default so
@@ -45,26 +45,26 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 PLUGIN = "cerbos-skills"
-PLUGIN_DIR = f"plugins/{PLUGIN}"
-SKILLS = ROOT / PLUGIN_DIR / "skills"
+REPOSITORY = "https://github.com/cerbos/skills.git"
+SKILLS = ROOT / "skills"
 DOCS = [
     ROOT / "README.md",
     ROOT / "CONTRIBUTING.md",
-    ROOT / PLUGIN_DIR / "README.md",
     ROOT / "evals" / "README.md",
 ]
 PLUGIN_MANIFESTS = [
-    f"{PLUGIN_DIR}/.claude-plugin/plugin.json",
-    f"{PLUGIN_DIR}/.codex-plugin/plugin.json",
-    f"{PLUGIN_DIR}/.cursor-plugin/plugin.json",
+    ".claude-plugin/plugin.json",
+    ".codex-plugin/plugin.json",
+    ".cursor-plugin/plugin.json",
     "gemini-extension.json",
 ]
-MARKETPLACES = [
-    ".claude-plugin/marketplace.json",
-    ".github/plugin/marketplace.json",
-    ".cursor-plugin/marketplace.json",
-    ".agents/plugins/marketplace.json",
-]
+# The repository root is the plugin. Claude Code (and Copilot CLI, which reads
+# the same file) resolves "./" against the marketplace's repository; Codex
+# installs from the git URL. Cursor reads .cursor-plugin/plugin.json directly.
+MARKETPLACES = {
+    ".claude-plugin/marketplace.json": "./",
+    ".agents/plugins/marketplace.json": REPOSITORY,
+}
 MAX_SKILL_LINES = 500
 # A description loads on every turn; past this it is doing the body's job.
 DESCRIPTION_BUDGET = 600
@@ -287,7 +287,7 @@ def check_manifests(errors):
         if manifest.get("name") != PLUGIN:
             errors.append(f"{name}: name must be '{PLUGIN}'")
         versions[name] = manifest.get("version")
-    for name in MARKETPLACES:
+    for name, expected in MARKETPLACES.items():
         marketplace = load(name)
         if marketplace is None:
             continue
@@ -297,9 +297,9 @@ def check_manifests(errors):
         for entry in entries:
             source = entry.get("source")
             if isinstance(source, dict):
-                source = source.get("path")
-            if Path(str(source)) != Path(PLUGIN_DIR):
-                errors.append(f"{name}: '{PLUGIN}' source must be './{PLUGIN_DIR}', found {source!r}")
+                source = source.get("url") or source.get("path")
+            if source != expected:
+                errors.append(f"{name}: '{PLUGIN}' source must be {expected!r}, found {source!r}")
             if "version" in entry:
                 versions[name] = entry["version"]
     if len(set(versions.values())) > 1:
