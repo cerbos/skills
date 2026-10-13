@@ -12,13 +12,15 @@ Two things to carry back here: the store credential and the deployment credentia
 
 ## Authenticating
 
-Have the user run `cerbosctl hub auth` in their own terminal. It prints a URL and then blocks while they approve a device code in the browser, so it belongs where the user sees output as it arrives; the login goes to the OS keyring, where your `cerbosctl` finds it. After that an upload needs only the store ID, which is not a secret, so put it on the command yourself:
+Uploads authenticate with the store credential (Read & write), from a laptop as much as from CI: `CERBOS_HUB_CLIENT_ID` and `CERBOS_HUB_CLIENT_SECRET` in the environment, where `cerbosctl` reads them. `cerbosctl hub auth` does not authenticate uploads yet, so do not send the user there.
+
+The secret stays out of command lines and out of the transcript, which is a log that gets shared. Hand the user the upload command to run in a terminal where they have exported it (`read -rs CERBOS_HUB_CLIENT_SECRET && export CERBOS_HUB_CLIENT_SECRET` keeps it out of shell history too), or run it yourself when the variable is already set in your shell — check with `[ -n "$CERBOS_HUB_CLIENT_SECRET" ] && echo set`, never by printing it. The store ID and client ID are not secrets, so put them on the command yourself:
 
 ```bash
-CERBOS_HUB_STORE_ID=... cerbosctl hub store replace-files policies
+CERBOS_HUB_STORE_ID=... CERBOS_HUB_CLIENT_ID=... cerbosctl hub store replace-files policies
 ```
 
-Uploads from CI authenticate with the store credential instead, as `CERBOS_HUB_CLIENT_ID` and `CERBOS_HUB_CLIENT_SECRET` in the pipeline's secret store. A secret stays out of command lines and out of the transcript, which is a log that gets shared; one that lands there anyway is exposed, so have the user rotate it on the store's **Client credentials** tab.
+In CI, both credential values go in the pipeline's secret store. A secret that lands in the transcript anyway is exposed, so have the user rotate it on the store's **Client credentials** tab.
 
 Install `cerbosctl` with `brew tap cerbos/tap && brew install cerbos`, `npm install -g cerbosctl`, `npx cerbosctl`, or a [release binary](https://docs.cerbos.dev/cerbos-hub/policy-stores-cli-binary?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_hub-policy-stores-cli-binary).
 

@@ -18,7 +18,7 @@ Hub continuously checks the workspace and surfaces problems in an issues bar acr
 
 | Message | Cause |
 |---|---|
-| `failed to authenticate to Cerbos Hub` | `CERBOS_HUB_CLIENT_ID` / `CERBOS_HUB_CLIENT_SECRET` wrong or unset, and no saved login in the keyring. `scripts/check-prereqs` shows which are set; the user fixes a wrong value by running `cerbosctl hub auth` again or re-exporting it, without it being read back ([Secrets](../SKILL.md#secrets)) |
+| `failed to authenticate to Cerbos Hub` | `CERBOS_HUB_CLIENT_ID` / `CERBOS_HUB_CLIENT_SECRET` wrong or unset. `scripts/check-prereqs` shows which are set; the user fixes a wrong value by re-exporting it, without it being read back. `cerbosctl hub auth` is not a fix: it does not authenticate uploads yet ([Secrets](../SKILL.md#secrets)) |
 | `permission denied for store` | The credential is not scoped to this store, or is read-only. A **deployment** credential lands here — uploads need the credential created on the **store**, type Read & write |
 | `store doesn't exist` | `CERBOS_HUB_STORE_ID` names no store the credential can see |
 | `no usable files` | Every file broke a [file rule](https://docs.cerbos.dev/cerbos-hub/policy-stores-file-rules?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-policy-stores-file-rules); the ignored files are listed. Usually the wrong directory, or a tree holding no `.yaml`/`.yml`/`.json` |

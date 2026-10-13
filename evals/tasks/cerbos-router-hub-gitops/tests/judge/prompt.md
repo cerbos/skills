@@ -35,7 +35,10 @@ Reference facts about Cerbos for this grading:
   repository that Hub mirrors (a branch, optionally a subdirectory; each push
   that changes a policy triggers a build) or uploads (`cerbosctl hub store
   replace-files` / `upload-git` / `add-files`, from a laptop or CI with a store
-  credential, or a ZIP in the console).
+  credential, or a ZIP in the console). Every CLI upload, from a laptop as
+  much as from CI, authenticates with a Read & write store client credential
+  in `CERBOS_HUB_CLIENT_ID`/`CERBOS_HUB_CLIENT_SECRET`; `cerbosctl hub auth`
+  does not authenticate uploads yet.
 - A Hub deployment references one or more stores. On every change it compiles
   the policies once and runs every test suite; a compile or test failure blocks
   the build and leaves the previous bundle serving. A passing build becomes a

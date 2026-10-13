@@ -12,9 +12,8 @@ the files it holds. --json passes the raw response through.
 
 Environment:
   CERBOS_HUB_STORE_ID       required
-  CERBOS_HUB_CLIENT_ID      store credential
-  CERBOS_HUB_CLIENT_SECRET  store credential
-Leave both credential variables unset to use the login saved by scripts/hub-login.
+  CERBOS_HUB_CLIENT_ID      required, store credential
+  CERBOS_HUB_CLIENT_SECRET  required, store credential
 EOT
 }
 
@@ -46,6 +45,13 @@ if [[ -z "${CERBOS_HUB_STORE_ID:-}" ]]; then
   echo "CERBOS_HUB_STORE_ID is not set. Export the store ID from the store's detail page in Cerbos Hub." >&2
   exit 1
 fi
+
+for var in CERBOS_HUB_CLIENT_ID CERBOS_HUB_CLIENT_SECRET; do
+  if [[ -z "${!var:-}" ]]; then
+    echo "$var is not set. Reading the store needs a client credential created on it; export both variables." >&2
+    exit 1
+  fi
+done
 
 out="$("${cerbosctl[@]}" hub store list-files -o json)"
 

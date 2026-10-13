@@ -36,4 +36,4 @@ description = """The document gives concrete, ordered next steps that include cr
 [[criterion]]
 name = "no_fabrication"
 type = "binary"
-description = """Every Cerbos component, setting and Hub feature the document names exists and is described consistently with the reference facts. In particular it does not say Hub hosts, runs or scales the PDPs, that checks are sent to Hub for evaluation, that Hub is required to run Cerbos, that the policies must be rewritten for Hub, or name an invented Hub feature (approval workflow, canary percentages, Hub-run CI, and the like)."""
+description = """Every Cerbos component, setting and Hub feature the document names exists and is described consistently with the reference facts. In particular it does not say Hub hosts, runs or scales the PDPs, that checks are sent to Hub for evaluation, that Hub is required to run Cerbos, that the policies must be rewritten for Hub, that `cerbosctl hub auth` (a browser or device-code login) authenticates policy uploads, or name an invented Hub feature (approval workflow, canary percentages, Hub-run CI, and the like)."""

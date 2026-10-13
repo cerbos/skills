@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires the cerbos CLI or Docker for policy validation
 metadata:
   author: cerbos
-  version: "1.15"
+  version: "1.16"
   targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Glob Grep Task Bash(cerbos compile:*) Bash(cerbos --version) Bash(docker --version)
 ---
@@ -184,10 +184,10 @@ Finish validation when the requirements-first review has no unresolved coverage 
 **Policy store** — upload, and Hub compiles, runs every suite in the store, and pushes a signed bundle to each PDP on a deployment that references it. Upload the policy directory itself, so the coverage plan and compile reports kept beside it stay out of the store:
 
 ```bash
-CERBOS_HUB_STORE_ID=... cerbosctl hub store replace-files policies
+CERBOS_HUB_STORE_ID=... CERBOS_HUB_CLIENT_ID=... cerbosctl hub store replace-files policies
 ```
 
-`failed to authenticate`, or uploading for the first time → [references/HUB.md](references/HUB.md), which also covers the `upload-git` flow and the store's file rules.
+The secret of that store credential comes from `CERBOS_HUB_CLIENT_SECRET`, never the command line. `failed to authenticate`, or uploading for the first time → [references/HUB.md](references/HUB.md), which also covers the `upload-git` flow and the store's file rules.
 
 **Playground** — drag the policy directory onto the editor at [hub.cerbos.cloud](https://hub.cerbos.cloud?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_hub-app).
 

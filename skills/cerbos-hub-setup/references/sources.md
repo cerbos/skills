@@ -22,7 +22,8 @@ The PDP side of this skill — the image tag in Step 3, the `hub` storage driver
 
 - [hub.cerbos.cloud](https://hub.cerbos.cloud?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_hub-app): console tab and button names in Step 1, OPERATIONS.md and DIAGNOSE.md.
 - [hub.cerbos.cloud/meta](https://hub.cerbos.cloud/meta?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-hub-setup_meta): the `egressIps` array in Step 2b and DIAGNOSE.md.
-- `cerbosctl hub store --help` and `cerbosctl hub auth --help`: the subcommands and flags `scripts/` wraps and OPERATIONS.md lists.
+- `cerbosctl hub store --help`: the subcommands and flags `scripts/` wraps and OPERATIONS.md lists.
+- `cerbosctl hub auth --help`: the browser login that does not yet authenticate uploads, which [Secrets](../SKILL.md#secrets) steers away from. Recheck it each release, and drop that rule once uploads accept the login (cerbos/skills#26).
 - [cerbos-setup-action](https://github.com/cerbos/cerbos-setup-action) and [cerbos-compile-action](https://github.com/cerbos/cerbos-compile-action): the GitHub Actions example in CI.md, and the compile action's lack of a strict option.
 - `docker image inspect ghcr.io/cerbos/cerbos:<version> --format '{{json .Config.Volumes}}'`: the anonymous `/.cache` volume behind the default `cacheDir` in Step 3.
 - [example-cerbos-policy-repository](https://github.com/cerbos/example-cerbos-policy-repository): the starter policy set in "The shape of the job".
