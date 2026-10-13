@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Measure which Cerbos skill an agent loads for each prompt in prompts.jsonl.
 
-Each prompt runs in a fresh, empty workspace with the plugin installed from this
-checkout. The runner records every Cerbos skill the agent loaded, in order, and
+Each prompt runs in a fresh workspace with the plugin installed from this
+checkout. The workspace is empty unless the prompt names a stub project under
+workspaces/, which is copied in first. The runner records every Cerbos skill the agent loaded, in order, and
 writes a per-skill precision/recall report with a confusion matrix.
 
     python3 evals/triggers/run.py run --agent claude --model sonnet
@@ -29,6 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 PROMPTS = Path(__file__).resolve().with_name("prompts.jsonl")
+WORKSPACES = Path(__file__).resolve().with_name("workspaces")
 JOBS = ROOT / "evals" / "jobs" / "triggers"
 PLUGIN = "cerbos-skills"
 NONE = "none"
@@ -40,7 +42,8 @@ def skill_names() -> list[str]:
     return sorted(p.parent.name for p in (ROOT / "skills").glob("*/SKILL.md"))
 
 
-def load_prompts(path: Path = PROMPTS, skills: list[str] | None = None) -> list[dict]:
+def load_prompts(path: Path = PROMPTS, skills: list[str] | None = None,
+                 workspaces: Path = WORKSPACES) -> list[dict]:
     skills = skill_names() if skills is None else skills
     prompts, seen = [], set()
     for n, line in enumerate(path.read_text().splitlines(), 1):
@@ -56,6 +59,9 @@ def load_prompts(path: Path = PROMPTS, skills: list[str] | None = None) -> list[
                 raise ValueError(f"{where}: unknown skill {name!r}")
         if p["expect"] in p.get("near", []):
             raise ValueError(f"{where}: expected skill is also listed as a near miss")
+        ws = p.get("workspace")
+        if ws is not None and (not re.fullmatch(r"[a-z0-9-]+", ws) or not (workspaces / ws).is_dir()):
+            raise ValueError(f"{where}: unknown workspace {ws!r}")
         p.setdefault("also_ok", [])
         p.setdefault("near", [])
         prompts.append(p)
@@ -223,8 +229,15 @@ class Codex:
 AGENTS = {"claude": Claude, "codex": Codex}
 
 
+def prepare_workspace(prompt: dict, ws: Path, workspaces: Path = WORKSPACES):
+    """Copy the prompt's stub project, if any, into the empty workspace."""
+    if prompt.get("workspace"):
+        shutil.copytree(workspaces / prompt["workspace"], ws, dirs_exist_ok=True)
+
+
 def run_one(agent, prompt: dict, rep: int, raw_dir: Path, skills: list[str], timeout: int) -> dict:
     with tempfile.TemporaryDirectory(prefix="trigger-ws-") as ws:
+        prepare_workspace(prompt, Path(ws))
         error = None
         try:
             proc = subprocess.run(agent.command(prompt["prompt"]), cwd=ws, env=agent.env(),
@@ -241,7 +254,7 @@ def run_one(agent, prompt: dict, rep: int, raw_dir: Path, skills: list[str], tim
     if not events and not error:
         error = "no events"
     return {
-        "id": prompt["id"], "rep": rep, "expect": prompt["expect"],
+        "id": prompt["id"], "rep": rep, "expect": prompt["expect"], "workspace": prompt.get("workspace"),
         "also_ok": prompt["also_ok"], "near": prompt["near"],
         "loaded": agent.loaded(events, skills), "error": error, **agent.meta(events),
     }

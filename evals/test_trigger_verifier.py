@@ -38,6 +38,35 @@ class PromptSetTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "unknown skill"):
                 run.load_prompts(Path(f.name), SKILLS)
 
+    def test_every_workspace_is_used_and_holds_files(self):
+        used = {p["workspace"] for p in run.load_prompts() if p.get("workspace")}
+        stubs = {d.name for d in run.WORKSPACES.iterdir() if d.is_dir()}
+        self.assertEqual(used, stubs)
+        for name in stubs:
+            self.assertTrue(any(f.is_file() for f in (run.WORKSPACES / name).rglob("*")), name)
+
+    def test_unknown_or_escaping_workspace_is_rejected(self):
+        for ws in ("missing", "../triggers", ""):
+            with self.subTest(ws=ws), tempfile.NamedTemporaryFile("w", suffix=".jsonl") as f:
+                f.write(json.dumps({"id": "x", "expect": None, "workspace": ws, "prompt": "hi"}) + "\n")
+                f.flush()
+                with self.assertRaisesRegex(ValueError, "unknown workspace"):
+                    run.load_prompts(Path(f.name), SKILLS)
+
+
+class WorkspaceTest(unittest.TestCase):
+    def test_stub_is_copied_into_the_workspace(self):
+        with tempfile.TemporaryDirectory() as stubs, tempfile.TemporaryDirectory() as ws:
+            (Path(stubs) / "app" / "src").mkdir(parents=True)
+            (Path(stubs) / "app" / "src" / "main.js").write_text("x")
+            run.prepare_workspace({"workspace": "app"}, Path(ws), Path(stubs))
+            self.assertEqual((Path(ws) / "src" / "main.js").read_text(), "x")
+
+    def test_no_workspace_leaves_it_empty(self):
+        with tempfile.TemporaryDirectory() as ws:
+            run.prepare_workspace({"id": "x"}, Path(ws))
+            self.assertEqual(list(Path(ws).iterdir()), [])
+
 
 class ParseTest(unittest.TestCase):
     def test_claude_skill_tool_and_direct_reads_in_order(self):

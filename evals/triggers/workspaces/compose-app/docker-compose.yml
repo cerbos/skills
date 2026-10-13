@@ -1,0 +1,24 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      AUTHZ_ADDR: cerbos:3593
+    depends_on:
+      - cerbos
+
+  cerbos:
+    image: ghcr.io/cerbos/cerbos:0.42.0
+    command: ["server", "--config=/config/config.yaml"]
+    volumes:
+      - ./config:/config
+      - ./policies:/policies
+    ports:
+      - "3592:3592"
+      - "3593:3593"
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: postgres
