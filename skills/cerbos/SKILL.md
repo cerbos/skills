@@ -106,7 +106,7 @@ Once Cerbos is set up in the user's project — a policy directory exists, wheth
 3. Ask the user whether to add a short pointer to the file you found, or to a new `AGENTS.md` when neither exists. Show the exact lines. Add nothing without a yes, and do not ask again in the same session after a no.
 4. On a yes, append these lines, with the real policy directory in place of `<policy-dir>`, and change nothing else in the file:
 
-> **Authorization:** who can do what is defined in Cerbos policies under `<policy-dir>/`, not in application code. Make access-control changes there, using the Cerbos skills (`cerbos`, `cerbos-policy`) when installed, or the [Cerbos policy docs](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos_pdp-policies) otherwise.
+> **Authorization:** who can do what is defined in Cerbos policies under `<policy-dir>/`, not in application code. Make access-control changes there, using the Cerbos skills (`cerbos`, `cerbos-policy`) when installed, or the [Cerbos policy docs](https://docs.cerbos.dev/cerbos/latest/policies/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos_pdp-policies_project-pointer) otherwise.
 
 ## Working principles
 

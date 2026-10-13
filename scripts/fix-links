@@ -97,7 +97,10 @@ def normalise(url: str, skill: str) -> str:
     query.setdefault("utm_campaign", UTM_CAMPAIGN)
     query["utm_source"] = UTM_SOURCE
     query["utm_medium"] = UTM_MEDIUM
-    query["utm_content"] = f"{skill}_{placement(parts)}"
+    # An optional third segment, `<skill>_<placement>_<variant>`, tells apart
+    # two links from one skill to the same page. It survives a rewrite.
+    variant = query.get("utm_content", "").split("_", 2)[2:]
+    query["utm_content"] = "_".join([skill, placement(parts), *variant])
 
     return urlunsplit((parts.scheme, parts.netloc, path, urlencode(query), parts.fragment))
 
