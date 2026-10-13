@@ -1,0 +1,35 @@
+server:
+  httpListenAddr: ":3592"
+  grpcListenAddr: ":3593"
+  adminAPI:
+    enabled: false
+
+engine:
+  defaultPolicyVersion: default
+
+schema:
+  enforcement: reject
+
+hub:
+  credentials:
+    clientID: B5KQ2XWZ7M4N
+    # clientSecret comes from CERBOS_HUB_CLIENT_SECRET in the environment.
+    pdpID: orders-pdp
+
+storage:
+  driver: hub
+  hub:
+    remote:
+      deploymentID: D8JQ4MZK2PVX
+      cacheDir: /var/cerbos/hub
+
+audit:
+  enabled: true
+  accessLogsEnabled: true
+  decisionLogsEnabled: true
+  backend: file
+  file:
+    path: /var/log/cerbos/audit.log
+  decisionLogFilters:
+    checkResources:
+      ignoreAllowAll: true

@@ -1,0 +1,13 @@
+resources:
+  ana_submitted:
+    id: exp-1
+    kind: expense_report
+    attr: { owner: "ana", department: "sales", region: "emea", amount: 250, status: "submitted" }
+  ana_big_submitted:
+    id: exp-2
+    kind: expense_report
+    attr: { owner: "ana", department: "sales", region: "emea", amount: 4000, status: "submitted" }
+  ana_draft:
+    id: exp-3
+    kind: expense_report
+    attr: { owner: "ana", department: "sales", region: "emea", amount: 80, status: "draft" }

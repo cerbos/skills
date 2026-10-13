@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+description: Who may view, approve and delete expense reports.
+resourcePolicy:
+  resource: expense_report
+  version: default
+  importDerivedRoles:
+    - expense_roles
+  rules:
+    - name: view-own-or-team
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["report_owner", "department_manager"]
+
+    - name: finance-view-region
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["finance"]
+      condition:
+        match:
+          expr: R.attr.region == P.attr.region
+
+    - name: manager-approve-within-limit
+      actions: ["approve"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["department_manager"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.status == "submitted"
+              - expr: R.attr.amount <= P.attr.approval_limit
+
+    - name: finance-approve-region
+      actions: ["approve"]
+      effect: EFFECT_ALLOW
+      roles: ["finance"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.status == "submitted"
+              - expr: R.attr.region == P.attr.region
+              - expr: R.attr.owner != P.id
+
+    - name: owner-delete-draft
+      actions: ["delete"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["report_owner"]
+      condition:
+        match:
+          expr: R.attr.status == "draft"
+
+    - name: admin-view-delete
+      actions: ["view", "delete"]
+      effect: EFFECT_ALLOW
+      roles: ["admin"]

@@ -1,0 +1,48 @@
+server:
+  httpListenAddr: ":3592"
+  grpcListenAddr: ":3593"
+
+storage:
+  driver: disk
+  disk:
+    directory: /workspace/policies
+    watchForChanges: false
+
+auxData:
+  jwt:
+    keySets:
+      - id: acme-idp
+        local:
+          file: /workspace/jwks.json
+
+# Hub credentials come from CERBOS_HUB_CLIENT_ID / CERBOS_HUB_CLIENT_SECRET.
+# Masks are a setting of the hub backend only, so the local file is written by
+# piping the hub backend's (already masked) entries to the file backend.
+audit:
+  enabled: true
+  accessLogsEnabled: true
+  decisionLogsEnabled: true
+  backend: hub
+  # Capture every request header except credentials. `authorization` is never
+  # captured anyway; listing it documents the intent.
+  excludeMetadataKeys: [authorization, x-api-key, cookie]
+  decisionLogFilters:
+    planResources:
+      ignoreAlwaysAllow: true
+  hub:
+    storagePath: /var/lib/cerbos/audit
+    mask:
+      checkResources:
+        - inputs[*].principal.attr.ssn
+        - inputs[*].principal.attr.email
+        - inputs[*].resource.attr.bank_account
+        - inputs[*].auxData
+      planResources:
+        - input.principal.attr.ssn
+        - input.principal.attr.email
+        - input.auxData
+    pipeOutput:
+      enabled: true
+      backend: file
+  file:
+    path: /var/log/cerbos/audit.log

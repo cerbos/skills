@@ -1,0 +1,20 @@
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: default
+  resource: shipment
+  rules:
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["dispatcher", "driver", "support", "carrier_admin"]
+    - actions: ["update_status"]
+      effect: EFFECT_ALLOW
+      roles: ["driver"]
+      condition:
+        match:
+          expr: request.resource.attr.assignedDriverId == request.principal.id
+    - actions: ["reassign", "cancel"]
+      effect: EFFECT_ALLOW
+      roles: ["dispatcher", "carrier_admin"]
+      condition:
+        match:
+          expr: request.resource.attr.status != "delivered"

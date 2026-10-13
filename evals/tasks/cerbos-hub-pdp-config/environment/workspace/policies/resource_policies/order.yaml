@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: order
+  version: default
+  rules:
+    - name: view-orders
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["customer", "support"]
+    - name: refund-orders
+      actions: ["refund"]
+      effect: EFFECT_ALLOW
+      roles: ["support"]

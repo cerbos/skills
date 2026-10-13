@@ -1,0 +1,117 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: ExpenseTestSuite
+description: One allow and one deny per branch of opa/expenses.rego, plus the ordering cases.
+tests:
+  - name: "branch 1: legal hold freezes everyone but reading"
+    input:
+      principals: ["admin", "employee", "finance"]
+      resources: ["emma_held"]
+      actions: ["view", "edit", "delete", "export"]
+    expected:
+      - {principal: admin, resource: emma_held, actions: {view: EFFECT_ALLOW, edit: EFFECT_DENY, delete: EFFECT_DENY, export: EFFECT_DENY}}
+      - {principal: employee, resource: emma_held, actions: {view: EFFECT_ALLOW, edit: EFFECT_DENY, delete: EFFECT_DENY, export: EFFECT_DENY}}
+      - {principal: finance, resource: emma_held, actions: {view: EFFECT_ALLOW, edit: EFFECT_DENY, delete: EFFECT_DENY, export: EFFECT_DENY}}
+
+  - name: "branch 1: legal_hold false or absent does not freeze"
+    input:
+      principals: ["employee"]
+      resources: ["emma_not_held", "emma_draft"]
+      actions: ["edit"]
+    expected:
+      - {principal: employee, resource: emma_not_held, actions: {edit: EFFECT_ALLOW}}
+      - {principal: employee, resource: emma_draft, actions: {edit: EFFECT_ALLOW}}
+
+  - name: "branch 2: admin may do anything"
+    input:
+      principals: ["admin"]
+      resources: ["emma_submitted", "engineering_submitted"]
+      actions: ["view", "edit", "approve", "export"]
+    expected:
+      - {principal: admin, resource: emma_submitted, actions: {view: EFFECT_ALLOW, edit: EFFECT_ALLOW, approve: EFFECT_ALLOW, export: EFFECT_ALLOW}}
+      - {principal: admin, resource: engineering_submitted, actions: {view: EFFECT_ALLOW, edit: EFFECT_ALLOW, approve: EFFECT_ALLOW, export: EFFECT_ALLOW}}
+
+  - name: "branch 3: contractor outside own department, whatever other roles"
+    input:
+      principals: ["contractor", "contractor_finance", "contractor_manager"]
+      resources: ["engineering_submitted", "carl_engineering_draft"]
+      actions: ["view", "export", "approve", "edit"]
+    expected:
+      - principal: contractor_finance
+        resource: engineering_submitted
+        actions: {view: EFFECT_DENY, export: EFFECT_DENY, approve: EFFECT_DENY, edit: EFFECT_DENY}
+      - principal: contractor_manager
+        resource: engineering_submitted
+        actions: {view: EFFECT_DENY, export: EFFECT_DENY, approve: EFFECT_DENY, edit: EFFECT_DENY}
+      - principal: contractor
+        resource: carl_engineering_draft
+        actions: {view: EFFECT_DENY, export: EFFECT_DENY, approve: EFFECT_DENY, edit: EFFECT_DENY}
+
+  - name: "branch 3 vs 2: admin wins over the contractor restriction"
+    input:
+      principals: ["admin_contractor"]
+      resources: ["engineering_submitted"]
+      actions: ["view", "export"]
+    expected:
+      - {principal: admin_contractor, resource: engineering_submitted, actions: {view: EFFECT_ALLOW, export: EFFECT_ALLOW}}
+
+  - name: "branch 3: contractor inside own department"
+    input:
+      principals: ["contractor", "contractor_finance", "contractor_manager"]
+      resources: ["emma_submitted"]
+      actions: ["view", "export", "approve", "create"]
+    expected:
+      - {principal: contractor, resource: emma_submitted, actions: {view: EFFECT_DENY, export: EFFECT_DENY, approve: EFFECT_DENY, create: EFFECT_ALLOW}}
+      - {principal: contractor_finance, resource: emma_submitted, actions: {view: EFFECT_ALLOW, export: EFFECT_ALLOW, approve: EFFECT_DENY, create: EFFECT_ALLOW}}
+      - {principal: contractor_manager, resource: emma_submitted, actions: {view: EFFECT_ALLOW, export: EFFECT_DENY, approve: EFFECT_ALLOW, create: EFFECT_ALLOW}}
+
+  - name: "branch 4: role grants from data.json"
+    input:
+      principals: ["employee", "manager", "director", "finance", "auditor", "intern"]
+      resources: ["engineering_submitted"]
+      actions: ["view", "create", "export"]
+    expected:
+      - {principal: employee, resource: engineering_submitted, actions: {view: EFFECT_DENY, create: EFFECT_ALLOW, export: EFFECT_DENY}}
+      - {principal: manager, resource: engineering_submitted, actions: {view: EFFECT_ALLOW, create: EFFECT_ALLOW, export: EFFECT_DENY}}
+      - {principal: director, resource: engineering_submitted, actions: {view: EFFECT_ALLOW, create: EFFECT_ALLOW, export: EFFECT_ALLOW}}
+      - {principal: finance, resource: engineering_submitted, actions: {view: EFFECT_ALLOW, create: EFFECT_DENY, export: EFFECT_ALLOW}}
+      - {principal: auditor, resource: engineering_submitted, actions: {view: EFFECT_ALLOW, create: EFFECT_DENY, export: EFFECT_DENY}}
+      - {principal: intern, resource: engineering_submitted, actions: {view: EFFECT_DENY, create: EFFECT_DENY, export: EFFECT_DENY}}
+
+  - name: "branch 5: owners view, and change only drafts"
+    input:
+      principals: ["employee"]
+      resources: ["emma_draft", "emma_submitted"]
+      actions: ["view", "edit", "submit", "delete"]
+    expected:
+      - {principal: employee, resource: emma_draft, actions: {view: EFFECT_ALLOW, edit: EFFECT_ALLOW, submit: EFFECT_ALLOW, delete: EFFECT_ALLOW}}
+      - {principal: employee, resource: emma_submitted, actions: {view: EFFECT_ALLOW, edit: EFFECT_DENY, submit: EFFECT_DENY, delete: EFFECT_DENY}}
+
+  - name: "branch 5: unknown roles still own their expenses; contractors only in department"
+    input:
+      principals: ["contractor"]
+      resources: ["carl_sales_draft", "carl_engineering_draft"]
+      actions: ["view", "edit"]
+    expected:
+      - {principal: contractor, resource: carl_sales_draft, actions: {view: EFFECT_ALLOW, edit: EFFECT_ALLOW}}
+
+  - name: "branch 6: approval limits"
+    input:
+      principals: ["manager", "director", "manager_director"]
+      resources: ["emma_at_manager_limit", "emma_over_manager_limit", "emma_at_director_limit", "emma_over_director_limit"]
+      actions: ["approve"]
+    expected:
+      - {principal: manager, resource: emma_at_manager_limit, actions: {approve: EFFECT_ALLOW}}
+      - {principal: director, resource: emma_at_manager_limit, actions: {approve: EFFECT_ALLOW}}
+      - {principal: director, resource: emma_over_manager_limit, actions: {approve: EFFECT_ALLOW}}
+      - {principal: director, resource: emma_at_director_limit, actions: {approve: EFFECT_ALLOW}}
+      - {principal: manager_director, resource: emma_at_manager_limit, actions: {approve: EFFECT_ALLOW}}
+      - {principal: manager_director, resource: emma_over_manager_limit, actions: {approve: EFFECT_ALLOW}}
+      - {principal: manager_director, resource: emma_at_director_limit, actions: {approve: EFFECT_ALLOW}}
+
+  - name: "branch 6: only submitted expenses, never your own"
+    input:
+      principals: ["manager"]
+      resources: ["emma_draft", "max_submitted", "emma_submitted"]
+      actions: ["approve"]
+    expected:
+      - {principal: manager, resource: emma_submitted, actions: {approve: EFFECT_ALLOW}}

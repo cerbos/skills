@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+# Migrated from app/auth.py: checked in middleware before any resource is loaded,
+# so the principal is all there is to decide on.
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: api
+  version: default
+  rules:
+    - name: write-requests
+      actions: ["write"]
+      effect: EFFECT_ALLOW
+      roles: ["*"]
+
+    # Accounts under review are read-only until billing clears them.
+    # A user record may carry no status at all; that is not suspended.
+    - name: deny-suspended-writes
+      actions: ["write"]
+      effect: EFFECT_DENY
+      roles: ["*"]
+      condition:
+        match:
+          expr: has(P.attr.status) && P.attr.status == "suspended"

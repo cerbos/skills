@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: ExpenseReportTestSuite
+description: Expense report access.
+tests:
+  - name: owner views and deletes a draft
+    input:
+      principals: ["ana"]
+      resources: ["ana_draft", "ana_submitted"]
+      actions: ["view", "approve", "delete"]
+    expected:
+      - principal: ana
+        resource: ana_draft
+        actions: { view: EFFECT_ALLOW, approve: EFFECT_DENY, delete: EFFECT_ALLOW }
+      - principal: ana
+        resource: ana_submitted
+        actions: { view: EFFECT_ALLOW, approve: EFFECT_DENY, delete: EFFECT_DENY }
+
+  - name: manager approves within limit
+    input:
+      principals: ["marco"]
+      resources: ["ana_submitted", "ana_big_submitted"]
+      actions: ["view", "approve", "delete"]
+    expected:
+      - principal: marco
+        resource: ana_submitted
+        actions: { view: EFFECT_ALLOW, approve: EFFECT_ALLOW, delete: EFFECT_DENY }
+      - principal: marco
+        resource: ana_big_submitted
+        actions: { view: EFFECT_ALLOW, approve: EFFECT_DENY, delete: EFFECT_DENY }
+
+  - name: finance approves in region
+    input:
+      principals: ["fiona"]
+      resources: ["ana_big_submitted", "ana_draft"]
+      actions: ["view", "approve"]
+    expected:
+      - principal: fiona
+        resource: ana_big_submitted
+        actions: { view: EFFECT_ALLOW, approve: EFFECT_ALLOW }
+      - principal: fiona
+        resource: ana_draft
+        actions: { view: EFFECT_ALLOW, approve: EFFECT_DENY }

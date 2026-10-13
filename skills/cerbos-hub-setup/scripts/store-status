@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# Show a Cerbos Hub policy store's current version and file list.
+# Credentials are read from the environment and handed to cerbosctl untouched.
+set -euo pipefail
+
+usage() {
+  cat <<'EOT'
+Usage: store-status [--json]
+
+Runs `cerbosctl hub store list-files -o json` and reports the store version and
+the files it holds. --json passes the raw response through.
+
+Environment:
+  CERBOS_HUB_STORE_ID       required
+  CERBOS_HUB_CLIENT_ID      store credential
+  CERBOS_HUB_CLIENT_SECRET  store credential
+Leave both credential variables unset to use the login saved by scripts/hub-login.
+EOT
+}
+
+raw=0
+case "${1:-}" in
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  --json) raw=1 ;;
+  "") ;;
+  *)
+    usage >&2
+    exit 1
+    ;;
+esac
+
+if ! command -v cerbosctl >/dev/null 2>&1; then
+  echo "cerbosctl not found on PATH. Run scripts/check-prereqs for install options." >&2
+  exit 1
+fi
+
+if [[ -z "${CERBOS_HUB_STORE_ID:-}" ]]; then
+  echo "CERBOS_HUB_STORE_ID is not set. Export the store ID from the store's detail page in Cerbos Hub." >&2
+  exit 1
+fi
+
+out="$(cerbosctl hub store list-files -o json)"
+
+if [[ "$raw" -eq 1 ]]; then
+  printf '%s\n' "$out"
+  exit 0
+fi
+
+if [[ -z "$out" ]]; then
+  echo "Store $CERBOS_HUB_STORE_ID holds no files."
+  exit 0
+fi
+
+if command -v jq >/dev/null 2>&1 && printf '%s' "$out" | jq -e . >/dev/null 2>&1; then
+  printf 'Store:   %s\n' "$CERBOS_HUB_STORE_ID"
+  printf 'Version: %s\n' "$(printf '%s' "$out" | jq -r '.storeVersion // "unknown"')"
+  printf 'Files:   %s\n' "$(printf '%s' "$out" | jq -r '(.files // []) | length')"
+  printf '%s' "$out" | jq -r '(.files // [])[] | "  " + .'
+else
+  printf '%s\n' "$out"
+fi

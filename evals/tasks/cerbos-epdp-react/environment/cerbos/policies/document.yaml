@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: document
+  version: default
+  rules:
+    - name: view-documents
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["member", "admin"]
+
+    - name: edit-own-documents
+      actions: ["edit"]
+      effect: EFFECT_ALLOW
+      roles: ["member"]
+      condition:
+        match:
+          expr: request.resource.attr.owner == request.principal.id
+
+    - name: delete-own-drafts
+      actions: ["delete"]
+      effect: EFFECT_ALLOW
+      roles: ["member"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: request.resource.attr.owner == request.principal.id
+              - expr: request.resource.attr.status == "draft"
+
+    - name: admins-manage-documents
+      actions: ["edit", "delete"]
+      effect: EFFECT_ALLOW
+      roles: ["admin"]

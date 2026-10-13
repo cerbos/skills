@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+derivedRoles:
+  name: invoice_roles
+  definitions:
+    # permissions.py: invoice["owner_id"] == user["id"], with no role test.
+    - name: invoice_owner
+      parentRoles: ["*"]
+      condition:
+        match:
+          expr: R.attr.owner_id == P.id

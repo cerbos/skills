@@ -1,0 +1,5 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Billing API", "version": "3.8.0" },
+  "paths": {}
+}

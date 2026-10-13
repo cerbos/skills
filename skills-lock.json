@@ -67,6 +67,12 @@
       "skillPath": "skills/write-judge-prompt/SKILL.md",
       "computedHash": "139fb8b73e2e97f574f0a742d3fe572dfc5d720bf4c2e6fdafc1b233c4402740"
     },
+    "writing-for-agents": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/writing-for-agents/SKILL.md",
+      "computedHash": "ccfa1e94d8f6ab5c6a1edd55293ca477faf93c39207771331efdb1e798ed21d6"
+    },
     "writing-great-skills": {
       "source": "mattpocock/skills",
       "sourceType": "github",

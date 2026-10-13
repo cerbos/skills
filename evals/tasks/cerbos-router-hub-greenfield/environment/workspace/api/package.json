@@ -1,0 +1,12 @@
+{
+  "name": "schedules-api",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "node dist/server.js", "build": "tsc", "test": "vitest" },
+  "dependencies": {
+    "fastify": "5.6.1",
+    "@fastify/jwt": "10.0.0",
+    "pg": "8.16.3"
+  },
+  "devDependencies": { "typescript": "5.9.3", "vitest": "3.2.4" }
+}

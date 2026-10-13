@@ -1,0 +1,7 @@
+{
+  "name": "ledgerly-api",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "node src/index.js" },
+  "dependencies": { "express": "5.2.1", "jose": "6.1.0", "pg": "8.16.3" }
+}

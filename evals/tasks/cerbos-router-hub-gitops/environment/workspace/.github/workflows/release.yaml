@@ -1,0 +1,29 @@
+name: release
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: dev, staging or prod
+        required: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: go test ./...
+      - run: docker build -t registry.freightline.io/shipments-api:${GITHUB_SHA} .
+      # Policies are copied into the sidecar image here. Nothing compiles or
+      # tests them before this step.
+      - run: docker build -f deploy/pdp/Dockerfile -t registry.freightline.io/shipments-pdp:${GITHUB_SHA} .
+      - run: docker push --all-tags registry.freightline.io/shipments-api && docker push --all-tags registry.freightline.io/shipments-pdp
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || 'dev' }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: envsubst < deploy/k8s/shipments-api.yaml | kubectl apply -f -
+        env:
+          GIT_SHA: ${{ github.sha }}

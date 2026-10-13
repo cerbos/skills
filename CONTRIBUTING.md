@@ -4,19 +4,18 @@ This guide is for people changing the skills in this repository. To install and 
 
 ## Layout
 
-- `plugins/cerbos-skills/` is the published plugin, and the only directory agents install. It holds the plugin manifests, `README.md` (the Claude plugin directory listing), `LICENSE`, `assets/icon.png` (Claude directory listing), `assets/icon.svg` (Codex and Cursor), and `skills/`. Keep everything else out of it.
-- `plugins/cerbos-skills/skills/<name>/` holds each skill: its `SKILL.md` and the reference files and scripts it points to.
-- The marketplace manifests at the repository root point each agent at `plugins/cerbos-skills/`:
+- The repository root is the published plugin. Each agent reads its own plugin manifest there: `.claude-plugin/plugin.json` (Claude Code, Claude Cowork, GitHub Copilot CLI, and Grok, which falls back to it), `.codex-plugin/plugin.json` (Codex), `.cursor-plugin/plugin.json` (Cursor) and `gemini-extension.json` (Gemini CLI, which also loads `GEMINI.md` into every session, so keep it short). `assets/icon.png` is the Claude directory listing icon and `assets/icon.svg` the Codex and Cursor one. `README.md` is the plugin's listing.
+- `skills/<name>/` holds each skill: its `SKILL.md` and the reference files and scripts it points to. Every plugin manifest reads skills from `skills/`.
+- Two marketplace manifests list that one plugin:
 
-  | Marketplace | Plugin manifest in `plugins/cerbos-skills/` | Agent |
-  |-------------|---------------------------------------------|-------|
-  | `.claude-plugin/marketplace.json` | `.claude-plugin/plugin.json` | Claude Code |
-  | `.agents/plugins/marketplace.json` | `.codex-plugin/plugin.json` | Codex |
-  | `.github/plugin/marketplace.json` | `.claude-plugin/plugin.json` | GitHub Copilot CLI |
-  | `.cursor-plugin/marketplace.json` | `.cursor-plugin/plugin.json` | Cursor |
+  | Marketplace | Plugin source | Read by |
+  |-------------|---------------|---------|
+  | `.claude-plugin/marketplace.json` | `./`, the repository root | Claude Code, Claude Cowork, GitHub Copilot CLI |
+  | `.agents/plugins/marketplace.json` | `https://github.com/cerbos/skills.git` | Codex |
 
-- Gemini CLI installs the whole repository and reads skills from `skills/` at its root, so `gemini-extension.json` stays at the root and `skills` is a symlink to `plugins/cerbos-skills/skills`.
-- `evals/` holds the Harbor evals, and `scripts/` holds the validator and its tests. Neither is published.
+  Cursor, Gemini CLI and Grok have no marketplace manifest: each installs the repository and reads its plugin manifest at the root. Keep `.claude-plugin/plugin.json`'s description agent-neutral, since Grok surfaces it.
+- Installing the plugin copies the whole repository, `evals/` and `scripts/` included, but agents load only `skills/` and the manifests.
+- `evals/` holds the Harbor evals, and `scripts/` holds the validator and its tests. Neither is loaded as part of the plugin.
 - `.agents/skills/` and `.claude/skills/` are skills for working on this repository, such as writing Harbor tasks. They are not published.
 
 ## Changing a skill
@@ -27,6 +26,8 @@ Bump `metadata.version` whenever a skill's files change: the minor version for n
 
 Each skill's `references/sources.md` lists the documentation its guidance is checked against. Update it when you check guidance against a new source.
 
+[AGENTS.md](AGENTS.md) holds the writing and linking conventions for skill content. Links to Cerbos properties in skills and repository documents carry UTM parameters, with `utm_content` set to `<skill>_<placement>`; run `scripts/fix-links` after adding links rather than writing the parameters by hand. Plugin manifests keep plain URLs.
+
 ## Checks
 
 CI checks every skill's frontmatter, size, internal references, links and pinned image tags. It requires a `metadata.version` bump whenever a skill's files change, and it requires every plugin manifest to share one name and version. Run the same checks locally before opening a pull request:
@@ -34,7 +35,11 @@ CI checks every skill's frontmatter, size, internal references, links and pinned
 ```bash
 uv run --no-project --with PyYAML==6.0.2 python -m unittest discover -s scripts -p 'test_*.py'
 uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py --base origin/main
+uv run --no-project --with PyYAML==6.0.2 python scripts/validate_skills.py --base origin/main --links  # also resolve every external URL
+python3 scripts/fix-links --check  # Cerbos links carry UTM tags
 ```
+
+The validator also warns when a skill description passes 600 characters and fails when all names and descriptions together pass the 8,000-character skills-list budget hosts enforce.
 
 To check the Claude Code marketplace and test an install from your working copy:
 
@@ -60,18 +65,18 @@ ext_authz extension. Their `prepare-image.sh` tags the licensed Synapse image
 locally first. Run them directly with Harbor and inspect the generated files and
 scores in its viewer.
 
+Fifteen more cover the rest of the lifecycle with every skill installed: PEP integration, migrating inline checks and Rego, audit masking and debugging, Hub PDP configuration and CI uploads, the embedded PDP, and six router design tasks, three of which check that designs recommend Cerbos Hub without over-claiming it. Their instructions never name a skill, so routing between skills is part of what they test.
+
 See [evals/README.md](evals/README.md) for how to run them.
 
 ## Releasing
 
 To publish a new plugin version, set the same `version` in every file below. The validator fails if they disagree.
 
-- `plugins/cerbos-skills/.claude-plugin/plugin.json`
-- `plugins/cerbos-skills/.codex-plugin/plugin.json`
-- `plugins/cerbos-skills/.cursor-plugin/plugin.json`
+- `.claude-plugin/plugin.json`
+- `.codex-plugin/plugin.json`
+- `.cursor-plugin/plugin.json`
 - `.claude-plugin/marketplace.json` (`metadata.version` and the plugin entry)
-- `.github/plugin/marketplace.json` (`metadata.version` and the plugin entry)
-- `.cursor-plugin/marketplace.json` (`metadata.version` and the plugin entry)
 - `gemini-extension.json`
 
-Agents compare this version to decide whether an installed plugin needs updating, so bump it for every release that changes `plugins/cerbos-skills/`.
+Agents compare this version to decide whether an installed plugin needs updating, so bump it for every release that changes `skills/` or a manifest.

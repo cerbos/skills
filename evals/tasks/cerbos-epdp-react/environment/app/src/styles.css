@@ -1,0 +1,7 @@
+body { font-family: system-ui, sans-serif; margin: 2rem; color: #1d2433; }
+header { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; }
+table { border-collapse: collapse; width: 100%; max-width: 56rem; }
+th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid #e3e6ec; }
+td.actions { display: flex; gap: 0.5rem; }
+button { cursor: pointer; }
+.error { color: #b42318; }

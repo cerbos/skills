@@ -1,0 +1,163 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: InvoiceTestSuite
+description: One allow and one deny per migrated invoice guard.
+principals:
+  admin:
+    id: alice
+    roles: ["admin"]
+    attr: {tenant_id: acme, plan: pro, status: active}
+  admin_free:
+    id: gail
+    roles: ["admin"]
+    attr: {tenant_id: globex, plan: free, status: active}
+  manager:
+    id: mia
+    roles: ["manager"]
+    attr: {tenant_id: acme, plan: pro, status: active}
+  accountant:
+    id: aaron
+    roles: ["accountant"]
+    attr: {tenant_id: acme, plan: pro, status: active}
+  accountant_free:
+    id: gina
+    roles: ["accountant"]
+    attr: {tenant_id: globex, plan: free, status: active}
+  viewer:
+    id: vera
+    roles: ["viewer"]
+    attr: {tenant_id: acme, plan: pro, status: active}
+  auditor:
+    id: ext-audit
+    roles: ["auditor"]
+    attr: {tenant_id: acme, plan: pro, status: active}
+resources:
+  aaron_draft:
+    kind: invoice
+    id: inv-100
+    attr: {tenant_id: acme, owner_id: aaron, amount: 1200, status: draft}
+  aaron_submitted_at_limit:
+    kind: invoice
+    id: inv-105
+    attr: {tenant_id: acme, owner_id: aaron, amount: 10000, status: submitted}
+  aaron_submitted_over_limit:
+    kind: invoice
+    id: inv-101
+    attr: {tenant_id: acme, owner_id: aaron, amount: 10001, status: submitted}
+  mia_submitted:
+    kind: invoice
+    id: inv-102
+    attr: {tenant_id: acme, owner_id: mia, amount: 800, status: submitted}
+  alice_submitted:
+    kind: invoice
+    id: inv-106
+    attr: {tenant_id: acme, owner_id: alice, amount: 800, status: submitted}
+  auditor_draft:
+    kind: invoice
+    id: inv-103
+    attr: {tenant_id: acme, owner_id: ext-audit, amount: 50, status: draft}
+  globex_invoice:
+    kind: invoice
+    id: inv-200
+    attr: {tenant_id: globex, owner_id: gina, amount: 300, status: draft}
+  globex_new:
+    kind: invoice
+    id: new
+    attr: {tenant_id: globex, owner_id: gina, amount: 0, status: draft}
+tests:
+  - name: permissions.can view
+    input:
+      principals: ["admin", "manager", "accountant", "viewer", "auditor"]
+      resources: ["aaron_draft"]
+      actions: ["view"]
+    expected:
+      - {principal: admin, resource: aaron_draft, actions: {view: EFFECT_ALLOW}}
+      - {principal: manager, resource: aaron_draft, actions: {view: EFFECT_ALLOW}}
+      - {principal: accountant, resource: aaron_draft, actions: {view: EFFECT_ALLOW}}
+      - {principal: viewer, resource: aaron_draft, actions: {view: EFFECT_ALLOW}}
+      - {principal: auditor, resource: aaron_draft, actions: {view: EFFECT_DENY}}
+
+  - name: handlers._load_invoice other tenant
+    input:
+      principals: ["admin", "manager"]
+      resources: ["globex_invoice"]
+      actions: ["view", "edit", "delete", "approve", "export"]
+    expected:
+      - principal: admin
+        resource: globex_invoice
+        actions: {view: EFFECT_DENY, edit: EFFECT_DENY, delete: EFFECT_DENY, approve: EFFECT_DENY, export: EFFECT_DENY}
+      - principal: manager
+        resource: globex_invoice
+        actions: {view: EFFECT_DENY, edit: EFFECT_DENY, delete: EFFECT_DENY, approve: EFFECT_DENY, export: EFFECT_DENY}
+
+  - name: handlers.create_invoice
+    input:
+      principals: ["accountant_free", "admin_free"]
+      resources: ["globex_new"]
+      actions: ["create"]
+    expected:
+      - {principal: accountant_free, resource: globex_new, actions: {create: EFFECT_ALLOW}}
+      - {principal: admin_free, resource: globex_new, actions: {create: EFFECT_ALLOW}}
+
+  - name: handlers.create_invoice viewer and unknown roles
+    input:
+      principals: ["viewer", "auditor"]
+      resources: ["aaron_draft"]
+      actions: ["create"]
+    expected:
+      - {principal: viewer, resource: aaron_draft, actions: {create: EFFECT_DENY}}
+      - {principal: auditor, resource: aaron_draft, actions: {create: EFFECT_DENY}}
+
+  - name: permissions.can edit and delete drafts
+    input:
+      principals: ["manager", "accountant", "auditor", "viewer"]
+      resources: ["aaron_draft", "auditor_draft", "mia_submitted"]
+      actions: ["edit", "delete"]
+    expected:
+      - {principal: manager, resource: aaron_draft, actions: {edit: EFFECT_ALLOW, delete: EFFECT_DENY}}
+      - {principal: manager, resource: auditor_draft, actions: {edit: EFFECT_ALLOW, delete: EFFECT_DENY}}
+      - {principal: manager, resource: mia_submitted, actions: {edit: EFFECT_DENY, delete: EFFECT_DENY}}
+      - {principal: accountant, resource: aaron_draft, actions: {edit: EFFECT_ALLOW, delete: EFFECT_ALLOW}}
+      - {principal: auditor, resource: auditor_draft, actions: {edit: EFFECT_ALLOW, delete: EFFECT_ALLOW}}
+
+  - name: permissions.can admin edits and deletes anything
+    input:
+      principals: ["admin"]
+      resources: ["mia_submitted"]
+      actions: ["edit", "delete"]
+    expected:
+      - {principal: admin, resource: mia_submitted, actions: {edit: EFFECT_ALLOW, delete: EFFECT_ALLOW}}
+
+  - name: handlers.approve_invoice limits and self-approval
+    input:
+      principals: ["manager", "admin", "accountant"]
+      resources: ["aaron_submitted_at_limit", "aaron_submitted_over_limit", "mia_submitted", "alice_submitted"]
+      actions: ["approve"]
+    expected:
+      - {principal: manager, resource: aaron_submitted_at_limit, actions: {approve: EFFECT_ALLOW}}
+      - {principal: manager, resource: aaron_submitted_over_limit, actions: {approve: EFFECT_DENY}}
+      - {principal: manager, resource: mia_submitted, actions: {approve: EFFECT_DENY}}
+      - {principal: manager, resource: alice_submitted, actions: {approve: EFFECT_ALLOW}}
+      - {principal: admin, resource: aaron_submitted_at_limit, actions: {approve: EFFECT_ALLOW}}
+      - {principal: admin, resource: aaron_submitted_over_limit, actions: {approve: EFFECT_ALLOW}}
+      - {principal: admin, resource: mia_submitted, actions: {approve: EFFECT_ALLOW}}
+      - {principal: admin, resource: alice_submitted, actions: {approve: EFFECT_DENY}}
+
+  - name: handlers.export_invoice plan and viewer
+    input:
+      principals: ["accountant", "auditor", "viewer", "admin"]
+      resources: ["aaron_draft"]
+      actions: ["export"]
+    expected:
+      - {principal: accountant, resource: aaron_draft, actions: {export: EFFECT_ALLOW}}
+      - {principal: auditor, resource: aaron_draft, actions: {export: EFFECT_ALLOW}}
+      - {principal: viewer, resource: aaron_draft, actions: {export: EFFECT_DENY}}
+      - {principal: admin, resource: aaron_draft, actions: {export: EFFECT_ALLOW}}
+
+  - name: flags.csv_export free plan
+    input:
+      principals: ["accountant_free", "admin_free"]
+      resources: ["globex_invoice"]
+      actions: ["export"]
+    expected:
+      - {principal: accountant_free, resource: globex_invoice, actions: {export: EFFECT_DENY}}
+      - {principal: admin_free, resource: globex_invoice, actions: {export: EFFECT_DENY}}

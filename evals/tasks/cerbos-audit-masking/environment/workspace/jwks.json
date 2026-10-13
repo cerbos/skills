@@ -1,0 +1,15 @@
+{
+  "keys": [
+    {
+      "kty": "RSA",
+      "key_ops": [
+        "verify"
+      ],
+      "n": "8e9PLyg6lb7FrlB1MxY2KDEiF1UBGILXXz2Aw-X_O1F2XfqVbMRVEzIzgzH1oMbrnon83cBWDPLAuihLfErG46u_xBd39kbQbKKGXIhS6o5EaHxgRRAsFDJh7UFM0BvNuIzjTD5QMcDhyZ2JYGLIDHS-b4xuNKNtmvntEXdBPEU0tnCaoi_lr33EKqmPRgzkEBk22yMAf7GxQGdt1xLsLf0PCd7MysrOI4R3KqW3XsXckCyAy4zANC7z0AfbwCAQpsENtEEZ4wPZv2Aeez4NoVjWcll-V-sQL4a-RhMIIuhMqTqFOECcUpTiPfe0q9cbvIU3P26cD1ofDWNvKLVgBQ",
+      "e": "AQAB",
+      "kid": "acme-idp-2026",
+      "alg": "RS256",
+      "use": "sig"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+# cerbos-router-hub-greenfield
+
+Rosterly, a five-person startup with no platform engineer, is adopting Cerbos
+for its first service (`schedules-api`, TypeScript on ECS Fargate); a React
+dashboard that must hide buttons, a second (Python) service and SOC 2 Type II
+are on the roadmap. The [instruction](instruction.md) asks how to set Cerbos up
+now without over-building or redoing it in six months, and what can wait; it
+names no Cerbos component or skill. The agent writes `/workspace/DESIGN.md`.
+Measures whether the skills lead the agent to start on Cerbos Hub now (tested
+pipeline, audit for SOC 2, the Hub-only embedded PDP for the dashboard) with a
+service PDP in Rosterly's own infrastructure, while staying honest that the
+open-source PDP runs standalone and Hub is not required.
+
+`/workspace` holds a README, the signed-off permission matrix, the roadmap, the
+Fastify routes with only an org check, `package.json` and the ECS task
+definition.
+
+## Environment
+
+The image is the same as the other router tasks: Cerbos 0.55.0 and Python 3.12
+(Debian Bookworm) pinned by digest, with PyYAML 6.0.2, Git, curl and CA
+certificates, and the scenario's project files copied from
+`environment/workspace/` to `/workspace`. Cerbos runs natively; there is no
+Docker. Judge tooling is installed off the agent's `PATH`: Reward Kit
+(`harbor-rewardkit` 0.2.1 with the pinned dependencies in
+`environment/judge-requirements.txt`) in `/opt/rewardkit`, and Codex CLI 0.157.0
+with a Node 22.23.3 binary (from `node:22-bookworm-slim`, pinned by digest) in
+`/opt/judge`. The Dockerfile is identical to the other router tasks', so only
+the final `COPY workspace/` layer is new. Limits: 2 CPUs, 2 GiB RAM, 4 GiB
+storage, 600 seconds for the agent, 600 for verification.
+
+## Verification
+
+`tests/test.sh` runs `tests/verify.py`, then Reward Kit on `tests/judge/`
+three times in parallel (Codex agent judge, `openai/gpt-5.6-luna`, working
+directory `/workspace`, all criteria in one call per run), then
+`tests/merge.py`, which takes the majority verdict per criterion and writes one
+key per check and `reward` = all pass. A criterion a run fails to score counts
+as a fail for that run. The judge prompt (`tests/judge/prompt.md`) restates the
+request and gives the judge a closed list of Cerbos and Cerbos Hub facts taken
+from the `cerbos`, `cerbos-hub-setup`, `cerbos-audit-insights` and
+`cerbos-embedded-pdp` skills, `cerbos-policy/references/HUB.md` and
+docs.cerbos.dev. Its fabrication definition names the Hub over-claims this task
+family targets: Hub hosting or running the team's service PDPs, Hub evaluating
+checks in the cloud, Hub being required to run Cerbos, adopting Hub requiring a
+policy rewrite, and invented Hub features.
+
+| Stage | Kind | Requirement |
+| --- | --- | --- |
+| `design_doc` | deterministic | `/workspace/DESIGN.md` exists and has at least 250 words. |
+| `hub_recommended` | judged | The document recommends starting on Cerbos Hub now, for the first service — not deferring it to a later phase or presenting it as an optional future upgrade — and justifies that with at least two of their roadmap items: a tested policy pipeline / delivery to their PDPs without a small team building and running one, audit log collection as SOC 2 evidence, and the embedded PDP (which needs Hub) for the React dashboard. |
+| `honest_oss` | judged | The document never claims Hub is required to run Cerbos, that the open-source PDP is only a development tool, or that adopting or leaving Hub means rewriting policies. It need not mention the standalone PDP; if it discusses moving to or from Hub, it calls that a PDP configuration change. (Relaxed from a stricter version that also required naming the standalone PDP; every live design failed that.) |
+| `service_pdp` | judged | `schedules-api` is authorized by a Cerbos service PDP running in Rosterly's own infrastructure (for example a sidecar container in the ECS task, or a small PDP service in their VPC) connected to Hub, which the API calls through a Cerbos PEP SDK (such as `@cerbos/grpc` or `@cerbos/http` with `checkResource`/`isAllowed`) before each protected action, with the principal and resource attributes supplied by the API. |
+| `next_steps` | judged | The document gives concrete, ordered next steps in which writing or prototyping the policies with tests (in files with `cerbos compile`, or in the Hub playground) comes before creating the Hub policy store and deployment(s), which come before running and connecting the service PDP and wiring the API's checks. |
+| `no_fabrication` | judged | Every Cerbos component, package, setting and Hub feature the document names exists and is described consistently with the reference facts. In particular it does not say Hub hosts or runs their PDP or evaluates their checks in the cloud, that Hub is required to run Cerbos, that the policies differ between Hub and the open-source PDP, or name an invented Hub feature (for example SOC 2 compliance reports generated by Hub, automatic PII detection, or an approval workflow). |
+
+## Validated locally
+
+The verifier, including the live Codex judge (three runs per replay,
+majority per criterion), was replayed in the built image with
+`.claude/hillclimb/cerbos-skills/rescore.py` (`oracle validation`), and oracle
+and nop also ran once each through Harbor 0.23.0. The wrong designs are in
+`tests/judge-validation/`. Every result below was produced with the final
+rubric and prompt unless noted.
+
+| Run | Rewards | Failing checks |
+| --- | --- | --- |
+| oracle (`solution/DESIGN.md`) | 1, 1 (rescore); 1 (Harbor) | — (every criterion 3/3 in both replays) |
+| nop (no `DESIGN.md`) | 0 (Harbor) | every check |
+| `wrong-oss-forever`: standalone open-source PDP with baked-in policies, CI tests, stdout audit to CloudWatch; "Hub is aimed at large fleets". | 0, 0 | `hub_recommended`, `honest_oss`, `service_pdp`, `next_steps` (both) |
+| `wrong-hub-deferred`: open-source PDP with the `git` driver now, honest about Hub being a config change later, Hub deferred to Q1/Q3. | 0, 0 | `hub_recommended`, `service_pdp`, `next_steps` (both) |
+| `wrong-hub-required`: recommends Hub but says the open-source PDP is a dev tool, Hub hosts the PDP and evaluates checks, policies need a Hub format, Hub writes the SOC 2 report. | 0, 0 | `honest_oss`, `service_pdp`, `next_steps`, `no_fabrication` (both) |
+
+The second replay used the final prompt (reference facts extended as described
+in the compliance task); no criterion changed between the two.
+
+## Running
+
+From the repository root with Docker running and a ChatGPT-authenticated Codex
+login for the judge:
+
+```bash
+export CODEX_AUTH_JSON="$(cat ~/.codex/auth.json)"
+uvx --from harbor==0.23.0 harbor run --jobs-dir evals/jobs -p evals/tasks/cerbos-router-hub-greenfield -a oracle
+uvx --from harbor==0.23.0 harbor run --jobs-dir evals/jobs -p evals/tasks/cerbos-router-hub-greenfield -a nop
+python3 .claude/hillclimb/cerbos-skills/rescore.py cerbos-router-hub-greenfield oracle validation
+```
+
+The judge calls a model on every verifier run, including oracle and nop. To
+replay a wrong design by hand, run the built image with `tests/` mounted at
+`/tests`, `cp /tests/judge-validation/<name>.md /workspace/DESIGN.md`, then
+`bash /tests/test.sh`.

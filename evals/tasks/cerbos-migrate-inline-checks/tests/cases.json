@@ -1,0 +1,6370 @@
+[
+  {
+    "name": "health",
+    "method": "GET",
+    "path": "/health",
+    "user": null,
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "no user header",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": null,
+    "body": null,
+    "expected": 401
+  },
+  {
+    "name": "unknown user",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "nobody",
+    "body": null,
+    "expected": 401
+  },
+  {
+    "name": "unknown user writes",
+    "method": "DELETE",
+    "path": "/invoices/read-t-north",
+    "user": "nobody",
+    "body": null,
+    "expected": 401
+  },
+  {
+    "name": "n-admin view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "n-admin",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-admin view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "n-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "n-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "n-admin",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-admin export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "n-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "n-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-n-admin",
+    "user": "n-admin",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-manager view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "n-manager",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-manager view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "n-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "n-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "n-manager",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-manager export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "n-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "n-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-n-manager",
+    "user": "n-manager",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-accountant view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-accountant view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-accountant view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-accountant export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-accountant export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-accountant export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-accountant view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-n-accountant",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-viewer view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-viewer view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-n-viewer",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-auditor view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-auditor export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-n-auditor",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "n-bot",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-bot view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "n-bot",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-bot view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "n-bot",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-bot export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "n-bot",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-bot export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "n-bot",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-bot export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "n-bot",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-bot view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-n-bot",
+    "user": "n-bot",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-admin-susp view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-admin-susp view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin-susp view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin-susp export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-admin-susp export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin-susp export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin-susp view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-n-admin-susp",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-manager-susp view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-manager-susp view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-susp view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-susp export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-manager-susp export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-susp export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-susp view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-n-manager-susp",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-viewer-susp view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-viewer-susp view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer-susp view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer-susp export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer-susp export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer-susp view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-n-viewer-susp",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-auditor-susp view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor-susp view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor-susp export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-auditor-susp export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor-susp export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor-susp view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-n-auditor-susp",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-manager-pending view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-pending view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-pending export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-manager-pending export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-pending export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-pending view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-n-manager-pending",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "s-admin view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "s-admin",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "s-admin view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "s-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-admin view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "s-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-admin export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "s-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-admin export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "s-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-admin export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "s-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-admin view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-s-admin",
+    "user": "s-admin",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "s-manager view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "s-manager",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "s-manager view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "s-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-manager view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "s-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-manager export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "s-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-manager export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "s-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-manager view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-s-manager",
+    "user": "s-manager",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "s-accountant view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "s-accountant view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-accountant view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-accountant export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-accountant export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-accountant view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-s-accountant",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "s-auditor view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-auditor view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-auditor export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-south/export",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-auditor export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-auditor view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-s-auditor",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-east",
+    "user": "e-manager",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "e-manager view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "e-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-manager view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "e-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-manager export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-east/export",
+    "user": "e-manager",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "e-manager export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "e-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-manager export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "e-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-manager view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-e-manager",
+    "user": "e-manager",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "e-viewer view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-east",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "e-viewer view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-viewer view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-viewer export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-east/export",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-viewer export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-viewer view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-e-viewer",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "e-auditor view own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-east",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor view other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-auditor view missing",
+    "method": "GET",
+    "path": "/invoices/missing",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-auditor export own-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-east/export",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "e-auditor export other-tenant",
+    "method": "GET",
+    "path": "/invoices/read-t-north/export",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-auditor export missing",
+    "method": "GET",
+    "path": "/invoices/missing/export",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-auditor view own invoice",
+    "method": "GET",
+    "path": "/invoices/view-own-e-auditor",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 201
+  },
+  {
+    "name": "n-admin create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-admin",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-admin edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-own-draft-500",
+    "user": "n-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-admin edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-own-submitted-500",
+    "user": "n-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-admin edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-own-approved-500",
+    "user": "n-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-admin edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-other-draft-500",
+    "user": "n-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-admin edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-other-submitted-500",
+    "user": "n-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-admin edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-other-approved-500",
+    "user": "n-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-admin edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-xtenant",
+    "user": "n-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-admin edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "n-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-admin delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-own-draft-500",
+    "user": "n-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-admin delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-own-submitted-500",
+    "user": "n-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-admin delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-own-approved-500",
+    "user": "n-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-admin delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-other-draft-500",
+    "user": "n-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-admin delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-other-submitted-500",
+    "user": "n-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-admin delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-other-approved-500",
+    "user": "n-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-admin delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-xtenant",
+    "user": "n-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "n-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-own-draft-10000/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-own-draft-10001/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-own-submitted-10000/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-own-submitted-10001/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-own-approved-10000/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-own-approved-10001/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-other-draft-10000/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "n-admin approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-other-draft-10001/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "n-admin approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-other-submitted-10000/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-admin approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-other-submitted-10001/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-admin approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-other-approved-10000/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "n-admin approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-other-approved-10001/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "n-admin approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-xtenant/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "n-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-admin edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-admin-own",
+    "user": "n-admin",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-admin edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-admin-other",
+    "user": "n-admin",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-manager create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 201
+  },
+  {
+    "name": "n-manager create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-manager",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-manager edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-own-draft-500",
+    "user": "n-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-manager edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-own-submitted-500",
+    "user": "n-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-own-approved-500",
+    "user": "n-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-other-draft-500",
+    "user": "n-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-manager edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-other-submitted-500",
+    "user": "n-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-other-approved-500",
+    "user": "n-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-xtenant",
+    "user": "n-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-manager edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "n-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-manager delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-own-draft-500",
+    "user": "n-manager",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-manager delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-own-submitted-500",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-own-approved-500",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-other-draft-500",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-other-submitted-500",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-other-approved-500",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-xtenant",
+    "user": "n-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "n-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-own-draft-10000/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-own-draft-10001/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-own-submitted-10000/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-own-submitted-10001/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-own-approved-10000/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-own-approved-10001/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-other-draft-10000/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "n-manager approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-other-draft-10001/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-other-submitted-10000/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-manager approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-other-submitted-10001/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-other-approved-10000/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "n-manager approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-other-approved-10001/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-xtenant/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "n-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-manager-own",
+    "user": "n-manager",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-manager edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-manager-other",
+    "user": "n-manager",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-accountant create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 201
+  },
+  {
+    "name": "n-accountant create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-accountant",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-accountant edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-accountant-own-draft-500",
+    "user": "n-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-accountant edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-accountant-own-submitted-500",
+    "user": "n-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-accountant edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-accountant-own-approved-500",
+    "user": "n-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-accountant edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-accountant-other-draft-500",
+    "user": "n-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-accountant edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-accountant-other-submitted-500",
+    "user": "n-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-accountant edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-accountant-other-approved-500",
+    "user": "n-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-accountant edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-n-accountant-xtenant",
+    "user": "n-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-accountant edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "n-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-accountant delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-accountant-own-draft-500",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-accountant delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-accountant-own-submitted-500",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-accountant-own-approved-500",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-accountant-other-draft-500",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-accountant-other-submitted-500",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-accountant-other-approved-500",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-accountant-xtenant",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-accountant delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-accountant approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-own-draft-10000/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-own-draft-10001/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-own-submitted-10000/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-own-submitted-10001/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-own-approved-10000/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-own-approved-10001/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-other-draft-10000/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-other-draft-10001/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-other-submitted-10000/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-other-submitted-10001/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-other-approved-10000/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-other-approved-10001/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-accountant approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-n-accountant-xtenant/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-accountant approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "n-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-accountant edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-accountant-own",
+    "user": "n-accountant",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-accountant edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-accountant-other",
+    "user": "n-accountant",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-viewer",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-own-draft-500",
+    "user": "n-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-viewer edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-own-submitted-500",
+    "user": "n-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-own-approved-500",
+    "user": "n-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-other-draft-500",
+    "user": "n-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-other-submitted-500",
+    "user": "n-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-other-approved-500",
+    "user": "n-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-xtenant",
+    "user": "n-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-viewer edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "n-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-viewer delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-own-draft-500",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-viewer delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-own-submitted-500",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-own-approved-500",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-other-draft-500",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-other-submitted-500",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-other-approved-500",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-xtenant",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-own-draft-10000/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-own-draft-10001/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-own-submitted-10000/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-own-submitted-10001/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-own-approved-10000/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-own-approved-10001/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-other-draft-10000/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-other-draft-10001/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-other-submitted-10000/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-other-submitted-10001/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-other-approved-10000/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-other-approved-10001/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-xtenant/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "n-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-viewer edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-viewer-own",
+    "user": "n-viewer",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-viewer edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-viewer-other",
+    "user": "n-viewer",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-auditor",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-own-draft-500",
+    "user": "n-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-auditor edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-own-submitted-500",
+    "user": "n-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-own-approved-500",
+    "user": "n-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-other-draft-500",
+    "user": "n-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-other-submitted-500",
+    "user": "n-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-other-approved-500",
+    "user": "n-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-xtenant",
+    "user": "n-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-auditor edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "n-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-auditor delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-own-draft-500",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-auditor delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-own-submitted-500",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-own-approved-500",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-other-draft-500",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-other-submitted-500",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-other-approved-500",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-xtenant",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-own-draft-10000/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-own-draft-10001/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-own-submitted-10000/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-own-submitted-10001/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-own-approved-10000/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-own-approved-10001/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-other-draft-10000/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-other-draft-10001/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-other-submitted-10000/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-other-submitted-10001/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-other-approved-10000/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-other-approved-10001/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-xtenant/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "n-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-auditor edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-auditor-own",
+    "user": "n-auditor",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-auditor edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-auditor-other",
+    "user": "n-auditor",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-bot create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-bot",
+    "body": {
+      "amount": 250
+    },
+    "expected": 201
+  },
+  {
+    "name": "n-bot create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-bot",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-bot edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-bot-own-draft-500",
+    "user": "n-bot",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-bot edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-bot-own-submitted-500",
+    "user": "n-bot",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-bot edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-bot-own-approved-500",
+    "user": "n-bot",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-bot edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-bot-other-draft-500",
+    "user": "n-bot",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-bot edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-bot-other-submitted-500",
+    "user": "n-bot",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-bot edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-bot-other-approved-500",
+    "user": "n-bot",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-bot edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-n-bot-xtenant",
+    "user": "n-bot",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-bot edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "n-bot",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-bot delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-bot-own-draft-500",
+    "user": "n-bot",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-bot delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-bot-own-submitted-500",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-bot-own-approved-500",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-bot-other-draft-500",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-bot-other-submitted-500",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-bot-other-approved-500",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-bot-xtenant",
+    "user": "n-bot",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-bot delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "n-bot",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-bot approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-own-draft-10000/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-own-draft-10001/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-own-submitted-10000/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-own-submitted-10001/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-own-approved-10000/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-own-approved-10001/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-other-draft-10000/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-other-draft-10001/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-other-submitted-10000/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-other-submitted-10001/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-other-approved-10000/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-other-approved-10001/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-bot approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-n-bot-xtenant/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-bot approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "n-bot",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-bot edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-bot-own",
+    "user": "n-bot",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-bot edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-bot-other",
+    "user": "n-bot",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-susp-own-draft-500",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-susp-own-submitted-500",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-susp-own-approved-500",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-susp-other-draft-500",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-susp-other-submitted-500",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-susp-other-approved-500",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-n-admin-susp-xtenant",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-susp-own-draft-500",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-susp-own-submitted-500",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-susp-own-approved-500",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-susp-other-draft-500",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-susp-other-submitted-500",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-susp-other-approved-500",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-admin-susp-xtenant",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-own-draft-10000/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-own-draft-10001/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-own-submitted-10000/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-own-submitted-10001/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-own-approved-10000/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-own-approved-10001/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-other-draft-10000/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-other-draft-10001/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-other-submitted-10000/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-other-submitted-10001/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-other-approved-10000/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-other-approved-10001/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-n-admin-susp-xtenant/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "n-admin-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-admin-susp-own",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-admin-susp edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-admin-susp-other",
+    "user": "n-admin-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-susp-own-draft-500",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-susp-own-submitted-500",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-susp-own-approved-500",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-susp-other-draft-500",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-susp-other-submitted-500",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-susp-other-approved-500",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-susp-xtenant",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-susp-own-draft-500",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-susp-own-submitted-500",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-susp-own-approved-500",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-susp-other-draft-500",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-susp-other-submitted-500",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-susp-other-approved-500",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-susp-xtenant",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-own-draft-10000/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-own-draft-10001/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-own-submitted-10000/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-own-submitted-10001/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-own-approved-10000/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-own-approved-10001/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-other-draft-10000/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-other-draft-10001/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-other-submitted-10000/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-other-submitted-10001/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-other-approved-10000/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-other-approved-10001/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-susp-xtenant/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "n-manager-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-manager-susp-own",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-susp edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-manager-susp-other",
+    "user": "n-manager-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-susp-own-draft-500",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-susp-own-submitted-500",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-susp-own-approved-500",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-susp-other-draft-500",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-susp-other-submitted-500",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-susp-other-approved-500",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-n-viewer-susp-xtenant",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-susp-own-draft-500",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-susp-own-submitted-500",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-susp-own-approved-500",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-susp-other-draft-500",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-susp-other-submitted-500",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-susp-other-approved-500",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-viewer-susp-xtenant",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-own-draft-10000/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-own-draft-10001/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-own-submitted-10000/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-own-submitted-10001/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-own-approved-10000/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-own-approved-10001/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-other-draft-10000/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-other-draft-10001/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-other-submitted-10000/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-other-submitted-10001/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-other-approved-10000/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-other-approved-10001/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-n-viewer-susp-xtenant/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "n-viewer-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-viewer-susp-own",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-viewer-susp edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-viewer-susp-other",
+    "user": "n-viewer-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-susp-own-draft-500",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-susp-own-submitted-500",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-susp-own-approved-500",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-susp-other-draft-500",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-susp-other-submitted-500",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-susp-other-approved-500",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-n-auditor-susp-xtenant",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-susp-own-draft-500",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-susp-own-submitted-500",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-susp-own-approved-500",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-susp-other-draft-500",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-susp-other-submitted-500",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-susp-other-approved-500",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-auditor-susp-xtenant",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-own-draft-10000/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-own-draft-10001/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-own-submitted-10000/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-own-submitted-10001/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-own-approved-10000/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-own-approved-10001/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-other-draft-10000/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-other-draft-10001/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-other-submitted-10000/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-other-submitted-10001/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-other-approved-10000/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-other-approved-10001/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-n-auditor-susp-xtenant/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "n-auditor-susp",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-auditor-susp-own",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-auditor-susp edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-auditor-susp-other",
+    "user": "n-auditor-susp",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": 250
+    },
+    "expected": 201
+  },
+  {
+    "name": "n-manager-pending create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-manager-pending edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-pending-own-draft-500",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-manager-pending edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-pending-own-submitted-500",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-pending-own-approved-500",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-pending-other-draft-500",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "n-manager-pending edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-pending-other-submitted-500",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-pending-other-approved-500",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-n-manager-pending-xtenant",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-manager-pending edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "n-manager-pending delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-pending-own-draft-500",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "n-manager-pending delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-pending-own-submitted-500",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-pending-own-approved-500",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-pending-other-draft-500",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-pending-other-submitted-500",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-pending-other-approved-500",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-n-manager-pending-xtenant",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-pending delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-pending approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-own-draft-10000/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-own-draft-10001/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-own-submitted-10000/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-own-submitted-10001/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-own-approved-10000/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-own-approved-10001/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-other-draft-10000/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "n-manager-pending approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-other-draft-10001/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-other-submitted-10000/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "n-manager-pending approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-other-submitted-10001/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-other-approved-10000/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "n-manager-pending approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-other-approved-10001/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "n-manager-pending approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-n-manager-pending-xtenant/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-pending approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "n-manager-pending",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "n-manager-pending edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-manager-pending-own",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "n-manager-pending edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-n-manager-pending-other",
+    "user": "n-manager-pending",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "s-admin create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "s-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 201
+  },
+  {
+    "name": "s-admin create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "s-admin",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "s-admin edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-admin-own-draft-500",
+    "user": "s-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "s-admin edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-admin-own-submitted-500",
+    "user": "s-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "s-admin edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-admin-own-approved-500",
+    "user": "s-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "s-admin edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-admin-other-draft-500",
+    "user": "s-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "s-admin edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-admin-other-submitted-500",
+    "user": "s-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "s-admin edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-admin-other-approved-500",
+    "user": "s-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "s-admin edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-s-admin-xtenant",
+    "user": "s-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "s-admin edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "s-admin",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "s-admin delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-admin-own-draft-500",
+    "user": "s-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "s-admin delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-admin-own-submitted-500",
+    "user": "s-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "s-admin delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-admin-own-approved-500",
+    "user": "s-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "s-admin delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-admin-other-draft-500",
+    "user": "s-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "s-admin delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-admin-other-submitted-500",
+    "user": "s-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "s-admin delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-admin-other-approved-500",
+    "user": "s-admin",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "s-admin delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-admin-xtenant",
+    "user": "s-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-admin delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "s-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-admin approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-own-draft-10000/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-admin approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-own-draft-10001/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-admin approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-own-submitted-10000/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-admin approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-own-submitted-10001/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-admin approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-own-approved-10000/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-admin approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-own-approved-10001/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-admin approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-other-draft-10000/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "s-admin approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-other-draft-10001/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "s-admin approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-other-submitted-10000/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "s-admin approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-other-submitted-10001/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "s-admin approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-other-approved-10000/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "s-admin approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-other-approved-10001/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "s-admin approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-s-admin-xtenant/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-admin approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "s-admin",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-admin edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-s-admin-own",
+    "user": "s-admin",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "s-admin edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-s-admin-other",
+    "user": "s-admin",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "s-manager create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "s-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 201
+  },
+  {
+    "name": "s-manager create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "s-manager",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "s-manager edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-manager-own-draft-500",
+    "user": "s-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "s-manager edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-manager-own-submitted-500",
+    "user": "s-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-manager edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-manager-own-approved-500",
+    "user": "s-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-manager edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-manager-other-draft-500",
+    "user": "s-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "s-manager edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-manager-other-submitted-500",
+    "user": "s-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-manager edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-manager-other-approved-500",
+    "user": "s-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-manager edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-s-manager-xtenant",
+    "user": "s-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "s-manager edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "s-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "s-manager delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-manager-own-draft-500",
+    "user": "s-manager",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "s-manager delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-manager-own-submitted-500",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-manager-own-approved-500",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-manager-other-draft-500",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-manager-other-submitted-500",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-manager-other-approved-500",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-manager-xtenant",
+    "user": "s-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-manager delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "s-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-manager approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-own-draft-10000/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-own-draft-10001/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-own-submitted-10000/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-own-submitted-10001/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-own-approved-10000/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-own-approved-10001/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-other-draft-10000/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "s-manager approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-other-draft-10001/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-other-submitted-10000/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "s-manager approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-other-submitted-10001/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-other-approved-10000/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "s-manager approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-other-approved-10001/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-manager approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-s-manager-xtenant/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-manager approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "s-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-manager edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-s-manager-own",
+    "user": "s-manager",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "s-manager edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-s-manager-other",
+    "user": "s-manager",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "s-accountant create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "s-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 201
+  },
+  {
+    "name": "s-accountant create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "s-accountant",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "s-accountant edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-accountant-own-draft-500",
+    "user": "s-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "s-accountant edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-accountant-own-submitted-500",
+    "user": "s-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-accountant edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-accountant-own-approved-500",
+    "user": "s-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-accountant edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-accountant-other-draft-500",
+    "user": "s-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-accountant edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-accountant-other-submitted-500",
+    "user": "s-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-accountant edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-accountant-other-approved-500",
+    "user": "s-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-accountant edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-s-accountant-xtenant",
+    "user": "s-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "s-accountant edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "s-accountant",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "s-accountant delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-accountant-own-draft-500",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "s-accountant delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-accountant-own-submitted-500",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-accountant-own-approved-500",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-accountant-other-draft-500",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-accountant-other-submitted-500",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-accountant-other-approved-500",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-accountant-xtenant",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-accountant delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-accountant approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-own-draft-10000/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-own-draft-10001/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-own-submitted-10000/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-own-submitted-10001/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-own-approved-10000/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-own-approved-10001/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-other-draft-10000/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-other-draft-10001/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-other-submitted-10000/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-other-submitted-10001/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-other-approved-10000/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-other-approved-10001/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-accountant approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-s-accountant-xtenant/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-accountant approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "s-accountant",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-accountant edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-s-accountant-own",
+    "user": "s-accountant",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "s-accountant edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-s-accountant-other",
+    "user": "s-accountant",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-auditor create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "s-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-auditor create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "s-auditor",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-auditor edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-auditor-own-draft-500",
+    "user": "s-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "s-auditor edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-auditor-own-submitted-500",
+    "user": "s-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-auditor edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-auditor-own-approved-500",
+    "user": "s-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-auditor edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-auditor-other-draft-500",
+    "user": "s-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-auditor edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-auditor-other-submitted-500",
+    "user": "s-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-auditor edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-s-auditor-other-approved-500",
+    "user": "s-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "s-auditor edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-s-auditor-xtenant",
+    "user": "s-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "s-auditor edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "s-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "s-auditor delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-auditor-own-draft-500",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "s-auditor delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-auditor-own-submitted-500",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-auditor-own-approved-500",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-auditor-other-draft-500",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-auditor-other-submitted-500",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-auditor-other-approved-500",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-s-auditor-xtenant",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-auditor delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-auditor approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-own-draft-10000/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-own-draft-10001/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-own-submitted-10000/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-own-submitted-10001/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-own-approved-10000/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-own-approved-10001/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-other-draft-10000/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-other-draft-10001/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-other-submitted-10000/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-other-submitted-10001/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-other-approved-10000/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-other-approved-10001/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "s-auditor approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-s-auditor-xtenant/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-auditor approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "s-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "s-auditor edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-s-auditor-own",
+    "user": "s-auditor",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "s-auditor edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-s-auditor-other",
+    "user": "s-auditor",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-manager create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "e-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 201
+  },
+  {
+    "name": "e-manager create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "e-manager",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "e-manager edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-manager-own-draft-500",
+    "user": "e-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "e-manager edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-manager-own-submitted-500",
+    "user": "e-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-manager edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-manager-own-approved-500",
+    "user": "e-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-manager edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-manager-other-draft-500",
+    "user": "e-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "e-manager edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-manager-other-submitted-500",
+    "user": "e-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-manager edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-manager-other-approved-500",
+    "user": "e-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-manager edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-e-manager-xtenant",
+    "user": "e-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "e-manager edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "e-manager",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "e-manager delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-manager-own-draft-500",
+    "user": "e-manager",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "e-manager delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-manager-own-submitted-500",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-manager-own-approved-500",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-manager-other-draft-500",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-manager-other-submitted-500",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-manager-other-approved-500",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-manager-xtenant",
+    "user": "e-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-manager delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "e-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-manager approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-own-draft-10000/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-own-draft-10001/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-own-submitted-10000/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-own-submitted-10001/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-own-approved-10000/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-own-approved-10001/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-other-draft-10000/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "e-manager approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-other-draft-10001/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-other-submitted-10000/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 200
+  },
+  {
+    "name": "e-manager approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-other-submitted-10001/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-other-approved-10000/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 409
+  },
+  {
+    "name": "e-manager approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-other-approved-10001/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-manager approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-e-manager-xtenant/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-manager approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "e-manager",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-manager edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-e-manager-own",
+    "user": "e-manager",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "e-manager edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-e-manager-other",
+    "user": "e-manager",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "e-viewer create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "e-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-viewer create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "e-viewer",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-viewer edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-viewer-own-draft-500",
+    "user": "e-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "e-viewer edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-viewer-own-submitted-500",
+    "user": "e-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-viewer edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-viewer-own-approved-500",
+    "user": "e-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-viewer edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-viewer-other-draft-500",
+    "user": "e-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-viewer edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-viewer-other-submitted-500",
+    "user": "e-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-viewer edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-viewer-other-approved-500",
+    "user": "e-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-viewer edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-e-viewer-xtenant",
+    "user": "e-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "e-viewer edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "e-viewer",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "e-viewer delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-viewer-own-draft-500",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "e-viewer delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-viewer-own-submitted-500",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-viewer-own-approved-500",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-viewer-other-draft-500",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-viewer-other-submitted-500",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-viewer-other-approved-500",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-viewer-xtenant",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-viewer delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-viewer approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-own-draft-10000/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-own-draft-10001/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-own-submitted-10000/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-own-submitted-10001/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-own-approved-10000/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-own-approved-10001/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-other-draft-10000/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-other-draft-10001/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-other-submitted-10000/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-other-submitted-10001/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-other-approved-10000/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-other-approved-10001/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-viewer approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-e-viewer-xtenant/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-viewer approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "e-viewer",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-viewer edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-e-viewer-own",
+    "user": "e-viewer",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "e-viewer edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-e-viewer-other",
+    "user": "e-viewer",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-auditor create",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "e-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-auditor create invalid body",
+    "method": "POST",
+    "path": "/invoices",
+    "user": "e-auditor",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-auditor edit own draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-auditor-own-draft-500",
+    "user": "e-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 200
+  },
+  {
+    "name": "e-auditor edit own submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-auditor-own-submitted-500",
+    "user": "e-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-auditor edit own approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-auditor-own-approved-500",
+    "user": "e-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-auditor edit other draft 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-auditor-other-draft-500",
+    "user": "e-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-auditor edit other submitted 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-auditor-other-submitted-500",
+    "user": "e-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-auditor edit other approved 500",
+    "method": "PUT",
+    "path": "/invoices/edit-e-auditor-other-approved-500",
+    "user": "e-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 403
+  },
+  {
+    "name": "e-auditor edit other-tenant",
+    "method": "PUT",
+    "path": "/invoices/edit-e-auditor-xtenant",
+    "user": "e-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "e-auditor edit missing",
+    "method": "PUT",
+    "path": "/invoices/missing-edit",
+    "user": "e-auditor",
+    "body": {
+      "amount": 250
+    },
+    "expected": 404
+  },
+  {
+    "name": "e-auditor delete own draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-auditor-own-draft-500",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 204
+  },
+  {
+    "name": "e-auditor delete own submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-auditor-own-submitted-500",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor delete own approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-auditor-own-approved-500",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor delete other draft 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-auditor-other-draft-500",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor delete other submitted 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-auditor-other-submitted-500",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor delete other approved 500",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-auditor-other-approved-500",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor delete other-tenant",
+    "method": "DELETE",
+    "path": "/invoices/delete-e-auditor-xtenant",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-auditor delete missing",
+    "method": "DELETE",
+    "path": "/invoices/missing-delete",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-auditor approve own draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-own-draft-10000/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve own draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-own-draft-10001/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve own submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-own-submitted-10000/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve own submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-own-submitted-10001/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve own approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-own-approved-10000/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve own approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-own-approved-10001/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve other draft 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-other-draft-10000/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve other draft 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-other-draft-10001/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve other submitted 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-other-submitted-10000/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve other submitted 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-other-submitted-10001/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve other approved 10000",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-other-approved-10000/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve other approved 10001",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-other-approved-10001/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 403
+  },
+  {
+    "name": "e-auditor approve other-tenant",
+    "method": "POST",
+    "path": "/invoices/approve-e-auditor-xtenant/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-auditor approve missing",
+    "method": "POST",
+    "path": "/invoices/missing-approve/approve",
+    "user": "e-auditor",
+    "body": null,
+    "expected": 404
+  },
+  {
+    "name": "e-auditor edit invalid body own",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-e-auditor-own",
+    "user": "e-auditor",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 400
+  },
+  {
+    "name": "e-auditor edit invalid body other",
+    "method": "PUT",
+    "path": "/invoices/edit-invalid-e-auditor-other",
+    "user": "e-auditor",
+    "body": {
+      "amount": "lots"
+    },
+    "expected": 403
+  }
+]

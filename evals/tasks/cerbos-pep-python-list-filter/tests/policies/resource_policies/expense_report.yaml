@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+description: Who may see expense reports.
+resourcePolicy:
+  resource: expense_report
+  version: default
+  importDerivedRoles:
+    - expense_roles
+  rules:
+    - name: view-own
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["report_owner"]
+
+    - name: manager-view-team
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["manager"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.department == P.attr.department
+              - expr: R.attr.status != "draft"
+
+    - name: finance-review-region
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["finance"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: R.attr.region == P.attr.region
+              - expr: R.attr.status in ["submitted", "approved"]
+              - expr: R.attr.amount >= P.attr.review_threshold
+
+    - name: hide-archived
+      actions: ["view"]
+      effect: EFFECT_DENY
+      roles: ["employee", "manager", "finance"]
+      condition:
+        match:
+          expr: R.attr.archived == true
+
+    - name: auditor-view-all
+      actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["auditor"]

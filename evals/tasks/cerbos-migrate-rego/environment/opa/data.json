@@ -1,0 +1,14 @@
+{
+  "role_grants": {
+    "employee": ["create"],
+    "contractor": ["create"],
+    "manager": ["view", "create"],
+    "director": ["view", "create", "export"],
+    "finance": ["view", "export"],
+    "auditor": ["view"]
+  },
+  "approval_limits": {
+    "manager": 5000,
+    "director": 50000
+  }
+}

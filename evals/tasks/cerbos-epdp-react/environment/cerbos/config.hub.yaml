@@ -1,0 +1,10 @@
+# Production: service PDPs pull the signed bundle for the acme-docs-prod
+# deployment from Cerbos Hub. Credentials come from cerbos/.env.
+server:
+  httpListenAddr: ":3592"
+  grpcListenAddr: ":3593"
+storage:
+  driver: hub
+  hub:
+    remote:
+      deploymentID: "F5D3RW8KJ2HQ"

@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+resources:
+  invoice_acc1:
+    id: inv-1
+    kind: invoice
+    attr:
+      account_id: acc-1
+  invoice_acc1_archived:
+    id: inv-2
+    kind: invoice
+    attr:
+      account_id: acc-1
+      archived: true

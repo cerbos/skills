@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: InvoiceTestSuite
+description: Invoice access for account members and finance
+tests:
+  - name: account members see their invoices
+    input:
+      principals: ["alice", "bob"]
+      resources: ["invoice_acc1"]
+      actions: ["view", "download", "refund"]
+    expected:
+      - principal: alice
+        resource: invoice_acc1
+        actions:
+          view: EFFECT_ALLOW
+          download: EFFECT_ALLOW
+          refund: EFFECT_DENY
+      - principal: bob
+        resource: invoice_acc1
+        actions:
+          view: EFFECT_DENY
+          download: EFFECT_DENY
+          refund: EFFECT_DENY
+  - name: finance refunds live invoices but not archived ones
+    input:
+      principals: ["fran"]
+      resources: ["invoice_acc1", "invoice_acc1_archived"]
+      actions: ["view", "refund", "void"]
+    expected:
+      - principal: fran
+        resource: invoice_acc1
+        actions:
+          view: EFFECT_ALLOW
+          refund: EFFECT_ALLOW
+          void: EFFECT_ALLOW
+      - principal: fran
+        resource: invoice_acc1_archived
+        actions:
+          view: EFFECT_ALLOW
+          refund: EFFECT_DENY
+          void: EFFECT_DENY

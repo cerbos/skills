@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+# Check that a running Cerbos PDP is healthy and talking to Cerbos Hub.
+set -euo pipefail
+
+usage() {
+  cat <<'EOT'
+Usage: pdp-verify [--await-update N] [host:port]
+
+Checks a running Cerbos PDP (default localhost:3592):
+  GET /_cerbos/health   expects 200
+  GET /_cerbos/metrics  reports the cerbos_dev_hub_connected gauge
+                        (1 connected to Hub, 0 disconnected and serving its
+                        cached bundle) plus the bundle counters
+
+--await-update N  After the checks pass, poll for up to a minute until
+                  cerbos_dev_store_bundle_updates_count exceeds N. Take N
+                  from a run before the upload; the PDP bumps the counter
+                  each time it swaps in a new bundle.
+
+Exit codes: 0 healthy and connected (and, with --await-update, a new bundle
+            is live), 1 unreachable or unhealthy, 2 healthy but not
+            connected to Hub, 3 no new bundle before the wait ran out.
+EOT
+}
+
+await=""
+target=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    --await-update)
+      if [[ $# -lt 2 || ! "$2" =~ ^[0-9]+$ ]]; then
+        usage >&2
+        exit 1
+      fi
+      await="$2"
+      shift 2
+      ;;
+    -*)
+      usage >&2
+      exit 1
+      ;;
+    *)
+      if [[ -n "$target" ]]; then
+        usage >&2
+        exit 1
+      fi
+      target="$1"
+      shift
+      ;;
+  esac
+done
+
+base="${target:-localhost:3592}"
+case "$base" in
+  http://* | https://*) ;;
+  *) base="http://$base" ;;
+esac
+
+if ! command -v curl >/dev/null 2>&1; then
+  echo "curl not found on PATH." >&2
+  exit 1
+fi
+
+echo "PDP: $base"
+
+code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$base/_cerbos/health" || true)"
+if [[ "$code" == "200" ]]; then
+  echo "  health   200"
+else
+  if [[ -z "$code" || "$code" == "000" ]]; then
+    code="no response"
+  fi
+  echo "  health   $code — the PDP is not serving. Check that it started and that the port is right." >&2
+  exit 1
+fi
+
+metrics="$(curl -s --max-time 10 "$base/_cerbos/metrics" || true)"
+if [[ -z "$metrics" ]]; then
+  echo "  metrics  no response — metrics are disabled when server.metricsEnabled is false." >&2
+  echo "           Hub connectivity is also visible on the deployment's Decision points tab." >&2
+  exit 2
+fi
+
+metric_value() {
+  printf '%s\n' "$metrics" | awk -v name="$1" '$0 !~ /^#/ && index($0, name) == 1 { print $NF; found=1 } END { if (!found) print "" }' | tail -n 1
+}
+
+connected="$(metric_value cerbos_dev_hub_connected)"
+case "$connected" in
+  "")
+    echo "  hub      cerbos_dev_hub_connected not exported — this PDP is not using the hub storage driver." >&2
+    exit 2
+    ;;
+  0 | 0.0 | 0.00)
+    echo "  hub      cerbos_dev_hub_connected=0 — disconnected, serving its cached bundle."
+    ;;
+  *)
+    echo "  hub      cerbos_dev_hub_connected=$connected — connected to Cerbos Hub."
+    ;;
+esac
+
+for m in cerbos_dev_store_bundle_updates_count cerbos_dev_store_bundle_fetch_errors_count; do
+  v="$(metric_value "$m")"
+  if [[ -n "$v" ]]; then
+    printf '  bundle   %s=%s\n' "$m" "$v"
+  fi
+done
+
+case "$connected" in
+  0 | 0.0 | 0.00) exit 2 ;;
+esac
+
+if [[ -z "$await" ]]; then
+  exit 0
+fi
+
+wait_seconds=60
+deadline=$((SECONDS + wait_seconds))
+while :; do
+  metrics="$(curl -s --max-time 10 "$base/_cerbos/metrics" || true)"
+  updates="$(metric_value cerbos_dev_store_bundle_updates_count)"
+  updates="${updates:-0}"
+  if awk -v now="$updates" -v before="$await" 'BEGIN { exit !(now + 0 > before + 0) }'; then
+    echo "  update   cerbos_dev_store_bundle_updates_count=$updates — a new bundle is live."
+    exit 0
+  fi
+  if ((SECONDS >= deadline)); then
+    echo "  update   no new bundle after ${wait_seconds}s; the counter is still $updates." >&2
+    echo "           Check the deployment's Builds tab: a failed build leaves the previous bundle" >&2
+    echo "           live, and a frozen deployment queues new builds. Re-run with the same N to" >&2
+    echo "           keep waiting." >&2
+    exit 3
+  fi
+  sleep 2
+done
