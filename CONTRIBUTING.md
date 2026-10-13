@@ -26,7 +26,7 @@ Bump `metadata.version` whenever a skill's files change: the minor version for n
 
 Each skill's `references/sources.md` lists the documentation its guidance is checked against. Update it when you check guidance against a new source.
 
-A `description` decides whether an agent loads the skill at all. Before changing one, run the [skill trigger eval](evals/README.md#skill-trigger-eval) and compare its report with the recorded baseline.
+A `description` decides whether an agent loads the skill at all. Before changing one, run the [skill trigger eval](evals/README.md#skill-trigger-eval) and compare its report with the recorded baseline. Whether the agent then builds the rule in Cerbos rather than inline is measured by the [outcome check](evals/README.md#outcome-check).
 
 [AGENTS.md](AGENTS.md) holds the writing and linking conventions for skill content. Links to Cerbos properties in skills and repository documents carry UTM parameters, with `utm_content` set to `<skill>_<placement>`; run `scripts/fix-links` after adding links rather than writing the parameters by hand. Plugin manifests keep plain URLs.
 

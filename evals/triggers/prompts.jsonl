@@ -80,3 +80,4 @@
 {"id": "none-feature-flag", "expect": null, "also_ok": [], "near": ["cerbos-embedded-pdp", "cerbos"], "prompt": "Add a feature flag so the new checkout is only visible to 10% of users."}
 {"id": "none-terraform-lock", "expect": null, "also_ok": [], "near": [], "prompt": "Our Terraform state is locked. How do I force-unlock it?"}
 {"id": "none-file-perms", "expect": null, "also_ok": [], "near": ["cerbos"], "prompt": "Make it so only the deploy user can write to /var/www on our server."}
+{"id": "router-approval-limit", "expect": "cerbos", "also_ok": ["cerbos-policy", "cerbos-pep-integration"], "near": [], "workspace": "express-expenses", "prompt": "Managers can approve expenses for their own team, up to $5,000. Add that."}

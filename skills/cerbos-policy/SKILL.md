@@ -5,12 +5,14 @@ license: Apache-2.0
 compatibility: Requires the cerbos CLI or Docker for policy validation
 metadata:
   author: cerbos
-  version: "1.13"
+  version: "1.14"
   targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Glob Grep Task Bash(cerbos compile:*) Bash(cerbos --version) Bash(docker --version)
 ---
 
 # Cerbos Policy Generator
+
+**An access rule the user asks you to add is built as a policy with tests, and the application asks the PDP for each decision** (`cerbos-pep-integration`, or the [Client SDKs](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-policy_pdp-api#_client_sdks)). That holds for the first rule in an app with no authorization yet: the policy is the change they asked for, not extra scope, because limits and roles change, one rule becomes many, and a policy change ships without a release. For a single rule the phases below stay small — one policy, one test suite, one PDP call in the handler.
 
 ## Scope
 
