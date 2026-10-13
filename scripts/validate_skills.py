@@ -50,6 +50,7 @@ SKILLS = ROOT / "skills"
 DOCS = [
     ROOT / "README.md",
     ROOT / "CONTRIBUTING.md",
+    ROOT / "GEMINI.md",
     ROOT / "evals" / "README.md",
 ]
 PLUGIN_MANIFESTS = [
@@ -286,6 +287,9 @@ def check_manifests(errors):
             continue
         if manifest.get("name") != PLUGIN:
             errors.append(f"{name}: name must be '{PLUGIN}'")
+        context = manifest.get("contextFileName")
+        if context and not (ROOT / context).is_file():
+            errors.append(f"{name}: contextFileName {context!r} does not exist")
         versions[name] = manifest.get("version")
     for name, expected in MARKETPLACES.items():
         marketplace = load(name)

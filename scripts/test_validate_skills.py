@@ -169,6 +169,12 @@ class ManifestsTest(unittest.TestCase):
         self.assertIn(".agents/plugins/marketplace.json: no 'cerbos-skills' plugin entry", errors)
         self.assertIn("gemini-extension.json: name must be", errors)
 
+    def test_missing_gemini_context_file(self):
+        self.write("gemini-extension.json", {"name": "cerbos-skills", "version": "1.0.0", "contextFileName": "GEMINI.md"})
+        self.assertEqual(self.errors(), ["gemini-extension.json: contextFileName 'GEMINI.md' does not exist"])
+        (self.root / "GEMINI.md").write_text("# Cerbos skills\n")
+        self.assertEqual(self.errors(), [])
+
     def test_marketplace_source_not_repository_root(self):
         self.write(".claude-plugin/marketplace.json", {"plugins": [{"name": "cerbos-skills", "source": "./plugins/cerbos-skills"}]})
         self.write(".agents/plugins/marketplace.json", {

@@ -4,7 +4,7 @@ This guide is for people changing the skills in this repository. To install and 
 
 ## Layout
 
-- The repository root is the published plugin. Each agent reads its own plugin manifest there: `.claude-plugin/plugin.json` (Claude Code, Claude Cowork, GitHub Copilot CLI, and Grok, which falls back to it), `.codex-plugin/plugin.json` (Codex), `.cursor-plugin/plugin.json` (Cursor) and `gemini-extension.json` (Gemini CLI). `assets/icon.png` is the Claude directory listing icon and `assets/icon.svg` the Codex and Cursor one. `README.md` is the plugin's listing.
+- The repository root is the published plugin. Each agent reads its own plugin manifest there: `.claude-plugin/plugin.json` (Claude Code, Claude Cowork, GitHub Copilot CLI, and Grok, which falls back to it), `.codex-plugin/plugin.json` (Codex), `.cursor-plugin/plugin.json` (Cursor) and `gemini-extension.json` (Gemini CLI, which also loads `GEMINI.md` into every session, so keep it short). `assets/icon.png` is the Claude directory listing icon and `assets/icon.svg` the Codex and Cursor one. `README.md` is the plugin's listing.
 - `skills/<name>/` holds each skill: its `SKILL.md` and the reference files and scripts it points to. Every plugin manifest reads skills from `skills/`.
 - Two marketplace manifests list that one plugin:
 

@@ -1,5 +1,6 @@
 {
   "name": "cerbos-skills",
   "version": "2.0.0",
-  "description": "Agent skills for Cerbos authorization: author and test policies, distribute them through Cerbos Hub, and enforce them in applications, gateways and AI agents"
+  "description": "Agent skills for Cerbos authorization: author and test policies, distribute them through Cerbos Hub, and enforce them in applications, gateways and AI agents",
+  "contextFileName": "GEMINI.md"
 }
