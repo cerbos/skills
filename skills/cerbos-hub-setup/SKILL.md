@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires cerbosctl, and Docker or a local Cerbos binary to run a PDP
 metadata:
   author: cerbos
-  version: "1.3"
+  version: "1.4"
   targetsCerbosVersion: "0.55.0"
 allowed-tools: Read Write Edit Bash Glob Grep WebFetch
 ---
@@ -197,7 +197,7 @@ Step 4 proves a PDP can load a bundle. This step proves what Hub is for: a polic
 | `scripts/store-status` | The store's current version and file list |
 | `scripts/pdp-verify [--await-update N] [host:port]` | PDP health and the `cerbos_dev_hub_connected` gauge; with `--await-update`, waits for the bundle-update counter to pass `N` |
 
-Each takes `-h`. `store-upload` passes extra `cerbosctl` flags through after `--`, and `cerbosctl hub store --help` is the authority on what those flags are.
+Each takes `-h`, and runs `npx -y cerbosctl` when `cerbosctl` is not on PATH. `store-upload` passes extra `cerbosctl` flags through after `--`, and `cerbosctl hub store --help` is the authority on what those flags are.
 
 ## References
 

@@ -18,7 +18,8 @@ Leave both credential variables unset to use the login saved by scripts/hub-logi
 
 Extra flags are passed through, e.g.:
   store-upload ./policies -- --version-must-eq 41 --message "add refund rules"
-Exit code 6 means the --version-must-eq condition was not satisfied.
+Exit code 6 means the --version-must-eq condition was not satisfied, except when
+cerbosctl runs through npx, which turns every failure into exit code 1.
 EOT
 }
 
@@ -42,8 +43,13 @@ if [[ ! -d "$dir" ]]; then
   exit 1
 fi
 
-if ! command -v cerbosctl >/dev/null 2>&1; then
-  echo "cerbosctl not found on PATH. Run scripts/check-prereqs for install options." >&2
+# Fall back to the npm package when cerbosctl is not installed.
+if command -v cerbosctl >/dev/null 2>&1; then
+  cerbosctl=(cerbosctl)
+elif command -v npx >/dev/null 2>&1; then
+  cerbosctl=(npx -y cerbosctl)
+else
+  echo "cerbosctl not found on PATH, and npx is not available to run it. Run scripts/check-prereqs for install options." >&2
   exit 1
 fi
 
@@ -71,4 +77,4 @@ if [[ "$id_set" -eq 0 ]]; then
 fi
 
 echo "Replacing store $CERBOS_HUB_STORE_ID with the contents of $dir"
-exec cerbosctl hub store replace-files "$dir" "$@"
+exec "${cerbosctl[@]}" hub store replace-files "$dir" "$@"

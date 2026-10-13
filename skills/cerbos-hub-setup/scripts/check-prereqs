@@ -24,18 +24,13 @@ missing=0
 missing_cerbosctl=0
 missing_runtime=0
 
-report_tool() {
-  local cmd="$1" purpose="$2"
-  if command -v "$cmd" >/dev/null 2>&1; then
-    printf '  found    %-10s %s\n' "$cmd" "($(command -v "$cmd"))"
-  else
-    printf '  MISSING  %-10s needed to %s\n' "$cmd" "$purpose"
-    return 1
-  fi
-}
-
 echo "Tools"
-if ! report_tool cerbosctl "upload policies to a policy store"; then
+if command -v cerbosctl >/dev/null 2>&1; then
+  printf '  found    %-10s %s\n' "cerbosctl" "($(command -v cerbosctl))"
+elif command -v npx >/dev/null 2>&1; then
+  printf '  found    %-10s %s\n' "cerbosctl" "(not installed; the scripts run it with npx -y cerbosctl)"
+else
+  printf '  MISSING  %-10s needed to %s\n' "cerbosctl" "upload policies to a policy store"
   missing_cerbosctl=1
   missing=1
 fi
