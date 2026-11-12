@@ -1,0 +1,109 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+name: DocumentTestSuite
+description: One allow and one deny per branch of DocumentPolicy and ApplicationPolicy, plus the precedence cases.
+tests:
+  - name: "initialize: a suspended account is refused everything, admins included"
+    input:
+      principals: ["suspended_admin", "admin"]
+      resources: ["team_draft"]
+      actions: ["show", "create", "update", "destroy"]
+    expected:
+      - {principal: suspended_admin, resource: team_draft, actions: {show: EFFECT_DENY, create: EFFECT_DENY, update: EFFECT_DENY, destroy: EFFECT_DENY}}
+      - {principal: admin, resource: team_draft, actions: {show: EFFECT_ALLOW, create: EFFECT_ALLOW, update: EFFECT_ALLOW, destroy: EFFECT_ALLOW}}
+
+  - name: "show?: external users never see confidential documents, whatever other role they hold"
+    input:
+      principals: ["editor_external", "editor", "external"]
+      resources: ["team_confidential_draft", "published_confidential"]
+      actions: ["show"]
+    expected:
+      - {principal: editor_external, resource: team_confidential_draft, actions: {show: EFFECT_DENY}}
+      - {principal: editor_external, resource: published_confidential, actions: {show: EFFECT_DENY}}
+      - {principal: editor, resource: team_confidential_draft, actions: {show: EFFECT_ALLOW}}
+      - {principal: editor, resource: published_confidential, actions: {show: EFFECT_ALLOW}}
+      - {principal: external, resource: team_confidential_draft, actions: {show: EFFECT_DENY}}
+      - {principal: external, resource: published_confidential, actions: {show: EFFECT_DENY}}
+
+  - name: "show?: admin? is checked before the external rule"
+    input:
+      principals: ["admin_external"]
+      resources: ["team_confidential_draft"]
+      actions: ["show"]
+    expected:
+      - {principal: admin_external, resource: team_confidential_draft, actions: {show: EFFECT_ALLOW}}
+
+  - name: "show?: published documents are public, guests included"
+    input:
+      principals: ["guest", "intern", "external"]
+      resources: ["published_open", "other_team_draft"]
+      actions: ["show"]
+    expected:
+      - {principal: guest, resource: published_open, actions: {show: EFFECT_ALLOW}}
+      - {principal: guest, resource: other_team_draft, actions: {show: EFFECT_DENY}}
+      - {principal: intern, resource: published_open, actions: {show: EFFECT_ALLOW}}
+      - {principal: intern, resource: other_team_draft, actions: {show: EFFECT_DENY}}
+      - {principal: external, resource: published_open, actions: {show: EFFECT_ALLOW}}
+      - {principal: external, resource: other_team_draft, actions: {show: EFFECT_DENY}}
+
+  - name: "show?: owners and team members see drafts"
+    input:
+      principals: ["member", "editor_t2", "intern"]
+      resources: ["team_draft", "intern_draft"]
+      actions: ["show"]
+    expected:
+      - {principal: member, resource: team_draft, actions: {show: EFFECT_ALLOW}}
+      - {principal: member, resource: intern_draft, actions: {show: EFFECT_DENY}}
+      - {principal: editor_t2, resource: team_draft, actions: {show: EFFECT_DENY}}
+      - {principal: editor_t2, resource: intern_draft, actions: {show: EFFECT_ALLOW}}
+      - {principal: intern, resource: team_draft, actions: {show: EFFECT_DENY}}
+      - {principal: intern, resource: intern_draft, actions: {show: EFFECT_ALLOW}}
+
+  - name: "create? and new?: editors and admins only"
+    input:
+      principals: ["editor", "member", "guest"]
+      resources: ["team_draft"]
+      actions: ["create", "new"]
+    expected:
+      - {principal: editor, resource: team_draft, actions: {create: EFFECT_ALLOW, new: EFFECT_ALLOW}}
+      - {principal: member, resource: team_draft, actions: {create: EFFECT_DENY, new: EFFECT_DENY}}
+      - {principal: guest, resource: team_draft, actions: {create: EFFECT_DENY, new: EFFECT_DENY}}
+
+  - name: "update?, edit? and publish?: team editors, not other team members"
+    input:
+      principals: ["editor", "member", "editor_t2"]
+      resources: ["team_draft"]
+      actions: ["update", "edit", "publish"]
+    expected:
+      - {principal: editor, resource: team_draft, actions: {update: EFFECT_ALLOW, edit: EFFECT_ALLOW, publish: EFFECT_ALLOW}}
+      - {principal: member, resource: team_draft, actions: {update: EFFECT_DENY, edit: EFFECT_DENY, publish: EFFECT_DENY}}
+      - {principal: editor_t2, resource: team_draft, actions: {update: EFFECT_DENY, edit: EFFECT_DENY, publish: EFFECT_DENY}}
+
+  - name: "update?: owners with a role the policy never names"
+    input:
+      principals: ["intern", "guest"]
+      resources: ["intern_draft"]
+      actions: ["update", "publish", "destroy"]
+    expected:
+      - {principal: intern, resource: intern_draft, actions: {update: EFFECT_ALLOW, publish: EFFECT_ALLOW, destroy: EFFECT_ALLOW}}
+      - {principal: guest, resource: intern_draft, actions: {update: EFFECT_DENY, publish: EFFECT_DENY, destroy: EFFECT_DENY}}
+
+  - name: "update?: a lock held by someone else blocks the owner but not an admin"
+    input:
+      principals: ["editor", "admin"]
+      resources: ["team_locked_by_other", "team_locked_by_eve"]
+      actions: ["update"]
+    expected:
+      - {principal: editor, resource: team_locked_by_other, actions: {update: EFFECT_DENY}}
+      - {principal: editor, resource: team_locked_by_eve, actions: {update: EFFECT_ALLOW}}
+      - {principal: admin, resource: team_locked_by_other, actions: {update: EFFECT_ALLOW}}
+      - {principal: admin, resource: team_locked_by_eve, actions: {update: EFFECT_ALLOW}}
+
+  - name: "destroy?: owners delete drafts only; team editors cannot"
+    input:
+      principals: ["intern", "editor"]
+      resources: ["intern_draft", "intern_published", "team_draft"]
+      actions: ["destroy"]
+    expected:
+      - {principal: intern, resource: intern_draft, actions: {destroy: EFFECT_ALLOW}}
+      - {principal: intern, resource: intern_published, actions: {destroy: EFFECT_DENY}}
+      - {principal: editor, resource: team_draft, actions: {destroy: EFFECT_DENY}}

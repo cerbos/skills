@@ -1,0 +1,37 @@
+resources:
+  team_draft:
+    kind: document
+    id: d-team-draft
+    attr: {owner_id: other, team_id: t1, published: false, confidential: false}
+  team_confidential_draft:
+    kind: document
+    id: d-team-conf
+    attr: {owner_id: other, team_id: t1, published: false, confidential: true}
+  published_open:
+    kind: document
+    id: d-pub
+    attr: {owner_id: other, team_id: t2, published: true, confidential: false}
+  published_confidential:
+    kind: document
+    id: d-pub-conf
+    attr: {owner_id: other, team_id: t2, published: true, confidential: true}
+  other_team_draft:
+    kind: document
+    id: d-t2-draft
+    attr: {owner_id: other, team_id: t2, published: false, confidential: false}
+  team_locked_by_other:
+    kind: document
+    id: d-locked-other
+    attr: {owner_id: eve, team_id: t1, published: false, confidential: false, locked_by: other}
+  team_locked_by_eve:
+    kind: document
+    id: d-locked-eve
+    attr: {owner_id: other, team_id: t1, published: false, confidential: false, locked_by: eve}
+  intern_draft:
+    kind: document
+    id: d-intern-draft
+    attr: {owner_id: ivy, team_id: t2, published: false, confidential: false}
+  intern_published:
+    kind: document
+    id: d-intern-pub
+    attr: {owner_id: ivy, team_id: t2, published: true, confidential: false}

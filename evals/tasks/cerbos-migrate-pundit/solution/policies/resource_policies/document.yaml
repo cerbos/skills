@@ -1,0 +1,71 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+# Translated from app/policies/application_policy.rb and document_policy.rb.
+# new? delegates to create?, edit? to update?, and publish? aliases update?.
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: document
+  version: default
+  importDerivedRoles:
+    - document_roles
+  rules:
+    # ApplicationPolicy#initialize raises for a suspended user, admins included.
+    - name: suspended-account
+      actions: ["*"]
+      effect: EFFECT_DENY
+      roles: ["*"]
+      condition:
+        match:
+          expr: has(P.attr.suspended) && P.attr.suspended == true
+
+    - name: admin-all
+      actions: ["*"]
+      effect: EFFECT_ALLOW
+      roles: ["admin"]
+
+    # show?: the external check runs after admin? and before every other grant.
+    - name: external-no-confidential
+      actions: ["show"]
+      effect: EFFECT_DENY
+      roles: ["*"]
+      condition:
+        match:
+          all:
+            of:
+              - expr: '"external" in P.roles'
+              - expr: '!("admin" in P.roles)'
+              - expr: R.attr.confidential == true
+
+    - name: show-published
+      actions: ["show"]
+      effect: EFFECT_ALLOW
+      roles: ["*"]
+      condition:
+        match:
+          expr: R.attr.published == true
+
+    - name: show-owner-or-team
+      actions: ["show"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["owner", "team_member"]
+
+    - name: create
+      actions: ["create", "new"]
+      effect: EFFECT_ALLOW
+      roles: ["editor"]
+
+    # update?: an edit lock held by someone else blocks everyone but admins.
+    - name: update-unless-locked
+      actions: ["update", "edit", "publish"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["owner", "team_editor"]
+      condition:
+        match:
+          expr: '!has(R.attr.locked_by) || R.attr.locked_by == P.id'
+
+    - name: destroy-own-draft
+      actions: ["destroy"]
+      effect: EFFECT_ALLOW
+      derivedRoles: ["owner"]
+      condition:
+        match:
+          expr: R.attr.published == false
