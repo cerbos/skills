@@ -144,7 +144,7 @@ List every attribute the conditions read, with where its value is when the check
 
 Mark every attribute the source treats as optional — undefined in Rego, a missing key or `None` in code. Its condition needs an explicit `has()` guard reproducing what the source does on absence (`has(R.attr.x) && …`, or `!has(R.attr.x) || …`). Without one the condition errors on a missing key, which strict evaluation turns into a deny and default evaluation into a skipped rule, and parity breaks either way.
 
-A check that tests no role applies to every role, including roles the code never names: an ownership check `doc.author_id == user.id` lets a `reviewer` edit its own document too. Map it to `roles: ["*"]` (or a derived role with `parentRoles: ["*"]`), never to the roles you happened to see; listing them silently denies everyone else. The same holds for an admin short-circuit or a deny written without a role test. Test a principal whose role appears nowhere in the code.
+A check that tests no role applies to every role, including roles the code never names: an ownership check `doc.author_id == user.id` lets a `reviewer` edit its own document too. Map it to `roles: ["*"]` (or a derived role with `parentRoles: ["*"]`), never to the roles you happened to see; listing them silently denies everyone else. The same holds for an admin short-circuit or a deny written without a role test.
 
 A guard also keeps its position in the request flow and the exact actions it covers. A middleware refusal that ran before the record was loaded stays a pre-load, principal-only check, or its `403` becomes a `404`; a write-only guard does not grow to cover reads. Shapes and status-code order: [references/MAPPING-CODE.md](references/MAPPING-CODE.md).
 
@@ -172,6 +172,11 @@ Starts from a reviewed inventory.
 **Then generate.** Hand the Phase 2 inventory and the Phase 3 mapping to `cerbos-policy`. Its spec intake consumes the Structured Intent rows as they stand, so it starts at generation rather than re-interviewing the user. It owns the policy files, the `*_test.yaml` suites, validation and the upload.
 
 Hand it the scenarios as the suite: one allow and one deny per inventory row, named after the Source — a single case cannot show the condition matters. A suite that mirrors the inventory is what proves the migration later.
+
+Two cases are required on top, because a suite that skips them passes a policy that breaks parity:
+
+- **Every override.** For each early return, `else` branch or raise that beats a later grant, a principal who also holds a role the later grant allows, denied.
+- **Every role-less check.** For each ownership check, admin short-circuit or deny without a role test, a principal whose role appears nowhere in the source, decided as the source decides it.
 
 ### Phase 5 — Shadow
 
