@@ -57,11 +57,11 @@ Once you know the vocabulary, re-run narrowly on it. A codebase that says `ensur
 | Python | `request.user.(is_staff|is_superuser|has_perm)`, `@permission_required`, `@user_passes_test`, `@login_required`, `permission_classes`, `has_object_permission`, `Depends\(.*(auth|perm|role)` |
 | Go | `ctx.Value\(.*[Uu]ser`, `middleware\.`, `if .*\.Role(s)? (==|!=)`, `Authorize|CanAccess|HasRole|checkPerm`, `casbin\.Enforce` |
 | Java / Kotlin | `@PreAuthorize`, `@PostAuthorize`, `@Secured`, `@RolesAllowed`, `hasRole\(|hasAuthority\(`, `SecurityContextHolder`, `AccessDecisionVoter` |
-| Ruby | `before_action :(authorize|require_|check_)`, `authorize `, `policy\(`, `can\? :`, `current_user\.(admin\?|has_role)`, `Pundit`, `CanCan` |
+| Ruby | `before_action :(authorize|require_|check_)`, `authorize `, `policy\(`, `policy_scope\(`, `Pundit\.(authorize|policy)`, `can\? :`, `current_user\.(admin\?|has_role)`, `Pundit`, `CanCan` |
 | PHP | `Gate::(allows|denies|authorize)`, `@can\(`, `->can\(`, `#\[IsGranted`, `is_granted\(`, `AuthorizationChecker`, `middleware\('can:` |
 | C# / .NET | `\[Authorize`, `\[AllowAnonymous\]`, `User\.IsInRole`, `IAuthorizationHandler`, `RequireClaim`, `policy:` |
 
-`@AllowAnonymous`, `@login_required`-without-more and `skip_before_action` are as informative as the positive matches: they mark entry points that deliberately reach no guard, which is exactly the list Phase 1 owes the user.
+`@AllowAnonymous`, `@login_required`-without-more, `skip_before_action` and Pundit's `skip_authorization` / `skip_policy_scope` are as informative as the positive matches: they mark entry points that deliberately reach no guard, which is exactly the list Phase 1 owes the user.
 
 ## By framework — where guards attach
 

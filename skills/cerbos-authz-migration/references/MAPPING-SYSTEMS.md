@@ -80,7 +80,45 @@ Pick the deny's `roles` deliberately. A deny on `roles: ["user"]` beats only the
 
 **Does not survive.** Polar is a logic language with unification and rule chaining; CEL is a single-expression evaluator. Rules that recurse through relations, or that rely on Oso resolving a relation to fetch the related object, need the relation supplied as an attribute instead. Oso deployments that register application classes so policy can call into them have no equivalent — a Cerbos condition cannot call your code.
 
-Oso sits between the code-shaped and relationship-shaped families. Read the actual policy: one dominated by field comparisons maps easily; one dominated by `relations` and role inheritance across resources belongs in the next section.
+Oso sits between the code-shaped and relationship-shaped families. Read the actual policy: one dominated by field comparisons maps easily; one dominated by `relations` and role inheritance across resources belongs in the Zanzibar section below.
+
+## Pundit
+
+The code-shaped end of this list. A Pundit policy is a plain Ruby class, `PostPolicy`, built from `(user, record)` and answering one predicate method per action: the `can()` helper from [MAPPING-CODE.md](MAPPING-CODE.md) with a naming convention attached. The classes are the rule set, the `authorize` calls are the guard sites, and the convention lets Phase 1 enumerate both mechanically.
+
+| Pundit | Cerbos |
+|---|---|
+| A policy class, `PostPolicy` | A resource policy for the kind the handler loads, `post`. The class is found from the record's model, or named with `policy_class:` |
+| A predicate method, `update?` | An action, `update`, with rules taken from the method body |
+| `ApplicationPolicy` defaults returning `false` | Deny-by-default — nothing to write. A default changed to `true` is a grant on every subclass that does not override it; write it as a rule per kind |
+| `new?` delegating to `create?`, `edit?` to `update?` | One action each, `create` and `update`. Add `new` or `edit` only where a policy answers them differently |
+| `user.admin?`, or a role column test, in a body | `roles` on the rule, hoisted out of the condition |
+| `record.user == user`, `record.user_id == user.id` | A derived role with `parentRoles: ["*"]`, as in the ownership check in MAPPING-CODE.md |
+| Private helpers on a policy or on `ApplicationPolicy` — `owner?`, `same_org?` — and shared modules | Derived roles when they name a relation to the record; exported variables when they are predicates reused across policies |
+| `alias_method :publish?, :update?`, inherited methods, generated methods | Whatever the method resolves to at runtime. Read the resolved method, not the file the policy is defined in |
+| `authorize Post` — the class, not an instance | A check against a resource with a `kind`, a placeholder `id` and no attributes. Its rules can only read principal facts |
+| `authorize Post.new(post_params)` | A check with the unsaved attributes and a placeholder `id` |
+| A headless policy, `authorize :dashboard, :show?` | A resource kind of its own, `dashboard`, with no attributes |
+| `Scope#resolve` | `PlanResources` and a query plan adapter; see below |
+| `expected_attributes_for_action` or the older `permitted_attributes` | Field-level authorization; see below |
+| `pundit_user` returning a wrapper, `UserContext.new(current_user, request.ip)` | Principal attributes, or auxiliary data, for each extra field the wrapper carries |
+| A namespaced policy, `authorize [:admin, post]` resolving to `Admin::PostPolicy` | The same kind as `PostPolicy`. Merge its rules in; where the namespace answers the same method differently, the difference is a role or a request fact — put it in the rule, or give the action its own name |
+| `Pundit::NotAuthorizedError` rescued to a `403`, a redirect or a flash | The PEP keeps the rescue and its response unchanged |
+| An i18n message keyed `pundit.post_policy.update?` | An [output](https://docs.cerbos.dev/cerbos/latest/policies/outputs?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-outputs) on the rule, rendered by the PEP |
+
+**Methods that query.** A predicate method runs with an open ActiveRecord connection, so bodies like `record.project.members.include?(user)` or `user.memberships.exists?(org: record.org)` are common and read like field comparisons. Each is a computed attribute in the Phase 3 sense: the PEP resolves it before the call — usually from an association the controller already loads — or it goes on the gap register. Read every body for association calls, not only for comparisons.
+
+**The scope is a second rule set.** Pundit keeps the instance check (`show?`) and the list filter (`Scope#resolve`) in separate methods, and nothing makes them agree. In an older app they have usually drifted: `show?` admits collaborators while `resolve` returns only owned rows. Cerbos derives both from one rule, so it cannot reproduce a drift. Extract each as its own Structured Intent row, compare them, and put every mismatch to the user as a Phase 3 open question before generating anything. A `resolve` that joins across tables meets the join constraint in the ORM scope section of MAPPING-CODE.md.
+
+**Field-level permissions.** `expected_attributes_for_action` (and the older `permitted_attributes_for_<action>` / `permitted_attributes`) returns a different strong-params list per user. Either model the field groups as actions (`update:title`, `update:status`) and have the PEP check them in one `CheckResources` call before filtering params, or leave the lists in the controller and record them on the gap register. The first moves the rule; the second is the honest choice when the lists are long and rarely change.
+
+**Guests.** With no signed-in user, `pundit_user` returns `nil` and the policy receives it as `user`. Methods handle that with `user.present? &&` or `user&.admin?`, or fail to and raise `NoMethodError` — a `500`, not a `403`. Some apps raise `NotAuthorizedError` from `ApplicationPolicy#initialize` when `user` is `nil`, which denies guests everything that policy covers. Cerbos needs a principal on every check: send guests as a fixed principal with a role such as `anonymous`, map each `nil` branch to rules on that role, and record the methods that crash on `nil` as current behaviour, because the shadow diff will show them.
+
+**Inferred queries.** `authorize @post` with no query calls `"#{action_name}?"`. A custom action, `publish`, therefore calls `publish?`, and a policy without that method raises `NoMethodError` rather than denying. Enumerate the routes from `rails routes`, not the predicate methods, and record which query each one reaches.
+
+**Does not survive.** Nothing in the evaluation model: a predicate per action is what a resource policy is. The Ruby does not move mechanically — method calls, memoised helpers, calls into service objects. Rewrite each in CEL over attributes, or keep it in the application and send its result as an attribute.
+
+**The shim.** Keep the call sites on the first flip. Override `authorize` and `policy_scope` once in `ApplicationController` to call Cerbos with the same record and query, and every controller migrates without a change. The SDK call belongs to `cerbos-pep-integration` ([API](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-api)).
 
 ## SpiceDB, OpenFGA, Auth0 FGA — the Zanzibar family
 

@@ -73,7 +73,7 @@ the judge's results on the oracle, nop and hand-written wrong answers kept in
 
 The Harbor tasks measure what a skill produces once it is loaded. The trigger eval
 measures whether it loads at all: [`triggers/prompts.jsonl`](triggers/prompts.jsonl)
-holds 83 requests written in a user's own words, most of which never mention Cerbos.
+holds 84 requests written in a user's own words, most of which never mention Cerbos.
 Each is labelled with the skill that should load (`expect`, or `null` for none),
 skills that are also fine to load (`also_ok`, usually the `cerbos` router before the
 implementation skill or the reverse), and near-miss skills that should not (`near`).
