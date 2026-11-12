@@ -38,6 +38,7 @@ import subprocess
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -83,6 +84,8 @@ INLINE_CODE = re.compile(r"`[^`\n]+`")
 # Placeholder hosts and unsubstituted values illustrate a shape; nobody opens them.
 PLACEHOLDERS = ("localhost", "127.0.0.1", "0.0.0.0", "example.com", "example.org",
                 "example.net", "my-bucket", "your-org", "...", "<", "YOUR_", "{", "$")
+# Sign-in pages that redirect an anonymous request; a redirect there means the app is up.
+REDIRECTING_HOSTS = ("hub.cerbos.cloud",)
 LATEST = re.compile(r"(?<![\w./-])(?:[\w.-]+/)+[\w.-]+:latest\b")
 
 
@@ -227,7 +230,11 @@ def fetch(url):
             with urllib.request.urlopen(request, timeout=30) as response:
                 return response.status
         except urllib.error.HTTPError as error:
-            return 200 if error.code in (403, 405) else error.code  # HEAD refused; the page is fine
+            if error.code in (403, 405):
+                return 200  # HEAD refused; the page is fine
+            if 300 <= error.code < 400 and urllib.parse.urlsplit(url).hostname in REDIRECTING_HOSTS:
+                return 200
+            return error.code
         except Exception as error:  # noqa: BLE001 - transient; retry
             last = type(error).__name__
             if attempt < 2:

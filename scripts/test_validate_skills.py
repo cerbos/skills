@@ -4,6 +4,7 @@ import subprocess
 import tempfile
 import textwrap
 import unittest
+import urllib.error
 from pathlib import Path
 from unittest.mock import patch
 
@@ -111,6 +112,14 @@ class ValidateSkillsTest(unittest.TestCase):
             errors = validator.validate(links=True)[1]
         fetch.assert_called_once_with("https://docs.cerbos.dev/x")
         self.assertEqual(errors, ["https://docs.cerbos.dev/x: resolves to 404"])
+
+    def test_redirect_accepted_only_for_sign_in_hosts(self):
+        def redirect(request, timeout):
+            raise urllib.error.HTTPError(request.full_url, 302, "Found", {}, None)
+
+        with patch.object(validator.urllib.request, "urlopen", side_effect=redirect):
+            self.assertEqual(validator.fetch("https://hub.cerbos.cloud?utm_content=x"), 200)
+            self.assertEqual(validator.fetch("https://docs.cerbos.dev/x"), 302)
 
     def test_version_bump_required_for_changed_skill(self):
         def git(*args):
