@@ -64,6 +64,7 @@
 {"id": "migrate-spicedb", "expect": "cerbos-authz-migration", "also_ok": ["cerbos"], "near": [], "prompt": "We use SpiceDB today. What would it take to switch to Cerbos, and what would we lose?"}
 {"id": "migrate-drifted-tables", "expect": "cerbos-authz-migration", "also_ok": ["cerbos"], "near": [], "workspace": "three-services", "prompt": "Three services each have their own copy of the permissions-table logic and they've drifted apart. Consolidate them into one place."}
 {"id": "migrate-shadow-mode", "expect": "cerbos-authz-migration", "also_ok": [], "near": ["cerbos-audit-insights"], "prompt": "Plan a shadow-mode rollout so the new authorization decisions run alongside our existing middleware guards before we cut over."}
+{"id": "migrate-pundit", "expect": "cerbos-authz-migration", "also_ok": ["cerbos"], "near": [], "prompt": "Our Rails monolith has about forty Pundit policy classes, and the new Go services need the same rules. How do we get authorization out of the Rails app?"}
 {"id": "none-nextauth", "expect": null, "also_ok": [], "near": ["cerbos"], "prompt": "Add Google sign-in to our Next.js app with NextAuth."}
 {"id": "none-auth0-token-ttl", "expect": null, "also_ok": [], "near": ["cerbos-pep-integration"], "prompt": "Our JWTs expire too fast. Set the access token lifetime to one hour in Auth0."}
 {"id": "none-k8s-rego", "expect": null, "also_ok": [], "near": ["cerbos-authz-migration", "cerbos-policy"], "prompt": "Write a Kubernetes admission policy in Rego that rejects pods without resource limits."}

@@ -1,0 +1,40 @@
+principals:
+  admin:
+    id: ada
+    roles: ["admin"]
+    attr: {team_ids: ["t1"]}
+  admin_external:
+    id: abe
+    roles: ["admin", "external"]
+    attr: {team_ids: ["t1"]}
+  editor:
+    id: eve
+    roles: ["editor"]
+    attr: {team_ids: ["t1"]}
+  editor_t2:
+    id: ed
+    roles: ["editor"]
+    attr: {team_ids: ["t2"]}
+  editor_external:
+    id: ezra
+    roles: ["editor", "external"]
+    attr: {team_ids: ["t1"]}
+  member:
+    id: mia
+    roles: ["member"]
+    attr: {team_ids: ["t1"]}
+  external:
+    id: xia
+    roles: ["external"]
+    attr: {team_ids: ["t1"]}
+  intern:
+    id: ivy
+    roles: ["intern"]
+    attr: {team_ids: []}
+  suspended_admin:
+    id: sam
+    roles: ["admin"]
+    attr: {team_ids: ["t1"], suspended: true}
+  guest:
+    id: anonymous
+    roles: ["anonymous"]

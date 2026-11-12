@@ -49,6 +49,7 @@ and routing between skills is part of what they test.
 | [`cerbos-pep-python-list-filter`](tasks/cerbos-pep-python-list-filter/README.md) | `cerbos-pep-integration` | Filter a paged SQLAlchemy list endpoint with `planResources` and the query-plan adapter, including always-allowed and always-denied plans. |
 | [`cerbos-migrate-inline-checks`](tasks/cerbos-migrate-inline-checks/README.md) | `cerbos-authz-migration` | Move a Flask app's scattered role checks, `can()` helper, ownership, plan-gated feature and suspended-account guard to Cerbos with identical status codes. |
 | [`cerbos-migrate-rego`](tasks/cerbos-migrate-rego/README.md) | `cerbos-authz-migration` | Translate an ordered OPA/Rego `else` chain with data-driven grants into Cerbos policies and tests, matching OPA's decisions. |
+| [`cerbos-migrate-pundit`](tasks/cerbos-migrate-pundit/README.md) | `cerbos-authz-migration` | Translate Rails Pundit policy classes with delegated and aliased queries, early-return overrides, guests and a suspended-account raise into Cerbos policies and tests, matching Pundit's decisions. |
 | [`cerbos-audit-masking`](tasks/cerbos-audit-masking/README.md) | `cerbos-audit-insights` | Enable decision and access logs to a local file with PII, tokens and secret headers masked and noisy plan decisions filtered. |
 | [`cerbos-audit-debug`](tasks/cerbos-audit-debug/README.md) | `cerbos-audit-insights` | Use a seeded audit log to find why managers cannot approve invoices and fix the PEP without loosening the policy. |
 | [`cerbos-hub-pdp-config`](tasks/cerbos-hub-pdp-config/README.md) | `cerbos-hub-setup` | Switch a compose PDP from disk policies to a Hub deployment without writing the client secret to any file; checked against a fake Hub. |
@@ -73,7 +74,7 @@ the judge's results on the oracle, nop and hand-written wrong answers kept in
 
 The Harbor tasks measure what a skill produces once it is loaded. The trigger eval
 measures whether it loads at all: [`triggers/prompts.jsonl`](triggers/prompts.jsonl)
-holds 83 requests written in a user's own words, most of which never mention Cerbos.
+holds 84 requests written in a user's own words, most of which never mention Cerbos.
 Each is labelled with the skill that should load (`expect`, or `null` for none),
 skills that are also fine to load (`also_ok`, usually the `cerbos` router before the
 implementation skill or the reverse), and near-miss skills that should not (`near`).

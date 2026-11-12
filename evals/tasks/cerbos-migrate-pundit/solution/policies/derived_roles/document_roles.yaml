@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+derivedRoles:
+  name: document_roles
+  definitions:
+    # DocumentPolicy#owner?: no role test, so any role.
+    - name: owner
+      parentRoles: ["*"]
+      condition:
+        match:
+          expr: R.attr.owner_id == P.id
+
+    # ApplicationPolicy#member_of?(record.team_id); guests carry no team_ids.
+    - name: team_member
+      parentRoles: ["*"]
+      condition:
+        match:
+          expr: has(P.attr.team_ids) && R.attr.team_id in P.attr.team_ids
+
+    - name: team_editor
+      parentRoles: ["editor"]
+      condition:
+        match:
+          expr: has(P.attr.team_ids) && R.attr.team_id in P.attr.team_ids

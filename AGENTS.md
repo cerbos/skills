@@ -19,7 +19,7 @@ When a user describes an access-control problem — in their words, not Cerbos's
 | `cerbos-embedded-pdp` | browser permissions, hide a button, edge function, CDN worker, serverless, WebAssembly, `@cerbos/embedded-client`, ePDP rule, offline |
 | `cerbos-audit-insights` | audit log, decision log, mask, redact PII, why was this denied, SOC 2, HIPAA, PCI DSS, GDPR, Insights |
 | `cerbos-synapse-extension` | Synapse, call mapper, data source, proxy extension, route extension, Envoy ext_authz, enrich the principal |
-| `cerbos-authz-migration` | migrate authorization, move permission checks out of code, replace OPA, Casbin, Oso, SpiceDB, OpenFGA, Cedar, `can()` helper |
+| `cerbos-authz-migration` | migrate authorization, move permission checks out of code, replace OPA, Casbin, Oso, Pundit, SpiceDB, OpenFGA, Cedar, `can()` helper |
 
 Each skill's own `description` is the source of truth for when it fires; this table is the index. The README table is the human-facing one.
 
