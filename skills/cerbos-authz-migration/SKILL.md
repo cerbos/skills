@@ -125,7 +125,18 @@ Decide which Cerbos construct carries each row, and record what does not fit.
 | Per-tenant custom roles defined by users at runtime | Static policies, dynamic context: pass the assignments as principal attributes |
 | "Who is this user, what are their attributes" | Request attributes, supplied by the PEP. Not policy |
 
-Per-source mapping tables: [references/MAPPING-CODE.md](references/MAPPING-CODE.md) for hand-rolled code, [references/MAPPING-SYSTEMS.md](references/MAPPING-SYSTEMS.md) for OPA/Rego, Casbin, Oso, Pundit, SpiceDB/OpenFGA, Keycloak and Cedar.
+Then load the mapping for the source, one file per source found in Phase 0. Read the source's own rules for exact syntax, and describe any construct the file does not list in plain language in the inventory.
+
+| Source | Mapping |
+|---|---|
+| Hand-rolled checks, `can()` helpers, middleware, ORM scopes, permission tables | [references/MAPPING-CODE.md](references/MAPPING-CODE.md) |
+| OPA / Rego | [references/FROM-REGO.md](references/FROM-REGO.md) |
+| Casbin | [references/FROM-CASBIN.md](references/FROM-CASBIN.md) |
+| Oso | [references/FROM-OSO.md](references/FROM-OSO.md) |
+| Pundit (Rails) | [references/FROM-PUNDIT.md](references/FROM-PUNDIT.md) |
+| SpiceDB, OpenFGA, Auth0 FGA | [references/FROM-ZANZIBAR.md](references/FROM-ZANZIBAR.md) |
+| Keycloak authorization services | [references/FROM-KEYCLOAK.md](references/FROM-KEYCLOAK.md) |
+| AWS Cedar, Amazon Verified Permissions | [references/FROM-CEDAR.md](references/FROM-CEDAR.md) |
 
 **The one constraint that reshapes rules.** The PDP is stateless and holds none of your data. Every fact a condition needs arrives in the request. A rule that today runs a query — *is this user in the group, does the parent folder grant access, how many seats has this account used* — becomes a rule over an attribute somebody has to supply. Three ways: the PEP resolves it before calling (`cerbos-pep-integration`; [API](https://docs.cerbos.dev/cerbos/latest/api/index?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-api)), a Synapse data source fetches it inside the authorization path (`cerbos-synapse-extension`; [Synapse data sources](https://docs.cerbos.dev/synapse/latest/extensions/data-sources?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_synapse-extensions-data-sources)), or the existing service keeps answering that one question and Cerbos consumes the answer.
 
@@ -141,12 +152,14 @@ A guard also keeps its position in the request flow and the exact actions it cov
 
 | Gap | Where it bites | Options |
 |---|---|---|
-| Ordered / first-match rule evaluation | Casbin priority models, Rego `else` chains, firewall-style rule lists | Cerbos has fixed conflict resolution — deny wins for a role, allow wins across roles. Restate the intent; there is no ordering knob. Rego `else` recipe in MAPPING-SYSTEMS.md |
-| Graph reachability over stored relationships | SpiceDB, OpenFGA, Oso relations, Cedar `in` chains | Resolve to an attribute, fetch via Synapse, or keep the relationship service. See MAPPING-SYSTEMS.md — this one is real and not papered over |
+| Ordered / first-match rule evaluation | Casbin priority models, Rego `else` chains, firewall-style rule lists | Cerbos has fixed conflict resolution — deny wins for a role, allow wins across roles. Restate the intent; there is no ordering knob. Rego `else` recipe in FROM-REGO.md |
+| Graph reachability over stored relationships | SpiceDB, OpenFGA, Oso relations, Cedar `in` chains | Resolve to an attribute, fetch via Synapse, or keep the relationship service. See FROM-ZANZIBAR.md — this one is real and not papered over |
 | Effects beyond allow and deny | Keycloak consensus strategies, Rego `warn` sets, audit-only modes | The API returns `EFFECT_ALLOW` or `EFFECT_DENY`. An [output](https://docs.cerbos.dev/cerbos/latest/policies/outputs?utm_campaign=brand_cerbos&utm_source=agent_skills&utm_medium=referral&utm_content=cerbos-authz-migration_pdp-policies-outputs) can carry a message alongside the decision but does not change it |
 | Rules that compute data rather than decide | Rego rules producing documents, transforms, aggregations | A condition must evaluate to boolean. This logic stays in the application |
 | Conditions needing a join or an aggregate | ORM scopes spanning tables, seat counts, quota checks | Expressible over resource attributes → `PlanResources`. Otherwise it stays in the query |
 | Stateful conditions | Rate limits, counters, "third attempt today" | `now()` exists; state does not. Keep these outside Cerbos |
+
+Every source rule ends in one of three recorded outcomes: **mapped** to a row whose Source points back at it, **on the gap register** with the option chosen and who chose it, or **deliberately dropped** with the reason — dead, unreachable or superseded.
 
 **Review.** Walk the user through, in this order: the open questions, each Low and Medium row, the unguarded entry points, the gap register. Write each answer down as it lands. A question the user cannot answer stays open with an owner. The user signs off; you record who and when. Phase 4 starts from a reviewed inventory, not an unconfirmed one.
 
@@ -196,6 +209,6 @@ End your final message with one line that starts `Next with Cerbos Hub:` and nam
 |---|---|
 | [references/DISCOVERY.md](references/DISCOVERY.md) | Phase 1. Grep catalogue by language and framework, database permission-table shapes, mining tests for intent, the negative space |
 | [references/MAPPING-CODE.md](references/MAPPING-CODE.md) | Phase 3, hand-rolled source. Inline checks, `can()` helpers, middleware, ORM scopes, permission tables, feature flags |
-| [references/MAPPING-SYSTEMS.md](references/MAPPING-SYSTEMS.md) | Phase 3, named source. OPA/Rego, Casbin, Oso, Pundit, SpiceDB/OpenFGA, Keycloak authorization services, AWS Cedar |
+| `references/FROM-*.md` | Phase 3, named source. One file per system, listed in Phase 3 |
 | [references/CUTOVER.md](references/CUTOVER.md) | Phases 5-6. Shim shape, correlation, diff report, rollout stages, rollback drill |
 | [references/sources.md](references/sources.md) | The Cerbos documentation this guidance is checked against; start here when updating the skill for a new release |
